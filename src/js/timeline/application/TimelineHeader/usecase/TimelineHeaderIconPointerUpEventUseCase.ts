@@ -44,6 +44,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, timelineHeaderIconPointerMoveEventUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
 
     // 移動変数をセット
     const sourceFrame  = $getMoveIconFrame();

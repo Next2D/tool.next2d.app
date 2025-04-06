@@ -1,9 +1,10 @@
 import { execute } from "./TimelineHeaderUpdateFrameElementService";
 import { $TIMELINE_HEADER_FRAME_INDEX } from "../../../../config/TimelineConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineHeaderUpdateFrameElementServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const div = document.createElement("div");
 

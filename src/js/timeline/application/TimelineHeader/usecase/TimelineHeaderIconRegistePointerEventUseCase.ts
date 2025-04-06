@@ -24,4 +24,7 @@ export const execute = (event: PointerEvent): void =>
     element.addEventListener(EventType.POINTER_UP,
         timelineHeaderIconPointerUpEventUseCase
     );
+    element.addEventListener(EventType.POINTER_CANCEL,
+        timelineHeaderIconPointerUpEventUseCase
+    );
 };

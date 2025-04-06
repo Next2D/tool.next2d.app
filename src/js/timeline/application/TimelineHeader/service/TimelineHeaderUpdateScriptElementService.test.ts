@@ -1,10 +1,11 @@
 import { execute } from "./TimelineHeaderUpdateScriptElementService";
 import { $TIMELINE_HEADER_SCRIPT_INDEX } from "../../../../config/TimelineConfig";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineHeaderUpdateScriptElementServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         workSpace.scene.setAction(5, "test");

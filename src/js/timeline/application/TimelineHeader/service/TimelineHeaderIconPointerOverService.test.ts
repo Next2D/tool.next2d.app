@@ -1,12 +1,13 @@
-import { execute } from "./TimelineHeaderIconMouseOverService";
+import { execute } from "./TimelineHeaderIconPointerOverService";
+import { describe, expect, it } from "vitest";
 import {
     $setMoveIconType,
     $setMoveIconFrame
 } from "../../TimelineUtil";
 
-describe("TimelineHeaderIconMouseOverServiceTest", () =>
+describe("TimelineHeaderIconPointerOverService Test", () =>
 {
-    test("execute test script", (): void =>
+    it("execute test script", (): void =>
     {
         $setMoveIconType("script");
         $setMoveIconFrame(10);

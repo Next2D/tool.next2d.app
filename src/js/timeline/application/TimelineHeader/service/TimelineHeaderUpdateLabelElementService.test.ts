@@ -1,10 +1,11 @@
 import { execute } from "./TimelineHeaderUpdateLabelElementService";
 import { $TIMELINE_HEADER_LABEL_INDEX } from "../../../../config/TimelineConfig";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineHeaderUpdateLabelElementServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         workSpace.scene.setLabel(5, "test");

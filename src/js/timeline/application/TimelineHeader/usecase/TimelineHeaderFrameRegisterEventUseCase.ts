@@ -1,8 +1,8 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineHeaderPointerDownEventUseCase } from "./TimelineHeaderPointerDownEventUseCase";
-import { execute as timelineHeaderScriptIconMouseDownEventUseCase } from "./TimelineHeaderScriptIconMouseDownEventUseCase";
-import { execute as timelineHeaderSoundIconMouseDownEventUseCase } from "./TimelineHeaderSoundIconMouseDownEventUseCase";
-import { execute as timelineHeaderLabelIconMouseDownEventUseCase } from "./TimelineHeaderLabelIconMouseDownEventUseCase";
+import { execute as timelineHeaderScriptIconPointerDownEventUseCase } from "./TimelineHeaderScriptIconPointerDownEventUseCase";
+import { execute as timelineHeaderSoundIconPointerDownEventUseCase } from "./TimelineHeaderSoundIconPointerDownEventUseCase";
+import { execute as timelineHeaderLabelIconPointerDownEventUseCase } from "./TimelineHeaderLabelIconPointerDownEventUseCase";
 import { execute as timelineHeaderTouchPointerUpService } from "../service/TimelineHeaderTouchPointerUpService";
 import { execute as timelineHeaderTouchPointerDownUseCase } from "./TimelineHeaderTouchPointerDownUseCase";
 import {
@@ -48,7 +48,7 @@ export const execute = (element: HTMLElement): void =>
     const scriptElement = element.children[$TIMELINE_HEADER_SCRIPT_INDEX] as HTMLElement;
     if (scriptElement) {
         scriptElement.addEventListener(EventType.POINTER_DOWN,
-            timelineHeaderScriptIconMouseDownEventUseCase
+            timelineHeaderScriptIconPointerDownEventUseCase
         );
     }
 
@@ -56,7 +56,7 @@ export const execute = (element: HTMLElement): void =>
     const labelElement = element.children[$TIMELINE_HEADER_LABEL_INDEX] as HTMLElement;
     if (labelElement) {
         labelElement.addEventListener(EventType.POINTER_DOWN,
-            timelineHeaderLabelIconMouseDownEventUseCase
+            timelineHeaderLabelIconPointerDownEventUseCase
         );
     }
 
@@ -64,7 +64,7 @@ export const execute = (element: HTMLElement): void =>
     const soundElement = element.children[$TIMELINE_HEADER_SOUND_INDEX] as HTMLElement;
     if (soundElement) {
         soundElement.addEventListener(EventType.POINTER_DOWN,
-            timelineHeaderSoundIconMouseDownEventUseCase
+            timelineHeaderSoundIconPointerDownEventUseCase
         );
     }
 };

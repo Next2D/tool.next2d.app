@@ -5,8 +5,8 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $getHitElement, $getIconClientY, $getMoveMode, $setMoveMode } from "../../TimelineUtil";
 import { execute as timelineScrollUpdateScrollXUseCase } from "@/timeline/application/TimelineScroll/usecase/TimelineScrollUpdateScrollXUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { execute as timelineHeaderIconMouseOverService } from "../service/TimelineHeaderIconMouseOverService";
-import { execute as timelineHeaderIconMouseOutService } from "../service/TimelineHeaderIconMouseOutService";
+import { execute as timelineHeaderIconPointerOverService } from "../service/TimelineHeaderIconPointerOverService";
+import { execute as timelineHeaderIconPointerOutService } from "../service/TimelineHeaderIconPointerOutService";
 import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
@@ -129,10 +129,10 @@ export const execute = (event: PointerEvent, loop_mode: boolean = false): void =
 
         // 先に選択していたElementのstyleを初期化
         if (hitElement) {
-            timelineHeaderIconMouseOutService(hitElement);
+            timelineHeaderIconPointerOutService(hitElement);
         }
 
         // マウスオーバーイベントを実行する
-        timelineHeaderIconMouseOverService(element);
+        timelineHeaderIconPointerOverService(element);
     });
 };

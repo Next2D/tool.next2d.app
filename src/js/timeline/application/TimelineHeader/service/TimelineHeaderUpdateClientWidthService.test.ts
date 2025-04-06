@@ -1,10 +1,11 @@
 import { execute } from "./TimelineHeaderUpdateClientWidthService";
 import { $TIMELINE_CONTROLLER_BASE_ID } from "../../../../config/TimelineConfig";
 import { timelineHeader } from "../../../domain/model/TimelineHeader";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineHeaderUpdateClientWidthServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

@@ -1,10 +1,11 @@
 import { execute } from "./TimelineHeaderUpdateSoundElementService";
 import { $TIMELINE_HEADER_SOUND_INDEX } from "../../../../config/TimelineConfig";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineHeaderUpdateSoundElementServiceeTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         workSpace.scene.setSound(5, []);
