@@ -2,7 +2,7 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { $allHideMenu } from "../../MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $NORMAL_TYPE } from "@/config/LayerModeConfig";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description 通常レイヤーに変更する
@@ -15,12 +15,15 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
     // イベントの伝播を止める
     event.stopPropagation();
+    event.preventDefault();
 
     // メニューを非表示にする
     $allHideMenu();

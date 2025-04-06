@@ -1,9 +1,9 @@
-import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerMenuChangeColorUseCase } from "./TimelineLayerControllerMenuChangeColorUseCase";
 import { execute as timelineLayerControllerMenuChangeScaleUseCase } from "./TimelineLayerControllerMenuChangeScaleUseCase";
 import { execute as timelineLayerControllerMenuMaskPointerDownUseCase } from "./TimelineLayerControllerMenuMaskPointerDownUseCase";
 import { execute as timelineLayerControllerMenuNormalPointerDownUseCase } from "./TimelineLayerControllerMenuNormalPointerDownUseCase";
 import { execute as timelineLayerControllerMenuGuidePointerDownUseCase } from "./TimelineLayerControllerMenuGuidePointerDownUseCase";
+import { EventType } from "@/tool/domain/event/EventType";
 import {
     $TIMELINE_CONTROLLER_LAYER_COLOR_ID,
     $TIMELINE_CONTROLLER_LAYER_GUIDE_ID,
@@ -48,7 +48,8 @@ export const execute = (): void =>
     // 通常レイヤーのイベントを登録
     if (normalElement) {
         normalElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerMenuNormalPointerDownUseCase
+            timelineLayerControllerMenuNormalPointerDownUseCase,
+            { "passive": true }
         );
     }
 
@@ -58,7 +59,8 @@ export const execute = (): void =>
     // マスクレイヤーのイベントを登録
     if (maskElement) {
         maskElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerMenuMaskPointerDownUseCase
+            timelineLayerControllerMenuMaskPointerDownUseCase,
+            { "passive": true }
         );
     }
 
@@ -68,7 +70,8 @@ export const execute = (): void =>
     // ガイドレイヤーのイベントを登録
     if (guideElement) {
         guideElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerMenuGuidePointerDownUseCase
+            timelineLayerControllerMenuGuidePointerDownUseCase,
+            { "passive": true }
         );
     }
 };
