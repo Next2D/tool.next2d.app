@@ -50,7 +50,7 @@ export const execute = (): void =>
         listBoxElement.addEventListener(EventType.POINTER_OUT,
             libraryAreaRemoveWindowKeyEventUseCase
         );
-        listBoxElement.addEventListener(EventType.POINTER_LEAVE,
+        listBoxElement.addEventListener(EventType.POINTER_CANCEL,
             libraryAreaRemoveWindowKeyEventUseCase
         );
     }

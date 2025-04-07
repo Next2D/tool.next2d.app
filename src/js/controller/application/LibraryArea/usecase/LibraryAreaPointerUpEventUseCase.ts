@@ -32,7 +32,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, libraryAreaPointerMoveEventUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
-    element.removeEventListener(EventType.POINTER_LEAVE, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
     element.setAttribute("style", "");
 
     if (!$getMoveState()) {

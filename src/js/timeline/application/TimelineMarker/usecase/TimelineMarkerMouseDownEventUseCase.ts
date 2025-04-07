@@ -53,7 +53,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         { "passive": false }
     );
     element.addEventListener(
-        EventType.POINTER_LEAVE,
+        EventType.POINTER_CANCEL,
         timelineMarkerPointerUpEventUseCase,
         { "passive": false }
     );

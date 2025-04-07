@@ -66,7 +66,7 @@ export const execute = (event: PointerEvent, item_element: HTMLElement): void =>
         { "passive": false }
     );
     item_element.addEventListener(
-        EventType.POINTER_LEAVE,
+        EventType.POINTER_CANCEL,
         libraryAreaPointerUpEventUseCase,
         { "passive": false }
     );

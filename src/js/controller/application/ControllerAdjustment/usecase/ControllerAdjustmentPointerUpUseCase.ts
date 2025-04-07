@@ -25,7 +25,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, controllerAdjustmentMouseMoveUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
-    element.removeEventListener(EventType.POINTER_LEAVE, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
 
     // 自動保存予約
     await userDatabaseAutoSaveReservationUseCase();

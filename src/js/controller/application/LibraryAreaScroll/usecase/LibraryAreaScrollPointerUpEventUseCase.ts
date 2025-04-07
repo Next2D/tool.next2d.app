@@ -12,14 +12,14 @@ import { execute as libraryAreaScrollBarPointerMoveEventUseCase } from "./Librar
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.target as HTMLElement;
     if (!element) {
         return;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     // スクロールバーの移動イベントを削除
     element.releasePointerCapture(event.pointerId);
@@ -27,5 +27,5 @@ export const execute = (event: PointerEvent): void =>
         libraryAreaScrollBarPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
-    element.removeEventListener(EventType.POINTER_LEAVE, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
 };

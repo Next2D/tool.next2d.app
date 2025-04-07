@@ -27,7 +27,7 @@ export const execute = (event: PointerEvent): void =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, timelineMarkerPointerMoveEventUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
-    element.removeEventListener(EventType.POINTER_LEAVE, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
 
     // カーソルを変更
     $setCursor("auto");

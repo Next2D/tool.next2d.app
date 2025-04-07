@@ -33,7 +33,7 @@ export const execute = (): void =>
         { "passive": false }
     );
     element.addEventListener(
-        EventType.POINTER_LEAVE,
+        EventType.POINTER_CANCEL,
         propertyAreaMouseUpEventUseCase,
         { "passive": false }
     );

@@ -28,6 +28,7 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.stopPropagation();
+    event.preventDefault();
 
     // ポインターイベントを登録
     element.setPointerCapture(event.pointerId);
@@ -42,7 +43,7 @@ export const execute = (event: PointerEvent): void =>
         { "passive": false }
     );
     element.addEventListener(
-        EventType.POINTER_LEAVE,
+        EventType.POINTER_CANCEL,
         pluginAreaScrollPointerUpUseCase,
         { "passive": false }
     );

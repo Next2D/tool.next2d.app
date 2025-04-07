@@ -40,7 +40,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         circleToolDrawRectPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
-    element.removeEventListener(EventType.POINTER_LEAVE, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
 
     const tool: ITool<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
     if (tool) {

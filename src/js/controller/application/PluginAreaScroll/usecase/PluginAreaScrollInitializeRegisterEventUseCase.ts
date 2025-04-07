@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as pluginAreaScrollMouseDownUseCase } from "./PluginAreaScrollMouseDownUseCase";
+import { execute as pluginAreaScrollMouseDownUseCase } from "./PluginAreaScrollPointerDownUseCase";
 import { execute as pluginAreaScrollWheelEventService } from "../service/PluginAreaScrollWheelEventService";
 import {
     $PLUGIN_LIST_BOX_BODY_ID,

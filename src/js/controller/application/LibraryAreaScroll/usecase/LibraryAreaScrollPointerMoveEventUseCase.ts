@@ -12,14 +12,14 @@ import { libraryArea } from "@/controller/domain/model/LibraryArea";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // y移動がない場合は処理を終了
     if (!event.movementY) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     requestAnimationFrame(() =>
     {

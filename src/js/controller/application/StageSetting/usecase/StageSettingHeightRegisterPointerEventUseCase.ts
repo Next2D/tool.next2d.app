@@ -31,7 +31,7 @@ export const execute = (event: PointerEvent): void =>
         { "passive": false }
     );
     element.addEventListener(
-        EventType.POINTER_LEAVE,
+        EventType.POINTER_CANCEL,
         stageSettingHeightPointerUpEventUseCase,
         { "passive": false }
     );

@@ -51,7 +51,7 @@ export const execute = (event: PointerEvent): void =>
         { "passive": false }
     );
     element.addEventListener(
-        EventType.POINTER_LEAVE,
+        EventType.POINTER_CANCEL,
         soundAreaLoopCountPointerUpEventUseCase,
         { "passive": false }
     );
