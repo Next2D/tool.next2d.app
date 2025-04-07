@@ -9,12 +9,14 @@ describe("HistoryPointerDownEventUseCase Test", () =>
     it("execute test case1", async () =>
     {
         let stopPropagation = false;
+        let preventDefault = false;
         const mockEvent = {
             "button": 0,
             "stopPropagation": vi.fn(() =>
             {
                 stopPropagation = true
-            })
+            }),
+            "preventDefault": vi.fn(() => { preventDefault = true }),
         } as unknown as PointerEvent;
 
         // 現在の有効期限のデータにプラスしてIndexedDBを更新する
@@ -28,27 +30,33 @@ describe("HistoryPointerDownEventUseCase Test", () =>
         $setExpireDate(`${year}-${month}-${day}`);
 
         expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
         await execute(mockEvent);
         expect(stopPropagation).toBe(true);
+        expect(preventDefault).toBe(true);
     });
 
     it("execute test case2", async () =>
     {
         let stopPropagation = false;
+        let preventDefault = false;
         const mockEvent = {
             "button": 0,
             "stopPropagation": vi.fn(() =>
             {
                 stopPropagation = true
-            })
+            }),
+            "preventDefault": vi.fn(() => { preventDefault = true }),
         } as unknown as PointerEvent;
     
         timelineHeader.stopFlag = false;
         expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
 
         await execute(mockEvent);
         
         timelineHeader.stopFlag = true;
         expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
     });
 });

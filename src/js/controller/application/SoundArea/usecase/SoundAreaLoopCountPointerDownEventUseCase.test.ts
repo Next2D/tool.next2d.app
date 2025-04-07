@@ -15,7 +15,7 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
 
         let pointerMove = false;
         let pointerUp = false;
-        let pointerLeave = false;
+        let pointerCancel = false;
         input.addEventListener = vi.fn((type) => 
         {
             switch (type) {
@@ -25,8 +25,8 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
                 case EventType.POINTER_UP:
                     pointerUp = true;
                     return ;
-                case EventType.POINTER_LEAVE:
-                    pointerLeave = true;
+                case EventType.POINTER_CANCEL:
+                    pointerCancel = true;
                     return ;
                 default:
                     throw new Error(`Unknown event type: ${type}`);
@@ -50,7 +50,7 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
         expect(preventDefault).toBe(false);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
-        expect(pointerLeave).toBe(false);
+        expect(pointerCancel).toBe(false);
 
         execute(mockEvent);
 
@@ -60,6 +60,6 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
         expect(preventDefault).toBe(true);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
-        expect(pointerLeave).toBe(true);
+        expect(pointerCancel).toBe(true);
     });
 });

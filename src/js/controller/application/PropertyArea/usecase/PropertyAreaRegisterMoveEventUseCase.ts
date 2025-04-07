@@ -1,8 +1,8 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { $CONTROLLER_AREA_PROPERTY_ID } from "@/config/PropertyConfig";
-import { execute as propertyAreaMouseOutEventService } from "../service/PropertyAreaMouseOutEventService";
-import { execute as propertyAreaMouseUpEventUseCase } from "./PropertyAreaMouseUpEventUseCase";
-import { execute as propertyAreaMouseDownEventUseCase } from "./PropertyAreaMouseDownEventUseCase";
+import { execute as propertyAreaPointerOutEventService } from "../service/PropertyAreaPointerOutEventService";
+import { execute as propertyAreaPointerUpEventUseCase } from "./PropertyAreaPointerUpEventUseCase";
+import { execute as propertyAreaPointerDownEventUseCase } from "./PropertyAreaPointerDownEventUseCase";
 
 /**
  * @description プロパティーエリアの移動イベントを登録
@@ -24,22 +24,22 @@ export const execute = (): void =>
 
     // タップ、ダブルタップの処理
     element.addEventListener(EventType.POINTER_DOWN,
-        propertyAreaMouseDownEventUseCase,
+        propertyAreaPointerDownEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        propertyAreaMouseUpEventUseCase,
+        propertyAreaPointerUpEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        propertyAreaMouseUpEventUseCase,
+        propertyAreaPointerUpEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_OUT,
-        propertyAreaMouseOutEventService,
+        propertyAreaPointerOutEventService,
         { "passive": false }
     );
 };

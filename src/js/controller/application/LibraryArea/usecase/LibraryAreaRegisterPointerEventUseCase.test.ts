@@ -29,7 +29,7 @@ describe("LibraryAreaRegisterPointerEventUseCase Test", () =>
         
         let pointerMove = false;
         let pointerUp = false;
-        let pointerLeave = false;
+        let pointerCancel = false;
 
         let pointerId = 0;
         div.setPointerCapture = vi.fn((pointer_id) =>
@@ -48,8 +48,8 @@ describe("LibraryAreaRegisterPointerEventUseCase Test", () =>
                     pointerUp = true;
                     break;
 
-                case EventType.POINTER_LEAVE:
-                    pointerLeave = true;
+                case EventType.POINTER_CANCEL:
+                    pointerCancel = true;
                     break;
 
                 default:
@@ -62,7 +62,7 @@ describe("LibraryAreaRegisterPointerEventUseCase Test", () =>
         expect(pointerId).toBe(0);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
-        expect(pointerLeave).toBe(false);
+        expect(pointerCancel).toBe(false);
         expect($getMoveOffsetX()).toBe(0);
         expect($getMoveOffsetY()).toBe(0);
 
@@ -71,7 +71,7 @@ describe("LibraryAreaRegisterPointerEventUseCase Test", () =>
         expect(pointerId).toBe(2);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
-        expect(pointerLeave).toBe(true);
+        expect(pointerCancel).toBe(true);
         expect($getMoveOffsetX()).toBe(10);
         expect($getMoveOffsetY()).toBe(20);
 

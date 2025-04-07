@@ -1,5 +1,5 @@
 import { execute } from "./ControllerAdjustmentPointerUpUseCase";
-import { $CONTROLLER_ADJUSTMENT_ID } from "../../../../config/ControllerConfig";
+import { EventType } from "../../../../tool/domain/event/EventType";
 import { describe, expect, it, vi } from "vitest";
 
 describe("ControllerAdjustmentPointerUpUseCase Test", () =>
@@ -29,20 +29,20 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
             pointerId = pointer_id;
         });
 
-        let pointerMove  = false;
-        let pointerUp    = false;
-        let pointerLeave = false;
+        let pointerMove   = false;
+        let pointerUp     = false;
+        let pointerCancel = false;
         div.removeEventListener = vi.fn((type: string) =>
         {
             switch (type) {
-                case "pointermove":
+                case EventType.POINTER_MOVE:
                     pointerMove = true;
                     break;
-                case "pointerup":
+                case EventType.POINTER_UP:
                     pointerUp = true;
                     break;
-                case "pointerleave":
-                    pointerLeave = true;
+                case EventType.POINTER_CANCEL:
+                    pointerCancel = true;
                     break;
                 default:
                     throw new Error("Invalid type");
@@ -51,7 +51,7 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
 
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
-        expect(pointerLeave).toBe(false);
+        expect(pointerCancel).toBe(false);
         expect(pointerId).toBe(0);
         expect(preventDefault).toBe(false);
         expect(stopPropagation).toBe(false);
@@ -60,7 +60,7 @@ describe("ControllerAdjustmentPointerUpUseCase Test", () =>
 
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
-        expect(pointerLeave).toBe(true);
+        expect(pointerCancel).toBe(true);
         expect(pointerId).toBe(100);
         expect(preventDefault).toBe(true);
         expect(stopPropagation).toBe(true);

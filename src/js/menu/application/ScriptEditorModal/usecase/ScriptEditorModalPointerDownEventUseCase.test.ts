@@ -10,7 +10,7 @@ describe("ScriptEditorModalPointerDownEventUseCase Test", () =>
 
         let pointerDown = false;
         let pointerUp = false;
-        let pointerLeave = false;
+        let pointerCancel = false;
         div.addEventListener = vi.fn((type) =>
         {
             switch (type) {
@@ -23,8 +23,8 @@ describe("ScriptEditorModalPointerDownEventUseCase Test", () =>
                     pointerUp = true;
                     break;
 
-                case EventType.POINTER_LEAVE:
-                    pointerLeave = true;
+                case EventType.POINTER_CANCEL:
+                    pointerCancel = true;
                     break;
 
                 default:
@@ -50,7 +50,7 @@ describe("ScriptEditorModalPointerDownEventUseCase Test", () =>
         expect(preventDefault).toBe(false);
         expect(pointerDown).toBe(false);
         expect(pointerUp).toBe(false);
-        expect(pointerLeave).toBe(false);
+        expect(pointerCancel).toBe(false);
 
         execute(eventMock);
         
@@ -59,6 +59,6 @@ describe("ScriptEditorModalPointerDownEventUseCase Test", () =>
         expect(preventDefault).toBe(true);
         expect(pointerDown).toBe(true);
         expect(pointerUp).toBe(true);
-        expect(pointerLeave).toBe(true);
+        expect(pointerCancel).toBe(true);
     });
 });

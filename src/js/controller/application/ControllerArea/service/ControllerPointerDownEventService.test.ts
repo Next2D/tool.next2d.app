@@ -15,20 +15,28 @@ describe("ControllerPointerDownEventService Test", () =>
             }
         });
 
-        let eventState = "off";
-        expect(eventState).toBe("off");
-        expect(menuState).toBe("show");
-
+        let stopPropagation = false;
+        let preventDefault = false;
         const eventMock = {
             "stopPropagation": () =>
             {
-                eventState = "on";
+                stopPropagation = true;
+            },
+            "preventDefault": () =>
+            {
+                preventDefault = true;
             },
             "button": 0
         } as PointerEvent;
+
+        expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
+        expect(menuState).toBe("show");
+
         execute(eventMock);
 
-        expect(eventState).toBe("on");
+        expect(stopPropagation).toBe(true);
+        expect(preventDefault).toBe(true);
         expect(menuState).toBe("hide");
     });
 });

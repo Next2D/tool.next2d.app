@@ -13,7 +13,7 @@ describe("StageSettingHeightRegisterPointerEventUseCase Test", () =>
 
         let pointerMove = false;
         let pointerUp = false;
-        let pointerLeave = false;
+        let pointerCancel = false;
         input.addEventListener = vi.fn((type) =>
         {
             switch (type) {
@@ -25,8 +25,8 @@ describe("StageSettingHeightRegisterPointerEventUseCase Test", () =>
                     pointerUp = true;
                     return ;
 
-                case EventType.POINTER_LEAVE:
-                    pointerLeave = true;
+                case EventType.POINTER_CANCEL:
+                    pointerCancel = true;
                     return ;
 
                 default:
@@ -43,13 +43,13 @@ describe("StageSettingHeightRegisterPointerEventUseCase Test", () =>
         expect(pointerId).toBe(0);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
-        expect(pointerLeave).toBe(false);
+        expect(pointerCancel).toBe(false);
 
         execute(mockEvent);
 
         expect(pointerId).toBe(100);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
-        expect(pointerLeave).toBe(true);
+        expect(pointerCancel).toBe(true);
     });
 });

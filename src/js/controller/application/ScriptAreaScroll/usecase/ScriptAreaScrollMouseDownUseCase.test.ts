@@ -16,7 +16,7 @@ describe("ScriptAreaScrollMouseDownUseCase Test", () =>
 
         let pointerMove = false;
         let pointerUp = false;
-        let pointerLeave = false;
+        let pointerCancel = false;
         div.addEventListener = vi.fn((type) =>
         {
             switch (type) {
@@ -29,8 +29,8 @@ describe("ScriptAreaScrollMouseDownUseCase Test", () =>
                     pointerUp = true
                     break;
 
-                case EventType.POINTER_LEAVE:
-                    pointerLeave = true
+                case EventType.POINTER_CANCEL:
+                    pointerCancel = true
                     break;
 
                 default:
@@ -53,7 +53,7 @@ describe("ScriptAreaScrollMouseDownUseCase Test", () =>
         expect(stopPropagation).toBe(false);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
-        expect(pointerLeave).toBe(false);
+        expect(pointerCancel).toBe(false);
 
         execute(mockEvent);
 
@@ -61,6 +61,6 @@ describe("ScriptAreaScrollMouseDownUseCase Test", () =>
         expect(stopPropagation).toBe(true);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
-        expect(pointerLeave).toBe(true);
+        expect(pointerCancel).toBe(true);
     });
 });

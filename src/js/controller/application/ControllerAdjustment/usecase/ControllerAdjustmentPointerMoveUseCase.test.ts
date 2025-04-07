@@ -8,7 +8,7 @@ describe("ControllerAdjustmentPointerMoveUseCase Test", () =>
         let stopPropagation = false;
         let preventDefault = false;
         const MockEvent = {
-            "movementX": 0,
+            "movementX": 10,
             "stopPropagation": () =>
             {
                 stopPropagation = true;

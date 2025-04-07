@@ -1,4 +1,6 @@
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
+import { $setEditingElement } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description プロパティエリアのタイトルタップの実行関数
@@ -11,6 +13,12 @@ import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/a
  */
 export const execute = (event: PointerEvent): void =>
 {
+    // メニューを全て非表示にする
+    $allHideMenu();
+
+    // 編集中の要素を解除
+    $setEditingElement(null);
+
     // 親のイベントを中止
     event.stopPropagation();
     event.preventDefault();

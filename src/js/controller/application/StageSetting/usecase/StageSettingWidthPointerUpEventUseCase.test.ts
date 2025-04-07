@@ -21,7 +21,7 @@ describe("StageSettingWidthPointerUpEventUseCase Test", () =>
 
         let pointerMove = false;
         let pointerUp = false;
-        let pointerLeave = false;
+        let pointerCancel = false;
         input.removeEventListener = vi.fn((type) =>
         {
             switch (type) {
@@ -33,8 +33,8 @@ describe("StageSettingWidthPointerUpEventUseCase Test", () =>
                     pointerUp = true;
                     return ;
 
-                case EventType.POINTER_LEAVE:
-                    pointerLeave = true;
+                case EventType.POINTER_CANCEL:
+                    pointerCancel = true;
                     return ;
 
                 default:
@@ -64,7 +64,7 @@ describe("StageSettingWidthPointerUpEventUseCase Test", () =>
         expect(pointerId).toBe(0);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
-        expect(pointerLeave).toBe(false);
+        expect(pointerCancel).toBe(false);
 
         await execute(mockEvent);
 
@@ -75,6 +75,6 @@ describe("StageSettingWidthPointerUpEventUseCase Test", () =>
         expect(pointerId).toBe(100);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
-        expect(pointerLeave).toBe(true);
+        expect(pointerCancel).toBe(true);
     });
 });

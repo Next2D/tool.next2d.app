@@ -1,8 +1,8 @@
 import { $getStandbyMoveState, $setStandbyMoveState } from "../PropertyAreaUtil";
-import { execute } from "./PropertyAreaMouseOutEventService";
+import { execute } from "./PropertyAreaPointerOutEventService";
 import { describe, expect, it } from "vitest";
 
-describe("TTimelineAreaMouseOutEventServiceTest", () =>
+describe("PropertyAreaPointerOutEventService Test", () =>
 {
     it("execute test", () =>
     {

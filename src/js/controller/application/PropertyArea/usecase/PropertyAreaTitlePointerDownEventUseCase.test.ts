@@ -1,7 +1,7 @@
-import { execute } from "./PropertyAreaTitleMouseDownEventUseCase";
+import { execute } from "./PropertyAreaTitlePointerDownEventUseCase";
 import { describe, expect, it, vi } from "vitest";
 
-describe("PropertyAreaTitleMouseDownEventUseCase Test", () =>
+describe("PropertyAreaTitlePointerDownEventUseCase Test", () =>
 {
     it("execute test", () =>
     {
