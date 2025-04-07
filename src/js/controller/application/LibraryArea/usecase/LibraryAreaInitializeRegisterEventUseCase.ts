@@ -1,4 +1,4 @@
-import { execute as libraryAreaMouseDownEventUseCase } from "./LibraryAreaMouseDownEventUseCase";
+import { execute as libraryAreaPointerDownEventUseCase } from "./LibraryAreaPointerDownEventUseCase";
 import { execute as libraryAreaDropUseCase } from "./LibraryAreaDropUseCase";
 import { execute as libraryAreaDragoverService } from "../service/LibraryAreaDragoverService";
 import { execute as libraryAreaRegisterWindowKeyEventUseCase } from "./LibraryAreaRegisterWindowKeyEventUseCase";
@@ -27,7 +27,8 @@ export const execute = (): void =>
     if (listBoxElement) {
 
         listBoxElement.addEventListener(EventType.POINTER_DOWN,
-            libraryAreaMouseDownEventUseCase
+            libraryAreaPointerDownEventUseCase,
+            { "passive": false }
         );
 
         // drop系のイベントの登録

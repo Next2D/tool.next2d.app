@@ -1,6 +1,6 @@
 import { $CONTROLLER_ID } from "@/config/ControllerConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as controllerMouseDownEventService } from "../service/ControllerMouseDownEventService";
+import { execute as controllerPointerDownEventService } from "../service/ControllerPointerDownEventService";
 
 /**
  * @description コントローラーエリアの初期起動時のユースケース
@@ -21,6 +21,6 @@ export const execute = (): void =>
 
     element.addEventListener(
         EventType.POINTER_DOWN,
-        controllerMouseDownEventService
+        controllerPointerDownEventService
     );
 };

@@ -1,7 +1,7 @@
 import { $HISTORY_LIST_ID } from "@/config/HistoryConfig";
 import { execute as historyListComponent } from "@/controller/application/HistoryArea/component/HistoryListComponent";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as historyMouseDownEventUseCase } from "./HistoryMouseDownEventUseCase";
+import { execute as historyMouseDownEventUseCase } from "./HistoryPointerDownEventUseCase";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
 import { execute as historyAreaScrollUpdateHeightService } from "@/controller/application/HistoryAreaScroll/service/HistoryAreaScrollUpdateHeightService";
 
@@ -59,7 +59,7 @@ export const execute = (
     {
         $pointerDownQueue = $pointerDownQueue
             .then(() => historyMouseDownEventUseCase(event));
-    });
+    }, { "passive": false });
 
     // 履歴の高さを更新
     historyAreaScrollUpdateHeightService();

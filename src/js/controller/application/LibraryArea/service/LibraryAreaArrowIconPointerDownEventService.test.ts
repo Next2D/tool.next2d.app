@@ -1,10 +1,10 @@
-import { execute } from "./LibraryAreaArrowIconMouseDownEventService";
+import { execute } from "./LibraryAreaArrowIconPointerDownEventService";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { Folder } from "../../../../core/domain/model/Folder";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { describe, expect, it, vi } from "vitest";
 
-describe("LibraryAreaArrowIconMouseDownEventServiceTest", () =>
+describe("LibraryAreaArrowIconPointerDownEventService Test", () =>
 {
     it("execute test", () =>
     {

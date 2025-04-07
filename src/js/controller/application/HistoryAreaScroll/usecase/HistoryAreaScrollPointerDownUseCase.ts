@@ -28,6 +28,7 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.stopPropagation();
+    event.preventDefault();
 
     // ポインターイベントを登録
     element.setPointerCapture(event.pointerId);

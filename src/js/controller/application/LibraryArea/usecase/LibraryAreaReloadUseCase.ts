@@ -1,11 +1,11 @@
 import { execute as libraryAreaComponent } from "../component/LibraryAreaComponent";
-import { execute as libraryAreaSelectedMouseDownService } from "./LibraryAreaSelectedMouseDownUseCase";
-import { execute as libraryAreaArrowIconMouseDownEventService } from "../service/LibraryAreaArrowIconMouseDownEventService";
-import { execute as libraryAreaMovieClipIconMouseDownEventUseCase } from "./LibraryAreaMovieClipIconMouseDownEventUseCase";
-import { execute as libraryAreaInstanceNameMouseDownEventUseCase } from "./LibraryAreaInstanceNameMouseDownEventUseCase";
+import { execute as libraryAreaSelectedPointerDownUseCase } from "./LibraryAreaSelectedPointerDownUseCase";
+import { execute as libraryAreaArrowIconPointerDownEventService } from "../service/LibraryAreaArrowIconPointerDownEventService";
+import { execute as libraryAreaMovieClipIconMouseDownEventUseCase } from "./LibraryAreaMovieClipIconPointerDownEventUseCase";
+import { execute as libraryAreaInstanceNamePointerDownEventUseCase } from "./LibraryAreaInstanceNamePointerDownEventUseCase";
 import { execute as libraryAreaInstanceTextContentKeyPressEventService } from "../service/LibraryAreaInstanceTextContentKeyPressEventService";
 import { execute as libraryAreaInstanceNameFocusOutEventUseCase } from "./LibraryAreaInstanceNameFocusOutEventUseCase";
-import { execute as libraryAreaInstanceSymbolMouseDownEventUseCase } from "./LibraryAreaInstanceSymbolMouseDownEventUseCase";
+import { execute as libraryAreaInstanceSymbolPointerDownEventUseCase } from "./LibraryAreaInstanceSymbolPointerDownEventUseCase";
 import { execute as libraryAreaInstanceSymbolFocusOutEventUseCase } from "./LibraryAreaInstanceSymbolFocusOutEventUseCase";
 import { execute as libraryAreaCanDisplayInstanceService } from "../service/LibraryAreaCanDisplayInstanceService";
 import { execute as libraryAreaGetPaddingService } from "../service/LibraryAreaGetPaddingService";
@@ -82,7 +82,7 @@ export const execute = async (): Promise<void> =>
 
         // 親Elementに選択イベントを登録
         node.addEventListener(EventType.POINTER_DOWN,
-            libraryAreaSelectedMouseDownService,
+            libraryAreaSelectedPointerDownUseCase,
             { "passive": false }
         );
 
@@ -103,14 +103,14 @@ export const execute = async (): Promise<void> =>
 
                 const arrowIcon = icons[0] as NonNullable<HTMLElement>;
                 arrowIcon.addEventListener(EventType.POINTER_DOWN,
-                    libraryAreaArrowIconMouseDownEventService,
+                    libraryAreaArrowIconPointerDownEventService,
                     { "passive": false }
                 );
 
                 // フォルダアイコンにイベントを登録
                 const folderIcon = icons[1] as NonNullable<HTMLElement>;
                 folderIcon.addEventListener(EventType.POINTER_DOWN,
-                    libraryAreaArrowIconMouseDownEventService,
+                    libraryAreaArrowIconPointerDownEventService,
                     { "passive": false }
                 );
             }
@@ -132,7 +132,7 @@ export const execute = async (): Promise<void> =>
 
         const nameElement = spans[0] as NonNullable<HTMLElement>;
         nameElement.addEventListener(EventType.POINTER_DOWN,
-            libraryAreaInstanceNameMouseDownEventUseCase
+            libraryAreaInstanceNamePointerDownEventUseCase
         );
 
         nameElement.addEventListener("focusout",
@@ -147,7 +147,7 @@ export const execute = async (): Promise<void> =>
         if (instance.type !== $FOLDER_TYPE) {
             const symbolElement = spans[1] as NonNullable<HTMLElement>;
             symbolElement.addEventListener(EventType.POINTER_DOWN,
-                libraryAreaInstanceSymbolMouseDownEventUseCase
+                libraryAreaInstanceSymbolPointerDownEventUseCase
             );
 
             symbolElement.addEventListener("focusout",

@@ -2,7 +2,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import {
@@ -52,16 +51,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    if ($useKeyboard()) {
-        $setEditingElement(null);
-    }
+    // メニューを非表示
+    $allHideMenu();
+
+    // 編集モードを終了
+    $setEditingElement(null);
 
     // 親のイベントを終了
     event.stopPropagation();
     event.preventDefault();
-
-    // メニューを非表示
-    $allHideMenu();
 
     const libraryId = parseInt(element.dataset.libraryId as string);
     if (!wait) {

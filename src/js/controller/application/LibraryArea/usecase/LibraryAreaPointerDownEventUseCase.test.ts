@@ -1,9 +1,9 @@
-import { execute } from "./LibraryAreaMouseDownEventUseCase";
+import { execute } from "./LibraryAreaPointerDownEventUseCase";
 import { $useKeyboard, $updateKeyLock } from "../../../../shortcut/ShortcutUtil";
 import { $setEditingElement, $getEditingElement, $activeTouchPointers } from "../../../../global/GlobalUtil";
 import { describe, expect, it, vi } from "vitest";
 
-describe("LibraryAreaMouseDownEventUseCase Test", () =>
+describe("LibraryAreaPointerDownEventUseCase Test", () =>
 {
     it("execute test case1", () =>
     {

@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as historyAreaScrollMouseDownUseCase } from "./HistoryAreaScrollMouseDownUseCase";
+import { execute as historyAreaScrollPointerDownUseCase } from "./HistoryAreaScrollPointerDownUseCase";
 import { execute as historyAreaScrollWheelEventService } from "../service/HistoryAreaScrollWheelEventService";
 import {
     $HISTORY_LIST_PARENT_ID,
@@ -22,7 +22,8 @@ export const execute = (): void =>
     if (scrollBarElement) {
         // マウスダウンイベントを登録
         scrollBarElement.addEventListener(EventType.POINTER_DOWN,
-            historyAreaScrollMouseDownUseCase
+            historyAreaScrollPointerDownUseCase,
+            { "passive": false }
         );
     }
 

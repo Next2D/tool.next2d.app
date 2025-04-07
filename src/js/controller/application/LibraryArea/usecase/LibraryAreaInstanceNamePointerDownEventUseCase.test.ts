@@ -1,4 +1,4 @@
-import { execute } from "./LibraryAreaInstanceNameMouseDownEventUseCase";
+import { execute } from "./LibraryAreaInstanceNamePointerDownEventUseCase";
 import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
 import {
     $getNameSelectedLibraryId,
@@ -8,7 +8,7 @@ import {
 } from "../LibraryAreaUtil";
 import { describe, expect, it, vi } from "vitest";
 
-describe("LibraryAreaInstanceNameMouseDownEventUseCase Test", () =>
+describe("LibraryAreaInstanceNamePointerDownEventUseCase Test", () =>
 {
     it("execute test case1", () =>
     {

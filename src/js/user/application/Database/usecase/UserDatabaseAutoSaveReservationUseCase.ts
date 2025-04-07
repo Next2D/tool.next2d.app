@@ -5,7 +5,7 @@ import { execute as userDatabaseSaveIndexedDBUseCase } from "./UserDatabaseSaveI
  * @type {number}
  * @private
  */
-let timerId: NodeJS.Timeout;
+let $timerId: NodeJS.Timeout;
 
 /**
  * @description 現在のプロジェクトを自動保存予約
@@ -23,6 +23,6 @@ export const execute = async (): Promise<void> =>
     }
 
     // 予約の取り消し
-    clearTimeout(timerId);
-    timerId = setTimeout(userDatabaseSaveIndexedDBUseCase, 3000);
+    clearTimeout($timerId);
+    $timerId = setTimeout(userDatabaseSaveIndexedDBUseCase, 3000);
 };

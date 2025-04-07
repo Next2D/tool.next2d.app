@@ -30,6 +30,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     // 選択を初期化
     libraryAreaSelectedClearUseCase();

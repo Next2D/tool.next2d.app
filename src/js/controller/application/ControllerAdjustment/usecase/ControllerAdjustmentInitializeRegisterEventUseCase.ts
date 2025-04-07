@@ -1,6 +1,6 @@
 import { $CONTROLLER_ADJUSTMENT_ID } from "@/config/ControllerConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as controllerAdjustmentMouseDownEventUseCase } from "./ControllerAdjustmentMouseDownEventUseCase";
+import { execute as controllerAdjustmentPointerDownEventUseCase } from "./ControllerAdjustmentPointerDownEventUseCase";
 
 /**
  * @description コントローラーの幅の調整イベント登録
@@ -20,6 +20,7 @@ export const execute = (): void =>
     }
 
     element.addEventListener(EventType.POINTER_DOWN,
-        controllerAdjustmentMouseDownEventUseCase
+        controllerAdjustmentPointerDownEventUseCase,
+        { "passive": false }
     );
 };

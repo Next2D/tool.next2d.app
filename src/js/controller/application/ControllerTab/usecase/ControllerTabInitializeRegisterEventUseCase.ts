@@ -1,6 +1,6 @@
 import { $CONTROLLER_TAB_AREA_ID } from "@/config/ControllerConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as controllerTabMouseDownEventService } from "./ControllerTabMouseDownEventUseCase";
+import { execute as controllerTabPointerDownEventUseCase } from "./ControllerTabPointerDownEventUseCase";
 
 /**
  * @description タブのタップイベントを登録
@@ -28,7 +28,8 @@ export const execute = (): void =>
         }
 
         node.addEventListener(EventType.POINTER_DOWN,
-            controllerTabMouseDownEventService
+            controllerTabPointerDownEventUseCase,
+            { "passive": false }
         );
     }
 };

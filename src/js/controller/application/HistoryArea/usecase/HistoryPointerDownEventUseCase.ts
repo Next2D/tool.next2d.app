@@ -39,6 +39,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     // 画面共有中か、広告を見たユーザーでなければ、モーダルを表示して終了
     if (!userAllFunctionStateService() && !$useSocket()) {

@@ -55,8 +55,7 @@ export const execute = (event: PointerEvent): void =>
 
     const libraryId = parseInt(element.dataset.libraryId as string);
     if ($useKeyboard()) {
-        const editingElement = $getEditingElement();
-        if (editingElement && selectedLibraryId !== libraryId) {
+        if (selectedLibraryId !== libraryId) {
             $setEditingElement(null);
             $setNameSelectedLibraryId(-1);
             $setSymbolSelectedLibraryId(-1);

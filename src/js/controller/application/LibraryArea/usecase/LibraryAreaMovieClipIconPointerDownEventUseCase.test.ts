@@ -1,12 +1,12 @@
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { MovieClip } from "../../../../core/domain/model/MovieClip";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
-import { execute } from "./LibraryAreaMovieClipIconMouseDownEventUseCase";
+import { execute } from "./LibraryAreaMovieClipIconPointerDownEventUseCase";
 import { describe, expect, it, vi } from "vitest";
 import { $MOVIE_CLIP_TYPE } from "../../../../config/InstanceConfig";
 import { timelineHeader } from "../../../../timeline/domain/model/TimelineHeader";
 
-describe("LibraryAreaMovieClipIconMouseDownEventUseCase Test", () =>
+describe("LibraryAreaMovieClipIconPointerDownEventUseCase Test", () =>
 {
     it("execute test case1", async () =>
     {

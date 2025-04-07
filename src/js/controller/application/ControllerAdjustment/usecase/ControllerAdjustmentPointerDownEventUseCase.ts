@@ -31,6 +31,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     // マウス移動イベントを登録
     element.setPointerCapture(event.pointerId);

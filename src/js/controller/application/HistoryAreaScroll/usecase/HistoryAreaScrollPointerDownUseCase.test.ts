@@ -1,8 +1,8 @@
-import { execute } from "./HistoryAreaScrollMouseDownUseCase";
+import { execute } from "./HistoryAreaScrollPointerDownUseCase";
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { describe, expect, it, vi } from "vitest";
 
-describe("HistoryAreaScrollMouseDownUseCase Test", () =>
+describe("HistoryAreaScrollPointerDownUseCase Test", () =>
 {
     it("execute test", () =>
     {

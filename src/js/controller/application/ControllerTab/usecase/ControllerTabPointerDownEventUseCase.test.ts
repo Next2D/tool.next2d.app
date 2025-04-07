@@ -1,8 +1,8 @@
-import { execute } from "./ControllerTabMouseDownEventUseCase";
+import { execute } from "./ControllerTabPointerDownEventUseCase";
 import { $CONTROLLER_TAB_AREA_ID } from "../../../../config/ControllerConfig";
 import { describe, expect, it, vi } from "vitest";
 
-describe("ControllerTabMouseDownEventUseCase Test", () =>
+describe("ControllerTabPointerDownEventUseCase Test", () =>
 {
     it("test case", () =>
     {

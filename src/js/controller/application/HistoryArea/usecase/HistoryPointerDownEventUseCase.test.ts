@@ -1,10 +1,10 @@
-import { execute } from "./HistoryMouseDownEventUseCase";
+import { execute } from "./HistoryPointerDownEventUseCase";
 import { $setExpireDate } from "../../../../user/application/Billing/BillingUtil";
 import { $BILLING_REWARD_PERIOD } from "../../../../config/BillingConfig";
 import { describe, expect, it, vi } from "vitest";
 import { timelineHeader } from "../../../../timeline/domain/model/TimelineHeader";
 
-describe("HistoryMouseDownEventUseCase Test", () =>
+describe("HistoryPointerDownEventUseCase Test", () =>
 {
     it("execute test case1", async () =>
     {

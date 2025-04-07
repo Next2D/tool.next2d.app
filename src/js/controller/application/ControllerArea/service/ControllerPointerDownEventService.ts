@@ -1,5 +1,5 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description コントローラーエリアでマウスダウンした際の関数
@@ -11,7 +11,9 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -23,4 +25,5 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 };

@@ -4,7 +4,7 @@ import { execute as libraryAreaScrollUpdateHeightService } from "@/controller/ap
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 import { execute as historyAreaScrollUpdateHeightService } from "@/controller/application/HistoryAreaScroll/service/HistoryAreaScrollUpdateHeightService";
 import { execute as scriptAreaScrollUpdateHeightService } from "@/controller/application/ScriptAreaScroll/service/ScriptAreaScrollUpdateHeightService";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description タブのタップイベント処理関数
@@ -17,12 +17,11 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
-
-    // 親のイベントを中止
-    event.stopPropagation();
 
     // アクティブなら何もしない
     const tabElement = event.currentTarget as HTMLElement;
@@ -42,6 +41,10 @@ export const execute = (event: PointerEvent): void =>
     if (!element) {
         return ;
     }
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     const children: HTMLCollection = element.children;
     const length: number = children.length;

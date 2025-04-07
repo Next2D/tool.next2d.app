@@ -1,8 +1,7 @@
-import { execute } from "./ControllerAdjustmentMouseDownEventUseCase";
-import { $CONTROLLER_ADJUSTMENT_ID } from "../../../../config/ControllerConfig";
+import { execute } from "./ControllerAdjustmentPointerDownEventUseCase";
 import { describe, expect, it, vi } from "vitest";
 
-describe("ControllerAdjustmentMouseDownEventUseCase Test", () =>
+describe("ControllerAdjustmentPointerDownEventUseCase Test", () =>
 {
     it("test case", () =>
     {

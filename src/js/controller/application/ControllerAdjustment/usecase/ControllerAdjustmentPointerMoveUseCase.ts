@@ -12,12 +12,13 @@ import { execute as screenScrollResizeService } from "@/screen/application/Scree
  */
 export const execute = (event: PointerEvent): void =>
 {
-    event.stopPropagation();
-    event.preventDefault();
-
     if (!event.movementX) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     requestAnimationFrame((): void =>
     {
@@ -35,6 +36,5 @@ export const execute = (event: PointerEvent): void =>
 
         // スクリーンのスクロールサイズを再計算
         screenScrollResizeService();
-
     });
 };
