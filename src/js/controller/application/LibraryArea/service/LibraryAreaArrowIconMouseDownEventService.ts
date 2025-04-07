@@ -1,10 +1,8 @@
 import type { Folder } from "@/core/domain/model/Folder";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import {
     $activeTouchPointers,
-    $getEditingElement,
     $setEditingElement
 } from "@/global/GlobalUtil";
 
@@ -19,7 +17,9 @@ import {
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0 || $activeTouchPointers.size > 1) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
