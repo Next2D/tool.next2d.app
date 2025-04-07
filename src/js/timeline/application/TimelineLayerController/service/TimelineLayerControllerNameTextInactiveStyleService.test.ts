@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerControllerNameTextInactiveStyleService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerNameTextInactiveStyleServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const nameElement = document.createElement("div");
         nameElement.textContent = "test";
@@ -12,7 +13,7 @@ describe("TimelineLayerControllerNameTextInactiveStyleServiceTest", () =>
 
         const eventMock = {
             "target": nameElement
-        };
+        } as unknown as FocusEvent;
 
         expect(nameElement.contentEditable).toBe("true");
         expect(nameElement.style.borderBottom).toBe("1px solid #f5f5f5");

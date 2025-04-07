@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerControllerNameTextKeyPressEventService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerNameTextKeyPressEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let stop = false;
         let preventDefault = false;
@@ -23,7 +24,7 @@ describe("TimelineLayerControllerNameTextKeyPressEventServiceTest", () =>
                     blur = true;
                 }
             }
-        };
+        } as unknown as KeyboardEvent;
 
         expect(stop).toBe(false);
         expect(preventDefault).toBe(false);

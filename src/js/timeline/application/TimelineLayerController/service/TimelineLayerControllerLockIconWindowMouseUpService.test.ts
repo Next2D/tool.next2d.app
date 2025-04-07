@@ -1,9 +1,10 @@
 import { execute } from "./TimelineLayerControllerLockIconWindowMouseUpService";
 import { $getLockState, $setLockState } from "../../TimelineUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TTimelineLayerControllerLockIconWindowMouseUpServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         $setLockState(true);
         expect($getLockState()).toBe(true);

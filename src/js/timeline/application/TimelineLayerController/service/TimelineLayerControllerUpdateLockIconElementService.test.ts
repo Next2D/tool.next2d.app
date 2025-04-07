@@ -1,10 +1,11 @@
 import { execute } from "./TimelineLayerControllerUpdateLockIconElementService";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerUpdateLockIconElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const layerElement = document.createElement("div");
         timelineLayer.elements.length = 0;

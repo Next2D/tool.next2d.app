@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerControllerNameTextActiveStyleService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerNameTextActiveStyleServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
 

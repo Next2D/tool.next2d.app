@@ -1,10 +1,11 @@
 import { execute } from "./TimelineLayerControllerUpdateNameElementService";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerUpdateNameElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const layer = workSpace.scene.getLayer(0);

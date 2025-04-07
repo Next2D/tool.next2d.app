@@ -1,9 +1,10 @@
 import { execute } from "./TimelineLayerControllerDisableIconWindowMouseUpService";
 import { $getDisableState, $setDisableState } from "../../TimelineUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerDisableIconWindowMouseUpServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         $setDisableState(true);
         expect($getDisableState()).toBe(true);

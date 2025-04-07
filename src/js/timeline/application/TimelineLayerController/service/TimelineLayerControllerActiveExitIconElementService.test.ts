@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerControllerActiveExitIconElementService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerActiveExitIconElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         const icon = document.createElement("i");

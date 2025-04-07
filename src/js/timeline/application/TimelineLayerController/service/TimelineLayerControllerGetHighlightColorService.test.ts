@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerControllerGetHighlightColorService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerControllerGetHighlightColorServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const colors: string[] = [
             "#ff0000",
