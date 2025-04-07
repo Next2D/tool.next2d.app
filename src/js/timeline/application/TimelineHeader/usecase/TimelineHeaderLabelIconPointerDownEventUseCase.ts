@@ -1,8 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderIconRegistePointerEventUseCase } from "./TimelineHeaderIconRegistePointerEventUseCase";
-import {
-    $TIMELINE_MARKER_ID
-} from "@/config/TimelineConfig";
+import { $TIMELINE_MARKER_ID } from "@/config/TimelineConfig";
 import {
     $setDestIconFrame,
     $setIconClientY,
@@ -52,9 +50,10 @@ export const execute = (event: PointerEvent): void =>
 
     // マーカーのイベントを無効化
     const markerElement = document.getElementById($TIMELINE_MARKER_ID);
-    if (markerElement) {
-        markerElement.style.pointerEvents = "none";
+    if (!markerElement) {
+        return ;
     }
+    markerElement.style.pointerEvents = "none";
 
     // 移動するアイコンのタイプをセット
     $setMoveIconType("label");

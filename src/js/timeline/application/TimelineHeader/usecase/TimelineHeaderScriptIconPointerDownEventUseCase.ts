@@ -1,14 +1,12 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineHeaderIconRegistePointerEventUseCase } from "./TimelineHeaderIconRegistePointerEventUseCase";
+import { $TIMELINE_MARKER_ID } from "@/config/TimelineConfig";
 import {
     $setDestIconFrame,
     $setIconClientY,
     $setMoveIconFrame,
     $setMoveIconType
 } from "../../TimelineUtil";
-import {
-    $TIMELINE_MARKER_ID
-} from "@/config/TimelineConfig";
 
 /**
  * @description スクリプトアイコンのマウスダウンイベントの実行関数

@@ -10,8 +10,8 @@ import { execute as timelineHeaderIconPointerOutService } from "../service/Timel
 import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
- * @description タイムラインヘッダーアイコンのウィンドウイベント登録
- *              Window event registration of timeline header icon
+ * @description タイムラインヘッダーのアイコン移動イベント
+ *              Timeline header icon move event
  *
  * @param  {PointerEvent} event
  * @param  {boolean} [loop_mode = false]
