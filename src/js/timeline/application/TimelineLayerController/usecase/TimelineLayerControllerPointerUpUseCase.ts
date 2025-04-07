@@ -42,6 +42,7 @@ export const execute = (event: PointerEvent): void =>
         timelineLayerControllerPointerMoveUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

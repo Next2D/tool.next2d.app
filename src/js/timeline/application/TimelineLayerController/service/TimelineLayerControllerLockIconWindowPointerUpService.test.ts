@@ -1,8 +1,8 @@
-import { execute } from "./TimelineLayerControllerLockIconWindowMouseUpService";
+import { execute } from "./TimelineLayerControllerLockIconWindowPointerUpService";
 import { $getLockState, $setLockState } from "../../TimelineUtil";
 import { describe, expect, it } from "vitest";
 
-describe("TTimelineLayerControllerLockIconWindowMouseUpServiceTest", () =>
+describe("TimelineLayerControllerLockIconWindowPointerUpService Test", () =>
 {
     it("execute test", () =>
     {

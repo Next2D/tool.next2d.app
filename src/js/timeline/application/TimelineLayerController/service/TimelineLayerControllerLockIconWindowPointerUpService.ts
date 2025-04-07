@@ -16,4 +16,5 @@ export const execute = (): void =>
 
     // イベント削除
     window.removeEventListener(EventType.POINTER_UP, execute);
+    window.removeEventListener(EventType.POINTER_CANCEL, execute);
 };

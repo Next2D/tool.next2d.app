@@ -1,14 +1,18 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $getLayerFromElement, $getLockState, $setLockState } from "../../TimelineUtil";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineLayerControllerLockIconWindowMouseUpService } from "../service/TimelineLayerControllerLockIconWindowMouseUpService";
+import { execute as timelineLayerControllerDisableIconWindowPointerUpService } from "../service/TimelineLayerControllerDisableIconWindowPointerUpService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { $setEditingElement } from "@/global/GlobalUtil";
+import {
+    $getDisableState,
+    $getLayerFromElement,
+    $setDisableState
+} from "../../TimelineUtil";
 
 /**
- * @description レイヤーのロックアイコンのイベント処理
- *              Layer lock icon event handling
+ * @description レイヤーの表示・非表示アイコンのイベント処理
+ *              Event processing for layer show/hide icons
  *
  * @param  {PointerEvent} event
  * @return {Promise}
@@ -31,10 +35,13 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     $setEditingElement(null);
 
     // 連続表示機能を有効にする
-    if (!$getLockState()) {
-        $setLockState(true);
+    if (!$getDisableState()) {
+        $setDisableState(true);
         window.addEventListener(EventType.POINTER_UP,
-            timelineLayerControllerLockIconWindowMouseUpService
+            timelineLayerControllerDisableIconWindowPointerUpService
+        );
+        window.addEventListener(EventType.POINTER_CANCEL,
+            timelineLayerControllerDisableIconWindowPointerUpService
         );
     }
 
@@ -54,5 +61,5 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const externalLayer = new ExternalLayer(workSpace, workSpace.scene, layer);
 
     // Layerオブジェクトの値を更新
-    await externalLayer.setLock(!layer.lock);
+    await externalLayer.setDisable(!layer.disable);
 };

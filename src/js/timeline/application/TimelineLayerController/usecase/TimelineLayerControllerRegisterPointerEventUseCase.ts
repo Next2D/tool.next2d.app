@@ -29,4 +29,9 @@ export const execute = (event: PointerEvent): void =>
         timelineLayerControllerPointerUpUseCase,
         { "passive": false }
     );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        timelineLayerControllerPointerUpUseCase,
+        { "passive": false }
+    );
 };

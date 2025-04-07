@@ -1,8 +1,8 @@
-import { execute } from "./TimelineLayerControllerDisableIconWindowMouseUpService";
+import { execute } from "./TimelineLayerControllerDisableIconWindowPointerUpService";
 import { $getDisableState, $setDisableState } from "../../TimelineUtil";
 import { describe, expect, it } from "vitest";
 
-describe("TimelineLayerControllerDisableIconWindowMouseUpServiceTest", () =>
+describe("TimelineLayerControllerDisableIconWindowPointerUpService Test", () =>
 {
     it("execute test", () =>
     {
