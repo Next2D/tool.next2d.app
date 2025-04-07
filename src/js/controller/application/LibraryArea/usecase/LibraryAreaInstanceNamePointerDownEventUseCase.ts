@@ -2,7 +2,6 @@ import { execute as libraryAreaActiceInstanceTextContentService } from "../servi
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import {
     $activeTouchPointers,
-    $getEditingElement,
     $setEditingElement
 } from "@/global/GlobalUtil";
 import {
