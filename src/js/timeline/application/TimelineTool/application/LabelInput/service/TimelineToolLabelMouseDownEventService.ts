@@ -12,12 +12,12 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 他のイベントを中止
-    event.stopPropagation();
-
     // メニューを非表示
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 他のイベントを中止
+    event.stopPropagation();
 };

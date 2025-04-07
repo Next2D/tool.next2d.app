@@ -4,7 +4,7 @@ import { execute as timelineLayerControllerNameTextMouseDownEventUseCase } from 
 import { execute as timelineLayerControllerNameTextKeyPressEventService } from "../service/TimelineLayerControllerNameTextKeyPressEventService";
 import { execute as timelineLayerControllerLayerIconPointerDownEventUseCase } from "./TimelineLayerControllerLayerIconPointerDownEventUseCase";
 import { execute as timelineLayerControllerPointerDownEventUseCase } from "./TimelineLayerControllerPointerDownEventUseCase";
-import { execute as timelineLayerControllerNameTextFocusoutEventUseCase } from "./TimelineLayerControllerNameTextFocusoutEventUseCase";
+import { execute as timelineLayerControllerNameTextFocusOutEventUseCase } from "./TimelineLayerControllerNameTextFocusOutEventUseCase";
 import { execute as timelineLayerControllerDisableIconPointerDownEventUseCase } from "./TimelineLayerControllerDisableIconPointerDownEventUseCase";
 import { execute as timelineLayerControllerDisableIconPointerOverService } from "../service/TimelineLayerControllerDisableIconPointerOverService";
 import { execute as timelineLayerControllerLockIconPointerDownEventUseCase } from "./TimelineLayerControllerLockIconPointerDownEventUseCase";
@@ -56,7 +56,7 @@ export const execute = (element: HTMLElement): void =>
 
         // フォーカスアウトイベント
         textElement.addEventListener("focusout",
-            timelineLayerControllerNameTextFocusoutEventUseCase
+            timelineLayerControllerNameTextFocusOutEventUseCase
         );
 
         // キープレスイベント
@@ -83,7 +83,8 @@ export const execute = (element: HTMLElement): void =>
 
         // マウスダウンのイベントを登録
         disableIconElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerDisableIconPointerDownEventUseCase
+            timelineLayerControllerDisableIconPointerDownEventUseCase,
+            { "passive": false }
         );
 
         // マウスオーバーのイベントを登録

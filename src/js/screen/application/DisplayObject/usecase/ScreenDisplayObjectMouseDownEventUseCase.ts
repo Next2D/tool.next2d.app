@@ -24,9 +24,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 親のイベントをキャンセル
-    event.stopPropagation();
-
     // メニューを全て非表示
     $allHideMenu();
 
@@ -40,6 +37,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     if (!element) {
         return ;
     }
+
+    // 親のイベントをキャンセル
+    event.stopPropagation();
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

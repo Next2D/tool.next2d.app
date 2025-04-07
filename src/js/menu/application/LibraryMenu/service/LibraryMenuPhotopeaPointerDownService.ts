@@ -23,15 +23,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 親のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     // メニューを全て閉じる
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     const libraryId = libraryArea.selectedIds[0];
     const workSpace = $getCurrentWorkSpace();

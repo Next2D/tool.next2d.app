@@ -15,10 +15,6 @@ export const execute = (event: KeyboardEvent): void =>
         return ;
     }
 
-    // 親のイベントを終了
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
@@ -26,4 +22,8 @@ export const execute = (event: KeyboardEvent): void =>
 
     // 入力終了
     $setEditingElement(null);
+
+    // 親のイベントを終了
+    event.stopPropagation();
+    event.preventDefault();
 };

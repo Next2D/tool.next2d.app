@@ -21,10 +21,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // メニューを非表示にする
     $allHideMenu();
 
@@ -42,6 +38,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     if (!layer) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     const externalLayer = new ExternalLayer(
         workSpace,

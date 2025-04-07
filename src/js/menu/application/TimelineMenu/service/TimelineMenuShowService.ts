@@ -17,10 +17,6 @@ import {
  */
 export const execute = (event: MouseEvent): void =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     // 全てのメニューを非表示
     $allHideMenu($TIMELINE_MENU_NAME);
 
@@ -38,6 +34,10 @@ export const execute = (event: MouseEvent): void =>
     if (!element) {
         return ;
     }
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     let top = event.pageY - element.clientHeight;
     if (0 > top) {

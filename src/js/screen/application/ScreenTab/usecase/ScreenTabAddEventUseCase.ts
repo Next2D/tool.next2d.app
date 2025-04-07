@@ -13,14 +13,15 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    event.stopPropagation();
-    event.preventDefault();
-
     // 全てのメニューを非表示に
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     // プロジェクトを作成して、初期起動関数を実行
     $createWorkSpace().initialize();

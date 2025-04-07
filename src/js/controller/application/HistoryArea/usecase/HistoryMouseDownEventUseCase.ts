@@ -31,14 +31,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 親のイベントを中止
-    event.stopPropagation();
-
     // 全てのメニューを非表示にする
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントを中止
+    event.stopPropagation();
 
     // 画面共有中か、広告を見たユーザーでなければ、モーダルを表示して終了
     if (!userAllFunctionStateService() && !$useSocket()) {

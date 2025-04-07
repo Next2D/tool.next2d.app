@@ -31,7 +31,7 @@ import {
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0 || $activeTouchPointers.size > 1) {
         return ;
     }
 
@@ -48,7 +48,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     if ($useKeyboard()) {
         const editingElement = $getEditingElement();
         if (editingElement) {
-            editingElement.blur();
             $setEditingElement(null);
         }
     }

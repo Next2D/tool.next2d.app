@@ -180,9 +180,6 @@ export class BaseTool extends ToolEvent
      */
     changeActiveTool (event: PointerEvent): void
     {
-        // 親のイベントを中止する
-        event.stopPropagation();
-
         // メニューを全て非表示にする
         $allHideMenu();
 
@@ -194,6 +191,9 @@ export class BaseTool extends ToolEvent
 
         // アクティブツールを入れ替える
         $setActiveTool(this);
+
+        // 親のイベントを中止する
+        event.stopPropagation();
     }
 
     /**

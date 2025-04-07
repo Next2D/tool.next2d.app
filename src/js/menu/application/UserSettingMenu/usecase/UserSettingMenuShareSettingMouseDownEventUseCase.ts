@@ -13,15 +13,15 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 他のイベントを中止する
-    event.stopPropagation();
-    event.preventDefault();
-
     // 全てのメニューを非表示にする
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 他のイベントを中止する
+    event.stopPropagation();
+    event.preventDefault();
 
     // 画面共有機能を起動
     shareConnectBootUseCase();

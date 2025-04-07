@@ -27,15 +27,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 親のイベントを終了
-    event.stopPropagation();
-    event.preventDefault();
-
     // メニューを全て非表示にする
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントを終了
+    event.stopPropagation();
+    event.preventDefault();
 
     // レイヤー・フレームElementのアクティブ状態をリセット
     const workSpace = $getCurrentWorkSpace();

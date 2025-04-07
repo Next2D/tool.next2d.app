@@ -24,10 +24,6 @@ export const execute = (event: MouseEvent): void =>
         return ;
     }
 
-    // 親のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     if (!timelineHeader.stopFlag) {
         timelineToolPlayStopUseCase();
     }
@@ -50,6 +46,10 @@ export const execute = (event: MouseEvent): void =>
     if (!element) {
         return ;
     }
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     let top = event.pageY - element.clientHeight;
     if (0 > top) {

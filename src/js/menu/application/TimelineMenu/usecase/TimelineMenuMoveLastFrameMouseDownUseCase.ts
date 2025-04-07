@@ -17,15 +17,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // メニューを非表示にする
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     // 選択中のレイヤーの最終フレームへ移動する
     await timelineMenuMoveLastFrameService();

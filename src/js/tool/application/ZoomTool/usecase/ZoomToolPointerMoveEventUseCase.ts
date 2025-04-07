@@ -15,15 +15,15 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // メニューを非表示
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     // カーソルを変更
     $setCursor("ew-resize");

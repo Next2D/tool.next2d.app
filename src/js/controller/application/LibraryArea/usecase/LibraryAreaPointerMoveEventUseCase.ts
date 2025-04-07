@@ -33,15 +33,15 @@ export const execute = (event: PointerEvent): void =>
         element.style.position = "fixed";
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // メニューを全て非表示に更新
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     requestAnimationFrame(() =>
     {

@@ -3,6 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import {
+    $activeTouchPointers,
     $getEditingElement,
     $setEditingElement
 } from "@/global/GlobalUtil";
@@ -18,21 +19,15 @@ import {
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0 || $activeTouchPointers.size > 1) {
         return ;
     }
+
+    $setEditingElement(null);
 
     // 親のイベントを中止
     event.stopPropagation();
     event.preventDefault();
-
-    if ($useKeyboard()) {
-        const editingElement = $getEditingElement();
-        if (editingElement) {
-            editingElement.blur();
-            $setEditingElement(null);
-        }
-    }
 
     const element = event.currentTarget as HTMLElement;
     if (!element) {

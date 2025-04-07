@@ -37,14 +37,14 @@ export const execute = (event: MouseEvent): void =>
         return ;
     }
 
-    // 親のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     $allHideMenu($LIBRARY_MENU_NAME);
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     // 再生中なら停止
     if (!timelineHeader.stopFlag) {

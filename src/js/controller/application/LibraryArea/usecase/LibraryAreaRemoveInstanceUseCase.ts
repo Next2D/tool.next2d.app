@@ -26,15 +26,15 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
         return ;
     }
 
-    // 親のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     // 全てのメニューを非表示
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     // 外部APIを起動
     const workSpace = $getCurrentWorkSpace();

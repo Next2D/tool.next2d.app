@@ -21,14 +21,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 親のイベントを中止
-    event.stopPropagation();
-
     // メニュー表示があれば全て非表示にする
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントを中止
+    event.stopPropagation();
 
     // 連続表示機能を有効にする
     if (!$getLockState()) {

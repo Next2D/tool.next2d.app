@@ -50,8 +50,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    event.stopPropagation();
-
     // 表示されてるメニューを全て非表示にする
     $allHideMenu();
 
@@ -63,6 +61,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 長押し判定を中止
     clearTimeout(activeTimerId);
+
+    // 親のイベントを中止
+    event.stopPropagation();
 
     if (!wait) {
 

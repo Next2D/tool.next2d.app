@@ -20,22 +20,22 @@ import { $getPointerId } from "../DisplayObjectUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    // メニューを非表示
+    $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
+
+    if ($getPointerId() !== event.pointerId) {
+        return ;
+    }
+
     // 親のイベントをキャンセル
     event.stopPropagation();
     event.preventDefault();
 
     requestAnimationFrame(async (): Promise<void> =>
     {
-        if ($getPointerId() !== event.pointerId) {
-            return ;
-        }
-
-        // メニューを非表示
-        $allHideMenu();
-
-        // 編集中のElementを初期化
-        $setEditingElement(null);
-
         const workSpace = $getCurrentWorkSpace();
         const scale = workSpace.scale;
 

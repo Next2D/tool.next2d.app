@@ -57,7 +57,6 @@ export const execute = (event: PointerEvent): void =>
     if ($useKeyboard()) {
         const editingElement = $getEditingElement();
         if (editingElement && selectedLibraryId !== libraryId) {
-            editingElement.blur();
             $setEditingElement(null);
             $setNameSelectedLibraryId(-1);
             $setSymbolSelectedLibraryId(-1);

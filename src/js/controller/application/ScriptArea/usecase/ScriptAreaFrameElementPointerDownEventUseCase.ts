@@ -29,10 +29,6 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 親のイベントを終了
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
@@ -43,6 +39,10 @@ export const execute = (event: PointerEvent): void =>
 
     // 全てのメニューを非表示にする
     $allHideMenu();
+
+    // 親のイベントを終了
+    event.stopPropagation();
+    event.preventDefault();
 
     const workSpace = $getCurrentWorkSpace();
     const libraryId = parseInt(element.dataset.libraryId as string);

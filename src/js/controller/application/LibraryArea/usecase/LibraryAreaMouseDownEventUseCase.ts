@@ -22,14 +22,14 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 親のイベントを中止
-    event.stopPropagation();
-
     // 全てのメニューを非表示に更新
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントを中止
+    event.stopPropagation();
 
     // 選択を初期化
     libraryAreaSelectedClearUseCase();

@@ -14,15 +14,15 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントをキャンセル
-    event.stopPropagation();
-    event.preventDefault();
-
     // メニューを非表示
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントをキャンセル
+    event.stopPropagation();
+    event.preventDefault();
 
     requestAnimationFrame(() =>
     {

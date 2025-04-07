@@ -25,15 +25,15 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent, loop_mode: boolean = false): void =>
 {
-    // 他のイベントを中止する
-    event.stopPropagation();
-    event.preventDefault();
-
     // メニューを全て非表示にする
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 他のイベントを中止する
+    event.stopPropagation();
+    event.preventDefault();
 
     const workSpace = $getCurrentWorkSpace();
     const scene = workSpace.scene;

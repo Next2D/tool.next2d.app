@@ -19,15 +19,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return;
     }
 
-    // 親のイベントを中止する
-    event.stopPropagation();
-    event.preventDefault();
-
     // メニューを全て非表示にする
     $allHideMenu();
 
     // 編集中の要素をnullにする
     $setEditingElement(null);
+
+    // 親のイベントを中止する
+    event.stopPropagation();
+    event.preventDefault();
 
     // ループフラグを反転させる
     await timelineToolPlayStopUseCase();

@@ -20,14 +20,14 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 親のイベントをキャンセル
-    event.stopPropagation();
-
     // 全てのメニューを非表示にする
     $allHideMenu();
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントをキャンセル
+    event.stopPropagation();
 
     // 移動イベントを登録
     element.setPointerCapture(event.pointerId);
