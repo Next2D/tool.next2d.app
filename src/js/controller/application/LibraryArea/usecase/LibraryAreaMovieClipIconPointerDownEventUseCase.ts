@@ -2,6 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import {
@@ -40,7 +41,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
-        || !timelineHeader.stopFlag
     ) {
         return ;
     }
@@ -49,6 +49,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
+    }
+
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
     }
 
     // メニューを非表示

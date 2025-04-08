@@ -11,10 +11,6 @@ import { execute as libraryAreaLoadItemsUseCase } from "./LibraryAreaLoadItemsUs
  */
 export const execute = async (event: DragEvent): Promise<void> =>
 {
-    // 全てのイベントをキャンセル
-    event.preventDefault();
-    event.stopPropagation();
-
     if (!event.dataTransfer) {
         return ;
     }
@@ -23,6 +19,10 @@ export const execute = async (event: DragEvent): Promise<void> =>
     if (!items.length) {
         return ;
     }
+
+    // 全てのイベントをキャンセル
+    event.preventDefault();
+    event.stopPropagation();
 
     // ドロップアイテムの読み込み
     await libraryAreaLoadItemsUseCase(items);

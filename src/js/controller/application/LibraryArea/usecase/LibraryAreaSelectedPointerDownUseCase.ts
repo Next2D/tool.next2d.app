@@ -11,14 +11,13 @@ import { execute as libraryAreaShiftSelectedUseCase } from "@/controller/applica
 import { execute as libraryAreaRegisterPointerEventUseCase } from "./LibraryAreaRegisterPointerEventUseCase";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { execute as libraryMenuShowUseCase } from "@/menu/application/LibraryMenu/usecase/LibraryMenuShowUseCase";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
+import { $setEditingElement } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import {
     $FOLDER_TYPE,
     $MOVIE_CLIP_TYPE
 } from "@/config/InstanceConfig";
-import {
-    $getEditingElement,
-    $setEditingElement
-} from "@/global/GlobalUtil";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -35,6 +34,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         || $activeTouchPointers.size > 1
     ) {
         return ;
+    }
+
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
     }
 
     const element = event.currentTarget as HTMLElement;
