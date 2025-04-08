@@ -4,7 +4,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as timelineLayerControllerLockIconWindowPointerUpService } from "../service/TimelineLayerControllerLockIconWindowPointerUpService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description レイヤーのロックアイコンのイベント処理
@@ -17,7 +17,9 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -29,6 +31,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     // 連続表示機能を有効にする
     if (!$getLockState()) {

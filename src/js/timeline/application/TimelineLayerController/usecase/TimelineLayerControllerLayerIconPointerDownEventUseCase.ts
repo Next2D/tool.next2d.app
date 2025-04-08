@@ -50,6 +50,10 @@ export const execute = (event: PointerEvent): void =>
 
         wait = false;
 
+        // イベントの伝達を中止
+        event.stopPropagation();
+        event.preventDefault();
+
         // タイムラインコントローラーメニューを表示
         timelineLayerControllerMenuShowUseCase(event);
     }

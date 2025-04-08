@@ -1,6 +1,6 @@
 import { execute as timelineLayerControllerMenuShowUseCase } from "@/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuShowUseCase";
 import { execute as timelineLayerControllerLightIconPointerDownEventService } from "../service/TimelineLayerControllerLightIconPointerDownEventService";
-import { execute as timelineLayerControllerNameTextMouseDownEventUseCase } from "./TimelineLayerControllerNameTextMouseDownEventUseCase";
+import { execute as timelineLayerControllerNameTextPointerDownEventUseCase } from "./TimelineLayerControllerNameTextPointerDownEventUseCase";
 import { execute as timelineLayerControllerNameTextKeyPressEventService } from "../service/TimelineLayerControllerNameTextKeyPressEventService";
 import { execute as timelineLayerControllerLayerIconPointerDownEventUseCase } from "./TimelineLayerControllerLayerIconPointerDownEventUseCase";
 import { execute as timelineLayerControllerPointerDownEventUseCase } from "./TimelineLayerControllerPointerDownEventUseCase";
@@ -51,7 +51,7 @@ export const execute = (element: HTMLElement): void =>
 
         // マウスダウンイベント
         textElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerNameTextMouseDownEventUseCase
+            timelineLayerControllerNameTextPointerDownEventUseCase
         );
 
         // フォーカスアウトイベント
@@ -100,7 +100,8 @@ export const execute = (element: HTMLElement): void =>
     if (lockIconElement) {
         // マウスダウンのイベントを登録
         lockIconElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerLockIconPointerDownEventUseCase
+            timelineLayerControllerLockIconPointerDownEventUseCase,
+            { "passive": false }
         );
 
         // マウスオーバーのイベントを登録

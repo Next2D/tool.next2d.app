@@ -2,7 +2,7 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getLayerFromElement } from "../../TimelineUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description レイヤーのハイライトアイコンのイベント処理
@@ -15,18 +15,11 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
-
-    // 親のイベントを中止
-    event.stopPropagation();
-
-    // メニュー表示があれば全て非表示にする
-    $allHideMenu();
-
-    // 編集中のElementを初期化
-    $setEditingElement(null);
 
     const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {
@@ -38,6 +31,16 @@ export const execute = (event: PointerEvent): void =>
     if (!layer) {
         return ;
     }
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
+
+    // メニュー表示があれば全て非表示にする
+    $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 外部APIを起動
     const workSpace = $getCurrentWorkSpace();

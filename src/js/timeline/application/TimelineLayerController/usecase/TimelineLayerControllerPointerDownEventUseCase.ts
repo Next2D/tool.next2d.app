@@ -8,7 +8,9 @@ import { execute as timelineLayerControllerRegisterPointerEventUseCase } from ".
 import { execute as timelineLayerControllerActiveExitIconElementService } from "../service/TimelineLayerControllerActiveExitIconElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerFrameSelectedAllClearUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameSelectedAllClearUseCase";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -36,6 +38,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const layer = $getLayerFromElement(element);
     if (!layer) {
         return ;
+    }
+
+    // 再生中なら停止
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
     }
 
     const workSpace = $getCurrentWorkSpace();

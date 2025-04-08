@@ -20,5 +20,6 @@ export const execute = (element: HTMLElement): void =>
     // 入力モードをOnにする
     $updateKeyLock(true);
 
+    // 編集中のElementを設定
     $setEditingElement(element);
 };
