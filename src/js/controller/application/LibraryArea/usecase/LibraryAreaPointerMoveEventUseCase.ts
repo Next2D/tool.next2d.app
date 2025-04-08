@@ -6,6 +6,7 @@ import {
     $getMoveState,
     $setMoveState
 } from "../LibraryAreaUtil";
+import { Console } from "console";
 
 /**
  * @description スクリーンへの移動イベント関数

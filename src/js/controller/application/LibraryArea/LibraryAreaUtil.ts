@@ -167,3 +167,32 @@ export const $getSymbolSelectedLibraryId = (): number =>
 {
     return $symbolSelectedLibraryId;
 };
+
+let $scrollTop: number = 0;
+
+/**
+ * @description 移動前のスクロール位置をセット
+ *              Set the scroll position before moving
+ *
+ * @param  {number} scroll_top
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setScrollTop = (scroll_top: number): void =>
+{
+    $scrollTop = scroll_top;
+};
+
+/**
+ * @description 移動前のスクロール位置を取得
+ *              Get the scroll position before moving
+ *
+ * @return {number}
+ * @method
+ * @public
+ */
+export const $getScrollTop = (): number =>
+{
+    return $scrollTop;
+};

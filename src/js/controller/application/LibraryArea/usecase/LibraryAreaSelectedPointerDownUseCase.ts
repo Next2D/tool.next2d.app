@@ -18,6 +18,8 @@ import {
     $FOLDER_TYPE,
     $MOVIE_CLIP_TYPE
 } from "@/config/InstanceConfig";
+import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
+import { $setScrollTop } from "../LibraryAreaUtil";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -71,6 +73,16 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     if (!instance) {
         return ;
     }
+
+    const listBoxElement: HTMLElement | null = document
+        .getElementById($LIBRARY_LIST_BOX_ID);
+
+    if (!listBoxElement) {
+        return ;
+    }
+
+    // 移動前のスクロール位置を保存
+    $setScrollTop(listBoxElement.scrollTop);
 
     // フォルダーのインスタンスでなければ、プレビューエリアを更新
     if (instance.type !== $FOLDER_TYPE) {

@@ -2,7 +2,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as libraryAreaPointerMoveEventUseCase } from "./LibraryAreaPointerMoveEventUseCase";
 import { $SCREEN_ID } from "@/config/ScreenConfig";
 import { execute as screenAreaDropUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaDropUseCase";
-import { $getMoveState, $setMoveState } from "../LibraryAreaUtil";
+import { $getMoveState, $getScrollTop, $setMoveState } from "../LibraryAreaUtil";
 import { execute as screenAreaLibraryItemDropEndService } from "@/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropEndService";
 import { execute as libraryAreaMoveItemsUseCase } from "./LibraryAreaMoveItemsUseCase";
 import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
@@ -52,6 +52,13 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // スクリーンエリアのDisplayObjectをアクティブに戻す
         screenAreaLibraryItemDropEndService();
         return ;
+    }
+
+    const listBoxElement: HTMLElement | null = document
+        .getElementById($LIBRARY_LIST_BOX_ID);
+
+    if (listBoxElement) {
+        listBoxElement.scrollTop = $getScrollTop();
     }
 
     if (targetElement.id === $SCREEN_ID) {
