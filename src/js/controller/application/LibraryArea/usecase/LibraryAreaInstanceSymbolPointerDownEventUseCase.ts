@@ -66,7 +66,6 @@ export const execute = (event: PointerEvent): void =>
         }
     }
 
-    console.log(selectedLibraryId, libraryId);
     if (!wait || selectedLibraryId !== libraryId) {
 
         // 初回のタップであればダブルタップを待機モードに変更

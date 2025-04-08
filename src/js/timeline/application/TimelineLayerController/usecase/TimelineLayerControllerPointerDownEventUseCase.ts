@@ -8,6 +8,7 @@ import { execute as timelineLayerControllerRegisterPointerEventUseCase } from ".
 import { execute as timelineLayerControllerActiveExitIconElementService } from "../service/TimelineLayerControllerActiveExitIconElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerFrameSelectedAllClearUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameSelectedAllClearUseCase";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -20,7 +21,9 @@ import { execute as timelineLayerFrameSelectedAllClearUseCase } from "@/timeline
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
