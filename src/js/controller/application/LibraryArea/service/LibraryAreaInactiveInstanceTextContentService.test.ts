@@ -1,8 +1,8 @@
-import { execute } from "./LibraryAreaInacticeInstanceTextContentService";
+import { execute } from "./LibraryAreaInactiveInstanceTextContentService";
 import { $updateKeyLock, $useKeyboard } from "../../../../shortcut/ShortcutUtil";
 import { describe, expect, it } from "vitest";
 
-describe("LibraryAreaInacticeInstanceTextContentServiceTest", () =>
+describe("LibraryAreaInactiveInstanceTextContentService Test", () =>
 {
     it("execute test", () =>
     {

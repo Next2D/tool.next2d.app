@@ -1,4 +1,4 @@
-import { execute as libraryAreaActiceInstanceTextContentService } from "../service/LibraryAreaActiceInstanceTextContentService";
+import { execute as libraryAreaActiceInstanceTextContentService } from "../service/LibraryAreaActiveInstanceTextContentService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import {
     $activeTouchPointers,

@@ -1,5 +1,5 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as libraryAreaInacticeInstanceTextContentService } from "../service/LibraryAreaInacticeInstanceTextContentService";
+import { execute as libraryAreaInacticeInstanceTextContentService } from "../service/LibraryAreaInactiveInstanceTextContentService";
 import { ExternalItem } from "@/external/core/domain/model/ExternalItem";
 import { execute as detailModalCustomFadeInUseCase } from "@/menu/application/DetailModal/usecase/DetailModalCustomFadeInUseCase";
 import { $ERROR_DUPLICATE_NAME_TEXT } from "@/config/ErrorTextConfig";

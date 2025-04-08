@@ -12,6 +12,10 @@ import { historyArea } from "@/controller/domain/model/HistoryArea";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (!event.movementY) {
+        return ;
+    }
+
     const element: HTMLElement | null = event.target as HTMLElement;
     if (!element) {
         return ;
@@ -20,10 +24,6 @@ export const execute = (event: PointerEvent): void =>
     // イベントの伝播を止める
     event.stopPropagation();
     event.preventDefault();
-
-    if (!event.movementY) {
-        return ;
-    }
 
     requestAnimationFrame((): void =>
     {

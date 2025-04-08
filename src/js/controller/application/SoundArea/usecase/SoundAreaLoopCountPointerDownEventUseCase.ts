@@ -22,12 +22,13 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 親へのイベントの伝播を止める
+    event.stopPropagation();
     if ($useKeyboard()) {
         return ;
     }
 
     // イベントの伝播を止める
-    event.stopPropagation();
     event.preventDefault();
 
     const element = event.currentTarget as HTMLInputElement;

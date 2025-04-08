@@ -12,15 +12,15 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
  */
 export const execute = (event: FocusEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // フォーカスを初期化
     const element: HTMLInputElement | null = event.currentTarget as HTMLInputElement;
     if (!element) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     // 入力モードをOnにする
     $updateKeyLock(true);

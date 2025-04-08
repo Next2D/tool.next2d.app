@@ -21,7 +21,8 @@ export const execute = (): void =>
     // マウスダウンイベントを登録
     if (soundAddElement) {
         soundAddElement.addEventListener(EventType.POINTER_DOWN,
-            soundAreaSoundAddPointerDownEventUseCase
+            soundAreaSoundAddPointerDownEventUseCase,
+            { "passive": false }
         );
     }
 

@@ -1,7 +1,7 @@
-import { execute } from "./LibraryAreaActiceInstanceTextContentService";
+import { execute } from "./LibraryAreaActiveInstanceTextContentService";
 import { describe, expect, it } from "vitest";
 
-describe("LibraryAreaActiceInstanceTextContentServiceTest", () =>
+describe("LibraryAreaActiveInstanceTextContentService Test", () =>
 {
     it("execute test", () =>
     {

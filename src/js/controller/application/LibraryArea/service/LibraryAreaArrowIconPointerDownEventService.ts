@@ -5,6 +5,7 @@ import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description フォルダーのアローアイコンを操作
@@ -23,12 +24,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    $setEditingElement(null);
-
-    // 親のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
@@ -40,6 +35,16 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     if (!folder) {
         return ;
     }
+
+    // 全てのメニューを非表示にする
+    $allHideMenu();
+
+    // 変更中の要素を初期化
+    $setEditingElement(null);
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     const externalFolder = new ExternalFolder(workSpace, folder);
     if (folder.mode === "close") {

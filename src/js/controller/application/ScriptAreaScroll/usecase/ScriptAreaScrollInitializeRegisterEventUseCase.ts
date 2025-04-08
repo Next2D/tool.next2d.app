@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as scriptAreaScrollMouseDownUseCase } from "./ScriptAreaScrollMouseDownUseCase";
+import { execute as scriptAreaScrollMouseDownUseCase } from "./ScriptAreaScrollPointerDownUseCase";
 import { execute as scriptAreaScrollWheelEventService } from "../service/ScriptAreaScrollWheelEventService";
 import {
     $CONTROLLER_JAVASCRIPT_INTERNAL_LIST_BOX_ID,

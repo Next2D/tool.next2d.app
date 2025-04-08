@@ -1,8 +1,8 @@
-import { execute } from "./PropertyAreaScrollMouseDownUseCase";
+import { execute } from "./PropertyAreaScrollPointerDownUseCase";
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { describe, expect, it, vi } from "vitest";
 
-describe("PropertyAreaScrollMouseDownUseCase Test", () =>
+describe("PropertyAreaScrollPointerDownUseCase Test", () =>
 {
     it("execute test", () =>
     {
@@ -40,6 +40,7 @@ describe("PropertyAreaScrollMouseDownUseCase Test", () =>
         });
 
         let stopPropagation = false;
+        let preventDefault = false;
         const mockEvent = {
             "target": div,
             "pointerId": 100,
@@ -47,10 +48,12 @@ describe("PropertyAreaScrollMouseDownUseCase Test", () =>
             {
                 stopPropagation = true;
             }),
+            "preventDefault": vi.fn(() => { preventDefault = true; }),
         } as unknown as PointerEvent;
 
         expect(pointerId).toBe(0);
         expect(stopPropagation).toBe(false);
+        expect(preventDefault).toBe(false);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
         expect(pointerCancel).toBe(false);
@@ -59,6 +62,7 @@ describe("PropertyAreaScrollMouseDownUseCase Test", () =>
 
         expect(pointerId).toBe(100);
         expect(stopPropagation).toBe(true);
+        expect(preventDefault).toBe(true);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
         expect(pointerCancel).toBe(true);

@@ -1,4 +1,4 @@
-import { execute as libraryAreaActiceInstanceTextContentService } from "../service/LibraryAreaActiceInstanceTextContentService";
+import { execute as libraryAreaActiceInstanceSymbolService } from "../service/LibraryAreaActiveInstanceSymbolService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import {
     $activeTouchPointers,
@@ -94,6 +94,6 @@ export const execute = (event: PointerEvent): void =>
         event.preventDefault();
 
         // インスタンス名を編集モードへ
-        libraryAreaActiceInstanceTextContentService(element);
+        libraryAreaActiceInstanceSymbolService(element);
     }
 };

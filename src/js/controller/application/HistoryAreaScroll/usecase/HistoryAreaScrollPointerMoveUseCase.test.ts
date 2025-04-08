@@ -8,7 +8,7 @@ describe("HistoryAreaScrollPointerMoveUseCase Test", () =>
         let stopPropagation = false;
         let preventDefault = false;
         const mockEvent = {
-            "movementY": 0,
+            "movementY": 10,
             "target": document.createElement("div") as unknown,
             "stopPropagation": () =>
             {

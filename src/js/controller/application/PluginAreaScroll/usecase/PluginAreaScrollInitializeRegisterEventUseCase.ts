@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as pluginAreaScrollMouseDownUseCase } from "./PluginAreaScrollPointerDownUseCase";
+import { execute as pluginAreaScrollPointerDownUseCase } from "./PluginAreaScrollPointerDownUseCase";
 import { execute as pluginAreaScrollWheelEventService } from "../service/PluginAreaScrollWheelEventService";
 import {
     $PLUGIN_LIST_BOX_BODY_ID,
@@ -22,7 +22,8 @@ export const execute = (): void =>
     // マウスダウンイベントを登録
     if (scrollBarElement) {
         scrollBarElement.addEventListener(EventType.POINTER_DOWN,
-            pluginAreaScrollMouseDownUseCase
+            pluginAreaScrollPointerDownUseCase,
+            { "passive": false }
         );
     }
 

@@ -12,13 +12,13 @@ import { scriptArea } from "@/controller/domain/model/ScriptArea";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     if (!event.movementY) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     requestAnimationFrame((): void =>
     {

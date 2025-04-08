@@ -1,7 +1,7 @@
-import { execute } from "./LibraryAreaActiceInstanceSymbolService";
+import { execute } from "./LibraryAreaActiveInstanceSymbolService";
 import { describe, expect, it } from "vitest";
 
-describe("LibraryAreaActiceInstanceSymbolServiceTest", () =>
+describe("LibraryAreaActiveInstanceSymbolService Test", () =>
 {
     it("execute test", () =>
     {

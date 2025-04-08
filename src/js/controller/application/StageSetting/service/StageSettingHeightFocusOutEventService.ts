@@ -15,13 +15,6 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
-    // 入力モードを終了する
-    $updateKeyLock(false);
-
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
@@ -34,6 +27,14 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         return ;
     }
 
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
+
+    // 入力モードを終了する
+    $updateKeyLock(false);
+
+    // ステージの高さを取得
     const afterHeight = Math.max(1, Math.min(height, Number.MAX_VALUE));
 
     // 外部APIを起動

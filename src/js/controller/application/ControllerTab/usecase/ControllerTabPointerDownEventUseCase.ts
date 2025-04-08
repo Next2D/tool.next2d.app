@@ -29,18 +29,18 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 表示されてるメニューをメニューを全て非表示にする
-    $allHideMenu();
-
-    // 編集中のElementを初期化
-    $setEditingElement(null);
-
     const element: HTMLElement | null = document
         .getElementById($CONTROLLER_TAB_AREA_ID);
 
     if (!element) {
         return ;
     }
+
+    // 表示されてるメニューをメニューを全て非表示にする
+    $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
 
     // 親のイベントを中止
     event.stopPropagation();
