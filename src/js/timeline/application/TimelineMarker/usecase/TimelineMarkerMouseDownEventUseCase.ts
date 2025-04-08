@@ -18,9 +18,6 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    // 親のイベントを中止する
-    event.stopPropagation();
-
     const element = event.target as HTMLElement;
     if (!element) {
         return ;
@@ -34,6 +31,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 親のイベントを中止する
+    event.stopPropagation();
+    event.preventDefault();
 
     // 選択中のレイヤーを全て非アクティブ化
     const workSpace = $getCurrentWorkSpace();

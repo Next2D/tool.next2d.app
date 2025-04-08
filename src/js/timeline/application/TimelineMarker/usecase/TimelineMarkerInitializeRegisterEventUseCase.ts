@@ -21,6 +21,7 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineMarkerMouseDownEventUseCase
+        timelineMarkerMouseDownEventUseCase,
+        { "passive": false }
     );
 };

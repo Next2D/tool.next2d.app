@@ -14,24 +14,24 @@ import { $setCursor } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }
-
-    // windowイベントを削除
-    element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.POINTER_MOVE, timelineMarkerPointerMoveEventUseCase);
-    element.removeEventListener(EventType.POINTER_UP, execute);
-    element.removeEventListener(EventType.POINTER_CANCEL, execute);
 
     // カーソルを変更
     $setCursor("auto");
 
     // 自動移動モード終了
     $setMoveMode(false);
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
+
+    // windowイベントを削除
+    element.releasePointerCapture(event.pointerId);
+    element.removeEventListener(EventType.POINTER_MOVE, timelineMarkerPointerMoveEventUseCase);
+    element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
 };
