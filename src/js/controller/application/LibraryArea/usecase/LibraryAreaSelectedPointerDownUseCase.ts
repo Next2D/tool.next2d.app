@@ -2,7 +2,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { libraryArea } from "@/controller/domain/model/LibraryArea";
 import { execute as libraryPreviewAreaUpdateDisplayUseCase } from "@/controller/application/LibraryPreviewArea/usecase/LibraryPreviewAreaUpdateDisplayUseCase";
 import { execute as libraryPreviewAreaClearDisplayService } from "@/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService";

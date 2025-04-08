@@ -16,7 +16,7 @@ export const execute = (element: HTMLElement): void =>
     element.contentEditable    = "true";
     element.style.borderBottom = "1px solid #f5f5f5";
     element.focus(); // fixed logic
-    
+
     // 編集中のElementをセット
     $setEditingElement(element);
 
