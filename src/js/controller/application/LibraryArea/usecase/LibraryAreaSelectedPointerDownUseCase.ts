@@ -31,29 +31,26 @@ import {
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0 || $activeTouchPointers.size > 1) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
-
-    // メニューを全て非表示に更新
-    $allHideMenu();
 
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
     }
 
+    // メニューを全て非表示に更新
+    $allHideMenu();
+
     // 編集中なら終了
-    const libraryId = parseInt(element.dataset.libraryId as string);
-    if ($useKeyboard()) {
-        const editingElement = $getEditingElement();
-        if (editingElement) {
-            $setEditingElement(null);
-        }
-    }
+    $setEditingElement(null);
 
     // 親のイベントを中止
     event.stopPropagation();
+    event.preventDefault();
 
     if (event.pointerType === "touch") {
         $activeTouchPointers.add(event.pointerId);
@@ -66,6 +63,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     const workSpace = $getCurrentWorkSpace();
+    const libraryId = parseInt(element.dataset.libraryId as string);
     const instance  = workSpace.getLibrary(libraryId);
     if (!instance) {
         return ;

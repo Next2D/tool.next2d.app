@@ -1,5 +1,5 @@
 import { execute } from "./LibraryAreaInstanceSymbolPointerDownEventUseCase";
-import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
+import { $updateKeyLock, $useKeyboard } from "../../../../shortcut/ShortcutUtil";
 import {
     $getNameSelectedLibraryId,
     $getSymbolSelectedLibraryId,
@@ -10,7 +10,7 @@ import { describe, expect, it, vi } from "vitest";
 
 describe("LibraryAreaInstanceSymbolPointerDownEventUseCase Test", () =>
 {
-    it("execute test case1", () =>
+    it("execute test case1", async () =>
     {
         const div1 = document.createElement("div");
         div1.dataset.libraryId = "1";
@@ -49,6 +49,7 @@ describe("LibraryAreaInstanceSymbolPointerDownEventUseCase Test", () =>
 
         const div2 = document.createElement("div");
         div2.dataset.libraryId = "2";
+        $updateKeyLock(false);
 
         const mockEvent2 = {
             "currentTarget": div2,
