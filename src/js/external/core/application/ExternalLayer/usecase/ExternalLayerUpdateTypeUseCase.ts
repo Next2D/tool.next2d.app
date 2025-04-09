@@ -7,7 +7,7 @@ import { execute as externalLayerGetLayerModeService } from "../service/External
 import { execute as layerUpdateModeHistoryUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateModeHistoryUseCase";
 import { execute as screenDisplayObjectAllResetMaskStyleUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllResetMaskStyleUseCase";
 import { execute as screenDisplayObjectUpdateDisabledElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateDisabledElementUseCase";
-import { execute as screenDisplayObjectMaskLockUpdateElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectMaskLockUpdateElementService";
+import { execute as screenDisplayObjectMaskLockUpdateElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMaskLockUpdateElementUseCase";
 import {
     $GUIDE_MODE,
     $MASK_MODE
@@ -110,7 +110,7 @@ export const execute = async (
 
         // マスクレイヤーに変更するレイヤーにロックがかかっている場合はマスク機能をOnにする
         if (afterMode === $MASK_MODE && layer.lock) {
-            await screenDisplayObjectMaskLockUpdateElementService(layer);
+            await screenDisplayObjectMaskLockUpdateElementUseCase(layer);
         }
     }
 };

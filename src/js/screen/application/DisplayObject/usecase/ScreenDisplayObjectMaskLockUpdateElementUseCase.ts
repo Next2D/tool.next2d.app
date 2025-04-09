@@ -34,7 +34,6 @@ export const execute = async (layer: Layer): Promise<void> =>
     const elements = element
         .querySelectorAll(`.layer-id-${layer.id}`);
 
-    // 配置がなければ終了
     const length = elements.length;
     if (!length) {
         const workSpace = $getCurrentWorkSpace();

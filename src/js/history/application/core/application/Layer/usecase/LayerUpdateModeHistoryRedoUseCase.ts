@@ -5,7 +5,7 @@ import { $MASK_MODE } from "@/config/LayerModeConfig";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
 import { execute as screenDisplayObjectUpdateDisabledElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateDisabledElementUseCase";
 import { execute as screenDisplayObjectAllResetMaskStyleUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllResetMaskStyleUseCase";
-import { execute as screenDisplayObjectMaskLockUpdateElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectMaskLockUpdateElementService";
+import { execute as screenDisplayObjectMaskLockUpdateElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMaskLockUpdateElementUseCase";
 
 /**
  * @description レイヤーモードを変更後に戻す
@@ -82,7 +82,7 @@ export const execute = async (
 
         // ノーマルレイヤーからロック中のマスクレイヤーに変換する際は描画を更新
         if (layer.mode === $MASK_MODE && layer.lock) {
-            await screenDisplayObjectMaskLockUpdateElementService(layer);
+            await screenDisplayObjectMaskLockUpdateElementUseCase(layer);
         }
     }
 };

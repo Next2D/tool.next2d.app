@@ -2,7 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { ILayerMode } from "@/interface/ILayerMode";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
-import { execute as screenDisplayObjectMaskLockUpdateElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectMaskLockUpdateElementService";
+import { execute as screenDisplayObjectMaskLockUpdateElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMaskLockUpdateElementUseCase";
 import { execute as screenDisplayObjectUpdateLayerMaskInElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskInElementUseCase";
 import { execute as screenDisplayObjectUpdateDisabledElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateDisabledElementUseCase";
 import {
@@ -101,7 +101,7 @@ export const execute = async (
         // ノーマルレイヤーからロック中のマスクレイヤーに変換する際は描画を更新
         if (layer.mode === $MASK_MODE && layer.lock) {
             // マスクレイヤーのDisplayObjectのElemnet表示を更新
-            await screenDisplayObjectMaskLockUpdateElementService(layer);
+            await screenDisplayObjectMaskLockUpdateElementUseCase(layer);
         }
 
         // ロック中のマスクレイヤーからノーマルレイヤーに変換する際は描画を更新

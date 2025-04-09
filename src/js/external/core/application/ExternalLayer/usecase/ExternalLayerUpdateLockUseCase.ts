@@ -10,7 +10,7 @@ import { execute as screenDisplayObjectChangeElementClassService } from "@/scree
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
-import { execute as screenDisplayObjectMaskLockUpdateElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectMaskLockUpdateElementService";
+import { execute as screenDisplayObjectMaskLockUpdateElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMaskLockUpdateElementUseCase";
 import { execute as screenDisplayObjectUpdateLayerMaskElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskElementUseCase";
 
 /**
@@ -69,7 +69,7 @@ export const execute = async (
         await propertyAreaChangeDisplayUseCase();
 
         // マスクレイヤーなら、子レイヤーの表示を更新
-        await screenDisplayObjectMaskLockUpdateElementService(layer);
+        await screenDisplayObjectMaskLockUpdateElementUseCase(layer);
 
         // マスクインのレイヤーのDisplayObjectのElemnet表示を更新
         await screenDisplayObjectUpdateLayerMaskElementUseCase(layer);
