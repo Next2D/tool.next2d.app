@@ -1,13 +1,14 @@
+import { execute as stageSettingWidthRegisterPointerEventUseCase } from "./StageSettingWidthRegisterPointerEventUseCase";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $STAGE_HEIGHT_ID } from "@/config/StageSettingConfig";
-import { execute as stageSettingWidthRegisterPointerEventUseCase } from "./StageSettingWidthRegisterPointerEventUseCase";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import {
     $setBeforeHeight,
     $setBeforeWidth
 } from "../StagsSettingUtil";
-import { $activeTouchPointers } from "@/global/GlobalUtil";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージエリアの幅のマウスダウンイベントユースケース
@@ -22,23 +23,32 @@ export const execute = (event: PointerEvent): void =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
-        || !timelineHeader.stopFlag
     ) {
         return ;
     }
 
-    if ($useKeyboard()) {
-        return ;
+    // 再生中なら一時停止
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
     }
 
     // イベントの伝播を止める
+    // fixed logic
     event.stopPropagation();
-    event.preventDefault();
+
+    // 入力中はスキップ
+    if ($useKeyboard()) {
+        return ;
+    }
 
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }
+
+    // スクロール処理を行うので、イベントの伝播を止める
+    // fixed logic
+    event.preventDefault();
 
     // 変更前の幅をセット
     $setBeforeWidth(parseInt(element.value));

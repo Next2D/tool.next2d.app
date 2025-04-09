@@ -1,5 +1,5 @@
 import { execute } from "./StageSettingPointerOutEventService";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("StageSettingPointerOutEventService Test", () =>
 {
@@ -9,26 +9,17 @@ describe("StageSettingPointerOutEventService Test", () =>
         input.style.cursor = "ew-resize";
 
         let stopPropagation = false;
-        let preventDefault  = false;
         const eventMock = {
-            "stopPropagation": () =>
-            {
-                stopPropagation = true;
-            },
-            "preventDefault": () => {
-                preventDefault = true;
-            },
+            "stopPropagation": vi.fn(() => { stopPropagation = true }),
             "target": input
         } as unknown as PointerEvent;
 
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect(input.style.cursor).toBe("ew-resize");
 
         execute(eventMock);
 
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect(input.style.cursor).toBe("");
     });
 });

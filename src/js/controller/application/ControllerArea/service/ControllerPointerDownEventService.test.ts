@@ -1,6 +1,6 @@
 import { execute } from "./ControllerPointerDownEventService";
 import { $registerMenu } from "../../../../menu/application/MenuUtil";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("ControllerPointerDownEventService Test", () =>
 {
@@ -16,27 +16,20 @@ describe("ControllerPointerDownEventService Test", () =>
         });
 
         let stopPropagation = false;
-        let preventDefault = false;
         const eventMock = {
-            "stopPropagation": () =>
+            "stopPropagation": vi.fn(() =>
             {
                 stopPropagation = true;
-            },
-            "preventDefault": () =>
-            {
-                preventDefault = true;
-            },
+            }),
             "button": 0
-        } as PointerEvent;
+        } as unknown as PointerEvent;
 
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect(menuState).toBe("show");
 
         execute(eventMock);
 
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect(menuState).toBe("hide");
     });
 });

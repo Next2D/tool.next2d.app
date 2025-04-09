@@ -1,3 +1,5 @@
+import { $setEditingElement } from "@/global/GlobalUtil";
+
 /**
  * @description Enterキーでfocusを終了
  *              Exit focus with Enter key
@@ -18,10 +20,9 @@ export const execute = (event: KeyboardEvent): void =>
         return ;
     }
 
+    // 入力モードを終了する
+    $setEditingElement(null);
+
     // 親のイベントを終了
     event.stopPropagation();
-    event.preventDefault();
-
-    // 入力終了
-    element.blur();
 };

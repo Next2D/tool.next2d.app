@@ -1,3 +1,4 @@
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $setMouseState } from "../PropertyAreaUtil";
 
 /**
@@ -10,8 +11,12 @@ import { $setMouseState } from "../PropertyAreaUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if ($useKeyboard()) {
+        return ;
+    }
+
+    // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     // マウスの状態管理をアップに更新
     $setMouseState("up");

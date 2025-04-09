@@ -17,16 +17,16 @@ import { execute as screenScrollResizeService } from "@/screen/application/Scree
  */
 export const execute = (event: PointerEvent): void =>
 {
+    if (!event.movementX) {
+        return ;
+    }
+
     // イベントの伝播を止める
     event.stopPropagation();
     event.preventDefault();
 
     // カーソルを変更
     $setCursor("ew-resize");
-
-    if (!event.movementX) {
-        return ;
-    }
 
     requestAnimationFrame((): void =>
     {

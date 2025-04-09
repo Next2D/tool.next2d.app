@@ -16,14 +16,13 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     element.style.cursor = "";
 };
