@@ -3,7 +3,6 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージエリアの幅を更新
@@ -33,7 +32,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     const workSpace = $getCurrentWorkSpace();
     const width = parseInt(element.value);
-    if (!timelineHeader.stopFlag || isNaN(width) || 0 >= width) {
+    if (isNaN(width) || 0 >= width) {
         element.value = `${workSpace.stage.width}`;
         return ;
     }

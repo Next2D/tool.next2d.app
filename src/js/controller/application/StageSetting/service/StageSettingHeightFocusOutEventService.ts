@@ -1,8 +1,8 @@
 import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージエリアの高さを更新
@@ -20,19 +20,22 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         return ;
     }
 
+    // 入力モードを終了する
+    $updateKeyLock(false);
+
+    // 入力モードを終了する
+    $setEditingElement(null);
+
+    // イベントの伝播を止める
+    // fixed logic
+    event.stopPropagation();
+
     const workSpace = $getCurrentWorkSpace();
     const height = parseInt(element.value);
-    if (!timelineHeader.stopFlag || isNaN(height) || 0 >= height) {
+    if (isNaN(height) || 0 >= height) {
         element.value = `${workSpace.stage.height}`;
         return ;
     }
-
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
-    // 入力モードを終了する
-    $updateKeyLock(false);
 
     // ステージの高さを取得
     const afterHeight = Math.max(1, Math.min(height, Number.MAX_VALUE));

@@ -27,12 +27,10 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        stageSettingHeightPointerUpEventUseCase,
-        { "passive": false }
+        stageSettingHeightPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        stageSettingHeightPointerUpEventUseCase,
-        { "passive": false }
+        stageSettingHeightPointerUpEventUseCase
     );
 };

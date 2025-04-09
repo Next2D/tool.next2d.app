@@ -1,6 +1,7 @@
 import { $STAGE_DEFAULT_FPS } from "@/config/StageSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
@@ -15,21 +16,24 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
-    // 入力モードを終了する
-    $updateKeyLock(false);
-
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }
 
+    // 入力モードを終了する
+    $updateKeyLock(false);
+
+    // 入力モードを終了する
+    $setEditingElement(null);
+
+    // イベントの伝播を止める
+    // fixed logic
+    event.stopPropagation();
+
     const workSpace = $getCurrentWorkSpace();
     const fps = parseInt(element.value);
-    if (!timelineHeader.stopFlag ||  isNaN(fps) || 0 >= fps) {
+    if (isNaN(fps) || 0 >= fps) {
         element.value = `${workSpace.stage.fps}`;
         return ;
     }

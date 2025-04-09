@@ -1,8 +1,8 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as stageSettingLockPointerDownEventUseCase } from "./StageSettingLockPointerDownEventUseCase";
 import { execute as stageSettingWidthPointerDownEventUseCase } from "./StageSettingWidthPointerDownEventUseCase";
-import { execute as stageSettingMouseOverEventService } from "../service/StageSettingPointerOverEventService";
-import { execute as stageSettingMouseOutEventService } from "../service/StageSettingPointerOutEventService";
+import { execute as stageSettingPointerOverEventService } from "../service/StageSettingPointerOverEventService";
+import { execute as stageSettingPointerOutEventService } from "../service/StageSettingPointerOutEventService";
 import { execute as stageSettingFocusInEventService } from "../service/StageSettingFocusInEventService";
 import { execute as stageSettingWidthFocusOutEventService } from "../service/StageSettingWidthFocusOutEventService";
 import { execute as stageSettingHeightFocusOutEventService } from "../service/StageSettingHeightFocusOutEventService";
@@ -45,10 +45,10 @@ export const execute = (): void =>
 
     if (widthElement) {
         widthElement.addEventListener(EventType.POINTER_OVER,
-            stageSettingMouseOverEventService
+            stageSettingPointerOverEventService
         );
         widthElement.addEventListener(EventType.POINTER_OUT,
-            stageSettingMouseOutEventService
+            stageSettingPointerOutEventService
         );
         widthElement.addEventListener(EventType.POINTER_DOWN,
             stageSettingWidthPointerDownEventUseCase
@@ -70,10 +70,10 @@ export const execute = (): void =>
 
     if (heightElement) {
         heightElement.addEventListener(EventType.POINTER_OVER,
-            stageSettingMouseOverEventService
+            stageSettingPointerOverEventService
         );
         heightElement.addEventListener(EventType.POINTER_OUT,
-            stageSettingMouseOutEventService
+            stageSettingPointerOutEventService
         );
         heightElement.addEventListener(EventType.POINTER_DOWN,
             stageSettingHeightPointerDownEventUseCase
@@ -105,10 +105,10 @@ export const execute = (): void =>
 
     if (fpsElement) {
         fpsElement.addEventListener(EventType.POINTER_OVER,
-            stageSettingMouseOverEventService
+            stageSettingPointerOverEventService
         );
         fpsElement.addEventListener(EventType.POINTER_OUT,
-            stageSettingMouseOutEventService
+            stageSettingPointerOutEventService
         );
         fpsElement.addEventListener(EventType.POINTER_DOWN,
             stageSettingFpsPointerDownEventUseCase

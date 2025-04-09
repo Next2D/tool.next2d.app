@@ -27,12 +27,10 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        stageSettingFpsPointerUpEventUseCase,
-        { "passive": false }
+        stageSettingFpsPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        stageSettingFpsPointerUpEventUseCase,
-        { "passive": false }
+        stageSettingFpsPointerUpEventUseCase
     );
 };

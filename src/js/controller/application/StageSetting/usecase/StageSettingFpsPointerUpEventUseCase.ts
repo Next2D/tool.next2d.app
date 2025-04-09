@@ -19,17 +19,16 @@ import {
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
-    // カーソルを変更
-    $setCursor("auto");
-
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }
+
+    // カーソルを変更
+    $setCursor("auto");
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     // 移動のイベントを削除
     element.releasePointerCapture(event.pointerId);
