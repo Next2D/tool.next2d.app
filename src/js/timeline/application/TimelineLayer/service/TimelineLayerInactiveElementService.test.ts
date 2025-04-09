@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerInactiveElementService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerInactiveElementServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const div = document.createElement("div");
         div.classList.add("active");

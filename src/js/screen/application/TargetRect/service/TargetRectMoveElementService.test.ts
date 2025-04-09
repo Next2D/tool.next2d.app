@@ -1,9 +1,10 @@
 import { execute } from "./TargetRectMoveElementService";
 import { $SCREEN_TARGET_RECT_ID } from "../../../../config/ScreenConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TargetRectMoveElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $SCREEN_TARGET_RECT_ID;

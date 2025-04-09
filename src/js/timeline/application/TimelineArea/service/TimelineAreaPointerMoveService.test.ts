@@ -1,10 +1,11 @@
 import { $TIMELINE_ID } from "../../../../config/TimelineConfig";
 import { execute } from "./TimelineAreaPointerMoveService";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineAreaPointerMoveServiceTest", () =>
 {
-    test("execute test", (): Promise<void> =>
+    it("execute test", (): Promise<void> =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

@@ -1,10 +1,11 @@
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
 import { $TIMELINE_CONTENT_ID } from "../../../../config/TimelineConfig";
 import { execute } from "./TimelineLayerUpdateClientHeightService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerUpdateClientHeightServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

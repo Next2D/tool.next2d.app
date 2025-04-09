@@ -1,10 +1,11 @@
 import { execute } from "./TextToolChangeCursorEventService";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_TEXT_NAME } from "../../../../config/ToolConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TextToolChangeCursorEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock = {
             "name": $TOOL_TEXT_NAME,

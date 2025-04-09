@@ -1,9 +1,10 @@
 import { $getActiveTool, $registerDefaultTool, $setActiveTool } from "../../ToolUtil";
 import { execute } from "./ToolAreaResetService";
+import { describe, expect, it } from "vitest";
 
 describe("ToolAreaResetServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let arrowToolState = "off";
         const arrowToolMock = {

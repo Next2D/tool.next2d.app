@@ -2,10 +2,11 @@ import { execute } from "./RectangleToolMouseOverEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_RECTANGLE_NAME } from "../../../../config/ToolConfig";
+import { describe, expect, it } from "vitest";
 
 describe("RectangleToolMouseOverEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock = {
             "name": $TOOL_RECTANGLE_NAME,

@@ -3,10 +3,11 @@ import { timelineLayer } from "../../../domain/model/TimelineLayer";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 import type { MovieClip } from "../../../../core/domain/model/MovieClip";
 import type { Layer } from "../../../../core/domain/model/Layer";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerDeactivatedElementServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         timelineLayer.elements.length = 0;
 

@@ -2,10 +2,11 @@ import { execute } from "./RoundRectToolMouseOverEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_ROUND_RECT_NAME } from "../../../../config/ToolConfig";
+import { describe, expect, it } from "vitest";
 
 describe("RoundRectToolMouseOverEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock = {
             "name": $TOOL_ROUND_RECT_NAME,
@@ -27,7 +28,7 @@ describe("RoundRectToolMouseOverEventServiceTest", () =>
         execute({
             "stopPropagation": () => {},
             "preventDefault": () => {}
-        });
+        } as unknown as PointerEvent);
 
         expect(style.getPropertyValue("--tool-cursor")).toBe(mock.cursor);
     });

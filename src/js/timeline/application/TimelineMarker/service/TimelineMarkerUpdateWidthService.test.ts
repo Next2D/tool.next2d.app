@@ -1,9 +1,10 @@
 import { execute } from "./TimelineMarkerUpdateWidthService";
 import { $TIMELINE_MIN_MARKER_WIDTH_SIZE, $TIMELINE_MAX_MARKER_WIDTH_SIZE } from "../../../../config/TimelineConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineMarkerUpdateWidthServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         document
             .documentElement

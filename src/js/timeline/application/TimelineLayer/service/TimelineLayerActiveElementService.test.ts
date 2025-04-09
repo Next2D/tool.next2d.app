@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerActiveElementService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerActiveElementServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const div = document.createElement("div");
         expect(div.classList.contains("active")).toBe(false);

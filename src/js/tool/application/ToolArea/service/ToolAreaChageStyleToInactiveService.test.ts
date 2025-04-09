@@ -1,8 +1,9 @@
 import { execute } from "./ToolAreaChageStyleToInactiveService";
+import { describe, expect, it } from "vitest";
 
 describe("ToolAreaChageStyleToInactiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mockElement = {
             "style": {

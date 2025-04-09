@@ -1,9 +1,10 @@
 import { execute } from "./ToolAreaChageStyleToActiveService";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ToolAreaChageStyleToActiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

@@ -3,10 +3,11 @@ import {
     $getScreenOffsetTop
 } from "../../../../global/GlobalUtil";
 import { execute } from "./ScreenStageOffsetUpdateService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenStageOffsetUpdateServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = "stage";

@@ -1,9 +1,10 @@
 import { execute } from "./RectangleToolMouseOutEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
+import { describe, expect, it } from "vitest";
 
 describe("RectangleToolMouseOutEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         $setCursor("test");
 
@@ -17,7 +18,7 @@ describe("RectangleToolMouseOutEventServiceTest", () =>
         execute({
             "stopPropagation": () => {},
             "preventDefault": () => {}
-        });
+        } as unknown as PointerEvent);
 
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");
     });

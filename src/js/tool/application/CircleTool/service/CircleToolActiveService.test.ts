@@ -1,10 +1,11 @@
 import { $TOOL_CIRCLE_NAME } from "../../../../config/ToolConfig";
 import { execute } from "./CircleToolActiveService";
 import { $setActiveTool, $getActiveTool, $registerDefaultTool } from "../../ToolUtil";
+import { describe, expect, it } from "vitest";
 
 describe("CircleToolActiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock1 = {
             "dispatchEvent": () => {},

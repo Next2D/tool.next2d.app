@@ -1,8 +1,9 @@
 import { execute } from "./ScreenDisplayObjectResetMaskStyleService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenDisplayObjectResetMaskStyleServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
 

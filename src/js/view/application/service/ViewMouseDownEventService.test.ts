@@ -1,9 +1,10 @@
 import { execute } from "./ViewMouseDownEventService";
 import { $registerMenu } from "../../../menu/application/MenuUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ViewMouseDownEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let menuState = "show";
         $registerMenu({

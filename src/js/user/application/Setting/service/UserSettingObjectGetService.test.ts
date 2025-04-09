@@ -1,9 +1,10 @@
 import { IUserSettingIObject } from "../../../../interface/IUserSettingIObject";
 import { execute } from "./UserSettingObjectGetService";
+import { describe, expect, it } from "vitest";
 
 describe("UserSettingObjectGetServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const object: IUserSettingIObject = execute();
         expect(object.layer).toBe(false);

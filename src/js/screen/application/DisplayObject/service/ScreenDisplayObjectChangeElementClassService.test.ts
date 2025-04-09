@@ -1,10 +1,11 @@
 import { execute } from "./ScreenDisplayObjectChangeElementClassService";
 import { $SCREEN_STAGE_AREA_ID } from "../../../../config/ScreenConfig";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenDisplayObjectChangeElementClassServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const layer = workSpace.scene.layers[0];

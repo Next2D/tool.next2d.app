@@ -1,8 +1,9 @@
 import { execute } from "./StrokeSizeKeyPressEventService";
+import { describe, expect, it } from "vitest";
 
 describe("StrokeSizeKeyPressEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let preventDefault = false;
         let stopPropagation = false;

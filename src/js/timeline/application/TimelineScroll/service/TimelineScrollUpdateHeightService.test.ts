@@ -3,10 +3,11 @@ import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
 import type { MovieClip } from "../../../../core/domain/model/MovieClip";
 import { $TIMELINE_SCROLL_BAR_Y_ID } from "../../../../config/TimelineConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineScrollUpdateHeightServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         document.body.appendChild(div);

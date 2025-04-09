@@ -1,10 +1,11 @@
 import { $TOOL_RECTANGLE_NAME } from "../../../../config/ToolConfig";
 import { execute } from "./RectangleToolActiveService";
 import { $setActiveTool, $getActiveTool, $registerDefaultTool } from "../../ToolUtil";
+import { describe, expect, it } from "vitest";
 
 describe("RectangleToolActiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock1 = {
             "dispatchEvent": () => {},

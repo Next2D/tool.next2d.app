@@ -1,9 +1,10 @@
 import { execute } from "./StrokeSizeFocusInEventService";
 import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
+import { describe, expect, it } from "vitest";
 
 describe("StrokeSizeFocusInEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let preventDefault = false;
         let stopPropagation = false;

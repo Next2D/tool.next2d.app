@@ -1,10 +1,11 @@
 import { execute } from "./RoundRectToolChangeCursorEventService";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_ROUND_RECT_NAME } from "../../../../config/ToolConfig";
+import { describe, expect, it } from "vitest";
 
 describe("RoundRectToolChangeCursorEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock = {
             "name": $TOOL_ROUND_RECT_NAME,

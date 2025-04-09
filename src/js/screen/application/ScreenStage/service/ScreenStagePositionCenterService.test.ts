@@ -1,8 +1,9 @@
 import { execute } from "./ScreenStagePositionCenterService";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenStagePositionCenterServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = "screen";

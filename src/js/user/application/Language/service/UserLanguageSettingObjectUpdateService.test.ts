@@ -1,9 +1,10 @@
 import { execute } from "./UserLanguageSettingObjectUpdateService";
 import { execute as userLanguageSettingObjectGetService } from "./UserLanguageSettingObjectGetService";
+import { describe, expect, it } from "vitest";
 
 describe("UserLanguageSettingObjectUpdateServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         expect(userLanguageSettingObjectGetService()).toBe(null);
         execute("Japanese");

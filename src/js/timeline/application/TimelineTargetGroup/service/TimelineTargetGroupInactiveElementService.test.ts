@@ -1,9 +1,10 @@
 import { execute } from "./TimelineTargetGroupInactiveElementService";
 import { $TIMELINE_TARGET_GROUP_ID } from "../../../../config/TimelineConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineTargetGroupInactiveElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $TIMELINE_TARGET_GROUP_ID;

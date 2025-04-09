@@ -1,9 +1,10 @@
 import { execute } from "./ScreenStageAreaAllDisplayObjectActiveService";
 import { $SCREEN_STAGE_AREA_ID } from "../../../../config/ScreenConfig";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenStageAreaAllDisplayObjectActiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const parent = document.createElement("div");
         parent.id = $SCREEN_STAGE_AREA_ID;

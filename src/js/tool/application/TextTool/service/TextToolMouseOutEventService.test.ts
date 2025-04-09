@@ -1,9 +1,10 @@
 import { execute } from "./TextToolMouseOutEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TextToolMouseOutEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         $setCursor("test");
 
@@ -17,7 +18,7 @@ describe("TextToolMouseOutEventServiceTest", () =>
         execute({
             "stopPropagation": () => {},
             "preventDefault": () => {}
-        });
+        } as unknown as PointerEvent);
 
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");
     });

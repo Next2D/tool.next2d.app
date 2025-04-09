@@ -2,10 +2,11 @@ import { execute } from "./TextToolMouseOverEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_TEXT_NAME } from "../../../../config/ToolConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TextToolMouseOverEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock = {
             "name": $TOOL_TEXT_NAME,
@@ -27,7 +28,7 @@ describe("TextToolMouseOverEventServiceTest", () =>
         execute({
             "stopPropagation": () => {},
             "preventDefault": () => {}
-        });
+        } as unknown as PointerEvent);
 
         expect(style.getPropertyValue("--tool-cursor")).toBe(mock.cursor);
     });

@@ -1,10 +1,11 @@
 import { execute } from "./RectangleToolChangeCursorEventService";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_RECTANGLE_NAME } from "../../../../config/ToolConfig";
+import { describe, expect, it } from "vitest";
 
 describe("RectangleToolChangeCursorEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock = {
             "name": $TOOL_RECTANGLE_NAME,

@@ -1,9 +1,10 @@
 import { execute } from "./DrawRectHideService";
 import { $SCREEN_DRAW_RECT_ID } from "../../../../config/ScreenConfig";
+import { describe, expect, it } from "vitest";
 
 describe("DrawRectHideServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const parent = document.createElement("div");
         parent.id = $SCREEN_DRAW_RECT_ID;

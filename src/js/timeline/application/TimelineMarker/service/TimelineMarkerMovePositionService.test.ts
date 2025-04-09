@@ -2,10 +2,11 @@ import { execute } from "./TimelineMarkerMovePositionService";
 import { $TIMELINE_MARKER_ID, $TIMELINE_MARKER_BORDER_ID } from "../../../../config/TimelineConfig";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { timelineHeader } from "../../../domain/model/TimelineHeader";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineMarkerMovePositionServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const scene = $createWorkSpace().scene;
         scene.currentFrame = 30;

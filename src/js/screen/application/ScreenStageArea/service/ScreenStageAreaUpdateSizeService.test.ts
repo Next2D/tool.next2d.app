@@ -1,9 +1,10 @@
 import { execute } from "./ScreenStageAreaUpdateSizeService";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenStageAreaUpdateSizeServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerInactiveMoveTargetStyleService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerInactiveMoveTargetStyleServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const div = document.createElement("div");
         div.classList.add("move-target");

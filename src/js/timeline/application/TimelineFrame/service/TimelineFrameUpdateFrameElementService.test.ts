@@ -1,10 +1,11 @@
 import { $TIMELINE_CURRENT_FRAME_ID } from "../../../../config/TimelineConfig";
 import { execute } from "./TimelineFrameUpdateFrameElementService";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineFrameUpdateFrameElementServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const scene = workSpace.scene;

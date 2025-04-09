@@ -2,10 +2,11 @@ import { execute } from "./TimelineScrollUpdateXPositionService";
 import { $TIMELINE_SCROLL_BAR_X_ID } from "../../../../config/TimelineConfig";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { timelineHeader } from "../../../../timeline/domain/model/TimelineHeader";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineScrollUpdateXPositionServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $TIMELINE_SCROLL_BAR_X_ID;

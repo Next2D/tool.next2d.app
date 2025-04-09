@@ -1,10 +1,11 @@
 import { execute } from "./TimelineFrameUpdateFrameWidthService";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import { $TIMELINE_DEFAULT_FRAME_WIDTH_SIZE, $TIMELINE_SCROLL_ID } from "../../../../config/TimelineConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineFrameUpdateFrameWidthServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const input = document.createElement("input");
         document.body.appendChild(input);

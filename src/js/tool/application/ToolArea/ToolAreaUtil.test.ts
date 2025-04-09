@@ -2,10 +2,11 @@ import {
     $getStandbyMoveState,
     $setStandbyMoveState
 } from "./ToolAreaUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ToolAreaUtilTest", () =>
 {
-    test("$getStandbyMoveState and $setStandbyMoveState test", () =>
+    it("$getStandbyMoveState and $setStandbyMoveState test", () =>
     {
         expect($getStandbyMoveState()).toBe(false);
         $setStandbyMoveState(true);

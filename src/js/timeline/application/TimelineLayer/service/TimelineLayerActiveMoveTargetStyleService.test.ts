@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerActiveMoveTargetStyleService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerActiveMoveTargetStyleServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         const div = document.createElement("div");
 

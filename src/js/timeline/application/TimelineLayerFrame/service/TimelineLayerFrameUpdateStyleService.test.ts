@@ -1,11 +1,11 @@
 import { execute } from "./TimelineLayerFrameUpdateStyleService";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
-// import type { MovieClip } from "../../../../core/domain/model/MovieClip";
 import type { Layer } from "../../../../core/domain/model/Layer";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerFrameUpdateStyleServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const scene = workSpace.scene;

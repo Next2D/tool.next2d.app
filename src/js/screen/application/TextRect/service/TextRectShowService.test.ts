@@ -1,9 +1,10 @@
 import { execute } from "./TextRectShowService";
 import { $SCREEN_DRAW_TEXT_ID } from "../../../../config/ScreenConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TextRectShowServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const parent = document.createElement("div");
         parent.id = $SCREEN_DRAW_TEXT_ID;

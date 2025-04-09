@@ -1,10 +1,11 @@
 import { execute } from "./TimelineSceneListExcludeElememtService";
 import { $TIMELINE_SCENE_NAME_LIST_ID } from "../../../../config/TimelineConfig";
 import { timelineSceneList } from "../../../domain/model/TimelineSceneList";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineSceneListExcludeElememtServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         timelineSceneList.parents.push(
             {

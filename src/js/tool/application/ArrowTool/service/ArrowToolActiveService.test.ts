@@ -1,10 +1,11 @@
 import { $TOOL_ARROW_NAME } from "../../../../config/ToolConfig";
 import { execute } from "./ArrowToolActiveService";
 import { $setActiveTool, $getActiveTool, $registerDefaultTool } from "../../ToolUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ArrowToolActiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock1 = {
             "dispatchEvent": () => {},

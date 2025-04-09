@@ -1,10 +1,11 @@
 import { execute } from "./TargetRectHideElementService";
 import { $SCREEN_TARGET_RECT_ID } from "../../../../config/ScreenConfig";
 import { $getTargetRectState, $setTargetRectState } from "../../ScreenUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TargetRectHideElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $SCREEN_TARGET_RECT_ID;

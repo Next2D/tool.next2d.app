@@ -1,8 +1,9 @@
 import { execute } from "./TimelineLayerGetClassNameService";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerGetClassNameServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         expect(execute(0)).toBe("timeline-layer-icon");
         expect(execute(1)).toBe("timeline-mask-icon");

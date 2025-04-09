@@ -1,9 +1,10 @@
 import { execute } from "./ShortcutCommandService";
 import { $setShortcut } from "../../ShortcutUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ShortcutCommandServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         let stop = false;
         let stopImmediate = false;

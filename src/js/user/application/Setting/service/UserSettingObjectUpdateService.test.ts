@@ -1,10 +1,11 @@
 import { execute } from "./UserSettingObjectUpdateService";
 import { execute as userSettingObjectGetService } from "./UserSettingObjectGetService";
 import { IUserSettingIObject } from "../../../../interface/IUserSettingIObject";
+import { describe, expect, it } from "vitest";
 
 describe("UserSettingObjectUpdateServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock: IUserSettingIObject = {
             "layer": false,

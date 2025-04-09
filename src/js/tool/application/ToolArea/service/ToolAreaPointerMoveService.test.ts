@@ -1,10 +1,11 @@
 import { $TOOL_PREFIX } from "../../../../config/ToolConfig";
 import { execute } from "./ToolAreaPointerMoveService";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ToolAreaPointerMoveServiceTest", () =>
 {
-    test("execute test", (): Promise<void> =>
+    it("execute test", (): Promise<void> =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

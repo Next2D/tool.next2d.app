@@ -2,10 +2,11 @@ import { $TOOL_ARROW_NAME, $TOOL_PREFIX } from "../../../../config/ToolConfig";
 import { ArrowTool } from "../../../domain/model/ArrowTool";
 import { $getDefaultTool } from "../../ToolUtil";
 import { execute } from "./ToolAreaInitializeBootService";
+import { describe, expect, it } from "vitest";
 
 describe("ToolAreaInitializeBootServiceTest", () =>
 {
-    test("execute test", async () =>
+    it("execute test", async () =>
     {
         const before = $getDefaultTool("arrow");
         expect(before).toBe(null);

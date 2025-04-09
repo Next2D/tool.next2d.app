@@ -1,10 +1,11 @@
 import { execute } from "./TimelineSceneListClearAllService";
 import { $TIMELINE_SCENE_NAME_LIST_ID } from "../../../../config/TimelineConfig";
 import { timelineSceneList } from "../../../domain/model/TimelineSceneList";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineSceneListClearAllServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         timelineSceneList.parents.push({
             "libraryId": 0,

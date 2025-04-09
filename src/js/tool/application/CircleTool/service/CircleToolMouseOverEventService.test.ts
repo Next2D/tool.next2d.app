@@ -2,10 +2,11 @@ import { execute } from "./CircleToolMouseOverEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_CIRCLE_NAME } from "../../../../config/ToolConfig";
+import { describe, expect, it } from "vitest";
 
 describe("CircleToolMouseOverEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock = {
             "name": $TOOL_CIRCLE_NAME,

@@ -1,10 +1,11 @@
 import { execute } from "./TimelineScrollUpdateWidthService";
 import { $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { timelineHeader } from "../../../domain/model/TimelineHeader";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineScrollUpdateWidthServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const scene = $createWorkSpace().scene;
 

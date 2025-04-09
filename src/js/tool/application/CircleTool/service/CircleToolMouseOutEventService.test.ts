@@ -1,9 +1,10 @@
 import { execute } from "./CircleToolMouseOutEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
+import { describe, expect, it } from "vitest";
 
 describe("CircleToolMouseOutEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         $setCursor("test");
 
@@ -17,7 +18,7 @@ describe("CircleToolMouseOutEventServiceTest", () =>
         execute({
             "stopPropagation": () => {},
             "preventDefault": () => {}
-        });
+        } as unknown as PointerEvent);
 
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");
     });

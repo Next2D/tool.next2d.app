@@ -1,8 +1,9 @@
 import { execute } from "./StrokeSizeMouseOverEventService";
+import { describe, expect, it } from "vitest";
 
 describe("StrokeSizeMouseOverEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const input = document.createElement("input");
 

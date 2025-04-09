@@ -1,9 +1,10 @@
 import { $setStandbyMoveState, $getStandbyMoveState } from "../ToolAreaUtil";
 import { execute } from "./ToolAreaMouseOutEventService";
+import { describe, expect, it } from "vitest";
 
 describe("ToolAreaMouseOutEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         $setStandbyMoveState(true);
         expect($getStandbyMoveState()).toBe(true);

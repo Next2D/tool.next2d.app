@@ -1,10 +1,11 @@
 import { $TOOL_ROUND_RECT_NAME } from "../../../../config/ToolConfig";
 import { execute } from "./RoundRectToolActiveService";
 import { $setActiveTool, $getActiveTool, $registerDefaultTool } from "../../ToolUtil";
+import { describe, expect, it } from "vitest";
 
 describe("RoundRectToolActiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock1 = {
             "dispatchEvent": () => {},

@@ -1,8 +1,9 @@
 import { execute } from "./StrokeSizeMouseOutEventService";
+import { describe, expect, it } from "vitest";
 
 describe("StrokeSizeMouseOutEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const input = document.createElement("input");
         input.style.cursor = "ew-resize";

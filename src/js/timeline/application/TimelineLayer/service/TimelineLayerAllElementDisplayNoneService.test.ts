@@ -1,9 +1,10 @@
 import { execute } from "./TimelineLayerAllElementDisplayNoneService";
 import { timelineLayer } from "../../../domain/model/TimelineLayer";
+import { describe, expect, it } from "vitest";
 
 describe("TimelineLayerAllElementDisplayNoneServiceTest", () =>
 {
-    test("execute test", (): void =>
+    it("execute test", (): void =>
     {
         timelineLayer.elements.length = 0;
 

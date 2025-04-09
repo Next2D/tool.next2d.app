@@ -1,10 +1,11 @@
 import { $TOOL_TEXT_NAME } from "../../../../config/ToolConfig";
 import { execute } from "./TextToolActiveService";
 import { $setActiveTool, $getActiveTool, $registerDefaultTool } from "../../ToolUtil";
+import { describe, expect, it } from "vitest";
 
 describe("TextToolActiveServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock1 = {
             "dispatchEvent": () => {},

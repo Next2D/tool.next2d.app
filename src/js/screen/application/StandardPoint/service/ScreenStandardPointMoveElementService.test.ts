@@ -1,10 +1,11 @@
 import { execute } from "./ScreenStandardPointMoveElementService";
 import { $SCREEN_STANDARD_POINT_ID } from "../../../../config/ScreenConfig";
 import { $setStandardPointState } from "../StandardPointUtil";
+import { describe, expect, it } from "vitest";
 
 describe("ScreenStandardPointMoveElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $SCREEN_STANDARD_POINT_ID;

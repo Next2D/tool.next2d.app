@@ -1,9 +1,10 @@
 import { execute } from "./TextRectHideService";
 import { $SCREEN_DRAW_TEXT_ID } from "../../../../config/ScreenConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TextRectHideServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const parent = document.createElement("div");
         parent.id = $SCREEN_DRAW_TEXT_ID;
