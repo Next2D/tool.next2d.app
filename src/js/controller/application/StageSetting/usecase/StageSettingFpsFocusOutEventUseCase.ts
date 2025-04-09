@@ -3,7 +3,6 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージエリアのフレームレートを更新

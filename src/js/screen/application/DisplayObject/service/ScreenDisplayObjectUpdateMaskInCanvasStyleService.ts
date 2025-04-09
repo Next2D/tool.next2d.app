@@ -1,4 +1,3 @@
-import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Layer } from "@/core/domain/model/Layer";
