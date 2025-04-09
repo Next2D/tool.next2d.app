@@ -46,23 +46,13 @@ export const execute = async (
         return ;
     }
 
-    const maskInstance = workSpace.getLibrary(maskCharacter.libraryId);
-    if (!maskInstance) {
+    const div = document.createElement("div");
+    await maskCharacter.createElement(div, maskLayer);
+    const canvas = div.getElementsByTagName("canvas")[0] as HTMLCanvasElement;
+    if (!canvas) {
         return ;
     }
-
-    const cacheKey = maskCharacter.cacheKey;
-
-    let canvas = $getCacheCanvas(workSpace.id, maskInstance.id, cacheKey);
-    if (!canvas) {
-        canvas = await maskInstance.getHTMLElement() as HTMLCanvasElement;
-        if (!canvas) {
-            return ;
-        }
-
-        // キャッシュに保存
-        $setCacheCanvas(workSpace.id, maskInstance.id, cacheKey, canvas);
-    }
+    canvas.remove();
 
     if (!canvas.dataset.base64) {
         canvas.dataset.base64 = canvas.toDataURL();

@@ -1,8 +1,11 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
-import { $createTransformStyle, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { Matrix } from "@next2d/geom";
+import {
+    $createTransformStyle,
+    $multiplicationMatrix
+} from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -15,7 +18,6 @@ import { Matrix } from "@next2d/geom";
  */
 export const execute = (scale_x: number): void =>
 {
-
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 

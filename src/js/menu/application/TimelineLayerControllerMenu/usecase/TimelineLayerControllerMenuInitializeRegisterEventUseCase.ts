@@ -49,7 +49,7 @@ export const execute = (): void =>
     if (normalElement) {
         normalElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerMenuNormalPointerDownUseCase,
-            { "passive": true }
+            { "passive": false }
         );
     }
 
@@ -60,7 +60,7 @@ export const execute = (): void =>
     if (maskElement) {
         maskElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerMenuMaskPointerDownUseCase,
-            { "passive": true }
+            { "passive": false }
         );
     }
 
@@ -71,7 +71,7 @@ export const execute = (): void =>
     if (guideElement) {
         guideElement.addEventListener(EventType.POINTER_DOWN,
             timelineLayerControllerMenuGuidePointerDownUseCase,
-            { "passive": true }
+            { "passive": false }
         );
     }
 };

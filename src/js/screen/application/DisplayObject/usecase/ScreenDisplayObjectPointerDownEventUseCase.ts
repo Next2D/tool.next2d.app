@@ -7,7 +7,7 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
 import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
 import { $setPointerId } from "../DisplayObjectUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数
@@ -20,7 +20,23 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
+        return ;
+    }
+
+    const element = event.currentTarget as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
+
+    const layerId = parseInt(element.dataset.layerId as string);
+    const layer = movieClip.getLayerById(layerId);
+    if (!layer) {
         return ;
     }
 
@@ -33,22 +49,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 中心点を非表示にする
     referenceSettingHideElementService();
 
-    const element = event.currentTarget as HTMLElement;
-    if (!element) {
-        return ;
-    }
-
     // 親のイベントをキャンセル
     event.stopPropagation();
-
-    const workSpace = $getCurrentWorkSpace();
-    const movieClip = workSpace.scene;
-
-    const layerId = parseInt(element.dataset.layerId as string);
-    const layer = movieClip.getLayerById(layerId);
-    if (!layer) {
-        return ;
-    }
+    event.preventDefault();
 
     // レイヤーのインデックスを取得
     const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
