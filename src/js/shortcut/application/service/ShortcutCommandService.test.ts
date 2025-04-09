@@ -28,7 +28,7 @@ describe("ShortcutCommandServiceTest", () =>
             {
                 prevent = true;
             }
-        };
+        } as unknown as KeyboardEvent;
 
         let state = "off";
         $setShortcut("a", () =>

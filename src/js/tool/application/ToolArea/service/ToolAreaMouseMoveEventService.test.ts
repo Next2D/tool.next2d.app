@@ -27,7 +27,7 @@ describe("ToolAreaMouseMoveEventServiceTest", () =>
         const mockEvent = {
             "status": "yes",
             "stopPropagation": () => { return null }
-        };
+        } as unknown as PointerEvent;
 
         expect(status).toBe("no");
         execute(mockEvent);

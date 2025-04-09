@@ -16,7 +16,7 @@ describe("ToolAreaChageStyleToActiveServiceTest", () =>
                 "boxShadow": "",
                 "position": ""
             }
-        };
+        } as unknown as HTMLElement;
 
         workSpace.toolAreaState.state = "move";
         workSpace.toolAreaState.offsetLeft = 10;

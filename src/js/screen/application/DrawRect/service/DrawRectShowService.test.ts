@@ -12,7 +12,7 @@ describe("DrawRectShowServiceTest", () =>
 
         parent.style.display = "none";
         expect(parent.style.display).toBe("none");
-        execute();
+        execute(0, 0);
         expect(parent.style.display).toBe("");
 
         parent.remove();

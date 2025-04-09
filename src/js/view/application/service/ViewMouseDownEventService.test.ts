@@ -25,7 +25,7 @@ describe("ViewMouseDownEventServiceTest", () =>
                 eventState = "on";
             },
             "button": 0
-        };
+        } as unknown as PointerEvent;
         execute(eventMock);
 
         expect(eventState).toBe("on");

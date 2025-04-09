@@ -15,7 +15,7 @@ describe("ToolAreaChageStyleToInactiveServiceTest", () =>
             },
             "offsetLeft": 10,
             "offsetTop": 20
-        };
+        } as unknown as HTMLElement;
 
         expect(mockElement.style.left).toBe("10px");
         expect(mockElement.style.top).toBe("20px");

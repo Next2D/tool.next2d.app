@@ -11,7 +11,7 @@ describe("ToolAreaMouseOutEventServiceTest", () =>
 
         const mockEvent = {
             "stopPropagation": () => { return null }
-        };
+        } as unknown as PointerEvent;
 
         execute(mockEvent);
         expect($getStandbyMoveState()).toBe(false);

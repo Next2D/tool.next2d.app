@@ -28,7 +28,7 @@ describe("CircleToolMouseOverEventServiceTest", () =>
         execute({
             "stopPropagation": () => {},
             "preventDefault": () => {}
-        });
+        } as unknown as PointerEvent);
 
         expect(style.getPropertyValue("--tool-cursor")).toBe(mock.cursor);
     });

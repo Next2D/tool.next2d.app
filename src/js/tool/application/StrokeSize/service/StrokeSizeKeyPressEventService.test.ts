@@ -18,7 +18,7 @@ describe("StrokeSizeKeyPressEventServiceTest", () =>
             },
             "key": "Enter",
             "currentTarget": document.createElement("div")
-        };
+        } as unknown as KeyboardEvent;
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);

@@ -20,7 +20,7 @@ describe("ToolAreaPointerMoveServiceTest", () =>
             "preventDefault": () => { return null },
             "movementX": 20,
             "movementY": 30
-        };
+        } as unknown as PointerEvent;
 
         execute(mockEvent);
 

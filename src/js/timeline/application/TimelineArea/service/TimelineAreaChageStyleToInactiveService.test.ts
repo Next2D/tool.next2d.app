@@ -20,7 +20,7 @@ describe("TTimelineAreaChageStyleToInactiveServiceTest", () =>
             },
             "offsetLeft": 10,
             "offsetTop": 20
-        };
+        } as unknown as HTMLElement;
 
         document
             .documentElement

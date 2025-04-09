@@ -19,7 +19,7 @@ describe("TimelineAreaChageStyleToActiveServiceTest", () =>
             },
             "clientWidth": 1000,
             "clientHeight": 300
-        };
+        } as unknown as HTMLElement;
 
         workSpace.timelineAreaState.state = "move";
         workSpace.timelineAreaState.offsetTop = 20;

@@ -18,7 +18,7 @@ describe("StrokeSizeMouseOverEventServiceTest", () =>
                 preventDefault = true;
             },
             "target": input
-        };
+        } as unknown as PointerEvent;
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);

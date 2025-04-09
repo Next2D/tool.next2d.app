@@ -18,7 +18,7 @@ describe("StrokeSizeFocusInEventServiceTest", () =>
                 preventDefault = true;
             },
             "currentTarget": document.createElement("div")
-        };
+        } as unknown as FocusEvent;
 
         expect(stopPropagation).toBe(false);
         expect(preventDefault).toBe(false);
