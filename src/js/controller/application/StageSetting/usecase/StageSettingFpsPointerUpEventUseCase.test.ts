@@ -44,12 +44,10 @@ describe("StageSettingFpsPointerUpEventUseCase Test", () =>
         });
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "pointerId": 100,
             "target": input,
             "stopPropagation": vi.fn(() => stopPropagation = true),
-            "preventDefault": vi.fn(() => preventDefault = true)
         } as unknown as PointerEvent;
 
         const style = document
@@ -60,7 +58,6 @@ describe("StageSettingFpsPointerUpEventUseCase Test", () =>
 
         expect(stage.fps).toBe(60);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect(pointerId).toBe(0);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
@@ -71,7 +68,6 @@ describe("StageSettingFpsPointerUpEventUseCase Test", () =>
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");
         expect(stage.fps).toBe(10);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect(pointerId).toBe(100);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);

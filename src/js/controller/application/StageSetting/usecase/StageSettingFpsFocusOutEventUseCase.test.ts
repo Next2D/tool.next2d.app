@@ -16,10 +16,8 @@ describe("StageSettingFpsFocusOutEventUseCase Test", () =>
         input.value = "10";
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "stopPropagation": vi.fn(() => stopPropagation = true),
-            "preventDefault": vi.fn(() => preventDefault = true),
             "target": input
         } as unknown as FocusEvent;
 
@@ -27,13 +25,11 @@ describe("StageSettingFpsFocusOutEventUseCase Test", () =>
         expect($useKeyboard()).toBe(true);
         expect(stage.fps).toBe(60);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
 
         await execute(mockEvent);
 
         expect($useKeyboard()).toBe(false);
         expect(stage.fps).toBe(10);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
     });
 });

@@ -15,21 +15,17 @@ describe("StageSettingColorChangeEventUseCase Test", () =>
         input.value = "#ff00ff";
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "stopPropagation": vi.fn(() => stopPropagation = true),
-            "preventDefault": vi.fn(() => preventDefault = true),
             "target": input
         } as unknown as Event;
 
         expect(stage.bgColor).toBe("#000000");
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
 
         await execute(mockEvent);
 
         expect(stage.bgColor).toBe("#ff00ff");
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
     });
 });

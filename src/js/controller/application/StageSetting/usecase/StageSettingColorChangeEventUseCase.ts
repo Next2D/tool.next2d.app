@@ -12,14 +12,13 @@ import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
  */
 export const execute = async (event: Event): Promise<void> =>
 {
-    // 親のイベントを止める
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }
+
+    // 親のイベントを止める
+    event.stopPropagation();
 
     // 外部APIを起動
     const externalStage = new ExternalStage($getCurrentWorkSpace());
