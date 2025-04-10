@@ -3,12 +3,13 @@ import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/T
 import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $STAGE_WIDTH_ID } from "@/config/StageSettingConfig";
-import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import {
     $setBeforeHeight,
     $setBeforeWidth
 } from "../StagsSettingUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description ステージエリアの高さのマウスダウンイベントユースケース
@@ -44,6 +45,12 @@ export const execute = (event: PointerEvent): void =>
     if (!element) {
         return ;
     }
+
+    // メニューを全て非表示にする
+    $allHideMenu();
+
+    // 編集中のelementを解除
+    $setEditingElement(null);
 
     // スクロール処理を行うので、イベントの伝播を止める
     // fixed logic

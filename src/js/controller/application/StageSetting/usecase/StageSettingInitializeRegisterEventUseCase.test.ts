@@ -22,6 +22,8 @@ describe("StageSettingInitializeRegisterEventUseCase Test", () =>
         {
             if (type === EventType.POINTER_DOWN) {
                 pointerDown = true;
+            } else {
+                throw new Error("Unknown event type");
             }
         });
 
@@ -72,6 +74,9 @@ describe("StageSettingInitializeRegisterEventUseCase Test", () =>
                 case "keypress":
                     keypress = true;
                     break;
+
+                default:
+                    throw new Error("Unknown event type");
             }
         });
 
@@ -134,6 +139,9 @@ describe("StageSettingInitializeRegisterEventUseCase Test", () =>
                 case "keypress":
                     keypress = true;
                     break;
+
+                default:
+                    throw new Error("Unknown event type");
             }
         });
 
@@ -163,16 +171,31 @@ describe("StageSettingInitializeRegisterEventUseCase Test", () =>
         document.body.appendChild(element);
 
         let change = false;
+        let pointerDown = false;
         element.addEventListener = vi.fn((type) =>
         {
-            if (type === "change") {
-                change = true;
+            switch (type) {
+
+                case EventType.POINTER_DOWN:
+                    pointerDown = true;
+                    break;
+
+                case "change":
+                    change = true;
+                    break;
+
+                default:
+                    throw new Error("Unknown event type");
             }
         });
 
         expect(change).toBe(false);
+        expect(pointerDown).toBe(false);
+        
         execute();
+
         expect(change).toBe(true);
+        expect(pointerDown).toBe(true);
 
         element.remove();
     });
@@ -217,6 +240,9 @@ describe("StageSettingInitializeRegisterEventUseCase Test", () =>
                 case "keypress":
                     keypress = true;
                     break;
+
+                default:
+                    throw new Error("Unknown event type");
             }
         });
     

@@ -11,6 +11,7 @@ import { execute as stageSettingKeyPressEventService } from "../service/StageSet
 import { execute as stageSettingHeightPointerDownEventUseCase } from "./StageSettingHeightPointerDownEventUseCase";
 import { execute as stageSettingFpsPointerDownEventUseCase } from "./StageSettingFpsPointerDownEventUseCase";
 import { execute as stageSettingColorChangeEventUseCase } from "./StageSettingColorChangeEventUseCase";
+import { execute as stageSettingColorPointerDownEventService } from "../service/StageSettingColorPointerDownEventService";
 import {
     $STAGE_BG_COLOR_ID,
     $STAGE_FPS_ID,
@@ -94,6 +95,9 @@ export const execute = (): void =>
         .getElementById($STAGE_BG_COLOR_ID);
 
     if (colorElement) {
+        colorElement.addEventListener(EventType.POINTER_DOWN,
+            stageSettingColorPointerDownEventService
+        );
         colorElement.addEventListener("change",
             stageSettingColorChangeEventUseCase
         );

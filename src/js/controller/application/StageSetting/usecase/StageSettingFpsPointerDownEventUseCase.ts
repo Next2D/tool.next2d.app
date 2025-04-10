@@ -1,9 +1,10 @@
 import { execute as stageSettingFpsRegisterPointerEventUseCase } from "./StageSettingFpsRegisterPointerEventUseCase";
 import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
-import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $setBeforeFps } from "../StagsSettingUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description ステージのフレームレート設定のマウスダウンイベントユースケース
@@ -35,14 +36,20 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // スクロール処理を行うので、イベントの伝播を止める
-    // fixed logic
-    event.preventDefault();
-
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }
+
+    // メニューを全て非表示にする
+    $allHideMenu();
+
+    // 編集中の要素を解除
+    $setEditingElement(null);
+
+    // スクロール処理を行うので、イベントの伝播を止める
+    // fixed logic
+    event.preventDefault();
 
     // 変更前の幅をセット
     $setBeforeFps(parseInt(element.value));
