@@ -1,6 +1,7 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 
 /**
  * @description ステージの幅設定のフォーカスイベント処理
@@ -13,18 +14,17 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
  */
 export const execute = (event: FocusEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // フォーカスを初期化
     const element: HTMLInputElement | null = event.currentTarget as HTMLInputElement;
     if (!element) {
         return ;
     }
 
+    // イベントの伝播を止める
+    event.stopPropagation();
+
     if (!timelineHeader.stopFlag) {
-        return element.blur();
+        timelineToolPlayStopUseCase();
     }
 
     // 入力モードをOnにする

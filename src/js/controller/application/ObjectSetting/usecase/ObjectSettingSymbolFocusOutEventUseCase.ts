@@ -16,10 +16,6 @@ import { $ERROR_DUPLICATE_SYMBOL_TEXT } from "@/config/ErrorTextConfig";
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // 入力モードをOffにする
     $updateKeyLock(false);
 
@@ -31,6 +27,9 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     if (!element) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

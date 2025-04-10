@@ -1,4 +1,4 @@
-import { execute as objectSettingFocusInEventService } from "../service/ObjectSettingFocusInEventService";
+import { execute as objectSettingFocusInEventUseCase } from "./ObjectSettingFocusInEventUseCase";
 import { execute as objectSettingKeyPressEventService } from "../service/ObjectSettingKeyPressEventService";
 import { execute as objectSettingNameFocusOutEventUseCase } from "./ObjectSettingNameFocusOutEventUseCase";
 import { execute as objectSettingSymbolFocusOutEventUseCase } from "./ObjectSettingSymbolFocusOutEventUseCase";
@@ -22,7 +22,7 @@ export const execute = (): void =>
 
     // 名前のinputにイベントを登録
     if (nameElement) {
-        nameElement.addEventListener("focusin", objectSettingFocusInEventService);
+        nameElement.addEventListener("focusin", objectSettingFocusInEventUseCase);
         nameElement.addEventListener("focusout", objectSettingNameFocusOutEventUseCase);
         nameElement.addEventListener("keypress", objectSettingKeyPressEventService);
     }
@@ -32,7 +32,7 @@ export const execute = (): void =>
 
     // シンボルのinputにイベントを登録
     if (symbolElement) {
-        symbolElement.addEventListener("focusin", objectSettingFocusInEventService);
+        symbolElement.addEventListener("focusin", objectSettingFocusInEventUseCase);
         symbolElement.addEventListener("focusout", objectSettingSymbolFocusOutEventUseCase);
         symbolElement.addEventListener("keypress", objectSettingKeyPressEventService);
     }
