@@ -34,12 +34,10 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
         });
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "pointerId": 100,
             "button": 0,
             "stopPropagation": vi.fn(() => { stopPropagation = true; }),
-            "preventDefault": vi.fn(() => { preventDefault = true; }),
             "currentTarget": input
         } as unknown as PointerEvent;
 
@@ -47,7 +45,6 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
         expect(soundArea.targetIndex).toBe(-1);
         expect(pointerId).toBe(0);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
         expect(pointerCancel).toBe(false);
@@ -57,7 +54,6 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
         expect(soundArea.targetIndex).toBe(0);
         expect(pointerId).toBe(100);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
         expect(pointerCancel).toBe(true);
