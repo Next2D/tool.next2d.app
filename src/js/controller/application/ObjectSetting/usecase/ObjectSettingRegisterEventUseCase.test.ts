@@ -1,9 +1,12 @@
 import { execute } from "./ObjectSettingRegisterEventUseCase";
+import { describe, expect, it, vi } from "vitest";
+import { EventType } from "../../../../tool/domain/event/EventType";
 import {
     $OBJECT_SETTING_NAME_ID,
     $OBJECT_SETTING_SYMBOL_ID
 } from "../../../../config/ObjectSettingConfig";
-import { describe, expect, it, vi } from "vitest";
+import { b } from "vitest/dist/chunks/suite.d.FvehnV49.js";
+
 
 describe("ObjectSettingRegisterEventUseCase Test", () =>
 {
@@ -17,17 +20,21 @@ describe("ObjectSettingRegisterEventUseCase Test", () =>
         {
             switch (type) {
 
+                case EventType.POINTER_DOWN:
+                    expect(type).toBe(EventType.POINTER_DOWN);
+                    break;
+
                 case "focusin":
                     expect(type).toBe("focusin");
-                    return;
+                    break;
 
                 case "focusout":
                     expect(type).toBe("focusout");
-                    return;
+                    break;
 
                 case "keypress":
                     expect(type).toBe("keypress");
-                    return;
+                    break;
                     
                 default:
                     throw new Error("Invalid event type");
@@ -42,17 +49,21 @@ describe("ObjectSettingRegisterEventUseCase Test", () =>
         {
             switch (type) {
 
+                case EventType.POINTER_DOWN:
+                    expect(type).toBe(EventType.POINTER_DOWN);
+                    break;
+
                 case "focusin":
                     expect(type).toBe("focusin");
-                    return;
+                    break;
 
                 case "focusout":
                     expect(type).toBe("focusout");
-                    return;
+                    break;
 
                 case "keypress":
                     expect(type).toBe("keypress");
-                    return;
+                    break;
                     
                 default:
                     throw new Error("Invalid event type");

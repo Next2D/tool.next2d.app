@@ -2,6 +2,8 @@ import { execute as objectSettingFocusInEventUseCase } from "./ObjectSettingFocu
 import { execute as objectSettingKeyPressEventService } from "../service/ObjectSettingKeyPressEventService";
 import { execute as objectSettingNameFocusOutEventUseCase } from "./ObjectSettingNameFocusOutEventUseCase";
 import { execute as objectSettingSymbolFocusOutEventUseCase } from "./ObjectSettingSymbolFocusOutEventUseCase";
+import { execute as objectSettingPointerDownUseCase } from "./ObjectSettingPointerDownUseCase";
+import { EventType } from "@/tool/domain/event/EventType";
 import {
     $OBJECT_SETTING_NAME_ID,
     $OBJECT_SETTING_SYMBOL_ID
@@ -22,6 +24,7 @@ export const execute = (): void =>
 
     // 名前のinputにイベントを登録
     if (nameElement) {
+        nameElement.addEventListener(EventType.POINTER_DOWN, objectSettingPointerDownUseCase);
         nameElement.addEventListener("focusin", objectSettingFocusInEventUseCase);
         nameElement.addEventListener("focusout", objectSettingNameFocusOutEventUseCase);
         nameElement.addEventListener("keypress", objectSettingKeyPressEventService);
@@ -32,6 +35,7 @@ export const execute = (): void =>
 
     // シンボルのinputにイベントを登録
     if (symbolElement) {
+        symbolElement.addEventListener(EventType.POINTER_DOWN, objectSettingPointerDownUseCase);
         symbolElement.addEventListener("focusin", objectSettingFocusInEventUseCase);
         symbolElement.addEventListener("focusout", objectSettingSymbolFocusOutEventUseCase);
         symbolElement.addEventListener("keypress", objectSettingKeyPressEventService);
