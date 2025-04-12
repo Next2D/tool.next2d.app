@@ -50,7 +50,7 @@ export const execute = async <I extends Instance> (
         if (instance.type === $MOVIE_CLIP_TYPE
             && (instance as unknown as MovieClip).active
         ) {
-            await objectSettingUpdateSymbolService(symbol);
+            objectSettingUpdateSymbolService(symbol);
         }
     }
 

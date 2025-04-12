@@ -25,7 +25,7 @@ export const execute = <I extends Instance> (instance: I): void =>
         return ;
     }
 
-    // スクリーン一覧にあれば名前を更新
+    // タイムラインのシーン一覧にあれば名前を更新
     timelineToolUpdateSceneListNameService(instance.id, instance.name);
 
     // アクティブなら表示を更新
