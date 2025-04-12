@@ -19,10 +19,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
@@ -34,6 +30,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     if (!sounds) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     // 指定のサウンドを削除
     const externalSoundArea = new ExternalSoundArea(workSpace, movieClip);

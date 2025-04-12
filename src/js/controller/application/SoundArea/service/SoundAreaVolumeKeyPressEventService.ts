@@ -13,14 +13,13 @@ export const execute = (event: KeyboardEvent): void =>
         return ;
     }
 
-    // 親のイベントを終了
-    event.stopPropagation();
-    event.preventDefault();
-
     const element: HTMLElement | null = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
     }
+
+    // 親のイベントを終了
+    event.stopPropagation();
 
     // 入力終了
     element.blur();

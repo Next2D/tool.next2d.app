@@ -15,13 +15,13 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
     }
+
+    // イベントの伝播を停止
+    event.stopPropagation();
 
     element.style.cursor = "";
 };

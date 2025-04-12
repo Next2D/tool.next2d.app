@@ -53,10 +53,8 @@ describe("SoundAreaLoopCountPointerUpEventUseCase Test", () =>
         input.focus = vi.fn(() => { focus = true; });
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "stopPropagation": vi.fn(() => { stopPropagation = true; }),
-            "preventDefault": vi.fn(() => { preventDefault = true; }),
             "pointerId": 100,
             "target": input
         } as unknown as PointerEvent;
@@ -70,7 +68,6 @@ describe("SoundAreaLoopCountPointerUpEventUseCase Test", () =>
 
         soundArea.targetIndex = 0;
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
         expect(pointerCancel).toBe(false);
@@ -82,7 +79,6 @@ describe("SoundAreaLoopCountPointerUpEventUseCase Test", () =>
         await execute(mockEvent);
 
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
         expect(pointerCancel).toBe(true);

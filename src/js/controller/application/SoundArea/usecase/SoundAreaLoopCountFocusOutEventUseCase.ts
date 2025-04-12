@@ -13,10 +13,6 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // 入力モードを終了する
     $updateKeyLock(false);
 
@@ -39,6 +35,9 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     if (!soundObject) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     // 内部データを更新
     const externalSoundObject = new ExternalSoundObject(

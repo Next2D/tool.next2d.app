@@ -19,14 +19,13 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // カーソルを元に戻す
     $setCursor("auto");
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     // windowイベントを解除
     element.releasePointerCapture(event.pointerId);

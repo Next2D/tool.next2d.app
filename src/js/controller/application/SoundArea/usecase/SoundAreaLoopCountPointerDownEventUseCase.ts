@@ -28,9 +28,6 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // イベントの伝播を止める
-    event.preventDefault();
-
     const element = event.currentTarget as HTMLInputElement;
     if (!element) {
         return ;
@@ -48,12 +45,10 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        soundAreaLoopCountPointerUpEventUseCase,
-        { "passive": false }
+        soundAreaLoopCountPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        soundAreaLoopCountPointerUpEventUseCase,
-        { "passive": false }
+        soundAreaLoopCountPointerUpEventUseCase
     );
 };

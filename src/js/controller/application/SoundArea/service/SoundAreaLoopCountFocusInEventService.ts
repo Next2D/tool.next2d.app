@@ -18,15 +18,14 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // 入力モードをOnにする
     $updateKeyLock(true);
 
     // 入力中のelementをセット
     $setEditingElement(element);
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     element.style.cursor = "";
 };

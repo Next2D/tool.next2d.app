@@ -9,22 +9,22 @@ import {
  * @description 音量操作を開始
  *              Start volume operation
  *
- * @param {PointerEvent} event
+ * @param  {PointerEvent} event
  * @return {void}
  * @method
  * @public
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     $setCursor("ew-resize");
 
     if (!event.movementX) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     requestAnimationFrame((): void =>
     {

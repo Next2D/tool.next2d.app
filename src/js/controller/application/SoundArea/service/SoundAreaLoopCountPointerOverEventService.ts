@@ -15,15 +15,14 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // フォーカスを移動用に変更
     const element: HTMLElement | null = event.currentTarget as HTMLElement;
     if (!element) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     element.style.cursor = "ew-resize";
 };

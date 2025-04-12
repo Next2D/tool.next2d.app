@@ -24,24 +24,20 @@ describe("SoundAreaLoopCountFocusOutEventUseCase Test", () =>
         input.value = "1";
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "stopPropagation": vi.fn(() => { stopPropagation = true; }),
-            "preventDefault": vi.fn(() => { preventDefault = true; }),
             "currentTarget": input
         } as unknown as FocusEvent;
 
         $updateKeyLock(true);
         expect($useKeyboard()).toBe(true);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect(soundObject.loopCount).toBe(100);
 
         await execute(mockEvent);
 
         expect($useKeyboard()).toBe(false);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect(soundObject.loopCount).toBe(1);
     });
 });

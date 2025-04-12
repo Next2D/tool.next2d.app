@@ -13,16 +13,11 @@ describe("SoundAreaLoopCountKeyPressEventServiceTest", () =>
             blur = true;
         });
 
-        let preventDefault = false;
         let stopPropagation = false;
         const eventMock = {
             "stopPropagation": () =>
             {
                 stopPropagation = true;
-            },
-            "preventDefault": () =>
-            {
-                preventDefault = true;
             },
             "key": "Enter",
             "currentTarget": div
@@ -30,12 +25,10 @@ describe("SoundAreaLoopCountKeyPressEventServiceTest", () =>
 
         expect(blur).toBe(false);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
 
         execute(eventMock);
 
         expect(blur).toBe(true);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
     });
 });
