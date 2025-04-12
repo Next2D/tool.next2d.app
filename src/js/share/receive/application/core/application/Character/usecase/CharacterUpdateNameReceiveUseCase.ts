@@ -48,7 +48,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         movieClip,
         layer,
         character,
-        message.data[5] as NonNullable<string>,
+        message.data[6] as NonNullable<string>,
         true
     );
 };
