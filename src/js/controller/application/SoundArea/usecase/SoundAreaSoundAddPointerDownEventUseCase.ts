@@ -1,8 +1,10 @@
 import { $SOUND_AREA_SELECT_ID } from "@/config/SoundSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
-import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 
 /**
  * @description サウンドエリアのサウンド追加ボタンのマウスダウンイベント
@@ -17,14 +19,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
-        || !timelineHeader.stopFlag
     ) {
         return ;
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
+    // 再生中のタイムラインを停止する
+    if (!timelineHeader.stopFlag) {
+        timelineToolPlayStopUseCase();
+    }
 
     const element: HTMLSelectElement | null = document
         .getElementById($SOUND_AREA_SELECT_ID) as HTMLSelectElement;
@@ -32,6 +34,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     if (!element) {
         return ;
     }
+
+    // メニューを全て隠す
+    $allHideMenu();
+
+    // 編集中の要素をnullにする
+    $setEditingElement(null);
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     const libraryId = parseInt(element.value as string);
     const workSpace = $getCurrentWorkSpace();

@@ -1,5 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as soundAreaSoundAddPointerDownEventUseCase } from "./SoundAreaSoundAddPointerDownEventUseCase";
+import { execute as soundAreaSelectPointerDownService } from "../service/SoundAreaSelectPointerDownService";
 import {
     $SOUND_AREA_ADD_SOUND_ID,
     $SOUND_AREA_SELECT_ID
@@ -21,8 +22,7 @@ export const execute = (): void =>
     // マウスダウンイベントを登録
     if (soundAddElement) {
         soundAddElement.addEventListener(EventType.POINTER_DOWN,
-            soundAreaSoundAddPointerDownEventUseCase,
-            { "passive": false }
+            soundAreaSoundAddPointerDownEventUseCase
         );
     }
 
@@ -30,10 +30,8 @@ export const execute = (): void =>
         .getElementById($SOUND_AREA_SELECT_ID);
 
     if (selectElement) {
-        selectElement.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent): void =>
-        {
-            // イベントの伝播を止める
-            event.stopPropagation();
-        });
+        selectElement.addEventListener(EventType.POINTER_DOWN,
+            soundAreaSelectPointerDownService
+        );
     }
 };

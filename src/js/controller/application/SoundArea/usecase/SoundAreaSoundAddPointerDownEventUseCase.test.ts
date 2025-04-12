@@ -37,10 +37,8 @@ describe("SoundAreaSoundAddPointerDownEventUseCase Test", () =>
         select.appendChild(option);
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "stopPropagation": vi.fn(() => { stopPropagation = true; }),
-            "preventDefault": vi.fn(() => { preventDefault = true; }),
             "button": 0
         } as unknown as PointerEvent;
 
@@ -48,12 +46,10 @@ describe("SoundAreaSoundAddPointerDownEventUseCase Test", () =>
         movieClip.deleteSound(movieClip.currentFrame);
         expect(movieClip.hasSound(movieClip.currentFrame)).toBe(false);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
 
         await execute(mockEvent);
 
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect(movieClip.hasSound(movieClip.currentFrame)).toBe(true);
 
         workSpace.libraries.delete(sound.id);
@@ -64,21 +60,17 @@ describe("SoundAreaSoundAddPointerDownEventUseCase Test", () =>
     it("execute test case2", async () =>
     {
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "stopPropagation": vi.fn(() => { stopPropagation = true; }),
-            "preventDefault": vi.fn(() => { preventDefault = true; }),
             "button": 0
         } as unknown as PointerEvent;
     
         timelineHeader.stopFlag = false;
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
 
         await execute(mockEvent);
 
         timelineHeader.stopFlag = true;
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
     });
 });
