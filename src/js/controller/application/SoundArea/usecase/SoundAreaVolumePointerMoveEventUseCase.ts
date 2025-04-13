@@ -6,6 +6,16 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
+ * @description タイマーID
+ *              Timer ID
+ *
+ * @member {number}
+ * @default -1
+ * @private
+ */
+let $timerId: number = -1;
+
+/**
  * @description 音量操作を開始
  *              Start volume operation
  *
@@ -16,17 +26,19 @@ import {
  */
 export const execute = (event: PointerEvent): void =>
 {
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
+
+    // カーソルを変更
     $setCursor("ew-resize");
 
     if (!event.movementX) {
         return ;
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
-    requestAnimationFrame((): void =>
+    cancelAnimationFrame($timerId);
+    $timerId = requestAnimationFrame((): void =>
     {
         const element = event.target as HTMLInputElement;
         if (!element) {

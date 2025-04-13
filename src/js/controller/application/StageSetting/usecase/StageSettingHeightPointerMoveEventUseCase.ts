@@ -7,6 +7,16 @@ import { execute as screenStageAreaUpdateSizeService } from "@/screen/applicatio
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
+ * @description タイマーID
+ *              Timer ID
+ *
+ * @member {number}
+ * @default -1
+ * @private
+ */
+let $timerId: number = -1;
+
+/**
  * @description ステージ高さの値操作のマウスムーブイベント
  *              Mouse move event for value operation of stage height
  *
@@ -17,18 +27,19 @@ import { execute as screenScrollResizeService } from "@/screen/application/Scree
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (!event.movementX) {
-        return ;
-    }
-
-    // カーソルを変更
-    $setCursor("ew-resize");
-
     // イベントの伝播を止める
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame((): void =>
+    // カーソルを変更
+    $setCursor("ew-resize");
+
+    if (!event.movementX) {
+        return ;
+    }
+
+    cancelAnimationFrame($timerId);
+    $timerId = requestAnimationFrame((): void =>
     {
         const element = event.target as HTMLInputElement;
         if (!element) {

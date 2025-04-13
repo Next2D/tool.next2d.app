@@ -3,6 +3,16 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
+ * @description タイマーID
+ *              Timer ID
+ *
+ * @member {number}
+ * @default -1
+ * @private
+ */
+let $timerId: number = -1;
+
+/**
  * @description ステージのフレームレートの値操作のマウスムーブイベント
  *              Mouse move event for value operation of stage frame rate
  *
@@ -24,7 +34,8 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    requestAnimationFrame((): void =>
+    cancelAnimationFrame($timerId);
+    $timerId = requestAnimationFrame((): void =>
     {
         const element = event.target as HTMLInputElement;
         if (!element) {

@@ -3,13 +3,16 @@ import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/T
 import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $STAGE_HEIGHT_ID } from "@/config/StageSettingConfig";
-import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 import {
     $setBeforeHeight,
     $setBeforeWidth
 } from "../StagsSettingUtil";
-import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description ステージエリアの幅のマウスダウンイベントユースケース

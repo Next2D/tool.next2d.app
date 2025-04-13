@@ -3,7 +3,8 @@ import { execute as soundAreaLoopCountPointerMoveEventUseCase } from "./SoundAre
 import { execute as soundAreaLoopCountPointerUpEventUseCase } from "./SoundAreaLoopCountPointerUpEventUseCase";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { soundArea } from "@/controller/domain/model/SoundArea";
-import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description ループ回数操作のwindowイベントを登録
@@ -32,6 +33,15 @@ export const execute = (event: PointerEvent): void =>
     if (!element) {
         return ;
     }
+
+    // メニューを全て非表示にする
+    $allHideMenu();
+
+    // 編集中の要素を解除
+    $setEditingElement(null);
+
+    // fixed logic
+    event.preventDefault();
 
     // 対象のインデックスを設定
     soundArea.targetIndex = parseInt(element.dataset.index as string);
