@@ -1,9 +1,7 @@
 import { execute as stageSettingWidthRegisterPointerEventUseCase } from "./StageSettingWidthRegisterPointerEventUseCase";
-import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { stageSetting } from "@/controller/domain/model/StageSetting";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $STAGE_HEIGHT_ID } from "@/config/StageSettingConfig";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import {
     $activeTouchPointers,
@@ -29,11 +27,6 @@ export const execute = (event: PointerEvent): void =>
         || $activeTouchPointers.size > 1
     ) {
         return ;
-    }
-
-    // 再生中なら一時停止
-    if (!timelineHeader.stopFlag) {
-        timelineToolPlayStopUseCase();
     }
 
     // イベントの伝播を止める

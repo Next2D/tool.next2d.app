@@ -2,6 +2,8 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineHeaderBuildElementUseCase } from "@/timeline/application/TimelineHeader/usecase/TimelineHeaderBuildElementUseCase";
 import { execute as stageSettingUpdateFpsHistoryUseCase } from "@/history/application/controller/application/StageSetting/UpdateFPS/usecase/StageSettingUpdateFpsHistoryUseCase";
 import { execute as stageSettingUpdateFpsService } from "@/controller/application/StageSetting/service/StageSettingUpdateFpsService";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description ステージのフレームレートを更新
@@ -49,5 +51,12 @@ export const execute = async (
 
         // タイムラインのヘッダーを再描画
         timelineHeaderBuildElementUseCase();
+
+        if (!timelineHeader.stopFlag) {
+            // 一度停止して
+            timelineToolPlayStopUseCase();
+            // 再度再生
+            timelineToolPlayStopUseCase();
+        }
     }
 };

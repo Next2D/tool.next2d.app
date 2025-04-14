@@ -13,13 +13,13 @@ import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
  */
 export const execute = async (): Promise<void> =>
 {
-    const element = document.getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
-    if (!element) {
+    // 再生中は処理を行わない
+    if (!timelineHeader.stopFlag) {
         return ;
     }
 
-    // 再生中は処理を行わない
-    if (!timelineHeader.stopFlag) {
+    const element = document.getElementById($SOUND_AREA_SOUND_LIST_AREA_ID);
+    if (!element) {
         return ;
     }
 

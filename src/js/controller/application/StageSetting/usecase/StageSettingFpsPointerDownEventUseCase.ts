@@ -1,7 +1,5 @@
 import { execute as stageSettingFpsRegisterPointerEventUseCase } from "./StageSettingFpsRegisterPointerEventUseCase";
-import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
-import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $setBeforeFps } from "../StagsSettingUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
@@ -21,11 +19,6 @@ export const execute = (event: PointerEvent): void =>
         || $activeTouchPointers.size > 1
     ) {
         return ;
-    }
-
-    // 再生中なら一時停止
-    if (!timelineHeader.stopFlag) {
-        timelineToolPlayStopUseCase();
     }
 
     // イベントの伝播を止める

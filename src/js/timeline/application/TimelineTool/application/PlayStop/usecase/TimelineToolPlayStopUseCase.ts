@@ -51,7 +51,7 @@ export const execute = async (): Promise<void> =>
 
     if (timelineHeader.stopFlag) {
         // 停止処理
-        clearInterval(timerId);
+        cancelAnimationFrame(timerId);
 
         // 停止したフレームのラベルを表示
         timelineLabelNameUpdateService(
@@ -85,7 +85,7 @@ export const execute = async (): Promise<void> =>
             if (timelineHeader.stopFlag) {
 
                 // タイマーの停止処理
-                clearInterval(timerId);
+                cancelAnimationFrame(timerId);
 
                 // 再生表示に切り替え
                 element.setAttribute("class", "play");
@@ -121,7 +121,7 @@ export const execute = async (): Promise<void> =>
                         timerId = requestAnimationFrame(loop);
                     } else {
                         // タイマーの停止処理
-                        clearInterval(timerId);
+                        cancelAnimationFrame(timerId);
 
                         // 停止フラグを立てる
                         timelineHeader.stopFlag = true;
