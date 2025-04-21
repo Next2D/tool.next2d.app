@@ -2,7 +2,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as controllerAdjustmentPointerMoveUseCase } from "./ControllerAdjustmentPointerMoveUseCase";
 import { execute as controllerAdjustmentPointerUpUseCase } from "./ControllerAdjustmentPointerUpUseCase";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description コントローラーの幅調整のイベント開始処理
@@ -14,7 +14,9 @@ import { $setEditingElement } from "@/global/GlobalUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -31,7 +33,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを中止
     event.stopPropagation();
-    event.preventDefault();
 
     // マウス移動イベントを登録
     element.setPointerCapture(event.pointerId);
@@ -42,12 +43,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        controllerAdjustmentPointerUpUseCase,
-        { "passive": false }
+        controllerAdjustmentPointerUpUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        controllerAdjustmentPointerUpUseCase,
-        { "passive": false }
+        controllerAdjustmentPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        controllerAdjustmentPointerUpUseCase
     );
 };

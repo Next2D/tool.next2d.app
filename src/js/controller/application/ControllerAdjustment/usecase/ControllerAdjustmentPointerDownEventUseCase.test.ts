@@ -10,7 +10,6 @@ describe("ControllerAdjustmentPointerDownEventUseCase Test", () =>
         
         let pointerId = 0;
         let stopPropagation = false;
-        let preventDefault = false;
         const MockEvent = {
             "button": 0,
             "target": div,
@@ -18,10 +17,6 @@ describe("ControllerAdjustmentPointerDownEventUseCase Test", () =>
             "stopPropagation": () =>
             {
                 stopPropagation = true;
-            },
-            "preventDefault": () =>
-            {
-                preventDefault = true;
             }
         } as unknown as PointerEvent;
 
@@ -33,18 +28,27 @@ describe("ControllerAdjustmentPointerDownEventUseCase Test", () =>
         let pointerMove  = false;
         let pointerUp    = false;
         let pointerCancel = false;
+        let pointerLeave = false;
         div.addEventListener = vi.fn((type: string) =>
         {
             switch (type) {
+
                 case EventType.POINTER_MOVE:
                     pointerMove = true;
                     break;
+
                 case EventType.POINTER_UP:
                     pointerUp = true;
                     break;
+
                 case EventType.POINTER_CANCEL:
                     pointerCancel = true;
                     break;
+
+                case EventType.POINTER_LEAVE:
+                    pointerLeave = true;
+                    break;
+
                 default:
                     throw new Error("Invalid type");
             }
@@ -53,17 +57,17 @@ describe("ControllerAdjustmentPointerDownEventUseCase Test", () =>
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
         expect(pointerCancel).toBe(false);
+        expect(pointerLeave).toBe(false);
         expect(pointerId).toBe(0);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
 
         execute(MockEvent);
 
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
         expect(pointerCancel).toBe(true);
+        expect(pointerLeave).toBe(true);
         expect(pointerId).toBe(100);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
     });
 });

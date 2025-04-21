@@ -20,7 +20,6 @@ export const execute = (): void =>
     }
 
     element.addEventListener(EventType.POINTER_DOWN,
-        controllerAdjustmentPointerDownEventUseCase,
-        { "passive": false }
+        controllerAdjustmentPointerDownEventUseCase
     );
 };
