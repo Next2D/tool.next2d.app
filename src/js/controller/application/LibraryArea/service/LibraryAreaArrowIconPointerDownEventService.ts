@@ -1,11 +1,11 @@
 import type { Folder } from "@/core/domain/model/Folder";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalFolder } from "@/external/core/domain/model/ExternalFolder";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
-import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description フォルダーのアローアイコンを操作
@@ -44,7 +44,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 親のイベントを中止
     event.stopPropagation();
-    event.preventDefault();
 
     const externalFolder = new ExternalFolder(workSpace, folder);
     if (folder.mode === "close") {

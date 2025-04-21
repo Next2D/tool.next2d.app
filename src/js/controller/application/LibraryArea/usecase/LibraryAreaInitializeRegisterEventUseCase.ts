@@ -42,18 +42,15 @@ export const execute = (): void =>
 
         // キーイベントの登録
         listBoxElement.addEventListener(EventType.POINTER_OVER,
-            libraryAreaRegisterWindowKeyEventUseCase,
-            { "passive": false }
+            libraryAreaRegisterWindowKeyEventUseCase
         );
 
         // キーイベントの削除
         listBoxElement.addEventListener(EventType.POINTER_OUT,
-            libraryAreaRemoveWindowKeyEventUseCase,
-            { "passive": false }
+            libraryAreaRemoveWindowKeyEventUseCase
         );
         listBoxElement.addEventListener(EventType.POINTER_LEAVE,
-            libraryAreaRemoveWindowKeyEventUseCase,
-            { "passive": false }
+            libraryAreaRemoveWindowKeyEventUseCase
         );
     }
 };

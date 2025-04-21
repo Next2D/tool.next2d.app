@@ -23,28 +23,21 @@ describe("LibraryAreaArrowIconPointerDownEventService Test", () =>
         div.dataset.libraryId = "1";
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "button": 0,
             "currentTarget": div,
             "stopPropagation": vi.fn(() =>
             {
                 stopPropagation = true;
-            }),
-            "preventDefault": vi.fn(() =>
-            {
-                preventDefault = true;
             })
         } as unknown as PointerEvent;
 
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect(folder.mode).toBe("open");
 
         execute(mockEvent);
 
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect(folder.mode).toBe("close");
     });
 });

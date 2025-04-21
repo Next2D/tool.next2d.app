@@ -13,12 +13,12 @@ import { execute as libraryMenuShowUseCase } from "@/menu/application/LibraryMen
 import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
+import { $setScrollTop } from "../LibraryAreaUtil";
 import {
     $FOLDER_TYPE,
     $MOVIE_CLIP_TYPE
 } from "@/config/InstanceConfig";
-import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
-import { $setScrollTop } from "../LibraryAreaUtil";
 
 /**
  * @description 親Elementのマウスダウン処理関数、Elementを選択状態に更新
@@ -54,7 +54,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 親のイベントを中止
     event.stopPropagation();
-    event.preventDefault();
 
     if (event.pointerType === "touch") {
         $activeTouchPointers.add(event.pointerId);

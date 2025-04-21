@@ -82,8 +82,7 @@ export const execute = async (): Promise<void> =>
 
         // 親Elementに選択イベントを登録
         node.addEventListener(EventType.POINTER_DOWN,
-            libraryAreaSelectedPointerDownUseCase,
-            { "passive": false }
+            libraryAreaSelectedPointerDownUseCase
         );
 
         // タップ終了イベントを登録

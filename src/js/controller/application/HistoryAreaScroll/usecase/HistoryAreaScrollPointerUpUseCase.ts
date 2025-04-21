@@ -19,11 +19,11 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     // 登録したポインターイベントを解放
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, historyAreaScrollPointerMoveUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 };

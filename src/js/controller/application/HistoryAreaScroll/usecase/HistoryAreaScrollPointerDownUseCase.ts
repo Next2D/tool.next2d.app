@@ -28,7 +28,6 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     // ポインターイベントを登録
     element.setPointerCapture(event.pointerId);
@@ -39,12 +38,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        historyAreaScrollPointerUpUseCase,
-        { "passive": false }
+        historyAreaScrollPointerUpUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        historyAreaScrollPointerUpUseCase,
-        { "passive": false }
+        historyAreaScrollPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        historyAreaScrollPointerUpUseCase
     );
 };

@@ -2,6 +2,12 @@ import { $HISTORY_LIST_ID } from "@/config/HistoryConfig";
 import { historyArea } from "@/controller/domain/model/HistoryArea";
 
 /**
+ * @member {number} $timerId
+ * @private
+ */
+let $timerId: number = 0;
+
+/**
  * @description 履歴エリアのスクロールバーのマウスムーブイベント
  *              Mouse move event of the history area scroll bar
  *
@@ -25,7 +31,8 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame((): void =>
+    cancelAnimationFrame($timerId);
+    $timerId = requestAnimationFrame((): void =>
     {
         const historyAreaElement: HTMLElement | null = document
             .getElementById($HISTORY_LIST_ID);
