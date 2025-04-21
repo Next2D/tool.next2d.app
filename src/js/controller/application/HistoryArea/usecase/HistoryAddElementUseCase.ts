@@ -59,7 +59,7 @@ export const execute = (
     {
         $pointerDownQueue = $pointerDownQueue
             .then(() => historyMouseDownEventUseCase(event));
-    }, { "passive": false });
+    });
 
     // 履歴の高さを更新
     historyAreaScrollUpdateHeightService();

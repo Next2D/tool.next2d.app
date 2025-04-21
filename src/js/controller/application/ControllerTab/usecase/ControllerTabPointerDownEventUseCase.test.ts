@@ -21,14 +21,10 @@ describe("ControllerTabPointerDownEventUseCase Test", () =>
         document.body.appendChild(div);
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "stopPropagation": vi.fn(() =>
             {
                 stopPropagation = true;
-            }),
-            "preventDefault": vi.fn(() => {
-                preventDefault = true;
             }),
             "button": 0,
             "currentTarget": node,
@@ -36,12 +32,10 @@ describe("ControllerTabPointerDownEventUseCase Test", () =>
 
         expect(node.classList.contains("active")).toBe(false);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect(bodyElement.style.display).toBe("none");
         execute(mockEvent);
         expect(node.classList.contains("active")).toBe(true);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect(bodyElement.style.display).toBe("");
 
         document.body.removeChild(div);

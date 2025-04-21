@@ -28,8 +28,7 @@ export const execute = (): void =>
         }
 
         node.addEventListener(EventType.POINTER_DOWN,
-            controllerTabPointerDownEventUseCase,
-            { "passive": false }
+            controllerTabPointerDownEventUseCase
         );
     }
 };
