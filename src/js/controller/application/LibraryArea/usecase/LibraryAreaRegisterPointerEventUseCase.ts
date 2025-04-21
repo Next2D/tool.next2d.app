@@ -1,10 +1,12 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as libraryAreaPointerMoveEventUseCase } from "./LibraryAreaPointerMoveEventUseCase";
+import { execute as libraryAreaPointerMoveEventService } from "../service/LibraryAreaPointerMoveEventService";
 import { execute as libraryAreaPointerUpEventUseCase } from "./LibraryAreaPointerUpEventUseCase";
 import { execute as screenAreaLibraryItemDropStartService } from "@/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropStartService";
 import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $setMoveOffsetX,
     $setMoveOffsetY
@@ -39,6 +41,12 @@ export const execute = (event: PointerEvent, item_element: HTMLElement): void =>
         return ;
     }
 
+    // メニューを全て非表示に更新
+    $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
+
     // スクリーン以外のelementのイベントを無効化
     screenAreaLibraryItemDropStartService();
 
@@ -57,17 +65,19 @@ export const execute = (event: PointerEvent, item_element: HTMLElement): void =>
     item_element.setPointerCapture(event.pointerId);
     item_element.addEventListener(
         EventType.POINTER_MOVE,
-        libraryAreaPointerMoveEventUseCase,
+        libraryAreaPointerMoveEventService,
         { "passive": false }
     );
     item_element.addEventListener(
         EventType.POINTER_UP,
-        libraryAreaPointerUpEventUseCase,
-        { "passive": false }
+        libraryAreaPointerUpEventUseCase
     );
     item_element.addEventListener(
         EventType.POINTER_CANCEL,
-        libraryAreaPointerUpEventUseCase,
-        { "passive": false }
+        libraryAreaPointerUpEventUseCase
+    );
+    item_element.addEventListener(
+        EventType.POINTER_LEAVE,
+        libraryAreaPointerUpEventUseCase
     );
 };

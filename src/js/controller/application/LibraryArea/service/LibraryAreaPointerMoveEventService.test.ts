@@ -1,4 +1,4 @@
-import { execute } from "./LibraryAreaPointerMoveEventUseCase";
+import { execute } from "./LibraryAreaPointerMoveEventService";
 import { describe, expect, it, vi } from "vitest";
 import { $getMoveState } from "../LibraryAreaUtil";
 

@@ -27,8 +27,7 @@ export const execute = (): void =>
     if (listBoxElement) {
 
         listBoxElement.addEventListener(EventType.POINTER_DOWN,
-            libraryAreaPointerDownEventUseCase,
-            { "passive": false }
+            libraryAreaPointerDownEventUseCase
         );
 
         // drop系のイベントの登録

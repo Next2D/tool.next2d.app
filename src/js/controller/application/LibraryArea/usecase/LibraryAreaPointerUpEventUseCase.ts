@@ -1,12 +1,16 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as libraryAreaPointerMoveEventUseCase } from "./LibraryAreaPointerMoveEventUseCase";
 import { $SCREEN_ID } from "@/config/ScreenConfig";
-import { execute as screenAreaDropUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaDropUseCase";
-import { $getMoveState, $getScrollTop, $setMoveState } from "../LibraryAreaUtil";
-import { execute as screenAreaLibraryItemDropEndService } from "@/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropEndService";
-import { execute as libraryAreaMoveItemsUseCase } from "./LibraryAreaMoveItemsUseCase";
 import { $LIBRARY_LIST_BOX_ID } from "@/config/LibraryConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as libraryAreaPointerMoveEventService } from "../service/LibraryAreaPointerMoveEventService";
+import { execute as screenAreaDropUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaDropUseCase";
+import { execute as screenAreaLibraryItemDropEndService } from "@/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropEndService";
+import { execute as libraryAreaMoveItemsUseCase } from "./LibraryAreaMoveItemsUseCase";
+import {
+    $getMoveState,
+    $getScrollTop,
+    $setMoveState
+} from "../LibraryAreaUtil";
 
 /**
  * @description スクリーンエリアの移動処理を実行
@@ -26,13 +30,13 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     // 登録したイベントを削除
     element.releasePointerCapture(event.pointerId);
-    element.removeEventListener(EventType.POINTER_MOVE, libraryAreaPointerMoveEventUseCase);
+    element.removeEventListener(EventType.POINTER_MOVE, libraryAreaPointerMoveEventService);
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
     element.setAttribute("style", "");
 
     if (!$getMoveState()) {

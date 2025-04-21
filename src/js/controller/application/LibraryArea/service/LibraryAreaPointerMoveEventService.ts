@@ -1,11 +1,15 @@
-import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
 import {
     $getMoveOffsetX,
     $getMoveOffsetY,
     $getMoveState,
     $setMoveState
 } from "../LibraryAreaUtil";
+
+/**
+ * @member {number} $timerId
+ * @private
+ */
+let $timerId: number = 0;
 
 /**
  * @description スクリーンへの移動イベント関数
@@ -33,17 +37,12 @@ export const execute = (event: PointerEvent): void =>
         element.style.position = "fixed";
     }
 
-    // メニューを全て非表示に更新
-    $allHideMenu();
-
-    // 編集中のElementを初期化
-    $setEditingElement(null);
-
     // イベントの伝播を止める
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame(() =>
+    cancelAnimationFrame($timerId);
+    $timerId = requestAnimationFrame(() =>
     {
         if (!$getMoveState()) {
             return ;
