@@ -87,12 +87,10 @@ export const execute = async (): Promise<void> =>
 
         // タップ終了イベントを登録
         node.addEventListener(EventType.POINTER_UP,
-            libraryAreaSelectedEndTouchEndService,
-            { "passive": false }
+            libraryAreaSelectedEndTouchEndService
         );
         node.addEventListener(EventType.POINTER_CANCEL,
-            libraryAreaSelectedEndTouchEndService,
-            { "passive": false }
+            libraryAreaSelectedEndTouchEndService
         );
 
         // フォルダ時はアローアイコンにイベントを登録
@@ -102,15 +100,13 @@ export const execute = async (): Promise<void> =>
 
                 const arrowIcon = icons[0] as NonNullable<HTMLElement>;
                 arrowIcon.addEventListener(EventType.POINTER_DOWN,
-                    libraryAreaArrowIconPointerDownEventService,
-                    { "passive": false }
+                    libraryAreaArrowIconPointerDownEventService
                 );
 
                 // フォルダアイコンにイベントを登録
                 const folderIcon = icons[1] as NonNullable<HTMLElement>;
                 folderIcon.addEventListener(EventType.POINTER_DOWN,
-                    libraryAreaArrowIconPointerDownEventService,
-                    { "passive": false }
+                    libraryAreaArrowIconPointerDownEventService
                 );
             }
         }

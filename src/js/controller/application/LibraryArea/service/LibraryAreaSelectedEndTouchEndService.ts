@@ -17,7 +17,6 @@ export const execute = (event: PointerEvent): void =>
     }
 
     event.stopPropagation();
-    event.preventDefault();
 
     $activeTouchPointers.clear();
 };

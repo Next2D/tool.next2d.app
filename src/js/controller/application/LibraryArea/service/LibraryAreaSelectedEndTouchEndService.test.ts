@@ -7,18 +7,12 @@ describe("LibraryAreaSelectedEndTouchEndService Test", () =>
     it("execute test", () =>
     {
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "pointerType": "touch",
             "stopPropagation": vi.fn(() =>
             {
                 stopPropagation = true;
-            }),
-            "preventDefault": vi.fn(() =>
-            {
-                preventDefault = true;
             })
-
         } as unknown as PointerEvent;
 
         $activeTouchPointers.clear();
@@ -27,12 +21,10 @@ describe("LibraryAreaSelectedEndTouchEndService Test", () =>
 
         expect($activeTouchPointers.size).toBe(2);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
 
         execute(mockEvent);
 
         expect($activeTouchPointers.size).toBe(0);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
     });
 });
