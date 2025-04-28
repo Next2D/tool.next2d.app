@@ -6,16 +6,6 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
- * @description タイマーID
- *              Timer ID
- *
- * @member {number}
- * @default -1
- * @private
- */
-let $timerId: number = -1;
-
-/**
  * @description 音量操作を開始
  *              Start volume operation
  *
@@ -37,8 +27,7 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    cancelAnimationFrame($timerId);
-    $timerId = requestAnimationFrame((): void =>
+    requestAnimationFrame((): void =>
     {
         const element = event.target as HTMLInputElement;
         if (!element) {

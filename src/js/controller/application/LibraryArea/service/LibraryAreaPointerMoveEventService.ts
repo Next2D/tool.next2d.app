@@ -6,12 +6,6 @@ import {
 } from "../LibraryAreaUtil";
 
 /**
- * @member {number} $timerId
- * @private
- */
-let $timerId: number = 0;
-
-/**
  * @description スクリーンへの移動イベント関数
  *              Move event function to screen
  *
@@ -41,8 +35,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    cancelAnimationFrame($timerId);
-    $timerId = requestAnimationFrame(() =>
+    requestAnimationFrame(() =>
     {
         if (!$getMoveState()) {
             return ;

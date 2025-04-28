@@ -3,12 +3,6 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 
 /**
- * @member {number}
- * @private
- */
-let $timerId: number = 0;
-
-/**
  * @description タイムラインの幅を調整
  *              Adjust the width of the timeline
  *
@@ -26,8 +20,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    cancelAnimationFrame($timerId);
-    $timerId = requestAnimationFrame((): void =>
+    requestAnimationFrame((): void =>
     {
         const style: CSSStyleDeclaration = document
             .documentElement

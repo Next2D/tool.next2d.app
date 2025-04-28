@@ -4,16 +4,6 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
- * @description タイマーID
- *              Timer ID
- *
- * @member {number}
- * @default -1
- * @private
- */
-let $timerId: number = -1;
-
-/**
  * @description ループ回数操作を開始
  *              Start loop count operation
  *
@@ -36,8 +26,7 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    cancelAnimationFrame($timerId);
-    $timerId = requestAnimationFrame((): void =>
+    requestAnimationFrame((): void =>
     {
         const element = event.target as HTMLInputElement;
         if (!element) {
