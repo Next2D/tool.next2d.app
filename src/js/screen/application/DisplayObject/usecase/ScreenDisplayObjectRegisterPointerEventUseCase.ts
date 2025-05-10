@@ -26,7 +26,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        screenDisplayObjectWindowMouseUpEventUseCase,
-        { "passive": false }
+        screenDisplayObjectWindowMouseUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        screenDisplayObjectWindowMouseUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        screenDisplayObjectWindowMouseUpEventUseCase
     );
 };

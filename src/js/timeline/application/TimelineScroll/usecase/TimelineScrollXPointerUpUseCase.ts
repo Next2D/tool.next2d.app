@@ -24,4 +24,6 @@ export const execute = (event: PointerEvent): void =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, timelineScrollXPointerMoveUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 };

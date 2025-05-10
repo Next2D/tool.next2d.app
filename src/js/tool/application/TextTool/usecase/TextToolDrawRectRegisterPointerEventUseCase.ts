@@ -27,7 +27,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        textToolDrawRectPointerUpEventUseCase,
-        { "passive": false }
+        textToolDrawRectPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        textToolDrawRectPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        textToolDrawRectPointerUpEventUseCase
     );
 };

@@ -38,7 +38,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        timelineAdjustmentYPointerUpUseCase,
-        { "passive": false }
+        timelineAdjustmentYPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        timelineAdjustmentYPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        timelineAdjustmentYPointerUpUseCase
     );
 };

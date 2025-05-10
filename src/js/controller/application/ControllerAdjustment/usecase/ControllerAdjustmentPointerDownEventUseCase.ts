@@ -46,11 +46,11 @@ export const execute = (event: PointerEvent): void =>
         controllerAdjustmentPointerUpUseCase
     );
     element.addEventListener(
-        EventType.POINTER_CANCEL,
+        EventType.POINTER_LEAVE,
         controllerAdjustmentPointerUpUseCase
     );
     element.addEventListener(
-        EventType.POINTER_LEAVE,
+        EventType.POINTER_CANCEL,
         controllerAdjustmentPointerUpUseCase
     );
 };

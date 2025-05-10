@@ -19,7 +19,6 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     // スクロールバーの移動イベントを削除
     element.releasePointerCapture(event.pointerId);
@@ -28,4 +27,5 @@ export const execute = (event: PointerEvent): void =>
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 };

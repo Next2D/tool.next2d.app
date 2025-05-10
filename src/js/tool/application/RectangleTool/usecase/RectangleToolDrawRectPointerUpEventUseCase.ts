@@ -29,7 +29,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // イベントの伝播を停止
     event.stopPropagation();
-    event.preventDefault();
 
     const element = event.target as HTMLElement;
     if (!element) {
@@ -42,6 +41,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         rectangleToolDrawRectPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     const tool: ITool<ArrowTool> = $getDefaultTool($TOOL_ARROW_NAME);
     if (tool) {

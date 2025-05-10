@@ -26,12 +26,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        timelineLayerControllerPointerUpUseCase,
-        { "passive": false }
+        timelineLayerControllerPointerUpUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        timelineLayerControllerPointerUpUseCase,
-        { "passive": false }
+        timelineLayerControllerPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        timelineLayerControllerPointerUpUseCase
     );
 };

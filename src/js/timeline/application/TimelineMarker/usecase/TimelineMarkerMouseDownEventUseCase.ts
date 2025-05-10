@@ -50,12 +50,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        timelineMarkerPointerUpEventUseCase,
-        { "passive": false }
+        timelineMarkerPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        timelineMarkerPointerUpEventUseCase,
-        { "passive": false }
+        timelineMarkerPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        timelineMarkerPointerUpEventUseCase
     );
 };

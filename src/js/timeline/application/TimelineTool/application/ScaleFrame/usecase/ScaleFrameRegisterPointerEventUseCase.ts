@@ -26,7 +26,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        scaleFramePointerUpEventUseCase,
-        { "passive": false }
+        scaleFramePointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        scaleFramePointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        scaleFramePointerUpEventUseCase
     );
 };

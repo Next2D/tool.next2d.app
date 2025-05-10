@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as strokeSizePointerMoveEventService } from "../service/StrokeSizePointerMoveEventService";
-import { execute as zoomToolPointerUpEventUseCase } from "./StrokeSizePointerUpEventUseCase";
+import { execute as strokeSizePointerUpEventUseCase } from "./StrokeSizePointerUpEventUseCase";
 
 /**
  * @description 線の幅のinputのマウス操作イベントを登録
@@ -27,7 +27,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        zoomToolPointerUpEventUseCase,
-        { "passive": false }
+        strokeSizePointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        strokeSizePointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        strokeSizePointerUpEventUseCase
     );
 };

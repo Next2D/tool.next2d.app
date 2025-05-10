@@ -30,12 +30,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        propertyAreaPointerUpUseCase,
-        { "passive": false }
+        propertyAreaPointerUpUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        propertyAreaPointerUpUseCase,
-        { "passive": false }
+        propertyAreaPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        propertyAreaPointerUpUseCase
     );
 };

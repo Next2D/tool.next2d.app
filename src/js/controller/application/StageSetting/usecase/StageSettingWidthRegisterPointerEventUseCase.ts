@@ -33,4 +33,8 @@ export const execute = (event: PointerEvent): void =>
         EventType.POINTER_CANCEL,
         stageSettingWidthPointerUpEventUseCase
     );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        stageSettingWidthPointerUpEventUseCase
+    );
 };

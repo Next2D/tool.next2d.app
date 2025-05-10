@@ -59,7 +59,14 @@ export const execute = async (
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        timelineLayerFramePointerUpEventUseCase,
-        { "passive": false }
+        timelineLayerFramePointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        timelineLayerFramePointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        timelineLayerFramePointerUpEventUseCase
     );
 };

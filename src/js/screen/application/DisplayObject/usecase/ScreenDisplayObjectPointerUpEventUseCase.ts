@@ -16,7 +16,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 親のイベントをキャンセル
     event.stopPropagation();
-    event.preventDefault();
 
     const element = event.target as HTMLElement;
     if (!element) {
@@ -29,6 +28,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         screenDisplayObjectWindowMouseMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 移動した座標に更新
     await screenDisplayObjectUpdateSelectedValueService();

@@ -38,7 +38,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        screenScrollYBarPoiterUpEventUseCase,
-        { "passive": false }
+        screenScrollYBarPoiterUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        screenScrollYBarPoiterUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        screenScrollYBarPoiterUpEventUseCase
     );
 };

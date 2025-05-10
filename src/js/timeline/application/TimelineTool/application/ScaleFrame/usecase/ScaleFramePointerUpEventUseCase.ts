@@ -18,7 +18,6 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     const element = event.target as HTMLInputElement;
     if (!element) {
@@ -30,6 +29,8 @@ export const execute = (event: PointerEvent): void =>
         stageSettingFpsWindowMouseMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // input要素のフォーカス
     element.focus();

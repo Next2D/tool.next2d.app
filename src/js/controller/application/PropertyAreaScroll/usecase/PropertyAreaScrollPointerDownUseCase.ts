@@ -39,12 +39,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        propertyAreaScrollPointerUpUseCase,
-        { "passive": false }
+        propertyAreaScrollPointerUpUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        propertyAreaScrollPointerUpUseCase,
-        { "passive": false }
+        propertyAreaScrollPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        propertyAreaScrollPointerUpUseCase
     );
 };

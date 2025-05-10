@@ -36,4 +36,6 @@ export const execute = (event: PointerEvent): void =>
         timelineLayerFramePointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 };

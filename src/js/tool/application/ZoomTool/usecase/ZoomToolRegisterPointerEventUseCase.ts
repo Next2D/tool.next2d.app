@@ -27,7 +27,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        zoomToolPointerUpEventUseCase,
-        { "passive": false }
+        zoomToolPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        zoomToolPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        zoomToolPointerUpEventUseCase
     );
 };

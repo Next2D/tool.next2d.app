@@ -41,11 +41,11 @@ export const execute = (event: PointerEvent): void =>
         historyAreaScrollPointerUpUseCase
     );
     element.addEventListener(
-        EventType.POINTER_CANCEL,
+        EventType.POINTER_LEAVE,
         historyAreaScrollPointerUpUseCase
     );
     element.addEventListener(
-        EventType.POINTER_LEAVE,
+        EventType.POINTER_CANCEL,
         historyAreaScrollPointerUpUseCase
     );
 };

@@ -27,12 +27,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        circleToolDrawRectPointerUpEventUseCase,
-        { "passive": false }
+        circleToolDrawRectPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        circleToolDrawRectPointerUpEventUseCase,
-        { "passive": false }
+        circleToolDrawRectPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        circleToolDrawRectPointerUpEventUseCase
     );
 };

@@ -26,7 +26,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        timelineTargetGroupWindowMouseUpEventUseCase,
-        { "passive": false }
+        timelineTargetGroupWindowMouseUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        timelineTargetGroupWindowMouseUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        timelineTargetGroupWindowMouseUpEventUseCase
     );
 };

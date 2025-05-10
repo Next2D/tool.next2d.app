@@ -38,5 +38,5 @@ export const execute = (event: PointerEvent): void =>
     transformSetting.tempPosition.y = parseFloat(element.value);
 
     // windowのイベントを登録
-    transformSettingYRegisterWindowEventUseCase(event);
+    // transformSettingYRegisterWindowEventUseCase(event);
 };

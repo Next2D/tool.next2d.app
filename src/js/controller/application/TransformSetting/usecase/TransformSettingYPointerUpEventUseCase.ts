@@ -16,7 +16,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     // カーソルを変更
     $setCursor("auto");
@@ -32,6 +31,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         transformSettingYPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // y座標に変更があれば、最終位置をセット
     await screenDisplayObjectUpdateSelectedValueService();

@@ -12,9 +12,9 @@ import { $BITMAP_TYPE, $MOVIE_CLIP_TYPE, $SHAPE_TYPE, $VIDEO_TYPE } from "@/conf
  * @description 行列の掛け算
  *              Matrix multiplication
  *
- * @param  {qrray} a
- * @param  {qrray} b
- * @return {qrray}
+ * @param  {number} a
+ * @param  {number} b
+ * @return {number[]}
  * @method
  * @static
  */
@@ -34,7 +34,7 @@ export const $multiplicationMatrix = (a: number[], b: number[]): number[] =>
  * @description 親のMovieClipとスクリーンの拡大率の行列を返却
  *              Returns the matrix of the parent MovieClip and the screen magnification
  *
- * @return {array}
+ * @return {number[]}
  * @method
  * @public
  */
@@ -164,7 +164,7 @@ export const $createTransformElementStyle = (
  *              Returns the matrix for the mask of the Bitmap
  *
  * @param  {Character} character
- * @return {array}
+ * @return {number[]}
  * @method
  * @public
  */
@@ -189,8 +189,8 @@ export const $getElementMaskMatrix = (character: Character): number[] =>
  * @description アイテムタイプに合わせたマスク用の行列を返却
  *              Returns the matrix for the mask according to the item type
  *
- * @param {Character} character
- * @return {array}
+ * @param  {Character} character
+ * @return {number[]}
  * @method
  * @public
  */

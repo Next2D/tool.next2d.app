@@ -27,7 +27,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        roundRectToolDrawRectPointerUpEventUseCase,
-        { "passive": false }
+        roundRectToolDrawRectPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        roundRectToolDrawRectPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        roundRectToolDrawRectPointerUpEventUseCase
     );
 };

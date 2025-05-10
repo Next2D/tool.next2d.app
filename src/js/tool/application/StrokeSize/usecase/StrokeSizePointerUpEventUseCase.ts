@@ -17,7 +17,6 @@ export const execute = (event: PointerEvent): void =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     // カーソルを変更
     $setCursor("auto");
@@ -33,6 +32,8 @@ export const execute = (event: PointerEvent): void =>
         strokeSizePointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 線の太さを更新
     strokeSize.value = parseInt(element.value);

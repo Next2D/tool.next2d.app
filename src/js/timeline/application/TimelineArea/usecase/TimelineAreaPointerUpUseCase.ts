@@ -19,7 +19,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // 親のイベントを中止する
     event.stopPropagation();
-    event.preventDefault();
 
     $setCursor("auto");
 
@@ -34,6 +33,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE, timelineAreaPointerMoveService);
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 移動状態をセット
     const workSpace = $getCurrentWorkSpace();

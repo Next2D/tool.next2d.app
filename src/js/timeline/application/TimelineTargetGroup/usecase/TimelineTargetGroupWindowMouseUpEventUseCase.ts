@@ -34,4 +34,6 @@ export const execute = (event: PointerEvent): void =>
         timelineTargetGroupWindowMouseMoveEventUseCase
     );
     window.removeEventListener(EventType.POINTER_UP, execute);
+    window.removeEventListener(EventType.POINTER_CANCEL, execute);
+    window.removeEventListener(EventType.POINTER_LEAVE, execute);
 };

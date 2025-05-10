@@ -27,7 +27,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        rectangleToolDrawRectPointerUpEventUseCase,
-        { "passive": false }
+        rectangleToolDrawRectPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        rectangleToolDrawRectPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        rectangleToolDrawRectPointerUpEventUseCase
     );
 };

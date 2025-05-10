@@ -26,4 +26,5 @@ export const execute = (event: PointerEvent): void =>
     element.removeEventListener(EventType.POINTER_MOVE, pluginAreaScrollPointerMoveUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 };

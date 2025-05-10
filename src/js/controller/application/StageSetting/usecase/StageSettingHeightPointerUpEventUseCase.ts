@@ -41,6 +41,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     const workSpace = $getCurrentWorkSpace();
     const stage = workSpace.stage;

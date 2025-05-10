@@ -3,6 +3,12 @@ import { execute as transformSettingXPointerMoveEventUseCase } from "./Transform
 import { execute as transformSettingXPointerUpEventUseCase } from "./TransformSettingXPointerUpEventUseCase";
 
 /**
+ * @type {Promise}
+ * @private
+ */
+let $queue: Promise<void> = Promise.resolve();
+
+/**
  * @description 変形エリアのx座標の数値変更のマウス操作イベントをwindowに登録
  *              Register mouse operation events for numerical changes in x-coordinate of deformation area in window
  *
@@ -25,9 +31,17 @@ export const execute = (event: PointerEvent): void =>
         transformSettingXPointerMoveEventUseCase,
         { "passive": false }
     );
+
     element.addEventListener(
         EventType.POINTER_UP,
-        transformSettingXPointerUpEventUseCase,
-        { "passive": false }
+        transformSettingXPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        transformSettingXPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        transformSettingXPointerUpEventUseCase
     );
 };

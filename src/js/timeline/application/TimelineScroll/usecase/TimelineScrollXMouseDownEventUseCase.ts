@@ -29,7 +29,14 @@ export const execute = (event: PointerEvent): void =>
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        timelineScrollXPointerUpUseCase,
-        { "passive": false }
+        timelineScrollXPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        timelineScrollXPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        timelineScrollXPointerUpUseCase
     );
 };

@@ -61,4 +61,8 @@ export const execute = (event: PointerEvent): void =>
         EventType.POINTER_CANCEL,
         soundAreaVolumePointerUpEventUseCase
     );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        soundAreaVolumePointerUpEventUseCase
+    );
 };

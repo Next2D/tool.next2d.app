@@ -28,6 +28,13 @@ export const execute = (event: PointerEvent): void =>
     element.addEventListener(
         EventType.POINTER_UP,
         transformSettingYPointerUpEventUseCase,
-        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        transformSettingYPointerUpEventUseCase,
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        transformSettingYPointerUpEventUseCase,
     );
 };

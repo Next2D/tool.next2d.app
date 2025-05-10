@@ -20,7 +20,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // イベントの伝播を停止
     event.stopPropagation();
-    event.preventDefault();
 
     const element = event.target as HTMLElement;
     if (!element) {
@@ -33,6 +32,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         zoomPlusToolStageRectPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 範囲選択のElementを表示
     const rectElement: HTMLElement | null = document
