@@ -32,6 +32,7 @@ describe("SoundAreaVolumePointerUpEventUseCase Test", () =>
         let pointerMove = false;
         let pointerUp = false;
         let pointerCancel = false;
+        let pointerLeave = false;
         input.removeEventListener = vi.fn((type) =>
         {
             switch (type) {
@@ -43,6 +44,9 @@ describe("SoundAreaVolumePointerUpEventUseCase Test", () =>
                     break;
                 case EventType.POINTER_CANCEL:
                     pointerCancel = true;
+                    break;
+                case EventType.POINTER_LEAVE:
+                    pointerLeave = true;
                     break;
                 default:
                     throw new Error("Invalid type");
@@ -71,6 +75,7 @@ describe("SoundAreaVolumePointerUpEventUseCase Test", () =>
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
         expect(pointerCancel).toBe(false);
+        expect(pointerLeave).toBe(false);
         expect(pointerId).toBe(0);
         expect(focus).toBe(false);
         expect(soundArea.targetIndex).toBe(0);
@@ -82,6 +87,7 @@ describe("SoundAreaVolumePointerUpEventUseCase Test", () =>
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
         expect(pointerCancel).toBe(true);
+        expect(pointerLeave).toBe(true);
         expect(pointerId).toBe(100);
         expect(focus).toBe(true);
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");

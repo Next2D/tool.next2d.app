@@ -16,6 +16,7 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
         let pointerMove = false;
         let pointerUp = false;
         let pointerCancel = false;
+        let pointerLeave = false;
         input.addEventListener = vi.fn((type) => 
         {
             switch (type) {
@@ -28,18 +29,19 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
                 case EventType.POINTER_CANCEL:
                     pointerCancel = true;
                     return ;
+                case EventType.POINTER_LEAVE:
+                    pointerLeave = true;
+                    return ;
                 default:
                     throw new Error(`Unknown event type: ${type}`);
             }
         });
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "pointerId": 100,
             "button": 0,
             "stopPropagation": vi.fn(() => { stopPropagation = true; }),
-            "preventDefault": vi.fn(() => { preventDefault = true; }),
             "currentTarget": input
         } as unknown as PointerEvent;
 
@@ -47,7 +49,7 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
         expect(soundArea.targetIndex).toBe(-1);
         expect(pointerId).toBe(0);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
+        expect(pointerLeave).toBe(false);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
         expect(pointerCancel).toBe(false);
@@ -57,7 +59,7 @@ describe("SoundAreaLoopCountPointerDownEventUseCase Test", () =>
         expect(soundArea.targetIndex).toBe(0);
         expect(pointerId).toBe(100);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
+        expect(pointerLeave).toBe(true);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
         expect(pointerCancel).toBe(true);

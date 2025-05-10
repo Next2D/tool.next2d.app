@@ -40,13 +40,10 @@ export const execute = (event: PointerEvent): void =>
     // 編集中の要素を解除
     $setEditingElement(null);
 
-    // fixed logic
-    event.preventDefault();
-
     // 対象のインデックスを設定
     soundArea.targetIndex = parseInt(element.dataset.index as string);
 
-    // windowイベントを登録
+    // ポインターイベントを登録
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
         EventType.POINTER_MOVE,
