@@ -5,7 +5,7 @@ import { execute as transformSettingInputFocusInEventService } from "../service/
 import { execute as transformSettingWidthFocusOutEventUseCase } from "./TransformSettingWidthFocusOutEventUseCase";
 import { execute as transformSettingInputKeyPressEventService } from "../service/TransformSettingInputKeyPressEventService";
 import { execute as transformSettingXPointerDownEventUseCase } from "./TransformSettingXPointerDownEventUseCase";
-import { execute as transformSettingYMouseDownEventUseCase } from "./TransformSettingYMouseDownEventUseCase";
+import { execute as transformSettingYPointerDownEventUseCase } from "./TransformSettingYPointerDownEventUseCase";
 import { execute as transformSettingXFocusOutEventUseCase } from "./TransformSettingXFocusOutEventUseCase";
 import { execute as transformSettingYFocusOutEventUseCase } from "./TransformSettingYFocusOutEventUseCase";
 import { execute as transformSettingWidthMouseDownEventUseCase } from "./TransformSettingWidthMouseDownEventUseCase";
@@ -78,7 +78,7 @@ export const execute = (): void =>
             transformSettingInputMouseOutEventService
         );
         yElement.addEventListener(EventType.POINTER_DOWN,
-            transformSettingYMouseDownEventUseCase
+            transformSettingYPointerDownEventUseCase
         );
         yElement.addEventListener("focusin",
             transformSettingInputFocusInEventService

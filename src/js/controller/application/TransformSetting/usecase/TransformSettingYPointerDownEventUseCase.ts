@@ -1,6 +1,8 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as transformSettingYRegisterWindowEventUseCase } from "./TransformSettingYRegisterPointerEventUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description 変形エリアのy座標のマウスダウンイベント
@@ -13,19 +15,23 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
     // 親のイベントを止める
     event.stopPropagation();
-
     if ($useKeyboard()) {
         return ;
     }
 
-    // イベントの伝播を止める
-    event.preventDefault();
+    // メニューを全て非表示にする
+    $allHideMenu();
+
+    // 編集中の要素を解除
+    $setEditingElement(null);
 
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
     if (!element) {
@@ -38,5 +44,5 @@ export const execute = (event: PointerEvent): void =>
     transformSetting.tempPosition.y = parseFloat(element.value);
 
     // windowのイベントを登録
-    // transformSettingYRegisterWindowEventUseCase(event);
+    transformSettingYRegisterWindowEventUseCase(event);
 };

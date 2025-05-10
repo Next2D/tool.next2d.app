@@ -33,9 +33,6 @@ export const execute = (event: PointerEvent): void =>
     // 編集中の要素を解除
     $setEditingElement(null);
 
-    // fixed logic
-    event.preventDefault();
-
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
     if (!element) {
         return ;

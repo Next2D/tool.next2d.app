@@ -25,16 +25,17 @@ export const execute = (event: PointerEvent): void =>
         transformSettingYPointerMoveEventUseCase,
         { "passive": false }
     );
+
     element.addEventListener(
         EventType.POINTER_UP,
-        transformSettingYPointerUpEventUseCase,
+        transformSettingYPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        transformSettingYPointerUpEventUseCase,
+        transformSettingYPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_LEAVE,
-        transformSettingYPointerUpEventUseCase,
+        transformSettingYPointerUpEventUseCase
     );
 };

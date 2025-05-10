@@ -8,11 +8,11 @@ import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/scre
  *              Mouse up event for value operation of x-coordinate of deformation area
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // カーソルを変更
     $setCursor("auto");
@@ -35,7 +35,7 @@ export const execute = (event: PointerEvent): void =>
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
 
     // x座標に変更があれば、最終位置をセット
-    screenDisplayObjectUpdateSelectedValueService();
+    await screenDisplayObjectUpdateSelectedValueService();
 
     // input要素のフォーカス
     element.focus();
