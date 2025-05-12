@@ -1,9 +1,10 @@
 import { execute } from "./TransformSettingUpdateScaleYElementService";
 import { $TRANSFORM_OBJECT_SCALE_Y_ID } from "../../../../config/TransformSettingConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TransformSettingUpdateScaleYElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const input = document.createElement("input");
         input.id = $TRANSFORM_OBJECT_SCALE_Y_ID;

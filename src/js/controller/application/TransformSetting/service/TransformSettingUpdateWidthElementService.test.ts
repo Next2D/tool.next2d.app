@@ -1,9 +1,10 @@
 import { execute } from "./TransformSettingUpdateWidthElementService";
 import { $TRANSFORM_OBJECT_WIDTH_ID } from "../../../../config/TransformSettingConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TransformSettingUpdateWidthElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const input = document.createElement("input");
         input.id = $TRANSFORM_OBJECT_WIDTH_ID;

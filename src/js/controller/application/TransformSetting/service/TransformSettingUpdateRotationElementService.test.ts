@@ -1,9 +1,10 @@
 import { execute } from "./TransformSettingUpdateRotationElementService";
 import { $TRANSFORM_OBJECT_ROTATE_ID } from "../../../../config/TransformSettingConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TransformSettingUpdateRotationElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const input = document.createElement("input");
         input.id = $TRANSFORM_OBJECT_ROTATE_ID;

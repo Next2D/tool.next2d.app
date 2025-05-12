@@ -1,9 +1,10 @@
 import { execute } from "./TransformSettingUpdateYElementService";
 import { $TRANSFORM_OBJECT_Y_ID } from "../../../../config/TransformSettingConfig";
+import { describe, expect, it } from "vitest";
 
 describe("TransformSettingUpdateYElementServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const input = document.createElement("input");
         input.id = $TRANSFORM_OBJECT_Y_ID;
