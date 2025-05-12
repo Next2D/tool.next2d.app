@@ -1,30 +1,24 @@
 import { execute } from "./TransformSettingInputFocusInEventService";
 import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
+import { describe, expect, it, vi } from "vitest";
 
 describe("TransformSettingInputFocusInEventServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
-        let preventDefault = false;
         let stopPropagation = false;
         const eventMock = {
-            "stopPropagation": () =>
+            "stopPropagation": vi.fn(() =>
             {
                 stopPropagation = true;
-            },
-            "preventDefault": () =>
-            {
-                preventDefault = true;
-            },
+            }),
             "currentTarget": document.createElement("div")
-        };
+        } as unknown as FocusEvent;
 
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect($useKeyboard()).toBe(false);
         execute(eventMock);
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect($useKeyboard()).toBe(true);
     });
 });

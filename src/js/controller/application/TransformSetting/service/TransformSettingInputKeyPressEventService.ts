@@ -15,7 +15,6 @@ export const execute = (event: KeyboardEvent): void =>
 
     // 親のイベントを終了
     event.stopPropagation();
-    event.preventDefault();
 
     const element: HTMLElement | null = event.currentTarget as HTMLElement;
     if (!element) {

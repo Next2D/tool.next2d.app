@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as transformSettingInputMouseOverEventService } from "../service/TransformSettingInputMouseOverEventService";
-import { execute as transformSettingInputMouseOutEventService } from "../service/TransformSettingInputMouseOutEventService";
+import { execute as transformSettingInputPointerOverEventService } from "../service/TransformSettingInputPointerOverEventService";
+import { execute as transformSettingInputPointerOutEventService } from "../service/TransformSettingInputPointerOutEventService";
 import { execute as transformSettingInputFocusInEventService } from "../service/TransformSettingInputFocusInEventService";
 import { execute as transformSettingWidthFocusOutEventUseCase } from "./TransformSettingWidthFocusOutEventUseCase";
 import { execute as transformSettingInputKeyPressEventService } from "../service/TransformSettingInputKeyPressEventService";
@@ -48,10 +48,10 @@ export const execute = (): void =>
 
     if (xElement) {
         xElement.addEventListener(EventType.POINTER_OVER,
-            transformSettingInputMouseOverEventService
+            transformSettingInputPointerOverEventService
         );
         xElement.addEventListener(EventType.POINTER_OUT,
-            transformSettingInputMouseOutEventService
+            transformSettingInputPointerOutEventService
         );
         xElement.addEventListener(EventType.POINTER_DOWN,
             transformSettingXPointerDownEventUseCase,
@@ -73,10 +73,10 @@ export const execute = (): void =>
 
     if (yElement) {
         yElement.addEventListener(EventType.POINTER_OVER,
-            transformSettingInputMouseOverEventService
+            transformSettingInputPointerOverEventService
         );
         yElement.addEventListener(EventType.POINTER_OUT,
-            transformSettingInputMouseOutEventService
+            transformSettingInputPointerOutEventService
         );
         yElement.addEventListener(EventType.POINTER_DOWN,
             transformSettingYPointerDownEventUseCase,
@@ -98,10 +98,10 @@ export const execute = (): void =>
 
     if (widthElement) {
         widthElement.addEventListener(EventType.POINTER_OVER,
-            transformSettingInputMouseOverEventService
+            transformSettingInputPointerOverEventService
         );
         widthElement.addEventListener(EventType.POINTER_OUT,
-            transformSettingInputMouseOutEventService
+            transformSettingInputPointerOutEventService
         );
         widthElement.addEventListener(EventType.POINTER_DOWN,
             transformSettingWidthMouseDownEventUseCase
@@ -122,10 +122,10 @@ export const execute = (): void =>
 
     if (heightElement) {
         heightElement.addEventListener(EventType.POINTER_OVER,
-            transformSettingInputMouseOverEventService
+            transformSettingInputPointerOverEventService
         );
         heightElement.addEventListener(EventType.POINTER_OUT,
-            transformSettingInputMouseOutEventService
+            transformSettingInputPointerOutEventService
         );
         heightElement.addEventListener("focusin",
             transformSettingInputFocusInEventService
@@ -152,10 +152,10 @@ export const execute = (): void =>
 
     if (scaleXElement) {
         scaleXElement.addEventListener(EventType.POINTER_OVER,
-            transformSettingInputMouseOverEventService
+            transformSettingInputPointerOverEventService
         );
         scaleXElement.addEventListener(EventType.POINTER_OUT,
-            transformSettingInputMouseOutEventService
+            transformSettingInputPointerOutEventService
         );
         scaleXElement.addEventListener("focusin",
             transformSettingInputFocusInEventService
@@ -170,10 +170,10 @@ export const execute = (): void =>
 
     if (scaleYElement) {
         scaleYElement.addEventListener(EventType.POINTER_OVER,
-            transformSettingInputMouseOverEventService
+            transformSettingInputPointerOverEventService
         );
         scaleYElement.addEventListener(EventType.POINTER_OUT,
-            transformSettingInputMouseOutEventService
+            transformSettingInputPointerOutEventService
         );
         scaleYElement.addEventListener("focusin",
             transformSettingInputFocusInEventService
@@ -188,10 +188,10 @@ export const execute = (): void =>
 
     if (rotateElement) {
         rotateElement.addEventListener(EventType.POINTER_OVER,
-            transformSettingInputMouseOverEventService
+            transformSettingInputPointerOverEventService
         );
         rotateElement.addEventListener(EventType.POINTER_OUT,
-            transformSettingInputMouseOutEventService
+            transformSettingInputPointerOutEventService
         );
         rotateElement.addEventListener("focusin",
             transformSettingInputFocusInEventService

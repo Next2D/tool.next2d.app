@@ -18,7 +18,6 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     const element = event.target as HTMLElement;
     if (!element) {
