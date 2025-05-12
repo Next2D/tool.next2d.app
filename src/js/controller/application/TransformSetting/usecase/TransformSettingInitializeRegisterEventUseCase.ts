@@ -54,7 +54,8 @@ export const execute = (): void =>
             transformSettingInputMouseOutEventService
         );
         xElement.addEventListener(EventType.POINTER_DOWN,
-            transformSettingXPointerDownEventUseCase
+            transformSettingXPointerDownEventUseCase,
+            { "passive": false }
         );
         xElement.addEventListener("focusin",
             transformSettingInputFocusInEventService
@@ -78,7 +79,8 @@ export const execute = (): void =>
             transformSettingInputMouseOutEventService
         );
         yElement.addEventListener(EventType.POINTER_DOWN,
-            transformSettingYPointerDownEventUseCase
+            transformSettingYPointerDownEventUseCase,
+            { "passive": false }
         );
         yElement.addEventListener("focusin",
             transformSettingInputFocusInEventService

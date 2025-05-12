@@ -1,8 +1,10 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as transformSettingYRegisterWindowEventUseCase } from "./TransformSettingYRegisterPointerEventUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as transformSettingYPointerMoveEventUseCase } from "./TransformSettingYPointerMoveEventUseCase";
+import { execute as transformSettingYPointerUpEventUseCase } from "./TransformSettingYPointerUpEventUseCase";
 
 /**
  * @description 変形エリアのy座標のマウスダウンイベント
@@ -33,6 +35,9 @@ export const execute = (event: PointerEvent): void =>
     // 編集中の要素を解除
     $setEditingElement(null);
 
+    // カーソルが変化しないように設定
+    event.preventDefault();
+
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
     if (!element) {
         return ;
@@ -44,5 +49,24 @@ export const execute = (event: PointerEvent): void =>
     transformSetting.tempPosition.y = parseFloat(element.value);
 
     // windowのイベントを登録
-    transformSettingYRegisterWindowEventUseCase(event);
+    // 移動のイベントを登録
+    element.setPointerCapture(event.pointerId);
+    element.addEventListener(
+        EventType.POINTER_MOVE,
+        transformSettingYPointerMoveEventUseCase,
+        { "passive": false }
+    );
+
+    element.addEventListener(
+        EventType.POINTER_UP,
+        transformSettingYPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        transformSettingYPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        transformSettingYPointerUpEventUseCase
+    );
 };
