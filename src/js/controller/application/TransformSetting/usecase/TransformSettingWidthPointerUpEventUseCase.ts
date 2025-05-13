@@ -14,10 +14,6 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // カーソルを変更
     $setCursor("auto");
 
@@ -26,12 +22,17 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // イベントの伝播を止める
+    event.stopPropagation();
+
     // windowのイベントを削除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE,
         transformSettingWidthWindowMouseMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
+    element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 変更前のmatrixを削除
     transformSetting.matrixs.length = 0;

@@ -1,11 +1,18 @@
-import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { execute as transformSettingWidthRegisterPointerEventUseCase } from "./TransformSettingWidthRegisterPointerEventUseCase";
-import { $getActiveTool } from "@/tool/application/ToolUtil";
+import { execute as transformSettingWidthPointerMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
+import { execute as transformSettingWidthPointerUpEventUseCase } from "./TransformSettingWidthPointerUpEventUseCase";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { EventType } from "@/tool/domain/event/EventType";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 
 /**
  * @description 変形エリアの幅変更のマウスダウンイベント
@@ -18,18 +25,25 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
     // 親のイベントを止める
     event.stopPropagation();
-
     if ($useKeyboard()) {
         return ;
     }
 
-    // イベントの伝播を止める
+    // メニューを全て非表示にする
+    $allHideMenu();
+
+    // 編集中の要素を解除
+    $setEditingElement(null);
+
+    // カーソルが変化しないように設定
     event.preventDefault();
 
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
@@ -109,6 +123,22 @@ export const execute = (event: PointerEvent): void =>
         }
     }
 
-    // windowのイベントを登録
-    transformSettingWidthRegisterPointerEventUseCase(event);
+    element.setPointerCapture(event.pointerId);
+    element.addEventListener(
+        EventType.POINTER_MOVE,
+        transformSettingWidthPointerMoveEventUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_UP,
+        transformSettingWidthPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        transformSettingWidthPointerUpEventUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        transformSettingWidthPointerUpEventUseCase
+    );
 };

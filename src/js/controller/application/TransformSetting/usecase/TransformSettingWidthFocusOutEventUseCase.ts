@@ -14,7 +14,6 @@ export const execute = (event: FocusEvent): void =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     // 入力モードを終了する
     $updateKeyLock(false);

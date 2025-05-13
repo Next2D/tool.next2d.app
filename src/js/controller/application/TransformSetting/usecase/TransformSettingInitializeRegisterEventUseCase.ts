@@ -8,7 +8,7 @@ import { execute as transformSettingXPointerDownEventUseCase } from "./Transform
 import { execute as transformSettingYPointerDownEventUseCase } from "./TransformSettingYPointerDownEventUseCase";
 import { execute as transformSettingXFocusOutEventUseCase } from "./TransformSettingXFocusOutEventUseCase";
 import { execute as transformSettingYFocusOutEventUseCase } from "./TransformSettingYFocusOutEventUseCase";
-import { execute as transformSettingWidthMouseDownEventUseCase } from "./TransformSettingWidthMouseDownEventUseCase";
+import { execute as transformSettingWidthPointerDownEventUseCase } from "./TransformSettingWidthPointerDownEventUseCase";
 import {
     $TRANSFORM_OBJECT_HEIGHT_ID,
     $TRANSFORM_OBJECT_ROTATE_ID,
@@ -104,7 +104,7 @@ export const execute = (): void =>
             transformSettingInputPointerOutEventService
         );
         widthElement.addEventListener(EventType.POINTER_DOWN,
-            transformSettingWidthMouseDownEventUseCase
+            transformSettingWidthPointerDownEventUseCase
         );
         widthElement.addEventListener("focusin",
             transformSettingInputFocusInEventService

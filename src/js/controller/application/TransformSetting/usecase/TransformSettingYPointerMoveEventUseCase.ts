@@ -16,10 +16,6 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     // カーソルを変更
     $setCursor("ew-resize");
 
@@ -27,6 +23,10 @@ export const execute = (event: PointerEvent): void =>
     if (!event.movementX) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+    event.preventDefault();
 
     requestAnimationFrame(async (): Promise<void> =>
     {
