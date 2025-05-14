@@ -310,3 +310,28 @@ export const $calcBoundingBox = (bounding_boxs: IBounds[]): IBounds =>
         "yMax": yMax
     };
 };
+
+/**
+ * @description 2次元行列の掛け算
+ *              Multiplication of 2D matrices
+ *
+ * @param  {array} a
+ * @param  {array} b
+ * @return {array}
+ * @method
+ * @public
+ */
+export const $multiplyMatrix = (a: number[], b: number[]): number[] =>
+{
+    const a0 = a[0], a1 = a[1], a2 = a[2], a3 = a[3], a4 = a[4], a5 = a[5];
+    const b0 = b[0], b1 = b[1], b2 = b[2], b3 = b[3], b4 = b[4], b5 = b[5];
+
+    return [
+        a0 * b0 + a2 * b1,
+        a1 * b0 + a3 * b1,
+        a0 * b2 + a2 * b3,
+        a1 * b2 + a3 * b3,
+        a0 * b4 + a2 * b5 + a4,
+        a1 * b4 + a3 * b5 + a5
+    ];
+};

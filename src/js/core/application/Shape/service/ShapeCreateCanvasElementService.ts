@@ -7,6 +7,7 @@ import {
     Shape as DisplayShape,
     Sprite
 } from "@next2d/display";
+import { $multiplyMatrix } from "../../CoreUtil";
 
 /**
  * @description ShapeからCanvasを生成
@@ -47,18 +48,26 @@ export const execute = async (
         return canvas;
     }
 
-    displayShape.x = -bounds.xMin - width  / 2;
-    displayShape.y = -bounds.yMin - height / 2;
-
     const container = new Sprite();
     container.addChild(displayShape);
 
     const concatMatrix = $getConcatenatedMatrix();
-    container.matrix = new Matrix(
-        concatMatrix[0], concatMatrix[1],
-        concatMatrix[2], concatMatrix[3],
-        0, 0
-    );
+    if (character) {
+        const multiMatrix = $multiplyMatrix(
+            concatMatrix, character.matrix
+        );
+        container.matrix = new Matrix(
+            multiMatrix[0], multiMatrix[1],
+            multiMatrix[2], multiMatrix[3],
+            0, 0
+        );
+    } else {
+        container.matrix = new Matrix(
+            concatMatrix[0], concatMatrix[1],
+            concatMatrix[2], concatMatrix[3],
+            0, 0
+        );
+    }
 
     const scale = window.devicePixelRatio;
 
