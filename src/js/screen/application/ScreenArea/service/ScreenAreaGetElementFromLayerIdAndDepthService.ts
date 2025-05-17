@@ -20,7 +20,7 @@ export const execute = (layer_id: number, depth: number): HTMLElement | null =>
     }
 
     const elements = element
-        .querySelectorAll(`layer-id-${layer_id}`);
+        .querySelectorAll(`.layer-id-${layer_id}`);
 
     if (!elements.length) {
         return null;
