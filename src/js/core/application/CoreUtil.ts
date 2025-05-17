@@ -249,7 +249,7 @@ export const $getAudioContext = (): AudioContext | null =>
  * @param  {number} y_min
  * @param  {number} x_max
  * @param  {number} y_max
- * @param  {array} matrix
+ * @param  {Float32Array} matrix
  * @return {object}
  * @method
  * @public
@@ -259,7 +259,7 @@ export const $getMatrixBounds = (
     y_min: number,
     x_max: number,
     y_max: number,
-    matrix: number[]
+    matrix: Float32Array
 ): IBounds => {
 
     const x0 = x_max * matrix[0] + y_max * matrix[2] + matrix[4];

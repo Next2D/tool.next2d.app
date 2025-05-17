@@ -51,7 +51,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 親のイベントをキャンセル
     event.stopPropagation();
-    event.preventDefault();
 
     // レイヤーのインデックスを取得
     const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
@@ -109,6 +108,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }
     }
 
+    // 初期座標を取得
     const position = screenAreaCalcSelectedCharacterPositionService(movieClip);
     if (!position) {
         return ;
@@ -117,6 +117,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 移動量のオブジェクトを初期化
     transformSetting.x = 0;
     transformSetting.y = 0;
+
+    // 変形情報を初期化
+    transformSetting.scaleX   = 0;
+    transformSetting.scaleY   = 0;
+    transformSetting.rotation = 0;
 
     // 移動前の座標を保存
     transformSetting.tempPosition.x = position.x;

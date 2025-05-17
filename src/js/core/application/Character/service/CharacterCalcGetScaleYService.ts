@@ -2,12 +2,12 @@
  * @description DisplayObjectのスケールYを計算
  *              Calculate the scale Y of DisplayObject
  *
- * @param  {array} matrix
+ * @param  {Float32Array} matrix
  * @return {number}
  * @method
  * @public
  */
-export const execute = (matrix: number[]): number =>
+export const execute = (matrix: Float32Array): number =>
 {
     let yScale: number = Math.sqrt(
         matrix[2] * matrix[2]

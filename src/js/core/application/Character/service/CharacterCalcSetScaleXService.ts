@@ -4,7 +4,7 @@
  *
  * @param  {number} scale_x
  * @param  {number} current_scale_x
- * @param  {array} matrix
+ * @param  {Float32Array} matrix
  * @return {number}
  * @method
  * @public
@@ -12,7 +12,7 @@
 export const execute = (
     scale_x: number,
     current_scale_x: number | null,
-    matrix: number[]
+    matrix: Float32Array
 ): number => {
 
     if (!Number.isInteger(scale_x)) {

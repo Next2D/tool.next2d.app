@@ -36,20 +36,112 @@ let $characterId: number = 1;
  */
 export class Character
 {
-    private _$id: number;
-    private _$name: string;
-    private _$startFrame: number;
-    private _$endFrame: number;
-    private _$libraryId: number;
-    private _$depth: number;
+    /**
+     * @description CharacterのユニークID
+     *             Unique ID of Character
+     *
+     * @member {number}
+     * @public
+     * @readonly
+     */
+    public readonly id: number;
+
+    /**
+     * @description 開始フレーム番号
+     *              start frame number
+     *
+     * @member {number}
+     * @public
+     */
+    public startFrame: number;
+
+    /**
+     * @description 終了フレーム番号
+     *              end frame number
+     *
+     * @member {number}
+     * @public
+     */
+    public endFrame: number;
+
+    /**
+     * @description ライブラリに読み込まれたアイテムID
+     *              Item ID loaded in the library
+     *
+     * @member {number}
+     * @public
+     */
+    public libraryId: number;
+
+    /**
+     * @description 表示順の深さ(昇順)
+     *              Depth of display order (ascending)
+     *
+     * @member {number}
+     * @public
+     */
+    public depth: number;
+
+    /**
+     * @description matrix情報
+     *              Matrix information
+     *
+     * @member {Float32Array}
+     * @readonly
+     * @public
+     */
+    public readonly matrix: Float32Array;
+
+    /**
+     * @description colorTransform情報
+     *              ColorTransform information
+     *
+     * @member {Float32Array}
+     * @readonly
+     * @public
+     */
+    public readonly colorTransform: Float32Array;
+
+    /**
+     * @description 中心点の座標
+     *              Center point coordinates
+     *
+     * @member {IPosition}
+     * @public
+     */
+    public referencePosition: IPosition;
+
+    /**
+     * @description フィルターの配列を返却
+     *              Return an array of filters
+     *
+     * @member {array}
+     * @readonly
+     * @public
+     */
+    public readonly filters: any[];
+
+    /**
+     * @description ブレンドモード
+     *              Blend mode
+     *
+     * @member {string}
+     * @public
+     */
+    public blendMode: IBlendMode;
+
+    /**
+     * @description MovieClip内で有効なアクセス名
+     *              Valid access name in MovieClip
+     *
+     * @member {string}
+     * @public
+     */
+    public name: string;
+
     private _$scaleX: number | null;
     private _$scaleY: number | null;
     private _$rotation: number | null;
-    private _$blendMode: IBlendMode;
-    private readonly _$matrix: number[];
-    private readonly _$colorTransform: number[];
-    private readonly _$filters: any[];
-    private readonly _$referencePosition: IPosition;
 
     /**
      * @constructor
@@ -57,50 +149,21 @@ export class Character
      */
     constructor ()
     {
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$id = $characterId++;
+        this.id             = $characterId++;
+        this.libraryId      = -1;
+        this.depth          = 0;
+        this.name           = "";
+        this.matrix         = new Float32Array([1, 0, 0, 1, 0, 0]);
+        this.colorTransform = new Float32Array([1, 1, 1, 1, 0, 0, 0, 0]);
+        this.blendMode      = "normal";
+        this.startFrame     = 0;
+        this.endFrame       = 0;
 
-        /**
-         * @type {number}
-         * @default -1
-         * @private
-         */
-        this._$libraryId = -1;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$depth = 0;
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$matrix = [1, 0, 0, 1, 0, 0];
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$colorTransform = [1, 1, 1, 1, 0, 0, 0, 0];
-
-        /**
-         * @type {string}
-         * @default "normal"
-         * @private
-         */
-        this._$blendMode = "normal";
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$filters = [];
+        this.filters = [];
+        this.referencePosition = {
+            "x": 0,
+            "y": 0
+        };
 
         /**
          * @type {number}
@@ -122,49 +185,6 @@ export class Character
          * @private
          */
         this._$rotation = null;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$startFrame = 0;
-
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$endFrame = 0;
-
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$name = "";
-
-        /**
-         * @type {object}
-         * @private
-         */
-        this._$referencePosition = {
-            "x": 0,
-            "y": 0
-        };
-    }
-
-    /**
-     * @description Characterの中心点の位置（グローバル値）
-     *              Position of the center point of Character (global value)
-     *
-     * @member {IPosition}
-     * @readonly
-     * @public
-     */
-    get referencePosition (): IPosition
-    {
-        return this._$referencePosition;
     }
 
     /**
@@ -184,23 +204,6 @@ export class Character
     }
 
     /**
-     * @description MovieClip内で有効なアクセス名
-     *              Valid access name in MovieClip
-     *
-     * @member {string}
-     * @public
-     */
-    get name ()
-    {
-        return this._$name;
-    }
-    set name (name)
-    {
-        // TODO
-        this._$name = `${name}`.replace(/ /g, "").trim();
-    }
-
-    /**
      * @description キャッシュキーを返却
      *              Return cache key
      *
@@ -209,21 +212,21 @@ export class Character
      */
     get cacheKey (): string
     {
-        let cacheKey = `${this._$libraryId}_${this._$id}`;
+        let cacheKey = `${this.libraryId}_${this.id}`;
 
         // colorTransformがデフォルト値以外の場合はキャッシュキーに追加
         switch (true) {
 
-            case this._$colorTransform[0] !== 1:
-            case this._$colorTransform[1] !== 1:
-            case this._$colorTransform[2] !== 1:
-            case this._$colorTransform[4] !== 0:
-            case this._$colorTransform[5] !== 0:
-            case this._$colorTransform[6] !== 0:
+            case this.colorTransform[0] !== 1:
+            case this.colorTransform[1] !== 1:
+            case this.colorTransform[2] !== 1:
+            case this.colorTransform[4] !== 0:
+            case this.colorTransform[5] !== 0:
+            case this.colorTransform[6] !== 0:
                 {
-                    const r = Math.max(0, Math.min(255 * this._$colorTransform[0] + this._$colorTransform[4], 255));
-                    const g = Math.max(0, Math.min(255 * this._$colorTransform[1] + this._$colorTransform[5], 255));
-                    const b = Math.max(0, Math.min(255 * this._$colorTransform[2] + this._$colorTransform[6], 255));
+                    const r = Math.max(0, Math.min(255 * this.colorTransform[0] + this.colorTransform[4], 255));
+                    const g = Math.max(0, Math.min(255 * this.colorTransform[1] + this.colorTransform[5], 255));
+                    const b = Math.max(0, Math.min(255 * this.colorTransform[2] + this.colorTransform[6], 255));
                     cacheKey += `_${r}_${g}_${b}`;
                 }
                 break;
@@ -234,7 +237,7 @@ export class Character
         }
 
         const workSpace = $getCurrentWorkSpace();
-        const instance = workSpace.getLibrary(this._$libraryId);
+        const instance = workSpace.getLibrary(this.libraryId);
         if (!instance) {
             return cacheKey;
         }
@@ -261,93 +264,6 @@ export class Character
     }
 
     /**
-     * @description ライブラリに読み込まれたアイテムID
-     *              Item ID loaded in the library
-     *
-     * @member {number}
-     * @public
-     */
-    get libraryId (): number
-    {
-        return this._$libraryId;
-    }
-    set libraryId (library_id: number)
-    {
-        this._$libraryId = library_id;
-    }
-
-    /**
-     * @description ブレンドモード
-     *              Blend mode
-     *
-     * @member {string}
-     * @public
-     */
-    get blendMode (): IBlendMode
-    {
-        return this._$blendMode;
-    }
-    set blendMode (blend_mode: IBlendMode)
-    {
-        this._$blendMode = blend_mode;
-    }
-
-    /**
-     * @description 表示順の深さ(昇順)
-     *              Depth of display order (ascending)
-     *
-     * @member {number}
-     * @public
-     */
-    get depth (): number
-    {
-        return this._$depth;
-    }
-    set depth (depth: number)
-    {
-        this._$depth = depth;
-    }
-
-    /**
-     * @description フィルターの配列を返却
-     *              Return an array of filters
-     *
-     * @member {array}
-     * @readonly
-     * @public
-     */
-    get filters (): any[]
-    {
-        return this._$filters;
-    }
-
-    /**
-     * @description matrixを返却
-     *              Return matrix
-     *
-     * @member {array}
-     * @readonly
-     * @public
-     */
-    get matrix (): number[]
-    {
-        return this._$matrix;
-    }
-
-    /**
-     * @description colorTransformを返却
-     *              Return colorTransform
-     *
-     * @member {array}
-     * @readonly
-     * @public
-     */
-    get colorTransform (): number[]
-    {
-        return this._$colorTransform;
-    }
-
-    /**
      * @description 透明度を返却
      *              Return transparency
      *
@@ -358,7 +274,7 @@ export class Character
     get alpha (): number
     {
         return $clamp(
-            this._$colorTransform[3] + this._$colorTransform[7] / 255, 0, 1
+            this.colorTransform[3] + this.colorTransform[7] / 255, 0, 1
         );
     }
 
@@ -405,11 +321,11 @@ export class Character
      */
     get x (): number
     {
-        return this._$matrix[4];
+        return this.matrix[4];
     }
     set x (x: number)
     {
-        this._$matrix[4] = x;
+        this.matrix[4] = x;
     }
 
     /**
@@ -421,11 +337,11 @@ export class Character
      */
     get y (): number
     {
-        return this._$matrix[5];
+        return this.matrix[5];
     }
     set y (y: number)
     {
-        this._$matrix[5] = y;
+        this.matrix[5] = y;
     }
 
     /**
@@ -478,7 +394,7 @@ export class Character
     get scaleX (): number
     {
         if (this._$scaleX === null) {
-            this._$scaleX = characterCalcGetScaleXService(this._$matrix);
+            this._$scaleX = characterCalcGetScaleXService(this.matrix);
         }
         return this._$scaleX;
     }
@@ -487,7 +403,7 @@ export class Character
         this._$scaleX = characterCalcSetScaleXService(
             scale_x,
             this._$scaleX,
-            this._$matrix
+            this.matrix
         );
     }
 
@@ -501,7 +417,7 @@ export class Character
     get scaleY (): number
     {
         if (this._$scaleY === null) {
-            this._$scaleY = characterCalcGetScaleYService(this._$matrix);
+            this._$scaleY = characterCalcGetScaleYService(this.matrix);
         }
         return this._$scaleY;
     }
@@ -510,7 +426,7 @@ export class Character
         this._$scaleY = characterCalcSetScaleXService(
             scale_y,
             this._$scaleY,
-            this._$matrix
+            this.matrix
         );
     }
 
@@ -524,7 +440,7 @@ export class Character
     get rotation (): number
     {
         if (this._$rotation === null) {
-            this._$rotation = characterCalcGetRotationService(this._$matrix);
+            this._$rotation = characterCalcGetRotationService(this.matrix);
         }
         return this._$rotation;
     }
@@ -533,40 +449,8 @@ export class Character
         this._$rotation = characterCalcSetRotationService(
             rotation,
             this._$rotation,
-            this._$matrix
+            this.matrix
         );
-    }
-
-    /**
-     * @description 開始フレーム番号
-     *              start frame number
-     *
-     * @member {number}
-     * @public
-     */
-    get startFrame ()
-    {
-        return this._$startFrame;
-    }
-    set startFrame (start_frame)
-    {
-        this._$startFrame = start_frame | 0;
-    }
-
-    /**
-     * @description 終了フレーム番号
-     *              end frame number
-     *
-     * @member {number}
-     * @public
-     */
-    get endFrame ()
-    {
-        return this._$endFrame;
-    }
-    set endFrame (end_frame)
-    {
-        this._$endFrame = end_frame | 0;
     }
 
     /**
@@ -580,8 +464,8 @@ export class Character
      */
     move (move_frame: number): void
     {
-        this._$startFrame += move_frame;
-        this._$endFrame   += move_frame;
+        this.startFrame += move_frame;
+        this.endFrame   += move_frame;
     }
 
     /**
@@ -594,25 +478,25 @@ export class Character
      */
     load (save_object: ICharacterSaveObject): void
     {
-        this._$libraryId  = save_object.libraryId;
-        this._$depth      = save_object.depth;
-        this._$blendMode  = save_object.blendMode;
-        this._$startFrame = save_object.startFrame;
-        this._$endFrame   = save_object.endFrame;
-        this._$name       = save_object.name;
+        this.libraryId  = save_object.libraryId;
+        this.depth      = save_object.depth;
+        this.blendMode  = save_object.blendMode;
+        this.startFrame = save_object.startFrame;
+        this.endFrame   = save_object.endFrame;
+        this.name       = save_object.name;
 
         // 配列を上書き
         if (save_object.matrix) {
-            this._$matrix.splice(0, this._$matrix.length, ...save_object.matrix);
+            this.matrix.set(save_object.matrix);
         }
         if (save_object.colorTransform) {
-            this._$colorTransform.splice(0, this._$colorTransform.length, ...save_object.colorTransform);
+            this.colorTransform.set(save_object.colorTransform);
         }
 
         // 中心点を上書き
         if (save_object.referencePosition) {
-            this._$referencePosition.x = save_object.referencePosition.x;
-            this._$referencePosition.y = save_object.referencePosition.y;
+            this.referencePosition.x = save_object.referencePosition.x;
+            this.referencePosition.y = save_object.referencePosition.y;
         }
     }
 
@@ -627,7 +511,7 @@ export class Character
      */
     loadExternalItem (item: IExternalItem<any>): void
     {
-        this._$libraryId = item.id;
+        this.libraryId = item.id;
     }
 
     /**
@@ -662,7 +546,7 @@ export class Character
             bounds.yMin,
             bounds.xMax,
             bounds.yMax,
-            this._$matrix
+            this.matrix
         ) : null;
     }
 
@@ -678,7 +562,7 @@ export class Character
     getRawBounds (frame: number = 1): IBounds | null
     {
         const workSpace = $getCurrentWorkSpace();
-        const instance  = workSpace.getLibrary(this._$libraryId);
+        const instance  = workSpace.getLibrary(this.libraryId);
         if (!instance) {
             return null;
         }
@@ -713,15 +597,15 @@ export class Character
     toObject (): ICharacterSaveObject
     {
         return {
-            "libraryId": this._$libraryId,
-            "depth": this._$depth,
-            "blendMode": this._$blendMode,
-            "matrix": this._$matrix,
-            "colorTransform": this._$colorTransform,
-            "startFrame": this._$startFrame,
-            "endFrame": this._$endFrame,
-            "name": this._$name,
-            "referencePosition": this._$referencePosition
+            "libraryId": this.libraryId,
+            "depth": this.depth,
+            "blendMode": this.blendMode,
+            "matrix": Array.from(this.matrix),
+            "colorTransform": Array.from(this.colorTransform),
+            "startFrame": this.startFrame,
+            "endFrame": this.endFrame,
+            "name": this.name,
+            "referencePosition": this.referencePosition
         };
     }
 }

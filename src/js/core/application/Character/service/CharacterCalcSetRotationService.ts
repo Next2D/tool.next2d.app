@@ -6,7 +6,7 @@ import { $clamp } from "@/global/GlobalUtil";
  *
  * @param {number} rotation
  * @param {number} current_rotation
- * @param {array} matrix
+ * @param {Float32Array} matrix
  * @return {void}
  * @method
  * @public
@@ -14,7 +14,7 @@ import { $clamp } from "@/global/GlobalUtil";
 export const execute = (
     rotation: number,
     current_rotation: number | null,
-    matrix: number[]
+    matrix: Float32Array
 ): number => {
 
     rotation = $clamp(rotation % 360, 0 - 360, 360);

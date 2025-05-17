@@ -6,43 +6,48 @@ import { execute as characterCalcGetScaleXService } from "@/core/application/Cha
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $BITMAP_TYPE, $MOVIE_CLIP_TYPE, $SHAPE_TYPE, $VIDEO_TYPE } from "@/config/InstanceConfig";
+import {
+    $BITMAP_TYPE,
+    $MOVIE_CLIP_TYPE,
+    $SHAPE_TYPE,
+    $VIDEO_TYPE
+} from "@/config/InstanceConfig";
 
 /**
  * @description 行列の掛け算
  *              Matrix multiplication
  *
- * @param  {number} a
- * @param  {number} b
- * @return {number[]}
+ * @param  {Float32Array} a
+ * @param  {Float32Array} b
+ * @return {Float32Array}
  * @method
  * @static
  */
-export const $multiplicationMatrix = (a: number[], b: number[]): number[] =>
+export const $multiplicationMatrix = (a: Float32Array, b: Float32Array): Float32Array =>
 {
-    return [
+    return new Float32Array([
         a[0] * b[0] + a[2] * b[1],
         a[1] * b[0] + a[3] * b[1],
         a[0] * b[2] + a[2] * b[3],
         a[1] * b[2] + a[3] * b[3],
         a[0] * b[4] + a[2] * b[5] + a[4],
         a[1] * b[4] + a[3] * b[5] + a[5]
-    ];
+    ]);
 };
 
 /**
  * @description 親のMovieClipとスクリーンの拡大率の行列を返却
  *              Returns the matrix of the parent MovieClip and the screen magnification
  *
- * @return {number[]}
+ * @return {Float32Array}
  * @method
  * @public
  */
-export const $getConcatenatedMatrix = (): number[] =>
+export const $getConcatenatedMatrix = (): Float32Array =>
 {
     const workSpace = $getCurrentWorkSpace();
 
-    let matrix = [workSpace.scale, 0, 0, workSpace.scale, 0, 0];
+    let matrix = new Float32Array([workSpace.scale, 0, 0, workSpace.scale, 0, 0]);
     for (let idx = 0; idx < timelineSceneList.parents.length; idx++) {
 
         const parentObject = timelineSceneList.parents[idx];
@@ -147,8 +152,8 @@ export const $createTransformElementStyle = (
 
     // 中心点を原点に変形
     const multiMatrix = $multiplicationMatrix(
-        [matrix[0], matrix[1], matrix[2], matrix[3], 0, 0],
-        [1, 0, 0, 1, -referenceX, -referenceY]
+        new Float32Array([matrix[0], matrix[1], matrix[2], matrix[3], 0, 0]),
+        new Float32Array([1, 0, 0, 1, -referenceX, -referenceY])
     );
 
     // 変形分の座標を補正
@@ -164,14 +169,13 @@ export const $createTransformElementStyle = (
  *              Returns the matrix for the mask of the Bitmap
  *
  * @param  {Character} character
- * @return {number[]}
+ * @return {Float32Array}
  * @method
  * @public
  */
-export const $getElementMaskMatrix = (character: Character): number[] =>
+export const $getElementMaskMatrix = (character: Character): Float32Array =>
 {
-
-    const matrix = [1, 0, 0, 1, 0, 0];
+    const matrix = new Float32Array([1, 0, 0, 1, 0, 0]);
     const concatenatedMatrix = $getConcatenatedMatrix();
     const multiMatrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
 
@@ -190,13 +194,13 @@ export const $getElementMaskMatrix = (character: Character): number[] =>
  *              Returns the matrix for the mask according to the item type
  *
  * @param  {Character} character
- * @return {number[]}
+ * @return {Float32Array}
  * @method
  * @public
  */
-export const $getMaskMatrix = (character: Character): number[] =>
+export const $getMaskMatrix = (character: Character): Float32Array =>
 {
-    const matrix = [1, 0, 0, 1, 0, 0];
+    const matrix = new Float32Array([1, 0, 0, 1, 0, 0]);
     const workSpace = $getCurrentWorkSpace();
     const instance = workSpace.getLibrary(character.libraryId);
     if (!instance) {
@@ -217,13 +221,13 @@ export const $getMaskMatrix = (character: Character): number[] =>
                 return matrix;
             }
 
-            return [1, 0, 0, 1, bounds.xMin * workSpace.scale, bounds.yMin * workSpace.scale];
+            return new Float32Array([1, 0, 0, 1, bounds.xMin * workSpace.scale, bounds.yMin * workSpace.scale]);
         }
 
         case $SHAPE_TYPE:
         {
             const concatMatrix = $getConcatenatedMatrix();
-            return [1, 0, 0, 1, concatMatrix[4], concatMatrix[5]];
+            return new Float32Array([1, 0, 0, 1, concatMatrix[4], concatMatrix[5]]);
         }
 
         default:

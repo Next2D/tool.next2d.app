@@ -1,10 +1,10 @@
-import { execute } from "./CircleToolMouseOverEventService";
+import { execute } from "./CircleToolPointerOverEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_CIRCLE_NAME } from "../../../../config/ToolConfig";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-describe("CircleToolMouseOverEventServiceTest", () =>
+describe("CircleToolPointerOverEventService Test", () =>
 {
     it("execute test", () =>
     {
@@ -25,11 +25,13 @@ describe("CircleToolMouseOverEventServiceTest", () =>
         // test case mock1
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");
 
+        let stopPropagation = false;
+        expect(stopPropagation).toBe(false);
         execute({
-            "stopPropagation": () => {},
-            "preventDefault": () => {}
+            "stopPropagation": vi.fn(() => { stopPropagation = true; })
         } as unknown as PointerEvent);
 
+        expect(stopPropagation).toBe(true);
         expect(style.getPropertyValue("--tool-cursor")).toBe(mock.cursor);
     });
 });

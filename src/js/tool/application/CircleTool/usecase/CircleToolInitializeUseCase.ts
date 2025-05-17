@@ -2,9 +2,9 @@ import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { CircleTool } from "@/tool/domain/model/CircleTool";
 import { execute as circleToolStartEventUseCase } from "./CircleToolStartEventUseCase";
-import { execute as circleToolDrawRectMouseDownEventUseCase } from "./CircleToolDrawRectMouseDownEventUseCase";
-import { execute as circleToolMouseOverEventService } from "../service/CircleToolMouseOverEventService";
-import { execute as circleToolMouseOutEventService } from "../service/CircleToolMouseOutEventService";
+import { execute as circleToolDrawRectPointerDownEventUseCase } from "./CircleToolDrawRectPointerDownEventUseCase";
+import { execute as circleToolPointerOverEventService } from "../service/CircleToolPointerOverEventService";
+import { execute as circleToolPointerOutEventService } from "../service/CircleToolPointerOutEventService";
 import { execute as circleToolChangeCursorEventService } from "../service/CircleToolChangeCursorEventService";
 
 /**
@@ -25,17 +25,17 @@ export const execute = (tool: ITool<CircleTool>): void =>
 
     // 範囲選択のイベントを登録
     tool.addEventListener(EventType.DRAW_RECT,
-        circleToolDrawRectMouseDownEventUseCase
+        circleToolDrawRectPointerDownEventUseCase
     );
 
     // スクリーンのマウスオーバーイベントを登録
     tool.addEventListener(EventType.POINTER_OVER,
-        circleToolMouseOverEventService
+        circleToolPointerOverEventService
     );
 
     // スクリーンのマウスアウトイベントを登録
     tool.addEventListener(EventType.POINTER_OUT,
-        circleToolMouseOutEventService
+        circleToolPointerOutEventService
     );
 
     // スクリーン移動中のカーソル変更のイベントを登録

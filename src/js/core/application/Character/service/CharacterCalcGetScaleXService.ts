@@ -2,12 +2,12 @@
  * @description DisplayObjectのスケールXを計算
  *              Calculate the scale X of DisplayObject
  *
- * @param  {array} matrix
+ * @param  {Float32Array} matrix
  * @return {number}
  * @method
  * @public
  */
-export const execute = (matrix: number[]): number =>
+export const execute = (matrix: Float32Array): number =>
 {
     let xScale: number = Math.sqrt(
         matrix[0] * matrix[0]

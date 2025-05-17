@@ -47,6 +47,33 @@ class TransformSetting
     public h: number;
 
     /**
+     * @description 変形エリアのスケールxを返却
+     *              Return the scale x of the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    public scaleX: number;
+
+    /**
+     * @description 変形エリアのスケールyを返却
+     *              Return the scale y of the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    public scaleY: number;
+
+    /**
+     * @description 変形エリアの回転を返却
+     *              Return the rotation of the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    public rotation: number;
+
+    /**
      * @description サイズのロック状態を返却
      *              Return the lock state of the size
      *
@@ -111,6 +138,10 @@ class TransformSetting
             "x": 0,
             "y": 0
         };
+
+        this.scaleX   = 0;
+        this.scaleY   = 0;
+        this.rotation = 0;
     }
 
     /**

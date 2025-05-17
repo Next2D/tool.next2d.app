@@ -1,11 +1,13 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
+import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { Matrix } from "@next2d/geom";
+import { $getScreenOffsetLeft } from "@/global/GlobalUtil";
 import {
-    $createTransformStyle,
+    $createTransformElementStyle,
     $multiplicationMatrix
 } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $BITMAP_TYPE, $VIDEO_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -33,30 +35,13 @@ export const execute = (scale_x: number): void =>
         return ;
     }
 
-    // TODO 拡大縮小
-    const concatenatedMatrix = [1, 0, 0, 1, 0, 0];
-    const offsetX = 0;
-    const offsetY = 0;
-
-    const baseMatrix = new Matrix(
-        concatenatedMatrix[0], concatenatedMatrix[1],
-        concatenatedMatrix[2], concatenatedMatrix[3],
-        concatenatedMatrix[4] - offsetX,
-        concatenatedMatrix[5] - offsetY
-    );
-    baseMatrix.invert();
-
-    // global to local
-    const referenceX = referenceSetting.x * baseMatrix.a + referenceSetting.y * baseMatrix.c + baseMatrix.tx;
-    const referenceY = referenceSetting.x * baseMatrix.b + referenceSetting.y * baseMatrix.d + baseMatrix.ty;
-
     const parentMatrix = $multiplicationMatrix(
-        [scale_x, 0, 0, 1, 0, 0],
-        [
+        new Float32Array([scale_x, 0, 0, 1, 0, 0]),
+        new Float32Array([
             1, 0, 0, 1,
-            -referenceX,
-            -referenceY
-        ]
+            -referenceSetting.x,
+            -referenceSetting.y
+        ])
     );
 
     // 選択中のElementを移動
@@ -91,15 +76,50 @@ export const execute = (scale_x: number): void =>
             character.matrix[1] = multiMatrix[1];
             character.matrix[2] = multiMatrix[2];
             character.matrix[3] = multiMatrix[3];
-            character.matrix[4] = multiMatrix[4] + referenceX;
-            character.matrix[5] = multiMatrix[5] + referenceY;
+            character.matrix[4] = multiMatrix[4] + referenceSetting.x;
+            character.matrix[5] = multiMatrix[5] + referenceSetting.y;
 
-            const transform = $createTransformStyle(character);
-            if (transform) {
-                node.style.transform = transform;
+            character.scaleX = Math.sqrt(
+                multiMatrix[0] * multiMatrix[0]
+                + multiMatrix[1] * multiMatrix[1]
+            );
+
+            const instance = workSpace.getLibrary(character.libraryId);
+            if (!instance) {
+                continue ;
             }
-            node.style.left = `${character.x}px`;
-            node.style.top  = `${character.y}px`;
+
+            switch (instance.type) {
+
+                case $BITMAP_TYPE:
+                case $VIDEO_TYPE:
+                    {
+                        const transform = $createTransformElementStyle(character, workSpace);
+                        if (transform) {
+                            node.style.transform = transform.replace(/transform: /g, "").replace(";", "");
+                        }
+                    }
+                    break;
+
+                default:
+                    {
+                        const canvas = node.querySelector("canvas");
+                        if (!canvas) {
+                            continue ;
+                        }
+                        canvas.style.width = `${Math.ceil(character.width * workSpace.scale)}px`;
+                    }
+                    break;
+
+            }
+
+            const x = $getScreenOffsetLeft() + character.x * workSpace.scale;
+            node.style.left = `${x}px`;
         }
     }
+
+    // 選択中のElementのレクタングルを再計算
+    targetRectUpdateElementUseCase();
+
+    // TODO 親のキャッシュを削除
 };

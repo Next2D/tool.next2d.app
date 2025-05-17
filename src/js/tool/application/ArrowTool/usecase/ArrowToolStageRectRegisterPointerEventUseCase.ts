@@ -25,11 +25,9 @@ export const execute = (event: PointerEvent): void =>
         { "passive": false }
     );
     element.addEventListener(EventType.POINTER_UP,
-        arrowToolStageRectPointerUpEventUseCase,
-        { "passive": false }
+        arrowToolStageRectPointerUpEventUseCase
     );
     element.addEventListener(EventType.POINTER_CANCEL,
-        arrowToolStageRectPointerUpEventUseCase,
-        { "passive": false }
+        arrowToolStageRectPointerUpEventUseCase
     );
 };

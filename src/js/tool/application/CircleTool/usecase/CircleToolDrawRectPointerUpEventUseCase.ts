@@ -25,9 +25,8 @@ import { strokeColor } from "@/tool/domain/model/StrokeColor";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    // イベントの伝播を停止
+    // タブレットのポインター削除処置があるのでイベントの伝播を停止しない
     // event.stopPropagation();
-    // event.preventDefault();
 
     const element = event.target as HTMLElement;
     if (!element) {
@@ -67,10 +66,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 非表示になる前の位置を取得
     // fixed logic
     const left = rectElement.offsetLeft;
-    const top = rectElement.offsetTop;
-
-    // 範囲選択を非表示に
-    drawRectHideService();
+    const top  = rectElement.offsetTop;
 
     const workSpace = $getCurrentWorkSpace();
 
@@ -79,6 +75,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const externalLibrary = new ExternalLibrary(workSpace);
     const shape = await externalLibrary.addNewShape(path);
     if (!shape) {
+        drawRectHideService();
         return ;
     }
 
@@ -126,4 +123,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // 親のMovieClipと拡大・縮小を考慮した補正座標を計算
         await timelineAreaAddItemToMovieClipService(x, y, path);
     }
+
+    // 範囲選択を非表示に
+    drawRectHideService();
 };
