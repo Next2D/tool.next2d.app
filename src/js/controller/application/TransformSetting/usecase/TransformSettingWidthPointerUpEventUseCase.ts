@@ -5,7 +5,6 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
-import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -57,7 +56,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                     continue;
                 }
 
-                const elements = element.querySelectorAll(`.layer-id-${layer.id}`);
                 for (let idx = 0; idx < depths.length; idx++) {
                     const depth = depths[idx];
 
@@ -87,20 +85,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                         character
                     );
 
-                    // 情報更新
-                    await externalCharacter.setX(x);
+                    // fixed logic
                     await externalCharacter.setScaleX(scaleX);
-
-                    const node = elements[depths[idx]] as HTMLElement;
-                    if (!node) {
-                        continue ;
-                    }
-
-                    await screenAreaReplaceCanvasUseCase(
-                        character,
-                        node,
-                        layer
-                    );
+                    await externalCharacter.setX(x);
                 }
             }
         }

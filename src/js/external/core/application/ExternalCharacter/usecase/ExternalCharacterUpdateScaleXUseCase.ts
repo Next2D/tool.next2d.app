@@ -4,6 +4,10 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as characterUpdateScaleXHistoryUseCase } from "@/history/application/core/application/Character/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryUseCase";
+import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 
 /**
  * @description DisplayObjectのxスケールを更新
@@ -51,7 +55,34 @@ export const execute = async (
 
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
-        // 選択範囲のElementを移動
-        targetRectUpdateElementUseCase();
+        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+        if (element) {
+            await screenAreaReplaceCanvasUseCase(
+                character,
+                element,
+                layer
+            );
+        }
+
+        if (movie_clip.selectedDepths.size > 0) {
+            // 選択範囲のElementを移動
+            targetRectUpdateElementUseCase();
+
+            // 選択範囲のバウンディングボックスを取得
+            if (movie_clip.selectedDepths.size === 1) {
+                for (const [layerIndex, depths] of movie_clip.selectedDepths) {
+                    const selectedLayer = movie_clip.getLayer(layerIndex);
+                    if (!selectedLayer) {
+                        break;
+                    }
+
+                    if (selectedLayer.id === layer.id
+                        && depths[0] === character.depth
+                    ) {
+                        transformSettingUpdateScaleXElementService(character.scaleX * 100);
+                    }
+                }
+            }
+        }
     }
 };
