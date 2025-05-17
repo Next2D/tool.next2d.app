@@ -4,6 +4,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as screenDisplayObjectAllResetMaskStyleUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllResetMaskStyleUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
@@ -48,9 +49,6 @@ export const execute = async (movie_clip: MovieClip, layer: Layer): Promise<void
             return ;
         }
 
-        const elements = element
-            .querySelectorAll(`.layer-id-${layer.id}`);
-
         for (let idx = 0; idx < activeCharacters.length; ++idx) {
 
             const character = activeCharacters[idx];
@@ -58,7 +56,7 @@ export const execute = async (movie_clip: MovieClip, layer: Layer): Promise<void
                 continue;
             }
 
-            const element = elements[character.depth] as HTMLElement;
+            const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
             if (!element) {
                 continue;
             }

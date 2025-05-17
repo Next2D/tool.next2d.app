@@ -1,9 +1,9 @@
-import { execute } from "./ScreenAreaRemoveDisplayObjectElementService";
+import { execute } from "./ScreenAreaRemoveDisplayObjectElementUseCase";
 import { $SCREEN_STAGE_AREA_ID } from "../../../../config/ScreenConfig";
 import { Character } from "../../../../core/domain/model/Character";
 import { describe, expect, it } from "vitest";
 
-describe("ScreenAreaRemoveDisplayObjectElementServiceTest", () =>
+describe("ScreenAreaRemoveDisplayObjectElementUseCase Test", () =>
 {
     it("execute test", () =>
     {

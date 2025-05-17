@@ -1,5 +1,6 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getScreenOffsetLeft } from "@/global/GlobalUtil";
@@ -7,7 +8,10 @@ import {
     $createTransformElementStyle,
     $multiplicationMatrix
 } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { $BITMAP_TYPE, $VIDEO_TYPE } from "@/config/InstanceConfig";
+import {
+    $BITMAP_TYPE,
+    $VIDEO_TYPE
+} from "@/config/InstanceConfig";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -54,10 +58,9 @@ export const execute = (scale_x: number): void =>
         }
 
         // 選択中のElementを取得して移動
-        const elements = element.querySelectorAll(`.layer-id-${layer.id}`);
         for (let idx = 0; idx < depths.length; ++idx) {
 
-            const node = elements[depths[idx]] as HTMLElement;
+            const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depths[idx]);
             if (!node) {
                 continue ;
             }

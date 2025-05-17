@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
@@ -46,12 +47,11 @@ export const execute = async (
         }
 
         // 選択中のElementを取得して移動
-        const elements = element.querySelectorAll(`.layer-id-${layer.id}`);
         for (let idx = 0; idx < depths.length; ++idx) {
 
             const depth = depths[idx];
 
-            const node = elements[depth] as HTMLElement;
+            const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
             if (!node) {
                 continue ;
             }

@@ -1,10 +1,10 @@
-import { execute } from "./ScreenAreaMoveDisplayObjectElementService";
+import { execute } from "./ScreenAreaMoveDisplayObjectElementUseCase";
 import { $SCREEN_STAGE_AREA_ID } from "../../../../config/ScreenConfig";
 import { Character } from "../../../../core/domain/model/Character";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
 import { describe, expect, it } from "vitest";
 
-describe("ScreenAreaMoveDisplayObjectElementServiceTest", () =>
+describe("ScreenAreaMoveDisplayObjectElementUseCase Test", () =>
 {
     it("execute test", () =>
     {

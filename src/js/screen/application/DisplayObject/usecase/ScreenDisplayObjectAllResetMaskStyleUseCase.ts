@@ -2,6 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as screenDisplayObjectResetMaskStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectResetMaskStyleService";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 
 /**
  * @description レイヤーに配置された全てのDisplayObjectのマスクスタイルをリセット
@@ -27,9 +28,6 @@ export const execute = (movie_clip: MovieClip, layer: Layer): void =>
         return ;
     }
 
-    const elements = element
-        .querySelectorAll(`.layer-id-${layer.id}`);
-
     for (let idx = 0; activeCharacters.length > idx; ++idx) {
 
         const character = activeCharacters[idx];
@@ -37,7 +35,7 @@ export const execute = (movie_clip: MovieClip, layer: Layer): void =>
             continue ;
         }
 
-        const node = elements[character.depth] as HTMLElement;
+        const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
         if (!node) {
             continue ;
         }

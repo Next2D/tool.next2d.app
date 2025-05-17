@@ -1,4 +1,4 @@
-import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 
 /**
  * @description 指定したDisplayObjectのElementをStageAreaから削除
@@ -12,19 +12,11 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
  */
 export const execute = (layer_id: number, depth: number): void =>
 {
-    const element: HTMLElement | null = document
-        .getElementById($SCREEN_STAGE_AREA_ID);
-
+    const element = screenAreaGetElementFromLayerIdAndDepthService(layer_id, depth);
     if (!element) {
         return ;
     }
 
-    const elements = element.querySelectorAll(`.layer-id-${layer_id}`);
-    const displayElement = elements[depth];
-    if (!displayElement) {
-        return ;
-    }
-
     // elementを削除
-    displayElement.remove();
+    element.remove();
 };
