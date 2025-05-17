@@ -3,6 +3,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenAreaMoveDisplayObjectElementService } from "@/screen/application/ScreenArea/service/ScreenAreaMoveDisplayObjectElementService";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
+import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 
 /**
  * @description DisplayObjectのy座標を変更後に戻す
@@ -63,6 +64,9 @@ export const execute = (
         targetRectUpdateElementUseCase();
 
         // TransformSettingのy座標を更新
-        transformSettingUpdateYElementService(character.y);
+        const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+        if (bounds) {
+            transformSettingUpdateYElementService(bounds.yMin);
+        }
     }
 };

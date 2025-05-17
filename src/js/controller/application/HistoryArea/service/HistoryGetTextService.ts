@@ -227,7 +227,7 @@ export const execute = (command: number): string =>
             return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の名前を%s5に変更";
 
         case $CHARACTER_UPDATE_SCALE_X_COMMAND:
-            return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のxスケールを%s5から%s6に変更";
+            return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のxスケールを%s5%から%s6%に変更";
 
         default:
             break;

@@ -1,11 +1,11 @@
-import { $poolCanvas, $setCursor } from "@/global/GlobalUtil";
+import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
-import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
+import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
+import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -96,29 +96,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                         continue ;
                     }
 
-                    // 変更後のmatrixで表示を更新
-                    const div = await characterCreateElementUseCase(
-                        character, element, layer
+                    await screenAreaReplaceCanvasUseCase(
+                        character,
+                        node,
+                        layer
                     );
-                    if (!div) {
-                        continue ;
-                    }
-
-                    // 変更前のcanvasを削除してプールに戻す
-                    const canvas = node.querySelector("canvas");
-                    if (canvas) {
-                        canvas.remove();
-                        $poolCanvas(canvas);
-                    }
-
-                    // 変更後のcanvasを追加
-                    const newCanvas = div.querySelector("canvas");
-                    if (newCanvas) {
-                        node.appendChild(newCanvas as HTMLCanvasElement);
-                    }
-
-                    // 新規追加したdivは削除
-                    div.remove();
                 }
             }
         }

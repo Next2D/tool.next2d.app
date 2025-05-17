@@ -4,6 +4,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $poolCanvas } from "@/global/GlobalUtil";
 import { $setReDrawState } from "../../ScreenArea/ScreenAreaUtil";
 import { execute as shapeCreateDisplayObjectElementUseCase } from "@/core/application/Shape/usecase/ShapeCreateDisplayObjectElementUseCase";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { $SHAPE_TYPE } from "@/config/InstanceConfig";
 
 /**
@@ -42,9 +43,6 @@ export const execute = async (library_id: number): Promise<void> =>
             continue;
         }
 
-        const elements = element
-            .querySelectorAll(`layer-id-${layer.id}`);
-
         for (let idx = 0; idx < activeCharacters.length; ++idx) {
 
             const character = activeCharacters[idx];
@@ -56,13 +54,13 @@ export const execute = async (library_id: number): Promise<void> =>
                 continue;
             }
 
-            const node = elements[character.depth];
+            const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
             if (!node) {
                 continue;
             }
 
             // 既存のcanvasをキャッシュに戻す
-            const canvas = node.children[0] as HTMLCanvasElement;
+            const canvas = node.querySelector("canvas");
             if (canvas) {
                 $poolCanvas(canvas);
             }

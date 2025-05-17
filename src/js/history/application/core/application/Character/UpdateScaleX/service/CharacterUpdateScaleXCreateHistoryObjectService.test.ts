@@ -29,8 +29,8 @@ describe("CharacterUpdateScaleXCreateHistoryObjectService Test", () =>
         expect(object.messages[2]).toBe(0);
         expect(object.messages[3]).toBe(character.startFrame);
         expect(object.messages[4]).toBe(character.depth);
-        expect(object.messages[5]).toBe(2);
-        expect(object.messages[6]).toBe(character.scaleX);
+        expect(object.messages[5]).toBe(200);
+        expect(object.messages[6]).toBe(character.scaleX * 100);
 
         // 表示様の配列のチェック
         expect(object.args.length).toBe(6);
@@ -38,7 +38,7 @@ describe("CharacterUpdateScaleXCreateHistoryObjectService Test", () =>
         expect(object.args[1]).toBe(layer.name);
         expect(object.args[2]).toBe(character.startFrame);
         expect(object.args[3]).toBe(character.depth);
-        expect(object.args[4]).toBe(2);
-        expect(object.args[5]).toBe(character.scaleX);
+        expect(object.args[4]).toBe(200);
+        expect(object.args[5]).toBe(character.scaleX * 100);
     });
 });

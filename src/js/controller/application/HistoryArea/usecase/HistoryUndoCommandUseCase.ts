@@ -62,6 +62,7 @@ import { execute as instanceUpdateSymbolHistoryUndoUseCase } from "@/history/app
 import { execute as libraryAreaAddNewShapeHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaAddNewShapeHistoryUndoUseCase";
 import { execute as libraryAreaUpdateShapeGraphicsHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaUpdateShapeGraphicsHistoryUndoUseCase";
 import { execute as characterUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateName/usecase/CharacterUpdateNameHistoryUndoUseCase";
+import { execute as characterUpdateScaleXHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -115,7 +116,8 @@ import {
     $CHARACTER_UPDATE_Y_COMMAND,
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
-    $CHARACTER_UPDATE_NAME_COMMAND
+    $CHARACTER_UPDATE_NAME_COMMAND,
+    $CHARACTER_UPDATE_SCALE_X_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -649,6 +651,18 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[5] as string  // Before Name
+            );
+            break;
+
+        // DisplayObjectのスケールXを更新
+        case $CHARACTER_UPDATE_SCALE_X_COMMAND:
+            characterUpdateScaleXHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as number  // Before ScaleX
             );
             break;
 

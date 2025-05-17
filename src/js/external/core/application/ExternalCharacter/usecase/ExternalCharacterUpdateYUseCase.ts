@@ -10,6 +10,8 @@ import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 
 /**
  * @description DisplayObjectのx座標を更新
@@ -64,11 +66,20 @@ export const execute = async (
         // 移動したElementを移動
         screenAreaMoveDisplayObjectElementService(layer, character);
 
-        // 選択範囲のElementを移動
-        targetRectUpdateElementUseCase();
-
         // MovieClipの基準点のElementを再配置
         screenStandardPointDeployElementUseCase();
+
+        if (movie_clip.selectedDepths.size > 0) {
+
+            // 選択範囲のElementを移動
+            targetRectUpdateElementUseCase();
+
+            // 選択範囲のバウンディングボックスを取得
+            const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
+            if (bounds) {
+                transformSettingUpdateYElementService(bounds.yMin);
+            }
+        }
 
         // マスクのstyleを更新
         if (layer.mode === $MASK_IN_MODE) {

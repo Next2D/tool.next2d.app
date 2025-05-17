@@ -61,6 +61,7 @@ import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/app
 import { execute as libraryAreaAddNewShapeHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaAddNewShapeHistoryRedoUseCase";
 import { execute as libraryAreaUpdateShapeGraphicsHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaUpdateShapeGraphicsHistoryRedoUseCase";
 import { execute as characterUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateName/usecase/CharacterUpdateNameHistoryRedoUseCase";
+import { execute as characterUpdateScaleXHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -114,7 +115,8 @@ import {
     $CHARACTER_UPDATE_Y_COMMAND,
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
-    $CHARACTER_UPDATE_NAME_COMMAND
+    $CHARACTER_UPDATE_NAME_COMMAND,
+    $CHARACTER_UPDATE_SCALE_X_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -654,6 +656,18 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[6] as string  // After Name
+            );
+            break;
+
+        // キャラクターのX座標を更新
+        case $CHARACTER_UPDATE_SCALE_X_COMMAND:
+            characterUpdateScaleXHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[6] as number  // After Scale X
             );
             break;
 
