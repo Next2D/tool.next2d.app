@@ -70,8 +70,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                     const scaleX = character.scaleX;
                     const x = character.x;
 
+                    // 変更前の値に戻す
                     const beforeMatrix = transformSetting.matrixs[index++];
-                    character.matrix.set(beforeMatrix);
+                    const beforeScaleX = Math.sqrt(
+                        beforeMatrix[0] * beforeMatrix[0]
+                        + beforeMatrix[1] * beforeMatrix[1]
+                    );
+
+                    character.x      = beforeMatrix[4];
+                    character.scaleX = beforeScaleX;
 
                     const externalCharacter = new ExternalCharacter(
                         workSpace,

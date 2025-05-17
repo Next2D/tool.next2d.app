@@ -21,7 +21,7 @@ export const execute = (
         if (index !== -1) {
             scale_y = +value.slice(0, index);
         }
-        scale_y = +scale_y.toFixed(4);
+        scale_y = +scale_y.toFixed(2);
     }
 
     if (current_scale_y === scale_y) {
