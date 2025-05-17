@@ -1,7 +1,5 @@
 import type { ITool } from "@/interface/ITool";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
-import type { ExternalShape } from "@/external/core/domain/model/ExternalShape";
-import type { IExternalInstance } from "@/interface/IExternalInstance";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as rectangleToolDrawRectPointerMoveEventUseCase } from "./RectangleToolDrawRectPointerMoveEventUseCase";
 import { execute as drawRectHideService } from "@/screen/application/DrawRect/service/DrawRectHideService";
@@ -69,9 +67,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const left = rectElement.offsetLeft;
     const top = rectElement.offsetTop;
 
-    // 範囲選択を非表示に
-    drawRectHideService();
-
     const workSpace = $getCurrentWorkSpace();
 
     // 新規Shapeをライブラリに追加
@@ -79,6 +74,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const externalLibrary = new ExternalLibrary(workSpace);
     const shape = await externalLibrary.addNewShape(path);
     if (!shape) {
+        drawRectHideService();
         return ;
     }
 
@@ -109,10 +105,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // 新規Shapeをライブラリに追加
         const path = `Shape_${workSpace.nextLibraryId}`;
         const externalLibrary = new ExternalLibrary(workSpace);
-        await externalLibrary.addNewShape(path);
-
-        // ライブラリからShapeを取得
-        const shape: IExternalInstance<ExternalShape> = externalLibrary.getItem(path);
+        const shape = await externalLibrary.addNewShape(path);
         if (!shape) {
             return ;
         }
@@ -129,4 +122,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // 親のMovieClipと拡大・縮小を考慮した補正座標を計算
         await timelineAreaAddItemToMovieClipService(x, y, path);
     }
+
+    // 範囲選択を非表示に
+    drawRectHideService();
 };

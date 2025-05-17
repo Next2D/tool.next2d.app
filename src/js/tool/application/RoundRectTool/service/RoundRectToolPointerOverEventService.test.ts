@@ -1,15 +1,15 @@
-import { execute } from "./RectangleToolMouseOverEventService";
+import { execute } from "./RoundRectToolPointerOverEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
 import { $registerDefaultTool } from "../../ToolUtil";
-import { $TOOL_RECTANGLE_NAME } from "../../../../config/ToolConfig";
-import { describe, expect, it } from "vitest";
+import { $TOOL_ROUND_RECT_NAME } from "../../../../config/ToolConfig";
+import { describe, expect, it, vi } from "vitest";
 
-describe("RectangleToolMouseOverEventServiceTest", () =>
+describe("RoundRectToolPointerOverEventService Test", () =>
 {
     it("execute test", () =>
     {
         const mock = {
-            "name": $TOOL_RECTANGLE_NAME,
+            "name": $TOOL_ROUND_RECT_NAME,
             "cursor": "crosshair"
         };
         $registerDefaultTool(mock);
@@ -25,11 +25,14 @@ describe("RectangleToolMouseOverEventServiceTest", () =>
         // test case mock1
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");
 
+        let stopPropagation = false;
+        expect(stopPropagation).toBe(false);
+
         execute({
-            "stopPropagation": () => {},
-            "preventDefault": () => {}
+            "stopPropagation": vi.fn(() => {})
         } as unknown as PointerEvent);
 
+        expect(stopPropagation).toBe(true);
         expect(style.getPropertyValue("--tool-cursor")).toBe(mock.cursor);
     });
 });

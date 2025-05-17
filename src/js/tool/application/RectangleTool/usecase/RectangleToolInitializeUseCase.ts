@@ -2,9 +2,9 @@ import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { RectangleTool } from "@/tool/domain/model/RectangleTool";
 import { execute as rectangleToolStartEventUseCase } from "./RectangleToolStartEventUseCase";
-import { execute as rectangleToolDrawRectMouseDownEventUseCase } from "./RectangleToolDrawRectPointerDownEventUseCase";
-import { execute as rectangleToolMouseOverEventService } from "../service/RectangleToolMouseOverEventService";
-import { execute as rectangleToolMouseOutEventService } from "../service/RectangleToolMouseOutEventService";
+import { execute as rectangleToolDrawRectPointerDownEventUseCase } from "./RectangleToolDrawRectPointerDownEventUseCase";
+import { execute as rectangleToolPointerOverEventService } from "../service/RectangleToolPointerOverEventService";
+import { execute as rectangleToolPointerOutEventService } from "../service/RectangleToolPointerOutEventService";
 import { execute as rectangleToolChangeCursorEventService } from "../service/RectangleToolChangeCursorEventService";
 
 /**
@@ -25,17 +25,17 @@ export const execute = (tool: ITool<RectangleTool>): void =>
 
     // 範囲選択のイベントを登録
     tool.addEventListener(EventType.DRAW_RECT,
-        rectangleToolDrawRectMouseDownEventUseCase
+        rectangleToolDrawRectPointerDownEventUseCase
     );
 
     // スクリーンのマウスオーバーイベントを登録
     tool.addEventListener(EventType.POINTER_OVER,
-        rectangleToolMouseOverEventService
+        rectangleToolPointerOverEventService
     );
 
     // スクリーンのマウスアウトイベントを登録
     tool.addEventListener(EventType.POINTER_OUT,
-        rectangleToolMouseOutEventService
+        rectangleToolPointerOutEventService
     );
 
     // スクリーン移動中のカーソル変更のイベントを登録

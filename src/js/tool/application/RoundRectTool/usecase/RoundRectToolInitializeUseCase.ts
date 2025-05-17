@@ -2,9 +2,9 @@ import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { RoundRectTool } from "@/tool/domain/model/RoundRectTool";
 import { execute as roundRectToolStartEventUseCase } from "./RoundRectToolStartEventUseCase";
-import { execute as roundRectToolDrawRectMouseDownEventUseCase } from "./RoundRectToolDrawRectMouseDownEventUseCase";
-import { execute as roundRectToolMouseOverEventService } from "../service/RoundRectToolMouseOverEventService";
-import { execute as roundRectToolMouseOutEventService } from "../service/RoundRectToolMouseOutEventService";
+import { execute as roundRectToolDrawRectPointerDownEventUseCase } from "./RoundRectToolDrawRectPointerDownEventUseCase";
+import { execute as roundRectToolPointerOverEventService } from "../service/RoundRectToolPointerOverEventService";
+import { execute as roundRectToolPointerOutEventService } from "../service/RoundRectToolPointerOutEventService";
 import { execute as roundRectToolChangeCursorEventService } from "../service/RoundRectToolChangeCursorEventService";
 
 /**
@@ -25,17 +25,17 @@ export const execute = (tool: ITool<RoundRectTool>): void =>
 
     // 範囲選択のイベントを登録
     tool.addEventListener(EventType.DRAW_RECT,
-        roundRectToolDrawRectMouseDownEventUseCase
+        roundRectToolDrawRectPointerDownEventUseCase
     );
 
     // スクリーンのマウスオーバーイベントを登録
     tool.addEventListener(EventType.POINTER_OVER,
-        roundRectToolMouseOverEventService
+        roundRectToolPointerOverEventService
     );
 
     // スクリーンのマウスアウトイベントを登録
     tool.addEventListener(EventType.POINTER_OUT,
-        roundRectToolMouseOutEventService
+        roundRectToolPointerOutEventService
     );
 
     // スクリーン移動中のカーソル変更のイベントを登録

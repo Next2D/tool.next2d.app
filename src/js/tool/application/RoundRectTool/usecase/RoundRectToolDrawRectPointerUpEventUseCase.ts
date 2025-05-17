@@ -6,8 +6,6 @@ import { execute as drawRectHideService } from "@/screen/application/DrawRect/se
 import { $SCREEN_DRAW_RECT_ID } from "@/config/ScreenConfig";
 import { $getDefaultTool, $setActiveTool } from "../../ToolUtil";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
-import { IExternalInstance } from "@/interface/IExternalInstance";
-import { ExternalShape } from "@/external/core/domain/model/ExternalShape";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { strokeSize } from "@/tool/domain/model/StrokeSize";
@@ -69,9 +67,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const left = rectElement.offsetLeft;
     const top = rectElement.offsetTop;
 
-    // 範囲選択を非表示に
-    drawRectHideService();
-
     const workSpace = $getCurrentWorkSpace();
 
     // 新規Shapeをライブラリに追加
@@ -79,6 +74,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const externalLibrary = new ExternalLibrary(workSpace);
     const shape = await externalLibrary.addNewShape(path);
     if (!shape) {
+        drawRectHideService();
         return ;
     }
 
@@ -113,10 +109,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // 新規Shapeをライブラリに追加
         const path = `Shape_${workSpace.nextLibraryId}`;
         const externalLibrary = new ExternalLibrary(workSpace);
-        await externalLibrary.addNewShape(path);
-
-        // ライブラリからShapeを取得
-        const shape: IExternalInstance<ExternalShape> = externalLibrary.getItem(path);
+        const shape = await externalLibrary.addNewShape(path);
         if (!shape) {
             return ;
         }
@@ -137,4 +130,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         // 親のMovieClipと拡大・縮小を考慮した補正座標を計算
         await timelineAreaAddItemToMovieClipService(x, y, path);
     }
+
+    // 範囲選択を非表示に
+    drawRectHideService();
 };
