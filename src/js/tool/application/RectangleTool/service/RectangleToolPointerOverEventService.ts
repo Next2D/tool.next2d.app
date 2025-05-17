@@ -17,7 +17,6 @@ export const execute = (event: PointerEvent): void =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     const tool: ITool<RectangleTool> = $getDefaultTool($TOOL_RECTANGLE_NAME);
     if (!tool) {

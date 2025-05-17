@@ -29,7 +29,7 @@ describe("RoundRectToolPointerOverEventService Test", () =>
         expect(stopPropagation).toBe(false);
 
         execute({
-            "stopPropagation": vi.fn(() => {})
+            "stopPropagation": vi.fn(() => { stopPropagation = true; })
         } as unknown as PointerEvent);
 
         expect(stopPropagation).toBe(true);

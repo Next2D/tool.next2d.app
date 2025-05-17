@@ -20,7 +20,7 @@ export const execute = async (
     layer: Layer,
     x: number,
     y: number,
-    matrix: number[] = [1, 0, 0, 1, 0, 0]
+    matrix: Float32Array
 ): Promise<void> => {
 
     if (layer.mode !== $MASK_IN_MODE) {

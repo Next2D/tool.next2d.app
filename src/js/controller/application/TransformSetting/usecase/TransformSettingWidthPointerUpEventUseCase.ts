@@ -5,7 +5,7 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
-import { Layer } from "@/core/domain/model/Layer";
+import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -48,6 +48,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
         if (element) {
 
+            let index = 0;
+
             const frame = movieClip.currentFrame;
             for (const [layerIndex, depths] of movieClip.selectedDepths) {
                 const layer = movieClip.getLayer(layerIndex);
@@ -64,22 +66,52 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                         continue;
                     }
 
+                    // 変更後の値をセット
+                    const scaleX = character.scaleX;
+                    const x = character.x;
+
+                    const beforeMatrix = transformSetting.matrixs[index++];
+                    character.matrix.set(beforeMatrix);
+
+                    const externalCharacter = new ExternalCharacter(
+                        workSpace,
+                        movieClip,
+                        layer,
+                        character
+                    );
+
+                    // 情報更新
+                    await externalCharacter.setX(x);
+                    await externalCharacter.setScaleX(scaleX);
+
                     const node = elements[depths[idx]] as HTMLElement;
                     if (!node) {
                         continue ;
                     }
 
                     // 変更後のmatrixで表示を更新
-                    await characterCreateElementUseCase(
+                    const div = await characterCreateElementUseCase(
                         character, element, layer
                     );
+                    if (!div) {
+                        continue ;
+                    }
 
+                    // 変更前のcanvasを削除してプールに戻す
                     const canvas = node.querySelector("canvas");
                     if (canvas) {
                         canvas.remove();
                         $poolCanvas(canvas);
                     }
-                    node.remove();
+
+                    // 変更後のcanvasを追加
+                    const newCanvas = div.querySelector("canvas");
+                    if (newCanvas) {
+                        node.appendChild(newCanvas as HTMLCanvasElement);
+                    }
+
+                    // 新規追加したdivは削除
+                    div.remove();
                 }
             }
         }

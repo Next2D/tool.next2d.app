@@ -582,3 +582,12 @@ export const $LIBRARY_ADD_NEW_TEXT_COMMAND: number = 58;
  * @constant
  */
 export const $CHARACTER_UPDATE_NAME_COMMAND: number = 59;
+
+/**
+ * @description DisplayObjectのxスケール更新の識別コマンド名
+ *              Identification command name for updating the x-scale of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_SCALE_X_COMMAND: number = 60;

@@ -52,7 +52,8 @@ import {
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
     $LIBRARY_ADD_NEW_TEXT_COMMAND,
-    $CHARACTER_UPDATE_NAME_COMMAND
+    $CHARACTER_UPDATE_NAME_COMMAND,
+    $CHARACTER_UPDATE_SCALE_X_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -224,6 +225,9 @@ export const execute = (command: number): string =>
 
         case $CHARACTER_UPDATE_NAME_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の名前を%s5に変更";
+
+        case $CHARACTER_UPDATE_SCALE_X_COMMAND:
+            return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のxスケールを%s5から%s6に変更";
 
         default:
             break;

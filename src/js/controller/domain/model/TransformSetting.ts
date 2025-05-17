@@ -116,7 +116,7 @@ class TransformSetting
      * @member {Array}
      * @public
      */
-    public readonly matrixs: Array<number[]>;
+    public readonly matrixs: Float32Array[];
 
     /**
      * @constructor

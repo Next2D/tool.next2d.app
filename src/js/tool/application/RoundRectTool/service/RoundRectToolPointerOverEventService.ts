@@ -17,7 +17,6 @@ export const execute = (event: PointerEvent): void =>
 {
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     const tool: ITool<RoundRectTool> = $getDefaultTool($TOOL_ROUND_RECT_NAME);
     if (!tool) {

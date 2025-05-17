@@ -41,11 +41,11 @@ export const execute = (event: PointerEvent): void =>
             const minSize = Math.min(width, height);
             element.style.width  = `${minSize}px`;
             element.style.height = `${minSize}px`;
-            element.style.borderRadius = `${minSize / 4}px`;
+            element.style.borderRadius = `${minSize / 8}px`;
         } else {
             element.style.width  = `${width}px`;
             element.style.height = `${height}px`;
-            element.style.borderRadius = `${Math.min(width, height) / 4}px`;
+            element.style.borderRadius = `${Math.min(width, height) / 8}px`;
         }
     });
 };

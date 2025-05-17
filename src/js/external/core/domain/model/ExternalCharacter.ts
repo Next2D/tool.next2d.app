@@ -4,6 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalCharacterUpdateXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateXUseCase";
 import { execute as externalCharacterUpdateYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateYUseCase";
+import { execute as externalCharacterUpdateScaleXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateScaleXUseCase";
 import { execute as externalCharacterUpdateNameUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateNameUseCase";
 
 /**
@@ -122,6 +123,39 @@ export class ExternalCharacter
             this._$layer,
             this._$character,
             y
+        );
+    }
+
+    /**
+     * @description DisplayObjectのスケールXを返却
+     *              Returns the scaleX of DisplayObject
+     *
+     * @return {number}
+     * @method
+     * @public
+     */
+    getScaleX (): number
+    {
+        return this._$character.scaleX;
+    }
+
+    /**
+     * @description DisplayObjectのスケールXを設定
+     *              Set the scaleX of DisplayObject
+     *
+     * @param  {number} scale_x
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setScaleX (scale_x: number): Promise<void>
+    {
+        await externalCharacterUpdateScaleXUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            scale_x
         );
     }
 

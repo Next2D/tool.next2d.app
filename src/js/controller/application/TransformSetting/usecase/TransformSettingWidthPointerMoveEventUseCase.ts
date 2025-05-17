@@ -1,6 +1,5 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as screenDisplayObjectTransformScaleXElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectTransformScaleXElementUseCase";
-
 import {
     $clamp,
     $setCursor
@@ -41,6 +40,7 @@ export const execute = (event: PointerEvent): void =>
         const width = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
         element.value = `${width}`;
 
+        // 変形に合わせて表示を更新
         screenDisplayObjectTransformScaleXElementUseCase(width / transformSetting.w);
 
         transformSetting.w = width;
