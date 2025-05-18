@@ -1,7 +1,9 @@
+import { $BITMAP_TYPE, $VIDEO_TYPE } from "@/config/InstanceConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 
 /**
  * @description スケールxの操作によるキャンバスの再描画
@@ -40,8 +42,8 @@ export const execute = async (): Promise<void> =>
                     }
 
                     // 変更後の値をセット
-                    const scaleX = character.scaleX;
-                    const x = character.x;
+                    const afterScaleX = character.scaleX;
+                    const afterX = character.x;
 
                     // 変更前の値に戻す
                     const beforeMatrix = transformSetting.matrixs[index++];
@@ -53,6 +55,20 @@ export const execute = async (): Promise<void> =>
                     character.x      = beforeMatrix[4];
                     character.scaleX = beforeScaleX;
 
+                    const instance = workSpace.getLibrary(character.libraryId);
+                    if (!instance) {
+                        continue;
+                    }
+
+                    let canvas  = null;
+                    const width = character.width;
+                    if (instance.type !== $BITMAP_TYPE && instance.type !== $VIDEO_TYPE) {
+                        const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+                        if (node) {
+                            canvas = node.querySelector("canvas");
+                        }
+                    }
+
                     const externalCharacter = new ExternalCharacter(
                         workSpace,
                         movieClip,
@@ -61,8 +77,12 @@ export const execute = async (): Promise<void> =>
                     );
 
                     // fixed logic
-                    await externalCharacter.setScaleX(scaleX);
-                    await externalCharacter.setX(x);
+                    await externalCharacter.setScaleX(afterScaleX);
+                    await externalCharacter.setX(afterX);
+
+                    if (canvas) {
+                        canvas.style.width = `${Math.ceil(width * workSpace.scale)}px`;
+                    }
                 }
             }
         }

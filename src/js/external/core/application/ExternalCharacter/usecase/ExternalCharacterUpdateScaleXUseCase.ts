@@ -7,6 +7,8 @@ import { execute as characterUpdateScaleXHistoryUseCase } from "@/history/applic
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
+import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
+import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 
 /**
  * @description DisplayObjectのxスケールを更新
@@ -66,6 +68,12 @@ export const execute = async (
         if (movie_clip.selectedDepths.size > 0) {
             // 選択範囲のElementを移動
             targetRectUpdateElementUseCase();
+
+            // 選択範囲のバウンディングボックスを取得
+            const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
+            if (bounds) {
+                transformSettingUpdateWidthElementService(Math.abs(bounds.xMax - bounds.xMin));
+            }
 
             // 選択範囲のバウンディングボックスを取得
             if (movie_clip.selectedDepths.size === 1) {

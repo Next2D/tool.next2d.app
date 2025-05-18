@@ -4,6 +4,7 @@ import { execute as screenAreaMoveDisplayObjectElementUseCase } from "@/screen/a
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 
 /**
  * @description DisplayObjectのx座標を変更後に戻す
@@ -67,6 +68,7 @@ export const execute = (
             // TransformSettingのx座標を更新
             const bounds = screenAreaCalcSelectedBoundsService(movieClip);
             if (bounds) {
+                transformSettingUpdateWidthElementService(Math.abs(bounds.xMax - bounds.xMin));
                 transformSettingUpdateXElementService(bounds.xMin);
             }
         }

@@ -58,6 +58,7 @@ import { execute as shapeUpdateGraphicsReceiveUseCase } from "@/share/receive/ap
 import { execute as historyRedoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryRedoUseCase";
 import { execute as historyUndoUseCase } from "@/controller/application/HistoryArea/usecase/HistoryUndoUseCase";
 import { execute as characterUpdateNameReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateNameReceiveUseCase";
+import { execute as characterUpdateScaleXReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateScaleXReceiveUseCase";
 import {
     $HISTORY_REDO_COMMAND,
     $HISTORY_UNDO_COMMAND,
@@ -117,7 +118,8 @@ import {
     $CHARACTER_UPDATE_Y_COMMAND,
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
-    $CHARACTER_UPDATE_NAME_COMMAND
+    $CHARACTER_UPDATE_NAME_COMMAND,
+    $CHARACTER_UPDATE_SCALE_X_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -434,6 +436,11 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         // キャラクターの名前を更新
         case $CHARACTER_UPDATE_NAME_COMMAND:
             await characterUpdateNameReceiveUseCase(message);
+            break;
+
+        // キャラクターのxスケールを更新
+        case $CHARACTER_UPDATE_SCALE_X_COMMAND:
+            await characterUpdateScaleXReceiveUseCase(message);
             break;
 
         default:

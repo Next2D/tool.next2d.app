@@ -1,7 +1,6 @@
 import type { Shape } from "@/core/domain/model/Shape";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $poolCanvas } from "@/global/GlobalUtil";
 import { $setReDrawState } from "../../ScreenArea/ScreenAreaUtil";
 import { execute as shapeCreateDisplayObjectElementUseCase } from "@/core/application/Shape/usecase/ShapeCreateDisplayObjectElementUseCase";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";

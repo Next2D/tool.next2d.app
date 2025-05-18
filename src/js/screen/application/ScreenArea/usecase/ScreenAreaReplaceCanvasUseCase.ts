@@ -1,7 +1,6 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
-import { $poolCanvas } from "@/global/GlobalUtil";
 
 /**
  * @description 指定のelementのcanvasを置き換える
@@ -32,8 +31,9 @@ export const execute = async (
         canvas.remove();
     }
 
-    const newCanvas = div.querySelector("canvas");
-    if (newCanvas) {
-        element.appendChild(newCanvas as HTMLCanvasElement);
-    }
+    element.replaceWith(div);
+    // const newCanvas = div.querySelector("canvas");
+    // if (newCanvas) {
+    //     element.appendChild(newCanvas as HTMLCanvasElement);
+    // }
 };
