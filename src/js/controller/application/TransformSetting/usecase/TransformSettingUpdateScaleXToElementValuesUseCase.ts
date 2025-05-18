@@ -1,6 +1,9 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getScreenOffsetLeft } from "@/global/GlobalUtil";
@@ -12,6 +15,7 @@ import {
     $BITMAP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -75,12 +79,8 @@ export const execute = (scale_x: number): void =>
                 parentMatrix, character.matrix
             );
 
-            character.matrix[0] = multiMatrix[0];
-            character.matrix[1] = multiMatrix[1];
-            character.matrix[2] = multiMatrix[2];
-            character.matrix[3] = multiMatrix[3];
-            character.matrix[4] = multiMatrix[4] + referenceSetting.x;
-            character.matrix[5] = multiMatrix[5] + referenceSetting.y;
+            character.x = multiMatrix[4] + referenceSetting.x;
+            character.y = multiMatrix[5] + referenceSetting.y;
 
             character.scaleX = Math.sqrt(
                 multiMatrix[0] * multiMatrix[0]
@@ -124,5 +124,17 @@ export const execute = (scale_x: number): void =>
     // 選択中のElementのレクタングルを再計算
     targetRectUpdateElementUseCase();
 
-    // TODO 親のキャッシュを削除
+    // 選択範囲のバウンディングボックスを取得
+    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+
+    // 変形エリアのx座標を更新
+    if (bounds) {
+        transformSettingUpdateXElementService(bounds.xMin);
+    }
+
+    // 変形エリアのxスケールを更新
+    transformSetting.scaleX *= scale_x;
+    transformSettingUpdateScaleXElementService(
+        Math.round(transformSetting.scaleX * 10000) / 100
+    );
 };

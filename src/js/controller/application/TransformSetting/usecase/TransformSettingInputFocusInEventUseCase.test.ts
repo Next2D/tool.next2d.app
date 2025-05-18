@@ -1,11 +1,14 @@
-import { execute } from "./TransformSettingInputFocusInEventService";
+import { execute } from "./TransformSettingInputFocusInEventUseCase";
 import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
 import { describe, expect, it, vi } from "vitest";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 
-describe("TransformSettingInputFocusInEventServiceTest", () =>
+describe("TransformSettingInputFocusInEventUseCase", () =>
 {
     it("execute test", () =>
     {
+        const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
+
         let stopPropagation = false;
         const eventMock = {
             "stopPropagation": vi.fn(() =>

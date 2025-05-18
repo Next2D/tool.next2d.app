@@ -15,15 +15,7 @@ export const execute = (
     matrix: number[]
 ): number => {
 
-    if (!Number.isInteger(scale_y)) {
-        const value: string = scale_y.toString();
-        const index: number = value.indexOf("e");
-        if (index !== -1) {
-            scale_y = +value.slice(0, index);
-        }
-        scale_y = +scale_y.toFixed(2);
-    }
-
+    scale_y = Math.round(scale_y * 10000) / 10000;
     if (current_scale_y === scale_y) {
         return scale_y;
     }

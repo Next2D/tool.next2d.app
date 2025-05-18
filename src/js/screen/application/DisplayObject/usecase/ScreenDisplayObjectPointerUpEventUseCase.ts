@@ -22,6 +22,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
+    // 移動状態を解除
+    $setPointerId(-1);
+
     // windowイベントを解除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE,
@@ -33,7 +36,4 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 移動した座標に更新
     await screenDisplayObjectUpdateSelectedValueService();
-
-    // 移動状態を解除
-    $setPointerId(-1);
 };

@@ -5,6 +5,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
+import { execute as transformSettingUpdateScaleXToRedrawCanvasService } from "../service/TransformSettingUpdateScaleXToRedrawCanvasService";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -37,63 +38,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
-    // TODO 変更後のmatrixで表示を更新
-    const workSpace = $getCurrentWorkSpace();
-    const movieClip = workSpace.scene;
-    if (movieClip.selectedDepths.size) {
+    // 変更後のmatrixで表示を更新
+    await transformSettingUpdateScaleXToRedrawCanvasService();
 
-        const element: HTMLElement | null = document
-            .getElementById($SCREEN_STAGE_AREA_ID);
-
-        if (element) {
-
-            let index = 0;
-
-            const frame = movieClip.currentFrame;
-            for (const [layerIndex, depths] of movieClip.selectedDepths) {
-                const layer = movieClip.getLayer(layerIndex);
-                if (!layer) {
-                    continue;
-                }
-
-                for (let idx = 0; idx < depths.length; idx++) {
-                    const depth = depths[idx];
-
-                    const character = layer.getCharacter(frame, depth);
-                    if (!character) {
-                        continue;
-                    }
-
-                    // 変更後の値をセット
-                    const scaleX = character.scaleX;
-                    const x = character.x;
-
-                    // 変更前の値に戻す
-                    const beforeMatrix = transformSetting.matrixs[index++];
-                    const beforeScaleX = Math.sqrt(
-                        beforeMatrix[0] * beforeMatrix[0]
-                        + beforeMatrix[1] * beforeMatrix[1]
-                    );
-
-                    character.x      = beforeMatrix[4];
-                    character.scaleX = beforeScaleX;
-
-                    const externalCharacter = new ExternalCharacter(
-                        workSpace,
-                        movieClip,
-                        layer,
-                        character
-                    );
-
-                    // fixed logic
-                    await externalCharacter.setScaleX(scaleX);
-                    await externalCharacter.setX(x);
-                }
-            }
-        }
-    }
-
-    // TODO 変形処理を実行
+    // TODO 親のMovieClipのキャッシュを削除
 
     // 変更前のmatrixを削除
     transformSetting.matrixs.length = 0;

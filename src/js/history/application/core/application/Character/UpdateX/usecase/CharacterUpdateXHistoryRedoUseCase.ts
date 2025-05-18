@@ -56,20 +56,19 @@ export const execute = (
     character.x = after_x;
 
     // アクティブなら表示を更新
-    if (workSpace.active
-        && movieClip.active
-        && movieClip.selectedDepths.size > 0
-    ) {
+    if (workSpace.active && movieClip.active) {
         // 表示Elementを移動
         screenAreaMoveDisplayObjectElementUseCase(layer, character);
 
-        // 選択範囲のElementを移動
-        targetRectUpdateElementUseCase();
+        if (movieClip.selectedDepths.size > 0) {
+            // 選択範囲のElementを移動
+            targetRectUpdateElementUseCase();
 
-        // TransformSettingのx座標を更新
-        const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-        if (bounds) {
-            transformSettingUpdateXElementService(bounds.xMin);
+            // TransformSettingのx座標を更新
+            const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+            if (bounds) {
+                transformSettingUpdateXElementService(bounds.xMin);
+            }
         }
     }
 };

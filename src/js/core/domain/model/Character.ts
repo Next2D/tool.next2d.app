@@ -325,7 +325,7 @@ export class Character
     }
     set x (x: number)
     {
-        this.matrix[4] = x;
+        this.matrix[4] = Math.round(x * 10000) / 10000;
     }
 
     /**
@@ -341,7 +341,7 @@ export class Character
     }
     set y (y: number)
     {
-        this.matrix[5] = y;
+        this.matrix[5] =  Math.round(y * 10000) / 10000;
     }
 
     /**

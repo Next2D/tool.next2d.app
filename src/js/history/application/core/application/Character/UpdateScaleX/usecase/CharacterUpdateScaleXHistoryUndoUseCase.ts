@@ -2,7 +2,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 
 /**
  * @description DisplayObjectのxスケールを変更前に戻す
@@ -52,13 +53,19 @@ export const execute = async (
 
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {
-        // 選択範囲のElementを移動
-        targetRectUpdateElementUseCase();
+
+        if (movieClip.selectedDepths.size > 0) {
+            // 選択範囲のElementを移動
+            targetRectUpdateElementUseCase();
+        }
 
         // canvasを再描画
-        await screenAreaReplaceCanvasUseCase(character, character.element, layer);
+        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+        if (element) {
+            await screenAreaReplaceCanvasUseCase(character, element, layer);
+        }
 
         // TransformSettingのx座標を更新
-        transformSettingUpdateXElementService(character.x);
+        transformSettingUpdateScaleXElementService(character.scaleX * 100);
     }
 };

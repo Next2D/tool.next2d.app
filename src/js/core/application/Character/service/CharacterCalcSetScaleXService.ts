@@ -15,15 +15,7 @@ export const execute = (
     matrix: Float32Array
 ): number => {
 
-    if (!Number.isInteger(scale_x)) {
-        const value: string = scale_x.toString();
-        const index: number = value.indexOf("e");
-        if (index !== -1) {
-            scale_x = +value.slice(0, index);
-        }
-        scale_x = +scale_x.toFixed(2);
-    }
-
+    scale_x = Math.round(scale_x * 10000) / 10000;
     if (current_scale_x === scale_x) {
         return scale_x;
     }

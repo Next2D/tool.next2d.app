@@ -1,6 +1,7 @@
 import { execute as transformSettingWidthPointerMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
 import { execute as transformSettingWidthPointerUpEventUseCase } from "./TransformSettingWidthPointerUpEventUseCase";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -65,28 +66,15 @@ export const execute = (event: PointerEvent): void =>
     // 選択中のバウンディングボックスから幅と高さを取得
     const width  = Math.abs(bounds.xMax - bounds.xMin);
     const height = Math.abs(bounds.yMax - bounds.yMin);
+    if (width === 0 || height === 0) {
+        return ;
+    }
 
-    // 変更前の値をセット
+    // 変形エリアの幅を設定
     transformSetting.w = width;
 
     // 変更前のmatrixを格納
-    const frame = movieClip.currentFrame;
-    for (const [layerIndex, depths] of movieClip.selectedDepths) {
-        const layer = movieClip.getLayer(layerIndex);
-        if (!layer) {
-            continue;
-        }
-
-        for (let idx = 0; idx < depths.length; idx++) {
-            const character = layer.getCharacter(frame, depths[idx]);
-            if (!character) {
-                continue;
-            }
-
-            // 複製を格納
-            transformSetting.matrixs.push(character.matrix.slice());
-        }
-    }
+    transformSettingCacheBeforeMatrixService();
 
     // 中心点を設定
     const tool = $getActiveTool();

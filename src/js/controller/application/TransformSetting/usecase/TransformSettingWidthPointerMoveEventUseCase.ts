@@ -1,5 +1,5 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as screenDisplayObjectTransformScaleXElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectTransformScaleXElementUseCase";
+import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
 import {
     $clamp,
     $setCursor
@@ -37,11 +37,11 @@ export const execute = (event: PointerEvent): void =>
 
         // 表示を更新
         const value = parseFloat(parseFloat(element.value).toFixed(2));
-        const width = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
+        const width = $clamp(value + event.movementX, 0, Number.MAX_VALUE);
         element.value = `${width}`;
 
         // 変形に合わせて表示を更新
-        screenDisplayObjectTransformScaleXElementUseCase(width / transformSetting.w);
+        transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.w);
 
         transformSetting.w = width;
     });

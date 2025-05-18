@@ -60,13 +60,15 @@ export const execute = (
         // 表示Elementを移動
         screenAreaMoveDisplayObjectElementUseCase(layer, character);
 
-        // 選択範囲のElementを移動
-        targetRectUpdateElementUseCase();
+        if (movieClip.selectedDepths.size > 0) {
+            // 選択範囲のElementを移動
+            targetRectUpdateElementUseCase();
 
-        // TransformSettingのy座標を更新
-        const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-        if (bounds) {
-            transformSettingUpdateYElementService(bounds.yMin);
+            // TransformSettingのy座標を更新
+            const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+            if (bounds) {
+                transformSettingUpdateYElementService(bounds.yMin);
+            }
         }
     }
 };
