@@ -5,25 +5,36 @@ import { execute as transformSettingUpdateHeightElementService } from "../servic
 import { execute as transformSettingUpdateScaleXElementService } from "../service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "../service/TransformSettingUpdateScaleYElementService";
 import { execute as transformSettingUpdateRotationElementService } from "../service/TransformSettingUpdateRotationElementService";
-import type { Character } from "@/core/domain/model/Character";
 
 /**
  * @description 変形設定の値を更新
  *              Update the value of the transformation setting
  *
- * @param  {Character} character
+ * @param  {number} x
+ * @param  {number} y
+ * @param  {number} width
+ * @param  {number} height
+ * @param  {number} scale_x
+ * @param  {number} scale_y
+ * @param  {number} rotation
  * @return {void}
  * @method
  * @public
  */
-export const execute = (character: Character): void =>
-{
-    // 変形の値を更新
-    transformSettingUpdateXElementService(character.x);
-    transformSettingUpdateYElementService(character.y);
-    transformSettingUpdateWidthElementService(character.width);
-    transformSettingUpdateHeightElementService(character.height);
-    transformSettingUpdateScaleXElementService(character.scaleX * 100);
-    transformSettingUpdateScaleYElementService(character.scaleY * 100);
-    transformSettingUpdateRotationElementService(character.rotation);
+export const execute = (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    scale_x: number,
+    scale_y: number,
+    rotation: number
+): void => {
+    transformSettingUpdateXElementService(x);
+    transformSettingUpdateYElementService(y);
+    transformSettingUpdateWidthElementService(width);
+    transformSettingUpdateHeightElementService(height);
+    transformSettingUpdateScaleXElementService(scale_x * 100);
+    transformSettingUpdateScaleYElementService(scale_y * 100);
+    transformSettingUpdateRotationElementService(rotation);
 };

@@ -1,12 +1,14 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $setSelectedMode } from "../PropertyAreaUtil";
 import { execute as propertyAreaBitmapDisplayControllerUseCase } from "./PropertyAreaBitmapDisplayControllerUseCase";
 import { execute as propertyAreaVideoDisplayControllerUseCase } from "./PropertyAreaVideoDisplayControllerUseCase";
 import { execute as propertyAreaShapeDisplayControllerUseCase } from "./PropertyAreaShapeDisplayControllerUseCase";
 import { execute as propertyAreaMovieClipDisplayControllerUseCase } from "./PropertyAreaMovieClipDisplayControllerUseCase";
 import { execute as propertyAreaShowMultiSettingUseCase } from "./PropertyAreaShowMultiSettingUseCase";
-import { $setSelectedMode } from "../PropertyAreaUtil";
 import { execute as propertyAreaScrollUpdateHeightService } from "@/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService";
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "./PropertyAreaShowDefaultSettingItemUseCase";
+import { execute as transformSettingUpdateElementUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateElementUseCase";
+import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
@@ -77,6 +79,18 @@ export const execute = async (): Promise<void> =>
     } else {
         // 複数選択時の表示に切り替える
         propertyAreaShowMultiSettingUseCase();
+
+        // 変形エリアのサイズを更新
+        const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+        if (bounds) {
+            transformSettingUpdateElementUseCase(
+                bounds.xMin,
+                bounds.yMin,
+                Math.abs(bounds.xMax - bounds.xMin),
+                Math.abs(bounds.yMax - bounds.yMin),
+                1, 1, 0
+            );
+        }
     }
 
     // プロパティエリアのスクロールの高さを更新

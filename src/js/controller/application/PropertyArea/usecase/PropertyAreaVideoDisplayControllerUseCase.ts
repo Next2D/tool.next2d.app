@@ -27,8 +27,15 @@ export const execute = (character: Character): void =>
     objectSettingHideSymbolService();
 
     // 変形の値を更新
-    transformSettingUpdateElementUseCase(character);
-
+    transformSettingUpdateElementUseCase(
+        character.x,
+        character.y,
+        character.width,
+        character.height,
+        character.scaleX,
+        character.scaleY,
+        character.rotation
+    );
     // カラーの値を更新
 
     // ブレンドの値を更新
