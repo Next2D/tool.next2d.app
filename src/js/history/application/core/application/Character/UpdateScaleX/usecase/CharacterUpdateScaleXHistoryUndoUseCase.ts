@@ -49,7 +49,7 @@ export const execute = async (
     }
 
     // データを更新
-    character.scaleX = before_scale_x;
+    character.scaleX = before_scale_x / 100;
 
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {

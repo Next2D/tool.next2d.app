@@ -62,7 +62,7 @@ export const execute = async (library_id: number): Promise<void> =>
             // 既存のcanvasをキャッシュに戻す
             const canvas = node.querySelector("canvas");
             if (canvas) {
-                $poolCanvas(canvas);
+                canvas.remove();
             }
 
             // 既存のElementを削除

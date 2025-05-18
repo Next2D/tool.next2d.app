@@ -661,7 +661,7 @@ export const execute = async (
 
         // キャラクターのX座標を更新
         case $CHARACTER_UPDATE_SCALE_X_COMMAND:
-            characterUpdateScaleXHistoryRedoUseCase(
+            await characterUpdateScaleXHistoryRedoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index

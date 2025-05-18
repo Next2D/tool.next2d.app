@@ -1,9 +1,6 @@
 import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
-import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
 import { execute as transformSettingUpdateScaleXToRedrawCanvasService } from "../service/TransformSettingUpdateScaleXToRedrawCanvasService";
 

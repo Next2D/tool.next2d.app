@@ -1,8 +1,9 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as screenAreaMoveDisplayObjectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveDisplayObjectElementUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 
 /**
  * @description DisplayObjectのx座標を変更後に戻す
@@ -14,18 +15,18 @@ import { execute as transformSettingUpdateXElementService } from "@/controller/a
  * @param  {number} keyframe
  * @param  {number} depth
  * @param  {number} after_x
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     index: number,
     keyframe: number,
     depth: number,
     after_x: number
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -52,17 +53,22 @@ export const execute = (
     character.referencePosition.x += after_x - character.x;
 
     // データを更新
-    character.x = after_x;
+    character.scaleX = after_x / 100;
 
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {
-        // 表示Elementを移動
-        screenAreaMoveDisplayObjectElementUseCase(layer, character);
+        if (movieClip.selectedDepths.size > 0) {
+            // 選択範囲のElementを移動
+            targetRectUpdateElementUseCase();
+        }
 
-        // 選択範囲のElementを移動
-        targetRectUpdateElementUseCase();
+        // canvasを再描画
+        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+        if (element) {
+            await screenAreaReplaceCanvasUseCase(character, element, layer);
+        }
 
         // TransformSettingのx座標を更新
-        transformSettingUpdateXElementService(character.x);
+        transformSettingUpdateScaleXElementService(character.scaleX * 100);
     }
 };

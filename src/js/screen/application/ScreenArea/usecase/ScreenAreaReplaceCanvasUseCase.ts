@@ -30,7 +30,6 @@ export const execute = async (
     const canvas = element.querySelector("canvas");
     if (canvas) {
         canvas.remove();
-        $poolCanvas(canvas);
     }
 
     const newCanvas = div.querySelector("canvas");
