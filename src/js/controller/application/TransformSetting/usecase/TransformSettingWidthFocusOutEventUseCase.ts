@@ -15,16 +15,16 @@ import { execute as transformSettingUpdateScaleXToRedrawCanvasService } from "..
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
+    const element = event.target as HTMLInputElement;
+    if (!element) {
+        return ;
+    }
+
     // イベントの伝播を止める
     event.stopPropagation();
 
     // 入力モードを終了する
     $updateKeyLock(false);
-
-    const element = event.target as HTMLInputElement;
-    if (!element) {
-        return ;
-    }
 
     const width = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 0, Number.MAX_VALUE);
     element.value = `${width}`;

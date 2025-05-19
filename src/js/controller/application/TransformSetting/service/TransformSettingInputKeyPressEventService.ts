@@ -1,3 +1,5 @@
+import { $setCursor, $setEditingElement } from "@/global/GlobalUtil";
+
 /**
  * @description Enterキーでfocusを終了
  *              Exit focus with Enter key
@@ -16,11 +18,9 @@ export const execute = (event: KeyboardEvent): void =>
     // 親のイベントを終了
     event.stopPropagation();
 
-    const element: HTMLElement | null = event.currentTarget as HTMLElement;
-    if (!element) {
-        return ;
-    }
+    // フォーカスを初期化
+    $setEditingElement(null);
 
-    // 入力終了
-    element.blur();
+    // デフォルト設定に戻す
+    $setCursor("auto");
 };

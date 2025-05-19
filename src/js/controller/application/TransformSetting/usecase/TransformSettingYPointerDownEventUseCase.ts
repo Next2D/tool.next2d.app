@@ -1,6 +1,6 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setCursor, $setEditingElement } from "@/global/GlobalUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingYPointerMoveEventUseCase } from "./TransformSettingYPointerMoveEventUseCase";
@@ -37,6 +37,7 @@ export const execute = (event: PointerEvent): void =>
 
     // カーソルが変化しないように設定
     event.preventDefault();
+    $setCursor("ew-resize");
 
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
     if (!element) {

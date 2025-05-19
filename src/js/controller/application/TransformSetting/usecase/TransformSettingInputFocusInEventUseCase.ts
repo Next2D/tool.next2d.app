@@ -2,6 +2,7 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
+import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description 変形エリアのフォーカスイベント処理
@@ -14,18 +15,21 @@ import { execute as transformSettingCacheBeforeMatrixService } from "../service/
  */
 export const execute = (event: FocusEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-
-    // 入力モードをOnにする
-    $updateKeyLock(true);
-
     // フォーカスを初期化
     const element: HTMLInputElement | null = event.currentTarget as HTMLInputElement;
     if (!element) {
         return ;
     }
     element.style.cursor = "";
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+
+    // 入力モードをOnにする
+    $updateKeyLock(true);
+
+    // フォーカスを当てる
+    $setEditingElement(element);
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

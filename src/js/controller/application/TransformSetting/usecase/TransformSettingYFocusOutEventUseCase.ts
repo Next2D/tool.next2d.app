@@ -15,16 +15,16 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
+    const element = event.target as HTMLInputElement;
+    if (!element) {
+        return ;
+    }
+
     // イベントの伝播を止める
     event.stopPropagation();
 
     // 入力モードを終了する
     $updateKeyLock(false);
-
-    const element = event.target as HTMLInputElement;
-    if (!element) {
-        return ;
-    }
 
     const value = parseFloat($clamp(parseFloat(element.value), -Number.MAX_VALUE, Number.MAX_VALUE).toFixed(2));
     element.value = `${value}`;

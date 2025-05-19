@@ -12,6 +12,7 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import {
     $activeTouchPointers,
+    $setCursor,
     $setEditingElement
 } from "@/global/GlobalUtil";
 
@@ -46,6 +47,7 @@ export const execute = (event: PointerEvent): void =>
 
     // カーソルが変化しないように設定
     event.preventDefault();
+    $setCursor("ew-resize");
 
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
     if (!element) {

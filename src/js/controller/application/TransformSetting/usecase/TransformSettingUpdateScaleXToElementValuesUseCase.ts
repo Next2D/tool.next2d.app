@@ -28,6 +28,10 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
  */
 export const execute = (scale_x: number): void =>
 {
+    if (scale_x === 1) {
+        return ;
+    }
+
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
