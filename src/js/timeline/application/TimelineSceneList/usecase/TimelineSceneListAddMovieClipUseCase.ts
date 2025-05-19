@@ -2,7 +2,7 @@ import { $TIMELINE_SCENE_NAME_LIST_ID } from "@/config/TimelineConfig";
 import { execute as timelineSceneListContentComponent } from "../component/TimelineSceneListContentComponent";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineSceneListNodeMouseDownEventUseCase } from "./TimelineSceneListNodeMouseDownEventUseCase";
+import { execute as timelineSceneListNodePointerDownEventUseCase } from "./TimelineSceneListNodePointerDownEventUseCase";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import type { Character } from "@/core/domain/model/Character";
 
@@ -52,6 +52,6 @@ export const execute = (
 
     // イベントを登録
     node.addEventListener(EventType.POINTER_DOWN,
-        timelineSceneListNodeMouseDownEventUseCase
+        timelineSceneListNodePointerDownEventUseCase
     );
 };

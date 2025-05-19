@@ -1,6 +1,6 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService";
-import { $clamp } from "@/global/GlobalUtil";
+import { $clamp, $setEditingElement } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
@@ -15,16 +15,19 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
+    const element = event.target as HTMLInputElement;
+    if (!element) {
+        return ;
+    }
+
     // イベントの伝播を止める
     event.stopPropagation();
 
     // 入力モードを終了する
     $updateKeyLock(false);
 
-    const element = event.target as HTMLInputElement;
-    if (!element) {
-        return ;
-    }
+    // 編集中の要素を解除
+    $setEditingElement(null);
 
     const value = parseFloat($clamp(parseFloat(element.value), -Number.MAX_VALUE, Number.MAX_VALUE).toFixed(2));
     element.value = `${value}`;

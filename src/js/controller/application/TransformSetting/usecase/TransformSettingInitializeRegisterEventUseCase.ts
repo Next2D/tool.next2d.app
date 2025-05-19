@@ -3,12 +3,14 @@ import { execute as transformSettingInputPointerOverEventService } from "../serv
 import { execute as transformSettingInputPointerOutEventService } from "../service/TransformSettingInputPointerOutEventService";
 import { execute as transformSettingInputFocusInEventUseCase } from "./TransformSettingInputFocusInEventUseCase";
 import { execute as transformSettingWidthFocusOutEventUseCase } from "./TransformSettingWidthFocusOutEventUseCase";
+import { execute as transformSettingHeightFocusOutEventUseCase } from "./TransformSettingHeightFocusOutEventUseCase";
 import { execute as transformSettingInputKeyPressEventService } from "../service/TransformSettingInputKeyPressEventService";
 import { execute as transformSettingXPointerDownEventUseCase } from "./TransformSettingXPointerDownEventUseCase";
 import { execute as transformSettingYPointerDownEventUseCase } from "./TransformSettingYPointerDownEventUseCase";
 import { execute as transformSettingXFocusOutEventUseCase } from "./TransformSettingXFocusOutEventUseCase";
 import { execute as transformSettingYFocusOutEventUseCase } from "./TransformSettingYFocusOutEventUseCase";
 import { execute as transformSettingWidthPointerDownEventUseCase } from "./TransformSettingWidthPointerDownEventUseCase";
+import { execute as transformSettingHeightPointerDownEventUseCase } from "./TransformSettingHeightPointerDownEventUseCase";
 import {
     $TRANSFORM_OBJECT_HEIGHT_ID,
     $TRANSFORM_OBJECT_ROTATE_ID,
@@ -127,8 +129,14 @@ export const execute = (): void =>
         heightElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputPointerOutEventService
         );
+        heightElement.addEventListener(EventType.POINTER_DOWN,
+            transformSettingHeightPointerDownEventUseCase
+        );
         heightElement.addEventListener("focusin",
             transformSettingInputFocusInEventUseCase
+        );
+        heightElement.addEventListener("focusout",
+            transformSettingHeightFocusOutEventUseCase
         );
         heightElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService

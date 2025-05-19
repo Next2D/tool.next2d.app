@@ -1,5 +1,5 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
+import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleYToElementValuesUseCase";
 import {
     $clamp,
     $setCursor
@@ -36,13 +36,13 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 表示を更新
-        const value = parseFloat(parseFloat(element.value).toFixed(2));
-        const width = $clamp(value + event.movementX, 1, Number.MAX_VALUE);
-        element.value = `${width}`;
+        const value  = parseFloat(parseFloat(element.value).toFixed(2));
+        const height = $clamp(value + event.movementX, 1, Number.MAX_VALUE);
+        element.value = `${height}`;
 
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.w);
+        transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.h);
 
-        transformSetting.w = width;
+        transformSetting.h = height;
     });
 };

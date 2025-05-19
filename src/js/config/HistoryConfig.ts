@@ -591,3 +591,12 @@ export const $CHARACTER_UPDATE_NAME_COMMAND: number = 59;
  * @constant
  */
 export const $CHARACTER_UPDATE_SCALE_X_COMMAND: number = 60;
+
+/**
+ * @description DisplayObjectのyスケール更新の識別コマンド名
+ *              Identification command name for updating the y-scale of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_SCALE_Y_COMMAND: number = 61;

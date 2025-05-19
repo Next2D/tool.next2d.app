@@ -1,6 +1,6 @@
 import { $TIMELINE_SCENE_LIST_BUTTON_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineSceneListMouseDownEventUseCase } from "./TimelineSceneListMouseDownEventUseCase";
+import { execute as timelineSceneListPointerDownEventUseCase } from "./TimelineSceneListPointerDownEventUseCase";
 
 /**
  * @description タイムラインの親のシーン名一覧ボタンにイベント登録
@@ -21,6 +21,6 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineSceneListMouseDownEventUseCase
+        timelineSceneListPointerDownEventUseCase
     );
 };

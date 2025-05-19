@@ -1,5 +1,5 @@
-import { execute as transformSettingWidthPointerMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
-import { execute as transformSettingWidthPointerUpEventUseCase } from "./TransformSettingWidthPointerUpEventUseCase";
+import { execute as transformSettingHeightPointerMoveEventUseCase } from "./TransformSettingHeightPointerMoveEventUseCase";
+import { execute as transformSettingHeightPointerUpEventUseCase } from "./TransformSettingHeightPointerUpEventUseCase";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
@@ -71,8 +71,8 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // 変形エリアの幅を設定
-    transformSetting.w = width;
+    // 変形エリアの高さを設定
+    transformSetting.h = height;
 
     // 変更前のmatrixを格納
     transformSettingCacheBeforeMatrixService();
@@ -115,19 +115,19 @@ export const execute = (event: PointerEvent): void =>
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
         EventType.POINTER_MOVE,
-        transformSettingWidthPointerMoveEventUseCase,
+        transformSettingHeightPointerMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        transformSettingWidthPointerUpEventUseCase
+        transformSettingHeightPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        transformSettingWidthPointerUpEventUseCase
+        transformSettingHeightPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_LEAVE,
-        transformSettingWidthPointerUpEventUseCase
+        transformSettingHeightPointerUpEventUseCase
     );
 };

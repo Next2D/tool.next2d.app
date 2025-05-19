@@ -2,11 +2,11 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
-import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
-import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
+import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
+import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getScreenOffsetLeft } from "@/global/GlobalUtil";
+import { $getScreenOffsetTop } from "@/global/GlobalUtil";
 import {
     $createTransformElementStyle,
     $multiplicationMatrix
@@ -21,14 +21,14 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
  *              Transform the selected Element on the screen according to the matrix
  *
- * @param  {number} scale_x
+ * @param  {number} scale_y
  * @return {void}
  * @method
  * @public
  */
-export const execute = (scale_x: number): void =>
+export const execute = (scale_y: number): void =>
 {
-    if (scale_x === 1) {
+    if (scale_y === 1) {
         return ;
     }
 
@@ -48,7 +48,7 @@ export const execute = (scale_x: number): void =>
     }
 
     const parentMatrix = $multiplicationMatrix(
-        new Float32Array([scale_x, 0, 0, 1, 0, 0]),
+        new Float32Array([1, 0, 0, scale_y, 0, 0]),
         new Float32Array([
             1, 0, 0, 1,
             -referenceSetting.x,
@@ -88,9 +88,9 @@ export const execute = (scale_x: number): void =>
             character.x = multiMatrix[4] + referenceSetting.x;
             character.y = multiMatrix[5] + referenceSetting.y;
 
-            character.scaleX = Math.sqrt(
-                multiMatrix[0] * multiMatrix[0]
-                + multiMatrix[1] * multiMatrix[1]
+            character.scaleY = Math.sqrt(
+                multiMatrix[2] * multiMatrix[2]
+                + multiMatrix[3] * multiMatrix[3]
             );
 
             const instance = workSpace.getLibrary(character.libraryId);
@@ -116,31 +116,31 @@ export const execute = (scale_x: number): void =>
                         if (!canvas) {
                             continue ;
                         }
-                        canvas.style.width = `${Math.ceil(character.width * workSpace.scale)}px`;
+                        canvas.style.height = `${Math.ceil(character.height * workSpace.scale)}px`;
                     }
                     break;
 
             }
 
-            const x = $getScreenOffsetLeft() + character.x * workSpace.scale;
-            node.style.left = `${x}px`;
+            const y = $getScreenOffsetTop() + character.y * workSpace.scale;
+            node.style.top = `${y}px`;
         }
     }
 
     // 選択中のElementのレクタングルを再計算
     targetRectUpdateElementUseCase();
 
-    // 選択範囲のバウンディングボックスを取得
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+    // // 選択範囲のバウンディングボックスを取得
+    // const bounds = screenAreaCalcSelectedBoundsService(movieClip);
 
-    // 変形エリアのx座標を更新
-    if (bounds) {
-        transformSettingUpdateXElementService(bounds.xMin);
-    }
+    // // 変形エリアのy座標を更新
+    // if (bounds) {
+    //     transformSettingUpdateYElementService(bounds.yMin);
+    // }
 
-    // 変形エリアのxスケールを更新
-    transformSetting.scaleX *= scale_x;
-    transformSettingUpdateScaleXElementService(
-        Math.round(transformSetting.scaleX * 10000) / 100
-    );
+    // // 変形エリアのyスケールを更新
+    // transformSetting.scaleY *= scale_y;
+    // transformSettingUpdateScaleYElementService(
+    //     Math.round(transformSetting.scaleY * 10000) / 100
+    // );
 };

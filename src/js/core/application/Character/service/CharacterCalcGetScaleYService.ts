@@ -9,19 +9,10 @@
  */
 export const execute = (matrix: Float32Array): number =>
 {
-    let yScale: number = Math.sqrt(
+    const yScale = Math.round(Math.sqrt(
         matrix[2] * matrix[2]
         + matrix[3] * matrix[3]
-    );
-
-    if (!Number.isInteger(yScale)) {
-        const value: string = yScale.toString();
-        const index: number = value.indexOf("e");
-        if (index !== -1) {
-            yScale = +value.slice(0, index);
-        }
-        yScale = +yScale.toFixed(4);
-    }
+    ) * 10000) / 10000;
 
     return 0 > matrix[3] ? yScale * -1 : yScale;
 };

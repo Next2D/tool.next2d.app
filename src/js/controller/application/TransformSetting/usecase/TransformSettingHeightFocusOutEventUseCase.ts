@@ -1,13 +1,13 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { $clamp, $setEditingElement } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
-import { execute as transformSettingUpdateScaleXToRedrawCanvasService } from "../service/TransformSettingUpdateScaleXToRedrawCanvasService";
+import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
+import { execute as transformSettingUpdateScaleYToRedrawCanvasService } from "../service/TransformSettingUpdateScaleYToRedrawCanvasService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 
 /**
- * @description 幅の入力完了処理
- *              Width input completion processing
+ * @description 高さの入力完了処理
+ *              Height input completion processing
  *
  * @param  {FocusEvent} event
  * @return {Promise<void>}
@@ -30,14 +30,14 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 編集中の要素を解除
     $setEditingElement(null);
 
-    const width = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 0, Number.MAX_VALUE);
-    element.value = `${width}`;
+    const height = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 0, Number.MAX_VALUE);
+    element.value = `${height}`;
 
     // 変形に合わせて表示を更新
-    transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.w);
+    transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.h);
 
     // 変更後のmatrixで表示を更新
-    await transformSettingUpdateScaleXToRedrawCanvasService();
+    await transformSettingUpdateScaleYToRedrawCanvasService();
 
     // 親のMovieClipのキャッシュを削除
     timelineSceneListCacheRemoveService();

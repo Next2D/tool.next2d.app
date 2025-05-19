@@ -1,10 +1,13 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { $activeTouchPointers, $setCursor, $setEditingElement } from "@/global/GlobalUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingYPointerMoveEventUseCase } from "./TransformSettingYPointerMoveEventUseCase";
 import { execute as transformSettingYPointerUpEventUseCase } from "./TransformSettingYPointerUpEventUseCase";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 
 /**
  * @description 変形エリアのy座標のマウスダウンイベント
@@ -37,12 +40,12 @@ export const execute = (event: PointerEvent): void =>
 
     // カーソルが変化しないように設定
     event.preventDefault();
-    $setCursor("ew-resize");
 
     const element: HTMLInputElement | null = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }
+    element.style.cursor = "ew-resize";
 
     // マウスで移動した量を更新
     transformSetting.x = 0;

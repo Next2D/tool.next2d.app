@@ -8,8 +8,8 @@ import {
 } from "@/config/InstanceConfig";
 
 /**
- * @description スケールxの操作によるキャンバスの再描画
- *              Redraw canvas by scale x operation
+ * @description スケールyの操作によるキャンバスの再描画
+ *              Redraw canvas by scale y operation
  *
  * @return {Promise<void>}
  * @method
@@ -41,26 +41,26 @@ export const execute = async (): Promise<void> =>
             }
 
             // 変更後の値をセット
-            const afterScaleX = character.scaleX;
-            const afterX = character.x;
+            const afterScaleY = character.scaleY;
+            const afterY = character.y;
 
             // 変更前の値に戻す
             const beforeMatrix = transformSetting.matrixs[index++];
-            const beforeScaleX = Math.sqrt(
-                beforeMatrix[0] * beforeMatrix[0]
-                + beforeMatrix[1] * beforeMatrix[1]
+            const beforeScaleY = Math.sqrt(
+                beforeMatrix[2] * beforeMatrix[2]
+                + beforeMatrix[3] * beforeMatrix[3]
             );
 
-            character.x      = beforeMatrix[4];
-            character.scaleX = beforeScaleX;
+            character.y      = beforeMatrix[4];
+            character.scaleY = beforeScaleY;
 
             const instance = workSpace.getLibrary(character.libraryId);
             if (!instance) {
                 continue;
             }
 
-            // 変更前の幅をキャッシュ
-            const width = character.width;
+            // 変更前の高さをセット
+            const height = character.height;
 
             let canvas  = null;
             if (instance.type !== $BITMAP_TYPE && instance.type !== $VIDEO_TYPE) {
@@ -78,11 +78,11 @@ export const execute = async (): Promise<void> =>
             );
 
             // fixed logic
-            await externalCharacter.setScaleX(afterScaleX);
-            await externalCharacter.setX(afterX);
+            await externalCharacter.setScaleY(afterScaleY);
+            await externalCharacter.setY(afterY);
 
             if (canvas) {
-                canvas.style.width = `${Math.ceil(width * workSpace.scale)}px`;
+                canvas.style.height = `${Math.ceil(height * workSpace.scale)}px`;
             }
         }
     }

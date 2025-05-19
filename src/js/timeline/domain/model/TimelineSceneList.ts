@@ -9,21 +9,6 @@ import type { ITimelineSceneListParentObject } from "@/interface/ITimelineSceneL
  */
 class TimelineSceneList
 {
-    private readonly _$parents: ITimelineSceneListParentObject[];
-
-    /**
-     * @constructor
-     * @public
-     */
-    constructor ()
-    {
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$parents = [];
-    }
-
     /**
      * @description MovieClipのcharacterを格納した配列を返却
      *              Returns an array containing the character of MovieClip
@@ -32,9 +17,16 @@ class TimelineSceneList
      * @readonly
      * @public
      */
-    get parents (): ITimelineSceneListParentObject[]
+    public readonly parents: ITimelineSceneListParentObject[];
+
+    /**
+     * @constructor
+     * @public
+     */
+    constructor ()
     {
-        return this._$parents;
+
+        this.parents = [];
     }
 }
 

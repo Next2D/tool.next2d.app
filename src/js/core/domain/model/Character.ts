@@ -10,6 +10,7 @@ import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreU
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
+import { execute as characterCalcSetScaleYService } from "@/core/application/Character/service/CharacterCalcSetScaleYService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
@@ -423,7 +424,7 @@ export class Character
     }
     set scaleY (scale_y: number)
     {
-        this._$scaleY = characterCalcSetScaleXService(
+        this._$scaleY = characterCalcSetScaleYService(
             scale_y,
             this._$scaleY,
             this.matrix

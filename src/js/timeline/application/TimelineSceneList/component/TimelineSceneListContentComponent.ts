@@ -11,7 +11,5 @@ import type { Instance } from "@/core/domain/model/Instance";
  */
 export const execute = <I extends Instance> (instance: I): string =>
 {
-    return `
-<div id="scene-library-id-${instance.id}" data-library-id="${instance.id}">${instance.name}</div>
-`;
+    return `<div id="scene-library-id-${instance.id}" data-library-id="${instance.id}">${instance.name}</div>`;
 };

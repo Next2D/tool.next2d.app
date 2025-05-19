@@ -1,8 +1,8 @@
 import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
-import { execute as transformSettingUpdateScaleXToRedrawCanvasService } from "../service/TransformSettingUpdateScaleXToRedrawCanvasService";
+import { execute as transformSettingHeightPointerMoveEventUseCase } from "./TransformSettingHeightPointerMoveEventUseCase";
+import { execute as transformSettingUpdateScaleYToRedrawCanvasService } from "../service/TransformSettingUpdateScaleYToRedrawCanvasService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 
 /**
@@ -30,14 +30,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // windowのイベントを削除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE,
-        transformSettingWidthWindowMouseMoveEventUseCase
+        transformSettingHeightPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 変更後のmatrixで表示を更新
-    await transformSettingUpdateScaleXToRedrawCanvasService();
+    await transformSettingUpdateScaleYToRedrawCanvasService();
 
     // 親のMovieClipのキャッシュを削除
     timelineSceneListCacheRemoveService();

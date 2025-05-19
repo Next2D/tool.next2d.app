@@ -9,7 +9,14 @@ import { $TIMELINE_MAX_MARKER_WIDTH_SIZE } from "@/config/TimelineConfig";
  */
 class TimelineMarker
 {
-    private _$clientWidth: number;
+    /**
+     * @description タイムラインマーカーの表示幅を返却する
+     *              Return the display width of the timeline markers
+     *
+     * @member {number}
+     * @public
+     */
+    public clientWidth: number;
 
     /**
      * @constructor
@@ -17,12 +24,7 @@ class TimelineMarker
      */
     constructor ()
     {
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$clientWidth = 0;
+        this.clientWidth = 0;
     }
 
     /**
@@ -35,23 +37,7 @@ class TimelineMarker
      */
     async initialize (): Promise<void>
     {
-        this._$clientWidth = $TIMELINE_MAX_MARKER_WIDTH_SIZE;
-    }
-
-    /**
-     * @description タイムラインマーカーの表示幅を返却する
-     *              Return the display width of the timeline markers
-     *
-     * @member {number}
-     * @public
-     */
-    get clientWidth (): number
-    {
-        return this._$clientWidth;
-    }
-    set clientWidth (width: number)
-    {
-        this._$clientWidth = width;
+        this.clientWidth = $TIMELINE_MAX_MARKER_WIDTH_SIZE;
     }
 }
 

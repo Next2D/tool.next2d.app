@@ -4,7 +4,7 @@ import { $TIMELINE_SCENE_NAME_LIST_ID } from "@/config/TimelineConfig";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineSceneListNodeMouseDownEventUseCase } from "./TimelineSceneListNodeMouseDownEventUseCase";
+import { execute as timelineSceneListNodePointerDownEventUseCase } from "./TimelineSceneListNodePointerDownEventUseCase";
 
 /**
  * @description タイムラインのシーン名一覧を初期化してrootのIDを追加
@@ -45,6 +45,6 @@ export const execute = (): void =>
     }
 
     node.addEventListener(EventType.POINTER_DOWN,
-        timelineSceneListNodeMouseDownEventUseCase
+        timelineSceneListNodePointerDownEventUseCase
     );
 };
