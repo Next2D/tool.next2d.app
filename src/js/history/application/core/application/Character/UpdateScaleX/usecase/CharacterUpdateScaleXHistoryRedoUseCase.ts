@@ -27,7 +27,7 @@ export const execute = async (
     index: number,
     keyframe: number,
     depth: number,
-    after_x: number
+    after_scale_x: number
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -50,12 +50,8 @@ export const execute = async (
         return ;
     }
 
-    // 中心点を移動に合わせて移動
-    // fixed logic
-    character.referencePosition.x += after_x - character.x;
-
     // データを更新
-    character.scaleX = after_x / 100;
+    character.scaleX = after_scale_x / 100;
 
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {

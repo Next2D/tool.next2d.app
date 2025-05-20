@@ -51,7 +51,7 @@ export const execute = async (): Promise<void> =>
                 + beforeMatrix[3] * beforeMatrix[3]
             );
 
-            character.y      = beforeMatrix[4];
+            character.y      = beforeMatrix[5];
             character.scaleY = beforeScaleY;
 
             const instance = workSpace.getLibrary(character.libraryId);

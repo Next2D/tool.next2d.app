@@ -130,17 +130,17 @@ export const execute = (scale_y: number): void =>
     // 選択中のElementのレクタングルを再計算
     targetRectUpdateElementUseCase();
 
-    // // 選択範囲のバウンディングボックスを取得
-    // const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+    // 選択範囲のバウンディングボックスを取得
+    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
 
-    // // 変形エリアのy座標を更新
-    // if (bounds) {
-    //     transformSettingUpdateYElementService(bounds.yMin);
-    // }
+    // 変形エリアのy座標を更新
+    if (bounds) {
+        transformSettingUpdateYElementService(bounds.yMin);
+    }
 
-    // // 変形エリアのyスケールを更新
-    // transformSetting.scaleY *= scale_y;
-    // transformSettingUpdateScaleYElementService(
-    //     Math.round(transformSetting.scaleY * 10000) / 100
-    // );
+    // 変形エリアのyスケールを更新
+    transformSetting.scaleY *= scale_y;
+    transformSettingUpdateScaleYElementService(
+        Math.round(transformSetting.scaleY * 10000) / 100
+    );
 };

@@ -63,6 +63,7 @@ import { execute as libraryAreaAddNewShapeHistoryUndoUseCase } from "@/history/a
 import { execute as libraryAreaUpdateShapeGraphicsHistoryUndoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaUpdateShapeGraphicsHistoryUndoUseCase";
 import { execute as characterUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateName/usecase/CharacterUpdateNameHistoryUndoUseCase";
 import { execute as characterUpdateScaleXHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryUndoUseCase";
+import { execute as characterUpdateScaleYHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateScaleY/usecase/CharacterUpdateScaleYHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -117,7 +118,8 @@ import {
     $LIBRARY_ADD_NEW_SHAPE_COMMAND,
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
     $CHARACTER_UPDATE_NAME_COMMAND,
-    $CHARACTER_UPDATE_SCALE_X_COMMAND
+    $CHARACTER_UPDATE_SCALE_X_COMMAND,
+    $CHARACTER_UPDATE_SCALE_Y_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -663,6 +665,18 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[5] as number  // Before ScaleX
+            );
+            break;
+
+        // DisplayObjectのスケールYを更新
+        case $CHARACTER_UPDATE_SCALE_Y_COMMAND:
+            await characterUpdateScaleYHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as number  // Before ScaleY
             );
             break;
 
