@@ -30,7 +30,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 編集中の要素を解除
     $setEditingElement(null);
 
-    const height = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 0, Number.MAX_VALUE);
+    const height = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
     element.value = `${height}`;
 
     // 変形に合わせて表示を更新

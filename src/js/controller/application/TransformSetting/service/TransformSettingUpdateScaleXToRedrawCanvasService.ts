@@ -41,8 +41,7 @@ export const execute = async (): Promise<void> =>
             }
 
             // 変更後の値をセット
-            const afterScaleX = character.scaleX;
-            const afterX = character.x;
+            const afterMatrix = character.matrix.slice();
 
             // 変更前の値に戻す
             const beforeMatrix = transformSetting.matrixs[index++];
@@ -78,8 +77,13 @@ export const execute = async (): Promise<void> =>
             );
 
             // fixed logic
+            const afterScaleX = Math.round(Math.sqrt(
+                afterMatrix[0] * afterMatrix[0]
+                + afterMatrix[1] * afterMatrix[1]
+            ) * 10000) / 10000;
+
             await externalCharacter.setScaleX(afterScaleX);
-            await externalCharacter.setX(afterX);
+            await externalCharacter.setX(afterMatrix[4]);
 
             if (canvas) {
                 canvas.style.width = `${Math.ceil(width * workSpace.scale)}px`;

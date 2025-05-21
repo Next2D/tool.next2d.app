@@ -30,11 +30,11 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 編集中の要素を解除
     $setEditingElement(null);
 
-    const width = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 0, Number.MAX_VALUE);
+    const width = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
     element.value = `${width}`;
 
     // 変形に合わせて表示を更新
-    transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.w);
+    transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.beforeValue);
 
     // 変更後のmatrixで表示を更新
     await transformSettingUpdateScaleXToRedrawCanvasService();

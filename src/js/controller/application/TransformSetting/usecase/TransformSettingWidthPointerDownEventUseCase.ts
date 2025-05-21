@@ -73,6 +73,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 変形エリアの幅を設定
     transformSetting.w = width;
+    transformSetting.beforeValue = width;
 
     // 変更前のmatrixを格納
     transformSettingCacheBeforeMatrixService();
