@@ -41,8 +41,7 @@ export const execute = async (): Promise<void> =>
             }
 
             // 変更後の値をセット
-            const afterScaleY = character.scaleY;
-            const afterY = character.y;
+            const afterMatrix = character.matrix.slice();
 
             // 変更前の値に戻す
             const beforeMatrix = transformSetting.matrixs[index++];
@@ -62,7 +61,7 @@ export const execute = async (): Promise<void> =>
             // 変更前の高さをセット
             const height = character.height;
 
-            let canvas  = null;
+            let canvas = null;
             if (instance.type !== $BITMAP_TYPE && instance.type !== $VIDEO_TYPE) {
                 const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
                 if (node) {
@@ -78,8 +77,12 @@ export const execute = async (): Promise<void> =>
             );
 
             // fixed logic
+            const afterScaleY = Math.sqrt(
+                afterMatrix[2] * afterMatrix[2]
+                + afterMatrix[3] * afterMatrix[3]
+            );
             await externalCharacter.setScaleY(afterScaleY);
-            await externalCharacter.setY(afterY);
+            await externalCharacter.setY(afterMatrix[5]);
 
             if (canvas) {
                 canvas.style.height = `${Math.ceil(height * workSpace.scale)}px`;

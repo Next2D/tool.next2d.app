@@ -40,11 +40,16 @@ export const execute = (): void =>
     }
 
     transformSetting.scaleX = 1;
+    transformSetting.scaleY = 1;
     if (transformSetting.matrixs.length === 1) {
         const matrix = transformSetting.matrixs[0];
         transformSetting.scaleX = Math.sqrt(
             matrix[0] * matrix[0]
             + matrix[1] * matrix[1]
+        );
+        transformSetting.scaleY = Math.sqrt(
+            matrix[2] * matrix[2]
+            + matrix[3] * matrix[3]
         );
     }
 };

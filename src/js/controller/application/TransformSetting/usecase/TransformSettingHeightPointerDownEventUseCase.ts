@@ -73,6 +73,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 変形エリアの高さを設定
     transformSetting.h = height;
+    transformSetting.beforeValue = height;
 
     // 変更前のmatrixを格納
     transformSettingCacheBeforeMatrixService();
