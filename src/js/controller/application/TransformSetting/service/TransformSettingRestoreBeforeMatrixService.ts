@@ -2,8 +2,8 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
- * @description 選択中のDisplayObjectの変更前のmatrixを格納する
- *              Store the matrix before changing the selected DisplayObject
+ * @description 選択中のDisplayObjectを変更前のmatrixに戻す
+ *              Restore the selected DisplayObject to the matrix before changing
  *
  * @return {void}
  * @method
@@ -11,16 +11,13 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
  */
 export const execute = (): void =>
 {
-    // 初期化
-    transformSetting.matrixs.length = 0;
-
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
     if (!movieClip.selectedDepths.size) {
         return ;
     }
 
-    // 変更前のmatrixを格納
+    let index = 0;
     const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
         const layer = movieClip.getLayer(layerIndex);
@@ -29,13 +26,32 @@ export const execute = (): void =>
         }
 
         for (let idx = 0; idx < depths.length; idx++) {
-            const character = layer.getCharacter(frame, depths[idx]);
+            const depth = depths[idx];
+
+            const character = layer.getCharacter(frame, depth);
             if (!character) {
                 continue;
             }
 
-            // 複製を格納
-            transformSetting.matrixs.push(character.matrix.slice());
+            // 変更前の値に戻す
+            const beforeMatrix = transformSetting.matrixs[index++];
+            if (!beforeMatrix) {
+                continue;
+            }
+
+            const beforeScaleX = Math.round(Math.sqrt(
+                beforeMatrix[0] * beforeMatrix[0]
+                + beforeMatrix[1] * beforeMatrix[1]
+            ) * 10000) / 10000;
+            const beforeScaleY = Math.round(Math.sqrt(
+                beforeMatrix[2] * beforeMatrix[2]
+                + beforeMatrix[3] * beforeMatrix[3]
+            ) * 10000) / 10000;
+
+            character.x      = beforeMatrix[4];
+            character.y      = beforeMatrix[5];
+            character.scaleX = beforeScaleX;
+            character.scaleY = beforeScaleY;
         }
     }
 

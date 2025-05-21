@@ -77,10 +77,11 @@ export const execute = async (): Promise<void> =>
             );
 
             // fixed logic
-            const afterScaleY = Math.sqrt(
+            const afterScaleY = Math.round(Math.sqrt(
                 afterMatrix[2] * afterMatrix[2]
                 + afterMatrix[3] * afterMatrix[3]
-            );
+            ) * 10000) / 10000;
+
             await externalCharacter.setScaleY(afterScaleY);
             await externalCharacter.setY(afterMatrix[5]);
 

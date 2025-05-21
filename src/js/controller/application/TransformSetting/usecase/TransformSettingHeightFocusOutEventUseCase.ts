@@ -34,7 +34,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     element.value = `${height}`;
 
     // 変形に合わせて表示を更新
-    transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.h);
+    transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.beforeValue);
 
     // 変更後のmatrixで表示を更新
     await transformSettingUpdateScaleYToRedrawCanvasService();

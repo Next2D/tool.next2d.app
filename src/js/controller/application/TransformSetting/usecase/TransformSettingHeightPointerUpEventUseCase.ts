@@ -5,7 +5,7 @@ import { execute as transformSettingHeightPointerMoveEventUseCase } from "./Tran
 import { execute as transformSettingUpdateScaleYToRedrawCanvasService } from "../service/TransformSettingUpdateScaleYToRedrawCanvasService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -38,42 +38,12 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
-    const workSpace = $getCurrentWorkSpace();
-    const movieClip = workSpace.scene;
-    if (!movieClip.selectedDepths.size) {
-        return ;
-    }
-
-    let index = 0;
-    const frame = movieClip.currentFrame;
-    for (const [layerIndex, depths] of movieClip.selectedDepths) {
-        const layer = movieClip.getLayer(layerIndex);
-        if (!layer) {
-            continue;
-        }
-
-        for (let idx = 0; idx < depths.length; idx++) {
-            const depth = depths[idx];
-
-            const character = layer.getCharacter(frame, depth);
-            if (!character) {
-                continue;
-            }
-
-            // 変更前の値に戻す
-            const beforeMatrix = transformSetting.matrixs[index++];
-            const beforeScaleY = Math.sqrt(
-                beforeMatrix[2] * beforeMatrix[2]
-                + beforeMatrix[3] * beforeMatrix[3]
-            );
-
-            character.y      = beforeMatrix[5];
-            character.scaleY = beforeScaleY;
-        }
-    }
+    // 選択中のDisplayObjectを変更前の状態に戻す
+    // fixed logic
+    transformSettingRestoreBeforeMatrixService();
 
     // 変形に合わせて表示を更新
-    const height = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 0, Number.MAX_VALUE);
+    const height = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
     transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.beforeValue);
 
     // 変更後のmatrixで表示を更新
