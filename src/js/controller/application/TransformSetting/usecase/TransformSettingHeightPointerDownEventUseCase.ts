@@ -75,6 +75,11 @@ export const execute = (event: PointerEvent): void =>
     transformSetting.h = height;
     transformSetting.beforeValue = height;
 
+    if (transformSetting.sizeLocked) {
+        transformSetting.w = width;
+        transformSetting.lockValue = width;
+    }
+
     // 変更前のmatrixを格納
     transformSettingCacheBeforeMatrixService();
 

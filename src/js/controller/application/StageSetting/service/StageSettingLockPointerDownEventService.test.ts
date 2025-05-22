@@ -1,8 +1,8 @@
-import { execute } from "./StageSettingLockPointerDownEventUseCase";
+import { execute } from "./StageSettingLockPointerDownEventService";
 import { describe, expect, it, vi } from "vitest";
-import { stageSetting } from "../../../../controller/domain/model/StageSetting";
+import { stageSetting } from "../../../domain/model/StageSetting";
 
-describe("StageSettingLockPointerDownEventUseCase Test", () =>
+describe("StageSettingLockPointerDownEventService Test", () =>
 {
     it("execute test", async () =>
     {

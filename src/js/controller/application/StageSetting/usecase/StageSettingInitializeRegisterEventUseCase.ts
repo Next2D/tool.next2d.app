@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as stageSettingLockPointerDownEventUseCase } from "./StageSettingLockPointerDownEventUseCase";
+import { execute as stageSettingLockPointerDownEventService } from "../service/StageSettingLockPointerDownEventService";
 import { execute as stageSettingWidthPointerDownEventUseCase } from "./StageSettingWidthPointerDownEventUseCase";
 import { execute as stageSettingPointerOverEventService } from "../service/StageSettingPointerOverEventService";
 import { execute as stageSettingPointerOutEventService } from "../service/StageSettingPointerOutEventService";
@@ -36,7 +36,7 @@ export const execute = (): void =>
 
     if (lockElement) {
         lockElement.addEventListener(EventType.POINTER_DOWN,
-            stageSettingLockPointerDownEventUseCase
+            stageSettingLockPointerDownEventService
         );
     }
 

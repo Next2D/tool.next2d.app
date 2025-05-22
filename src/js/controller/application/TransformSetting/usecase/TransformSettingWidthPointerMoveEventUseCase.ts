@@ -1,5 +1,7 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
+import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleYToElementValuesUseCase";
+import { $TRANSFORM_OBJECT_HEIGHT_ID } from "@/config/TransformSettingConfig";
 import {
     $clamp,
     $setCursor
@@ -42,7 +44,21 @@ export const execute = (event: PointerEvent): void =>
 
         // 変形に合わせて表示を更新
         transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.w);
-
         transformSetting.w = width;
+
+        if (transformSetting.sizeLocked) {
+            const heightElement = document
+                .getElementById($TRANSFORM_OBJECT_HEIGHT_ID) as HTMLInputElement;
+            if (!heightElement) {
+                return ;
+            }
+
+            const value  = parseFloat(parseFloat(heightElement.value).toFixed(2));
+            const height = $clamp(value + event.movementX, 1, Number.MAX_VALUE);
+            heightElement.value = `${height}`;
+
+            transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.h);
+            transformSetting.h = height;
+        }
     });
 };

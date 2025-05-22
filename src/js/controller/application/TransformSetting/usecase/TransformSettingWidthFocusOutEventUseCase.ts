@@ -2,8 +2,11 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { $clamp, $setEditingElement } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
+import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleXToRedrawCanvasService } from "../service/TransformSettingUpdateScaleXToRedrawCanvasService";
+import { execute as transformSettingUpdateScaleYToRedrawCanvasService } from "../service/TransformSettingUpdateScaleYToRedrawCanvasService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { $TRANSFORM_OBJECT_HEIGHT_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 幅の入力完了処理
@@ -38,6 +41,24 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     // 変更後のmatrixで表示を更新
     await transformSettingUpdateScaleXToRedrawCanvasService();
+
+    if (transformSetting.sizeLocked) {
+
+        const heightElement = document
+            .getElementById($TRANSFORM_OBJECT_HEIGHT_ID) as HTMLInputElement;
+        if (!heightElement) {
+            return ;
+        }
+
+        const value  = parseFloat(parseFloat(heightElement.value).toFixed(2)) + (width - transformSetting.beforeValue);
+        const height = $clamp(value, 1, Number.MAX_VALUE);
+        heightElement.value = `${height}`;
+
+        transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.lockValue);
+
+        // 変更後のmatrixで表示を更新
+        await transformSettingUpdateScaleYToRedrawCanvasService();
+    }
 
     // 親のMovieClipのキャッシュを削除
     timelineSceneListCacheRemoveService();

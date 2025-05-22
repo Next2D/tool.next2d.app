@@ -101,6 +101,15 @@ class TransformSetting
     public beforeValue: number;
 
     /**
+     * @description ロック時の対象となる値
+     *              The value to be locked when locked
+     *
+     * @member {number}
+     * @public
+     */
+    public lockValue: number;
+
+    /**
      * @description 移動する前のxy座標を返却
      *              Return the xy coordinates before moving
      *
@@ -132,6 +141,7 @@ class TransformSetting
         this.sizeLocked  = false;
         this.scaleLocked = false;
         this.beforeValue = 0;
+        this.lockValue   = 0;
 
         this.matrixs = [];
         this.tempPosition = {

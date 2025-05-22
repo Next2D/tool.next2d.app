@@ -1,7 +1,9 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingInputPointerOverEventService } from "../service/TransformSettingInputPointerOverEventService";
 import { execute as transformSettingInputPointerOutEventService } from "../service/TransformSettingInputPointerOutEventService";
-import { execute as transformSettingInputFocusInEventUseCase } from "./TransformSettingInputFocusInEventUseCase";
+import { execute as transformSettingSizeInputFocusInEventUseCase } from "./TransformSettingSizeInputFocusInEventUseCase";
+import { execute as transformSettingPositionInputFocusInEventUseCase } from "./TransformSettingPositionInputFocusInEventUseCase";
+import { execute as transformSettingScaleInputFocusInEventUseCase } from "./TransformSettingScaleInputFocusInEventUseCase";
 import { execute as transformSettingWidthFocusOutEventUseCase } from "./TransformSettingWidthFocusOutEventUseCase";
 import { execute as transformSettingHeightFocusOutEventUseCase } from "./TransformSettingHeightFocusOutEventUseCase";
 import { execute as transformSettingInputKeyPressEventService } from "../service/TransformSettingInputKeyPressEventService";
@@ -11,6 +13,7 @@ import { execute as transformSettingXFocusOutEventUseCase } from "./TransformSet
 import { execute as transformSettingYFocusOutEventUseCase } from "./TransformSettingYFocusOutEventUseCase";
 import { execute as transformSettingWidthPointerDownEventUseCase } from "./TransformSettingWidthPointerDownEventUseCase";
 import { execute as transformSettingHeightPointerDownEventUseCase } from "./TransformSettingHeightPointerDownEventUseCase";
+import { execute as transformSettingSizeLockPointerDownEventService } from "../service/TransformSettingSizeLockPointerDownEventService";
 import {
     $TRANSFORM_OBJECT_HEIGHT_ID,
     $TRANSFORM_OBJECT_ROTATE_ID,
@@ -38,11 +41,9 @@ export const execute = (): void =>
 
     // サイズロックのイベントを登録する
     if (sizeLockElement) {
-        sizeLockElement.addEventListener(EventType.POINTER_DOWN, (event: Event) =>
-        {
-            event.stopPropagation();
-            event.preventDefault();
-        });
+        sizeLockElement.addEventListener(EventType.POINTER_DOWN,
+            transformSettingSizeLockPointerDownEventService
+        );
     }
 
     const xElement: HTMLElement | null = document
@@ -60,7 +61,7 @@ export const execute = (): void =>
             { "passive": false }
         );
         xElement.addEventListener("focusin",
-            transformSettingInputFocusInEventUseCase
+            transformSettingPositionInputFocusInEventUseCase
         );
         xElement.addEventListener("focusout",
             transformSettingXFocusOutEventUseCase
@@ -85,7 +86,7 @@ export const execute = (): void =>
             { "passive": false }
         );
         yElement.addEventListener("focusin",
-            transformSettingInputFocusInEventUseCase
+            transformSettingPositionInputFocusInEventUseCase
         );
         yElement.addEventListener("focusout",
             transformSettingYFocusOutEventUseCase
@@ -109,7 +110,7 @@ export const execute = (): void =>
             transformSettingWidthPointerDownEventUseCase
         );
         widthElement.addEventListener("focusin",
-            transformSettingInputFocusInEventUseCase
+            transformSettingSizeInputFocusInEventUseCase
         );
         widthElement.addEventListener("focusout",
             transformSettingWidthFocusOutEventUseCase
@@ -133,7 +134,7 @@ export const execute = (): void =>
             transformSettingHeightPointerDownEventUseCase
         );
         heightElement.addEventListener("focusin",
-            transformSettingInputFocusInEventUseCase
+            transformSettingSizeInputFocusInEventUseCase
         );
         heightElement.addEventListener("focusout",
             transformSettingHeightFocusOutEventUseCase
@@ -166,7 +167,7 @@ export const execute = (): void =>
             transformSettingInputPointerOutEventService
         );
         scaleXElement.addEventListener("focusin",
-            transformSettingInputFocusInEventUseCase
+            transformSettingScaleInputFocusInEventUseCase
         );
         scaleXElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService
@@ -184,7 +185,7 @@ export const execute = (): void =>
             transformSettingInputPointerOutEventService
         );
         scaleYElement.addEventListener("focusin",
-            transformSettingInputFocusInEventUseCase
+            transformSettingScaleInputFocusInEventUseCase
         );
         scaleYElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService
@@ -202,7 +203,7 @@ export const execute = (): void =>
             transformSettingInputPointerOutEventService
         );
         rotateElement.addEventListener("focusin",
-            transformSettingInputFocusInEventUseCase
+            transformSettingPositionInputFocusInEventUseCase
         );
         rotateElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService

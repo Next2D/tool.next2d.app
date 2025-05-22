@@ -1,10 +1,13 @@
 import { stageSetting } from "@/controller/domain/model/StageSetting";
-import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 
 /**
- * @description ステージエリアのロックボタンのマウスダウンイベントユースケース
- *              Mouse down event use case for the lock button of the stage area
+ * @description ステージエリアのロックボタンのポインターダウンイベント処理関数
+ *              Stage area lock button pointer down event processing function
  *
  * @param  {PointerEvent} event
  * @return {void}

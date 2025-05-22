@@ -1,9 +1,9 @@
-import { execute } from "./TransformSettingInputFocusInEventUseCase";
+import { execute } from "./TransformSettingPositionInputFocusInEventUseCase";
 import { $useKeyboard } from "../../../../shortcut/ShortcutUtil";
 import { describe, expect, it, vi } from "vitest";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 
-describe("TransformSettingInputFocusInEventUseCase", () =>
+describe("TransformSettingPositionInputFocusInEventUseCase", () =>
 {
     it("execute test", () =>
     {

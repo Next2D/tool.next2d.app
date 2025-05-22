@@ -3,9 +3,12 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
 import { execute as transformSettingUpdateScaleXToRedrawCanvasService } from "../service/TransformSettingUpdateScaleXToRedrawCanvasService";
+import { execute as transformSettingUpdateScaleYToRedrawCanvasService } from "../service/TransformSettingUpdateScaleYToRedrawCanvasService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
+import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
+import { $TRANSFORM_OBJECT_HEIGHT_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -48,6 +51,20 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 変更後のmatrixで表示を更新
     await transformSettingUpdateScaleXToRedrawCanvasService();
+
+    if (transformSetting.sizeLocked) {
+        const heightElement = document
+            .getElementById($TRANSFORM_OBJECT_HEIGHT_ID) as HTMLInputElement;
+        if (!heightElement) {
+            return ;
+        }
+
+        const height = $clamp(parseFloat(parseFloat(heightElement.value).toFixed(2)), 1, Number.MAX_VALUE);
+        transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.lockValue);
+
+        // 変更後のmatrixで表示を更新
+        await transformSettingUpdateScaleYToRedrawCanvasService();
+    }
 
     // 親のMovieClipのキャッシュを削除
     timelineSceneListCacheRemoveService();

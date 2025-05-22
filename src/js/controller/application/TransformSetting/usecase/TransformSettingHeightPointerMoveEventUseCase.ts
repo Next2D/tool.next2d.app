@@ -1,9 +1,11 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleYToElementValuesUseCase";
+import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
 import {
     $clamp,
     $setCursor
 } from "@/global/GlobalUtil";
+import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアの幅の値操作のマウスムーブイベント
@@ -42,7 +44,21 @@ export const execute = (event: PointerEvent): void =>
 
         // 変形に合わせて表示を更新
         transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.h);
-
         transformSetting.h = height;
+
+        if (transformSetting.sizeLocked) {
+            const widthElement = document
+                .getElementById($TRANSFORM_OBJECT_WIDTH_ID) as HTMLInputElement;
+            if (!widthElement) {
+                return ;
+            }
+
+            const value = parseFloat(parseFloat(widthElement.value).toFixed(2));
+            const width = $clamp(value + event.movementX, 1, Number.MAX_VALUE);
+            widthElement.value = `${width}`;
+
+            transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.w);
+            transformSetting.w = width;
+        }
     });
 };

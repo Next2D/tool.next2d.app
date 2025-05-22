@@ -1,11 +1,11 @@
-import { execute } from "./TransformSettingRestoreBeforeMatrixService";
-import { describe, expect, it } from "vitest";
+import { execute } from "./TransformSettingCacheBeforeMatrixService";
+import { describe, expect, it, vi } from "vitest";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { Character } from "../../../../core/domain/model/Character";
 import { transformSetting } from "../../../../controller/domain/model/TransformSetting";
 
-describe("TransformSettingRestoreBeforeMatrixService Test", () =>
+describe("TransformSettingCacheBeforeMatrixService Test", () =>
 {
     it("execute test", () =>
     {
@@ -23,25 +23,9 @@ describe("TransformSettingRestoreBeforeMatrixService Test", () =>
         character.endFrame = 10;
         layer.addCharacter(character);
 
-        character.x = 100;
-        character.y = 200;
-        character.scaleX = 1.2;
-        character.scaleY = 1.5;
-
-        // 初期化
         transformSetting.matrixs.length = 0;
-        transformSetting.matrixs.push(new Float32Array([1, 0, 0, 1, 0, 0]));
-
-        expect(character.x).toBe(100);
-        expect(character.y).toBe(200);
-        expect(character.scaleX).toBe(1.2);
-        expect(character.scaleY).toBe(1.5);
-
+        expect(transformSetting.matrixs.length).toBe(0);
         execute();
-
-        expect(character.x).toBe(0);
-        expect(character.y).toBe(0);
-        expect(character.scaleX).toBe(1);
-        expect(character.scaleY).toBe(1);
+        expect(transformSetting.matrixs.length).toBe(1);
     });
 });

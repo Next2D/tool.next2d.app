@@ -5,8 +5,8 @@ import { execute as transformSettingCacheBeforeMatrixService } from "../service/
 import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
- * @description 変形エリアのフォーカスイベント処理
- *              Focus event processing of the transformation area
+ * @description 変形エリアのxy座標のフォーカスイベント処理
+ *              Focus event processing of the transformation area xy coordinates
  *
  * @param  {FocusEvent} event
  * @return {void}
