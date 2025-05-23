@@ -58,9 +58,7 @@ export const execute = async (): Promise<void> =>
                 continue;
             }
 
-            // 変更前の高さをセット
-            const height = character.height;
-
+            // 変更中のcanvasを取得
             let canvas = null;
             if (instance.type !== $BITMAP_TYPE && instance.type !== $VIDEO_TYPE) {
                 const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
@@ -86,7 +84,8 @@ export const execute = async (): Promise<void> =>
             await externalCharacter.setY(afterMatrix[5]);
 
             if (canvas) {
-                canvas.style.height = `${Math.ceil(height * workSpace.scale)}px`;
+                canvas.style.width  = `${Math.ceil(canvas.width  / window.devicePixelRatio)}px`;
+                canvas.style.height = `${Math.ceil(canvas.height / window.devicePixelRatio)}px`;
             }
         }
     }

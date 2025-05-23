@@ -2,8 +2,7 @@ import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingWidthWindowMouseMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
-import { execute as transformSettingUpdateScaleXToRedrawCanvasService } from "../service/TransformSettingUpdateScaleXToRedrawCanvasService";
-import { execute as transformSettingUpdateScaleYToRedrawCanvasService } from "../service/TransformSettingUpdateScaleYToRedrawCanvasService";
+import { execute as transformSettingUpdateScaleToRedrawCanvasService } from "../service/TransformSettingUpdateScaleToRedrawCanvasService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
@@ -49,9 +48,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const width = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
     transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.beforeValue);
 
-    // 変更後のmatrixで表示を更新
-    await transformSettingUpdateScaleXToRedrawCanvasService();
-
     if (transformSetting.sizeLocked) {
         const heightElement = document
             .getElementById($TRANSFORM_OBJECT_HEIGHT_ID) as HTMLInputElement;
@@ -61,10 +57,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
         const height = $clamp(parseFloat(parseFloat(heightElement.value).toFixed(2)), 1, Number.MAX_VALUE);
         transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.lockValue);
-
-        // 変更後のmatrixで表示を更新
-        await transformSettingUpdateScaleYToRedrawCanvasService();
     }
+
+    // 変更後のmatrixで表示を更新
+    await transformSettingUpdateScaleToRedrawCanvasService();
 
     // 親のMovieClipのキャッシュを削除
     timelineSceneListCacheRemoveService();

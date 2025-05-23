@@ -1,11 +1,12 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleYToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
+import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
+import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 import {
     $clamp,
     $setCursor
 } from "@/global/GlobalUtil";
-import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアの幅の値操作のマウスムーブイベント
@@ -60,5 +61,8 @@ export const execute = (event: PointerEvent): void =>
             transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.w);
             transformSetting.w = width;
         }
+
+        // 選択中の表示領域を更新
+        targetRectUpdateElementUseCase();
     });
 };

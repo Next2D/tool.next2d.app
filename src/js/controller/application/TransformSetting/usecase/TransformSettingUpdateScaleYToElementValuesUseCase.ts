@@ -1,5 +1,4 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
-import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
@@ -7,6 +6,7 @@ import { execute as transformSettingUpdateScaleYElementService } from "@/control
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getScreenOffsetTop } from "@/global/GlobalUtil";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $createTransformElementStyle,
     $multiplicationMatrix
@@ -15,7 +15,6 @@ import {
     $BITMAP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -80,6 +79,11 @@ export const execute = (scale_y: number): void =>
                 continue ;
             }
 
+            const instance = workSpace.getLibrary(character.libraryId);
+            if (!instance) {
+                continue ;
+            }
+
             // 中心点に合わせて変形
             const multiMatrix = $multiplicationMatrix(
                 parentMatrix, character.matrix
@@ -92,11 +96,6 @@ export const execute = (scale_y: number): void =>
                 multiMatrix[2] * multiMatrix[2]
                 + multiMatrix[3] * multiMatrix[3]
             );
-
-            const instance = workSpace.getLibrary(character.libraryId);
-            if (!instance) {
-                continue ;
-            }
 
             switch (instance.type) {
 
@@ -127,13 +126,8 @@ export const execute = (scale_y: number): void =>
         }
     }
 
-    // 選択中のElementのレクタングルを再計算
-    targetRectUpdateElementUseCase();
-
-    // 選択範囲のバウンディングボックスを取得
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-
     // 変形エリアのy座標を更新
+    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
     if (bounds) {
         transformSettingUpdateYElementService(bounds.yMin);
     }

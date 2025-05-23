@@ -2,14 +2,15 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 import {
     $BITMAP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
 
 /**
- * @description スケールxの操作によるキャンバスの再描画
- *              Redraw canvas by scale x operation
+ * @description スケールの操作によるキャンバスの再描画
+ *              Redraw canvas by scale operation
  *
  * @return {Promise<void>}
  * @method
@@ -49,18 +50,22 @@ export const execute = async (): Promise<void> =>
                 beforeMatrix[0] * beforeMatrix[0]
                 + beforeMatrix[1] * beforeMatrix[1]
             );
+            const beforeScaleY = Math.sqrt(
+                beforeMatrix[2] * beforeMatrix[2]
+                + beforeMatrix[3] * beforeMatrix[3]
+            );
 
             character.x      = beforeMatrix[4];
+            character.y      = beforeMatrix[5];
             character.scaleX = beforeScaleX;
+            character.scaleY = beforeScaleY;
 
             const instance = workSpace.getLibrary(character.libraryId);
             if (!instance) {
                 continue;
             }
 
-            // 変更前の幅をキャッシュ
-            const width = character.width;
-
+            // 変更中のcanvasを取得
             let canvas  = null;
             if (instance.type !== $BITMAP_TYPE && instance.type !== $VIDEO_TYPE) {
                 const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
@@ -81,12 +86,32 @@ export const execute = async (): Promise<void> =>
                 afterMatrix[0] * afterMatrix[0]
                 + afterMatrix[1] * afterMatrix[1]
             ) * 10000) / 10000;
+            const afterScaleY = Math.round(Math.sqrt(
+                afterMatrix[2] * afterMatrix[2]
+                + afterMatrix[3] * afterMatrix[3]
+            ) * 10000) / 10000;
 
             await externalCharacter.setScaleX(afterScaleX);
             await externalCharacter.setX(afterMatrix[4]);
+            await externalCharacter.setScaleY(afterScaleY);
+            await externalCharacter.setY(afterMatrix[5]);
 
+            // 固定時はこのタイミングでcanvasを入れ替える
+            if (transformSetting.sizeLocked || transformSetting.scaleLocked) {
+                const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+                if (element) {
+                    await screenAreaReplaceCanvasUseCase(
+                        character,
+                        element,
+                        layer
+                    );
+                }
+            }
+
+            // 変更元のcanvasを元のサイズに戻す
             if (canvas) {
-                canvas.style.width = `${Math.ceil(width * workSpace.scale)}px`;
+                canvas.style.width  = `${Math.ceil(canvas.width  / window.devicePixelRatio)}px`;
+                canvas.style.height = `${Math.ceil(canvas.height / window.devicePixelRatio)}px`;
             }
         }
     }

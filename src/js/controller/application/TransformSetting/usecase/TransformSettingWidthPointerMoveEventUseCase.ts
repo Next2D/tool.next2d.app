@@ -1,6 +1,7 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleYToElementValuesUseCase";
+import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { $TRANSFORM_OBJECT_HEIGHT_ID } from "@/config/TransformSettingConfig";
 import {
     $clamp,
@@ -60,5 +61,8 @@ export const execute = (event: PointerEvent): void =>
             transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.h);
             transformSetting.h = height;
         }
+
+        // 選択中の表示領域を更新
+        targetRectUpdateElementUseCase();
     });
 };

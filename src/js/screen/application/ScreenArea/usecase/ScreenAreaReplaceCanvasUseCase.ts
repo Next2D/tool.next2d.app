@@ -32,8 +32,4 @@ export const execute = async (
     }
 
     element.replaceWith(div);
-    // const newCanvas = div.querySelector("canvas");
-    // if (newCanvas) {
-    //     element.appendChild(newCanvas as HTMLCanvasElement);
-    // }
 };

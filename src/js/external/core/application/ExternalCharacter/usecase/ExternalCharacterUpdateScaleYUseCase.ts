@@ -9,6 +9,7 @@ import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/scr
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description DisplayObjectのyスケールを更新
@@ -56,18 +57,22 @@ export const execute = async (
 
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
-        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-        if (element) {
-            await screenAreaReplaceCanvasUseCase(
-                character,
-                element,
-                layer
-            );
+        if (!transformSetting.sizeLocked && !transformSetting.scaleLocked) {
+            const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+            if (element) {
+                await screenAreaReplaceCanvasUseCase(
+                    character,
+                    element,
+                    layer
+                );
+            }
         }
 
         if (movie_clip.selectedDepths.size > 0) {
             // 選択範囲のElementを移動
-            targetRectUpdateElementUseCase();
+            if (!transformSetting.sizeLocked && !transformSetting.scaleLocked) {
+                targetRectUpdateElementUseCase();
+            }
 
             // 選択範囲のバウンディングボックスを取得
             const bounds = screenAreaCalcSelectedBoundsService(movie_clip);

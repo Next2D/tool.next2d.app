@@ -1,5 +1,4 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
-import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
@@ -7,6 +6,7 @@ import { execute as transformSettingUpdateScaleXElementService } from "@/control
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getScreenOffsetLeft } from "@/global/GlobalUtil";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $createTransformElementStyle,
     $multiplicationMatrix
@@ -15,7 +15,6 @@ import {
     $BITMAP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -80,6 +79,11 @@ export const execute = (scale_x: number): void =>
                 continue ;
             }
 
+            const instance = workSpace.getLibrary(character.libraryId);
+            if (!instance) {
+                continue ;
+            }
+
             // 中心点に合わせて変形
             const multiMatrix = $multiplicationMatrix(
                 parentMatrix, character.matrix
@@ -92,11 +96,6 @@ export const execute = (scale_x: number): void =>
                 multiMatrix[0] * multiMatrix[0]
                 + multiMatrix[1] * multiMatrix[1]
             );
-
-            const instance = workSpace.getLibrary(character.libraryId);
-            if (!instance) {
-                continue ;
-            }
 
             switch (instance.type) {
 
@@ -116,7 +115,7 @@ export const execute = (scale_x: number): void =>
                         if (!canvas) {
                             continue ;
                         }
-                        canvas.style.width = `${Math.ceil(character.width * workSpace.scale)}px`;
+                        canvas.style.width = `${Math.ceil(character.width  * workSpace.scale)}px`;
                     }
                     break;
 
@@ -127,13 +126,8 @@ export const execute = (scale_x: number): void =>
         }
     }
 
-    // 選択中のElementのレクタングルを再計算
-    targetRectUpdateElementUseCase();
-
-    // 選択範囲のバウンディングボックスを取得
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-
     // 変形エリアのx座標を更新
+    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
     if (bounds) {
         transformSettingUpdateXElementService(bounds.xMin);
     }
