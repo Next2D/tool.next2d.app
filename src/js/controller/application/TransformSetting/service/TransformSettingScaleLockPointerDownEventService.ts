@@ -6,8 +6,8 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
- * @description サイズロックのポインターダウンイベント関数
- *              Pointer down event function for size lock
+ * @description スケールロックのポインターダウンイベント関数
+ *              Scale Lock Pointer Down Event Function
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -37,8 +37,8 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // ロックの状態を変更する
-    transformSetting.sizeLocked = !transformSetting.sizeLocked;
+    transformSetting.scaleLocked = !transformSetting.scaleLocked;
 
-    const sizeLockElement = element.firstElementChild as HTMLElement;
-    sizeLockElement.setAttribute("class", transformSetting.sizeLocked ? "active" : "disable");
+    const scaleLockElement = element.firstElementChild as HTMLElement;
+    scaleLockElement.setAttribute("class", transformSetting.scaleLocked ? "active" : "disable");
 };

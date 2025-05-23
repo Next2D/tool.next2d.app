@@ -3,9 +3,8 @@ import { $clamp, $setEditingElement } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
-import { execute as transformSettingUpdateScaleXToRedrawCanvasService } from "../service/TransformSettingUpdateScaleToRedrawCanvasService";
-import { execute as transformSettingUpdateScaleYToRedrawCanvasService } from "../service/TransformSettingUpdateScaleYToRedrawCanvasService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { execute as transformSettingUpdateScaleToRedrawCanvasService } from "../service/TransformSettingUpdateScaleToRedrawCanvasService";
 import { $TRANSFORM_OBJECT_HEIGHT_ID } from "@/config/TransformSettingConfig";
 
 /**
@@ -39,9 +38,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 変形に合わせて表示を更新
     transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.beforeValue);
 
-    // 変更後のmatrixで表示を更新
-    await transformSettingUpdateScaleXToRedrawCanvasService();
-
     if (transformSetting.sizeLocked) {
 
         const heightElement = document
@@ -54,11 +50,12 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         const height = $clamp(value, 1, Number.MAX_VALUE);
         heightElement.value = `${height}`;
 
+        // 変形に合わせて表示を更新
         transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.lockValue);
-
-        // 変更後のmatrixで表示を更新
-        await transformSettingUpdateScaleYToRedrawCanvasService();
     }
+
+    // 変更後のmatrixで表示を更新
+    await transformSettingUpdateScaleToRedrawCanvasService();
 
     // 親のMovieClipのキャッシュを削除
     timelineSceneListCacheRemoveService();
