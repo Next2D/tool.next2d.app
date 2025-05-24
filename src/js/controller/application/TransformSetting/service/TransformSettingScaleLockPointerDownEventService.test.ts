@@ -1,8 +1,8 @@
-import { execute } from "./TransformSettingSizeLockPointerDownEventService";
+import { execute } from "./TransformSettingScaleLockPointerDownEventService";
 import { describe, expect, it, vi } from "vitest";
 import { transformSetting } from "../../../domain/model/TransformSetting";
 
-describe("TransformSettingSizeLockPointerDownEventService Test", () =>
+describe("TransformSettingScaleLockPointerDownEventService Test", () =>
 {
     it("execute test", async () =>
     {
@@ -18,19 +18,19 @@ describe("TransformSettingSizeLockPointerDownEventService Test", () =>
             "stopPropagation": vi.fn(() => stopPropagation = true),
         } as unknown as PointerEvent;
 
-        transformSetting.sizeLocked = false;
+        transformSetting.scaleLocked = false;
         expect(div.classList.contains("disable")).toBe(true);
-        expect(transformSetting.sizeLocked).toBe(false);
+        expect(transformSetting.scaleLocked).toBe(false);
         expect(stopPropagation).toBe(false);
 
         execute(mockEvent);
 
         expect(div.classList.contains("active")).toBe(true);
-        expect(transformSetting.sizeLocked).toBe(true);
+        expect(transformSetting.scaleLocked).toBe(true);
         expect(stopPropagation).toBe(true);
 
         execute(mockEvent);
         expect(div.classList.contains("disable")).toBe(true);
-        expect(transformSetting.sizeLocked).toBe(false);
+        expect(transformSetting.scaleLocked).toBe(false);
     });
 });

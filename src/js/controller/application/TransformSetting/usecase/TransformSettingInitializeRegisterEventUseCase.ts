@@ -14,6 +14,7 @@ import { execute as transformSettingYFocusOutEventUseCase } from "./TransformSet
 import { execute as transformSettingWidthPointerDownEventUseCase } from "./TransformSettingWidthPointerDownEventUseCase";
 import { execute as transformSettingHeightPointerDownEventUseCase } from "./TransformSettingHeightPointerDownEventUseCase";
 import { execute as transformSettingSizeLockPointerDownEventService } from "../service/TransformSettingSizeLockPointerDownEventService";
+import { execute as transformSettingScaleLockPointerDownEventService } from "../service/TransformSettingScaleLockPointerDownEventService";
 import {
     $TRANSFORM_OBJECT_HEIGHT_ID,
     $TRANSFORM_OBJECT_ROTATE_ID,
@@ -149,11 +150,9 @@ export const execute = (): void =>
 
     // スケールロックのイベントを登録する
     if (scaleLockElement) {
-        scaleLockElement.addEventListener(EventType.POINTER_DOWN, (event: Event) =>
-        {
-            event.stopPropagation();
-            event.preventDefault();
-        });
+        scaleLockElement.addEventListener(EventType.POINTER_DOWN,
+            transformSettingScaleLockPointerDownEventService
+        );
     }
 
     const scaleXElement: HTMLElement | null = document
