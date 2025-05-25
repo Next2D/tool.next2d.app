@@ -50,8 +50,8 @@ export const execute = (): void =>
 
             character.x      = beforeMatrix[4];
             character.y      = beforeMatrix[5];
-            character.scaleX = beforeScaleX;
-            character.scaleY = beforeScaleY;
+            character.scaleX = beforeMatrix[0] > 0 ? beforeScaleX : beforeScaleX * -1;
+            character.scaleY = beforeMatrix[3] > 0 ? beforeScaleY : beforeScaleY * -1;
         }
     }
 
@@ -59,13 +59,15 @@ export const execute = (): void =>
     transformSetting.scaleY = 1;
     if (transformSetting.matrixs.length === 1) {
         const matrix = transformSetting.matrixs[0];
-        transformSetting.scaleX = Math.round(Math.sqrt(
+        const scaleX = Math.round(Math.sqrt(
             matrix[0] * matrix[0]
             + matrix[1] * matrix[1]
         ) * 10000) / 10000;
-        transformSetting.scaleY = Math.round(Math.sqrt(
+        const scaleY = Math.round(Math.sqrt(
             matrix[2] * matrix[2]
             + matrix[3] * matrix[3]
         ) * 10000) / 10000;
+        transformSetting.scaleX = matrix[0] > 0 ? scaleX : scaleX * -1;
+        transformSetting.scaleY = matrix[3] > 0 ? scaleY : scaleY * -1;
     }
 };

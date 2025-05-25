@@ -89,13 +89,21 @@ export const execute = (scale_x: number): void =>
                 parentMatrix, character.matrix
             );
 
-            character.x = multiMatrix[4] + referenceSetting.x;
-            character.y = multiMatrix[5] + referenceSetting.y;
+            const tMatrix = $multiplicationMatrix(
+                new Float32Array([1, 0, 0, 1, referenceSetting.x, referenceSetting.y]),
+                multiMatrix
+            );
 
-            character.scaleX = Math.sqrt(
+            console.log("afterMatrix[4]: ", multiMatrix[4], tMatrix[4]);
+            character.x = tMatrix[4];
+            character.y = tMatrix[5];
+
+            const scaleX = Math.sqrt(
                 multiMatrix[0] * multiMatrix[0]
                 + multiMatrix[1] * multiMatrix[1]
             );
+
+            character.scaleX = multiMatrix[0] > 0 ? scaleX : scaleX * -1;
 
             switch (instance.type) {
 

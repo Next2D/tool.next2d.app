@@ -7,6 +7,7 @@ import {
     $BITMAP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
+import { after } from "node:test";
 
 /**
  * @description スケールの操作によるキャンバスの再描画
@@ -57,8 +58,8 @@ export const execute = async (): Promise<void> =>
 
             character.x      = beforeMatrix[4];
             character.y      = beforeMatrix[5];
-            character.scaleX = beforeScaleX;
-            character.scaleY = beforeScaleY;
+            character.scaleX = beforeMatrix[0] > 0 ? beforeScaleX : beforeScaleX * -1;
+            character.scaleY = beforeMatrix[3] > 0 ? beforeScaleY : beforeScaleY * -1;
 
             const instance = workSpace.getLibrary(character.libraryId);
             if (!instance) {
@@ -91,13 +92,15 @@ export const execute = async (): Promise<void> =>
                 + afterMatrix[3] * afterMatrix[3]
             ) * 10000) / 10000;
 
-            await externalCharacter.setScaleX(afterScaleX);
+            await externalCharacter.setScaleX(afterMatrix[0] > 0 ? afterScaleX : afterScaleX * -1);
             await externalCharacter.setX(afterMatrix[4]);
-            await externalCharacter.setScaleY(afterScaleY);
+            await externalCharacter.setScaleY(afterMatrix[3] > 0 ? afterScaleY : afterScaleY * -1);
             await externalCharacter.setY(afterMatrix[5]);
 
             // 固定時はこのタイミングでcanvasを入れ替える
-            if (transformSetting.sizeLocked || transformSetting.scaleLocked) {
+            if (transformSetting.sizeLocked
+                || transformSetting.scaleLocked
+            ) {
                 const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
                 if (element) {
                     await screenAreaReplaceCanvasUseCase(

@@ -13,6 +13,8 @@ import { execute as transformSettingXFocusOutEventUseCase } from "./TransformSet
 import { execute as transformSettingYFocusOutEventUseCase } from "./TransformSettingYFocusOutEventUseCase";
 import { execute as transformSettingWidthPointerDownEventUseCase } from "./TransformSettingWidthPointerDownEventUseCase";
 import { execute as transformSettingHeightPointerDownEventUseCase } from "./TransformSettingHeightPointerDownEventUseCase";
+import { execute as transformSettingScaleXPointerDownEventUseCase } from "./TransformSettingScaleXPointerDownEventUseCase";
+import { execute as transformSettingScaleXFocusOutEventUseCase } from "./TransformSettingScaleXFocusOutEventUseCase";
 import { execute as transformSettingSizeLockPointerDownEventService } from "../service/TransformSettingSizeLockPointerDownEventService";
 import { execute as transformSettingScaleLockPointerDownEventService } from "../service/TransformSettingScaleLockPointerDownEventService";
 import {
@@ -165,8 +167,14 @@ export const execute = (): void =>
         scaleXElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputPointerOutEventService
         );
+        scaleXElement.addEventListener(EventType.POINTER_DOWN,
+            transformSettingScaleXPointerDownEventUseCase
+        );
         scaleXElement.addEventListener("focusin",
             transformSettingScaleInputFocusInEventUseCase
+        );
+        scaleXElement.addEventListener("focusout",
+            transformSettingScaleXFocusOutEventUseCase
         );
         scaleXElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService

@@ -1,13 +1,13 @@
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as transformSettingWidthPointerMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
+import { execute as transformSettingScaleXPointerMoveEventUseCase } from "./TransformSettingScaleXPointerMoveEventUseCase";
 import { execute as transformSettingUpdateScaleToRedrawCanvasService } from "../service/TransformSettingUpdateScaleToRedrawCanvasService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
-import { $TRANSFORM_OBJECT_HEIGHT_ID } from "@/config/TransformSettingConfig";
+import { $TRANSFORM_OBJECT_SCALE_Y_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -34,7 +34,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // windowのイベントを削除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE,
-        transformSettingWidthPointerMoveEventUseCase
+        transformSettingScaleXPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
@@ -45,18 +45,18 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     transformSettingRestoreBeforeMatrixService();
 
     // 変形に合わせて表示を更新
-    const width = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
-    transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.beforeValue);
+    const scaleX = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+    transformSettingUpdateScaleXToElementValuesUseCase(scaleX / 100 / transformSetting.scaleX);
 
-    if (transformSetting.sizeLocked) {
-        const heightElement = document
-            .getElementById($TRANSFORM_OBJECT_HEIGHT_ID) as HTMLInputElement;
-        if (!heightElement) {
+    if (transformSetting.scaleLocked) {
+        const scaleYElement = document
+            .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
+        if (!scaleYElement) {
             return ;
         }
 
-        const height = $clamp(parseFloat(parseFloat(heightElement.value).toFixed(2)), 1, Number.MAX_VALUE);
-        transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.lockValue);
+        const scaleY = $clamp(parseFloat(parseFloat(scaleYElement.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+        transformSettingUpdateScaleYToElementValuesUseCase(scaleY / 100 / transformSetting.scaleY);
     }
 
     // 変更後のmatrixで表示を更新
