@@ -31,5 +31,6 @@ export const execute = async (
         canvas.remove();
     }
 
+    div.remove();
     element.replaceWith(div);
 };

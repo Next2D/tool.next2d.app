@@ -25,6 +25,6 @@ export const execute = (layer: Layer, character: Character): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
-    element.style.left = `${$getScreenOffsetLeft() + character.offsetX * workSpace.scale}px`;
-    element.style.top  = `${$getScreenOffsetTop()  + character.offsetY * workSpace.scale}px`;
+    element.style.left = `${$getScreenOffsetLeft() + character.x * workSpace.scale}px`;
+    element.style.top  = `${$getScreenOffsetTop()  + character.y * workSpace.scale}px`;
 };

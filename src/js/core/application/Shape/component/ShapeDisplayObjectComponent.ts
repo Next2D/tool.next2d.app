@@ -1,7 +1,10 @@
 import { Character } from "@/core/domain/model/Character";
-import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { $createTransformStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import {
+    $getScreenOffsetLeft,
+    $getScreenOffsetTop
+} from "@/global/GlobalUtil";
 
 /**
  * @description 指定されたDisplayObjectのdivを生成して返却
@@ -22,8 +25,8 @@ export const execute = (
     const workSpace = $getCurrentWorkSpace();
     const transform = $createTransformStyle(character);
 
-    const x = $getScreenOffsetLeft() + character.x * workSpace.scale;
-    const y = $getScreenOffsetTop()  + character.y * workSpace.scale;
+    const x = $getScreenOffsetLeft() + character.offsetX * workSpace.scale;
+    const y = $getScreenOffsetTop()  + character.offsetY * workSpace.scale;
     const alpha = character.alpha;
     const depth = character.depth;
 

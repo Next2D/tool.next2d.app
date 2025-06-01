@@ -52,29 +52,52 @@ export const execute = async (
     container.addChild(displayShape);
 
     const concatMatrix = $getConcatenatedMatrix();
-    if (character) {
-        const multiMatrix = $multiplyMatrix(
-            concatMatrix, character.matrix
-        );
-        container.matrix = new Matrix(
-            multiMatrix[0], multiMatrix[1],
-            multiMatrix[2], multiMatrix[3],
-            0, 0
-        );
-    } else {
-        container.matrix = new Matrix(
-            concatMatrix[0], concatMatrix[1],
-            concatMatrix[2], concatMatrix[3],
-            0, 0
-        );
-    }
 
     const scale = window.devicePixelRatio;
+    const parentMatrix = $multiplyMatrix(
+        new Float32Array([scale, 0, 0, scale, 0, 0]), concatMatrix
+    );
+
+    const matrix = new Matrix();
+    const tMatrix = new Float32Array([1, 0, 0, 1, 0, 0]);
+    if (character) {
+        const multiMatrix = $multiplyMatrix(
+            parentMatrix, character.matrix
+        );
+
+        const rawMatrix = $multiplyMatrix(
+            concatMatrix, character.matrix
+        );
+
+        matrix.a = rawMatrix[0];
+        matrix.b = rawMatrix[1];
+        matrix.c = rawMatrix[2];
+        matrix.d = rawMatrix[3];
+
+        tMatrix.set([
+            multiMatrix[0], multiMatrix[1],
+            multiMatrix[2], multiMatrix[3]
+        ], 0);
+
+    } else {
+        tMatrix.set([
+            parentMatrix[0], parentMatrix[1],
+            parentMatrix[2], parentMatrix[3]
+        ], 0);
+
+        matrix.a = parentMatrix[0];
+        matrix.b = parentMatrix[1];
+        matrix.c = parentMatrix[2];
+        matrix.d = parentMatrix[3];
+    }
 
     const transferredCanvas = await next2d.captureToCanvas(container, {
-        "matrix": new Matrix(scale, 0, 0, scale),
+        "matrix": new Matrix(tMatrix[0], tMatrix[1], tMatrix[2], tMatrix[3]),
         "canvas": canvas
     });
+
+    // 実際のサイズを設定
+    container.matrix = matrix;
     transferredCanvas.style.width  = `${container.width}px`;
     transferredCanvas.style.height = `${container.height}px`;
 

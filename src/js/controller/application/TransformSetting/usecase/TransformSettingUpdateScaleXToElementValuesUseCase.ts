@@ -94,7 +94,6 @@ export const execute = (scale_x: number): void =>
                 multiMatrix
             );
 
-            console.log("afterMatrix[4]: ", multiMatrix[4], tMatrix[4]);
             character.x = tMatrix[4];
             character.y = tMatrix[5];
 
@@ -112,8 +111,11 @@ export const execute = (scale_x: number): void =>
                     {
                         const transform = $createTransformElementStyle(character, workSpace);
                         if (transform) {
-                            node.style.transform = transform.replace(/transform: /g, "").replace(";", "");
+                            node.style.transform = transform.replace(/transform: /, "").replace(";", "");
                         }
+
+                        const x = $getScreenOffsetLeft() + character.x * workSpace.scale;
+                        node.style.left = `${x}px`;
                     }
                     break;
 
@@ -124,13 +126,13 @@ export const execute = (scale_x: number): void =>
                             continue ;
                         }
                         canvas.style.width = `${Math.ceil(character.width  * workSpace.scale)}px`;
+
+                        const x = $getScreenOffsetLeft() + character.offsetX * workSpace.scale;
+                        node.style.left = `${x}px`;
                     }
                     break;
 
             }
-
-            const x = $getScreenOffsetLeft() + character.x * workSpace.scale;
-            node.style.left = `${x}px`;
         }
     }
 

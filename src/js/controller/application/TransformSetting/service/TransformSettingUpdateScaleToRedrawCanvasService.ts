@@ -7,7 +7,6 @@ import {
     $BITMAP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-import { after } from "node:test";
 
 /**
  * @description スケールの操作によるキャンバスの再描画
@@ -67,7 +66,7 @@ export const execute = async (): Promise<void> =>
             }
 
             // 変更中のcanvasを取得
-            let canvas  = null;
+            let canvas = null;
             if (instance.type !== $BITMAP_TYPE && instance.type !== $VIDEO_TYPE) {
                 const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
                 if (node) {
