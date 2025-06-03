@@ -75,10 +75,14 @@ export const execute = async (
             // 選択範囲のElementを移動
             targetRectUpdateElementUseCase();
 
-            // 選択範囲のバウンディングボックスを取得
-            const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
-            if (bounds) {
-                transformSettingUpdateXElementService(bounds.xMin);
+            if (movie_clip.isSingleSelectedOfDisplayObject()) {
+                transformSettingUpdateXElementService(character.x);
+            } else {
+                // 選択範囲のバウンディングボックスを取得
+                const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
+                if (bounds) {
+                    transformSettingUpdateXElementService(bounds.xMin);
+                }
             }
         }
 

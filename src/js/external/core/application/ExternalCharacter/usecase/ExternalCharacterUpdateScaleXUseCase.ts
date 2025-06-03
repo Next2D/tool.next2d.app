@@ -81,18 +81,11 @@ export const execute = async (
             }
 
             // 選択範囲のバウンディングボックスを取得
-            if (movie_clip.selectedDepths.size === 1) {
-                for (const [layerIndex, depths] of movie_clip.selectedDepths) {
-                    const selectedLayer = movie_clip.getLayer(layerIndex);
-                    if (!selectedLayer) {
-                        break;
-                    }
-
-                    if (selectedLayer.id === layer.id
-                        && depths[0] === character.depth
-                    ) {
-                        transformSettingUpdateScaleXElementService(character.scaleX * 100);
-                    }
+            if (movie_clip.isSingleSelectedOfDisplayObject()) {
+                transformSettingUpdateScaleXElementService(character.scaleX * 100);
+            } else {
+                if (bounds) {
+                    transformSettingUpdateScaleXElementService(bounds.xMin);
                 }
             }
         }

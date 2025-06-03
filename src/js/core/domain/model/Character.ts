@@ -6,7 +6,7 @@ import type { IBounds } from "@/interface/IBounds";
 import type { IPosition } from "@/interface/IPosition";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $clamp } from "@/global/GlobalUtil";
-import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
+import { $getCurrentWorkSpace, $getMatrixBounds, $multiplyMatrix } from "@/core/application/CoreUtil";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
@@ -19,6 +19,7 @@ import {
     $MOVIE_CLIP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description DisplayObjectのユニークID
@@ -253,7 +254,20 @@ export class Character
             default:
                 {
                     const scale = workSpace.scale;
-                    cacheKey += `_${this.scaleX * scale}_${this.scaleY * scale}`;
+                    const concatMatrix = $getConcatenatedMatrix();
+                    const parentMatrix = $multiplyMatrix(
+                        new Float32Array([scale, 0, 0, scale, 0, 0]), concatMatrix
+                    );
+
+                    const scaleX = Math.round(Math.sqrt(
+                        parentMatrix[0] * parentMatrix[0]
+                        + parentMatrix[1] * parentMatrix[1]
+                    ) * 10000) / 10000;
+                    const scaleY = Math.round(Math.sqrt(
+                        parentMatrix[2] * parentMatrix[2]
+                        + parentMatrix[3] * parentMatrix[3]
+                    ) * 10000) / 10000;
+                    cacheKey += `_${this.scaleX * scaleX}_${this.scaleY * scaleY}`;
                 }
                 break;
 

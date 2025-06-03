@@ -6,6 +6,7 @@ import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
+import { $BITMAP_TYPE, $VIDEO_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 指定レイヤーの指定DisplayObjectのElementの座標を内部データに合わせる
@@ -25,6 +26,24 @@ export const execute = (layer: Layer, character: Character): void =>
     }
 
     const workSpace = $getCurrentWorkSpace();
-    element.style.left = `${$getScreenOffsetLeft() + character.x * workSpace.scale}px`;
-    element.style.top  = `${$getScreenOffsetTop()  + character.y * workSpace.scale}px`;
+    const instance = workSpace.getLibrary(character.libraryId);
+    if (!instance) {
+        return ;
+    }
+
+    // アイテムタイプによって、x座標の取得を変更
+    switch (instance.type) {
+
+        case $BITMAP_TYPE:
+        case $VIDEO_TYPE:
+            element.style.left = `${$getScreenOffsetLeft() + character.x * workSpace.scale}px`;
+            element.style.top  = `${$getScreenOffsetTop()  + character.y * workSpace.scale}px`;
+            break;
+
+        default:
+            element.style.left = `${$getScreenOffsetLeft() + character.offsetX * workSpace.scale}px`;
+            element.style.top  = `${$getScreenOffsetTop()  + character.offsetY * workSpace.scale}px`;
+            break;
+
+    }
 };

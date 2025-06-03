@@ -44,7 +44,7 @@ export const execute = async (
     let canvas = $getCacheCanvas(work_space_id, instance.id, cacheKey);
     if (!canvas) {
         // TODO filters check
-        canvas = await instance.getHTMLElement();
+        canvas = await instance.getHTMLElement(character);
 
         // キャッシュに保存
         $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);

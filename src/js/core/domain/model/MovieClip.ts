@@ -5,6 +5,7 @@ import type { IFrameObject } from "@/interface/IFrameObject";
 import type { ISoundSaveList } from "@/interface/ISoundSaveList";
 import type { IMovieClipPublishJson } from "@/interface/IMovieClipPublishJson";
 import type { IBounds } from "@/interface/IBounds";
+import type { Character } from "./Character";
 import { execute as movieClipRunUseCase } from "@/core/application/MovieClip/usecase/MovieClipRunUseCase";
 import { execute as movieClipStopUseCase } from "@/core/application/MovieClip/usecase/MovieClipStopUseCase";
 import { execute as movieClipCreateCanvasElementUseCase } from "@/core/application/MovieClip/usecase/MovieClipCreateCanvasElementUseCase";
@@ -218,9 +219,9 @@ export class MovieClip extends Instance
      * @method
      * @public
      */
-    async getHTMLElement (frame: number = 1): Promise<HTMLCanvasElement>
+    async getHTMLElement (character: Character | null = null, frame: number = 1): Promise<HTMLCanvasElement>
     {
-        return await movieClipCreateCanvasElementUseCase(this, frame);
+        return await movieClipCreateCanvasElementUseCase(this, character, frame);
     }
 
     /**

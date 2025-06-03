@@ -133,13 +133,19 @@ export const execute = (scale_x: number): void =>
                     break;
 
             }
+
+            if (movieClip.isSingleSelectedOfDisplayObject()) {
+                transformSettingUpdateXElementService(character.x);
+            }
         }
     }
 
     // 変形エリアのx座標を更新
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (bounds) {
-        transformSettingUpdateXElementService(bounds.xMin);
+    if (!movieClip.isSingleSelectedOfDisplayObject()) {
+        const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+        if (bounds) {
+            transformSettingUpdateXElementService(bounds.xMin);
+        }
     }
 
     // 変形エリアのxスケールを更新

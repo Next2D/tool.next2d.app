@@ -32,10 +32,8 @@ export const execute = (
         return canvas;
     }
 
-    const imageData = new ImageData(
-        new Uint8ClampedArray(buffer.buffer),
-        width, height
-    );
+    const imageData = new ImageData(width, height);
+    imageData.data.set(new Uint8ClampedArray(buffer.buffer));
     context.putImageData(imageData, 0, 0);
 
     return canvas;
