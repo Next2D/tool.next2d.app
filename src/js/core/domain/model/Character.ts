@@ -253,19 +253,14 @@ export class Character
 
             default:
                 {
-                    const scale = workSpace.scale;
                     const concatMatrix = $getConcatenatedMatrix();
-                    const parentMatrix = $multiplyMatrix(
-                        new Float32Array([scale, 0, 0, scale, 0, 0]), concatMatrix
-                    );
-
                     const scaleX = Math.round(Math.sqrt(
-                        parentMatrix[0] * parentMatrix[0]
-                        + parentMatrix[1] * parentMatrix[1]
+                        concatMatrix[0] * concatMatrix[0]
+                        + concatMatrix[1] * concatMatrix[1]
                     ) * 10000) / 10000;
                     const scaleY = Math.round(Math.sqrt(
-                        parentMatrix[2] * parentMatrix[2]
-                        + parentMatrix[3] * parentMatrix[3]
+                        concatMatrix[2] * concatMatrix[2]
+                        + concatMatrix[3] * concatMatrix[3]
                     ) * 10000) / 10000;
                     cacheKey += `_${this.scaleX * scaleX}_${this.scaleY * scaleY}`;
                 }
@@ -308,6 +303,58 @@ export class Character
 
         const bounds = this.getBounds(movieClip.currentFrame);
         return bounds ? bounds.xMin : 0;
+    }
+
+    /**
+     * @description ローカル座標からグローバルのx座標を返却
+     *              Return global x coordinate from local coordinates
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get globalMinX (): number
+    {
+        const calcBounds = this.getBounds();
+        if (!calcBounds) {
+            return 0;
+        }
+
+        const bounds = $getMatrixBounds(
+            calcBounds.xMin,
+            calcBounds.yMin,
+            calcBounds.xMax,
+            calcBounds.yMax,
+            $getConcatenatedMatrix()
+        );
+
+        return bounds.xMin;
+    }
+
+    /**
+     * @description ローカル座標からグローバルのy座標を返却
+     *              Return global y coordinate from local coordinates
+     *
+     * @member {number}
+     * @readonly
+     * @public
+     */
+    get globalMinY (): number
+    {
+        const calcBounds = this.getBounds();
+        if (!calcBounds) {
+            return 0;
+        }
+
+        const bounds = $getMatrixBounds(
+            calcBounds.xMin,
+            calcBounds.yMin,
+            calcBounds.xMax,
+            calcBounds.yMax,
+            $getConcatenatedMatrix()
+        );
+
+        return bounds.yMin;
     }
 
     /**

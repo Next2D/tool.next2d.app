@@ -1,10 +1,10 @@
 import { $SCREEN_SCALE_ID } from "@/config/ToolConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as zoomToolMouseOverEventService } from "../service/ZoomToolMouseOverEventService";
-import { execute as zoomToolMouseOutEventService } from "../service/ZoomToolMouseOutEventService";
+import { execute as zoomToolPointerOverEventService } from "../service/ZoomToolPointerOverEventService";
+import { execute as zoomToolPointerOutEventService } from "../service/ZoomToolPointerOutEventService";
 import { execute as zoomToolFocusInEventService } from "../service/ZoomToolFocusInEventService";
 import { execute as zoomToolKeyPressEventService } from "../service/ZoomToolKeyPressEventService";
-import { execute as zoomToolMouseDownEventUseCase } from "./ZoomToolMouseDownEventUseCase";
+import { execute as zoomToolPointerDownEventUseCase } from "./ZoomToolPointerDownEventUseCase";
 import { execute as zoomToolFocusOutEventUseCase } from "./ZoomToolFocusOutEventUseCase";
 
 /**
@@ -25,13 +25,13 @@ export const execute = (): void =>
     }
 
     element.addEventListener(EventType.POINTER_OVER,
-        zoomToolMouseOverEventService
+        zoomToolPointerOverEventService
     );
     element.addEventListener(EventType.POINTER_OUT,
-        zoomToolMouseOutEventService
+        zoomToolPointerOutEventService
     );
     element.addEventListener(EventType.POINTER_DOWN,
-        zoomToolMouseDownEventUseCase
+        zoomToolPointerDownEventUseCase
     );
     element.addEventListener("focusin",
         zoomToolFocusInEventService

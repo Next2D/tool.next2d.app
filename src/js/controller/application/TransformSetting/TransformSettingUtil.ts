@@ -5,7 +5,7 @@ import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
@@ -86,15 +86,10 @@ export const $createTransformStyle = (character: Character): string =>
     if (rotation) {
         transform.push(`rotate(${rotation}deg)`);
     }
-    if (!transform.length
-        && !concatenatedMatrix[4]
-        && !concatenatedMatrix[5]
-    ) {
+
+    if (!transform.length) {
         return "";
     }
-
-    // 変形分の座標を補正
-    transform.unshift(`translate(${concatenatedMatrix[4]}px, ${concatenatedMatrix[5]}px)`);
 
     return `transform: ${transform.join(" ")}; `;
 };

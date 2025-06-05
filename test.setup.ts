@@ -27,7 +27,14 @@ if (typeof globalThis.AudioContext === "undefined") {
     (globalThis as any).AudioContext = MockAudioContext;
 }
 
-class MockImageData {}
+class MockImageData {
+    get data ()
+    {
+        return {
+            "set": (data: Uint8ClampedArray) => { return void 0 }
+        };
+    }
+}
 if (typeof globalThis.ImageData === "undefined") {
     (globalThis as any).ImageData = MockImageData;
 }

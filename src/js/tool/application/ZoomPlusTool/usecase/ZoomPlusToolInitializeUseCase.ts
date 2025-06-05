@@ -1,10 +1,10 @@
 import type { ITool } from "@/interface/ITool";
 import { EventType } from "@/tool/domain/event/EventType";
 import type { ZoomPlusTool } from "@/tool/domain/model/ZoomPlusTool";
-import { execute as zoomPlusToolMouseOverEventService } from "../service/ZoomPlusToolMouseOverEventService";
-import { execute as zoomPlusToolMouseOutEventService } from "../service/ZoomPlusToolMouseOutEventService";
+import { execute as zoomPlusToolPointerOverEventService } from "../service/ZoomPlusToolPointerOverEventService";
+import { execute as zoomPlusToolPointerOutEventService } from "../service/ZoomPlusToolPointerOutEventService";
 import { execute as zoomPlusToolChangeCursorEventService } from "../service/ZoomPlusToolChangeCursorEventService";
-import { execute as zoomPlusToolStageRectMouseDownEventUseCase } from "./ZoomPlusToolStageRectMouseDownEventUseCase";
+import { execute as zoomPlusToolStageRectPointerDownEventUseCase } from "./ZoomPlusToolStageRectPointerDownEventUseCase";
 import { execute as zoomPlusToolStartEventUseCase } from "./ZoomPlusToolStartEventUseCase";
 
 /**
@@ -25,12 +25,12 @@ export const execute = (tool: ITool<ZoomPlusTool>): void =>
 
     // スクリーンのマウスオーバーイベントを登録
     tool.addEventListener(EventType.POINTER_OVER,
-        zoomPlusToolMouseOverEventService
+        zoomPlusToolPointerOverEventService
     );
 
     // スクリーンのマウスアウトイベントを登録
     tool.addEventListener(EventType.POINTER_OUT,
-        zoomPlusToolMouseOutEventService
+        zoomPlusToolPointerOutEventService
     );
 
     // スクリーン移動中のカーソル変更のイベントを登録
@@ -40,6 +40,6 @@ export const execute = (tool: ITool<ZoomPlusTool>): void =>
 
     // 範囲選択のイベントを登録
     tool.addEventListener(EventType.STAGE_RECT,
-        zoomPlusToolStageRectMouseDownEventUseCase
+        zoomPlusToolStageRectPointerDownEventUseCase
     );
 };

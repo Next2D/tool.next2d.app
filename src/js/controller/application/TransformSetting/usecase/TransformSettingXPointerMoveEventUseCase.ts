@@ -4,6 +4,7 @@ import { execute as screenDisplayObjectSelectedMoveElementUseCase } from "@/scre
 import { execute as targetRectMoveElementService } from "@/screen/application/TargetRect/service/TargetRectMoveElementService";
 import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $globalToLocal } from "@/screen/application/DisplayObject/DisplayObjectUtil";
 
 /**
  * @description 変形エリアのx座標の値操作のマウスムーブイベント
@@ -36,11 +37,10 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 表示を更新
-        const workSpace = $getCurrentWorkSpace();
+        // const workSpace = $getCurrentWorkSpace();
         const value = parseFloat(parseFloat(element.value).toFixed(2));
-        const movementX = parseFloat(event.movementX.toFixed(2));
-        const dx = parseFloat((movementX / workSpace.scale).toFixed(2));
-        const x = $clamp(value + dx, -Number.MAX_VALUE, Number.MAX_VALUE);
+        const movementX = $globalToLocal(parseFloat(event.movementX.toFixed(2))).x;
+        const x = $clamp(value + movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
         element.value = `${x}`;
 
         // マウスで移動した量を更新

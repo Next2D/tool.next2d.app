@@ -25,25 +25,6 @@ export const execute = (layer: Layer, character: Character): void =>
         return ;
     }
 
-    const workSpace = $getCurrentWorkSpace();
-    const instance = workSpace.getLibrary(character.libraryId);
-    if (!instance) {
-        return ;
-    }
-
-    // アイテムタイプによって、x座標の取得を変更
-    switch (instance.type) {
-
-        case $BITMAP_TYPE:
-        case $VIDEO_TYPE:
-            element.style.left = `${$getScreenOffsetLeft() + character.x * workSpace.scale}px`;
-            element.style.top  = `${$getScreenOffsetTop()  + character.y * workSpace.scale}px`;
-            break;
-
-        default:
-            element.style.left = `${$getScreenOffsetLeft() + character.offsetX * workSpace.scale}px`;
-            element.style.top  = `${$getScreenOffsetTop()  + character.offsetY * workSpace.scale}px`;
-            break;
-
-    }
+    element.style.left = `${$getScreenOffsetLeft() + character.globalMinX}px`;
+    element.style.top  = `${$getScreenOffsetTop()  + character.globalMinY}px`;
 };

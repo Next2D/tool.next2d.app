@@ -15,14 +15,13 @@ import { $TOOL_ZOOM_PLUS_NAME } from "@/config/ToolConfig";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
     const tool: ITool<ZoomPlusTool> = $getDefaultTool($TOOL_ZOOM_PLUS_NAME);
     if (!tool) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     // カーソルを変更
     $setCursor(tool.cursor);

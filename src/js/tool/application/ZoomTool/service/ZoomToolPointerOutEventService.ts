@@ -1,8 +1,8 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
- * @description ズームInputのマウスオーバーイベント
- *              Zoom Input mouse over event
+ * @description ズームInputのマウスアウトイベント
+ *              Zoom Input mouse out event
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -18,12 +18,11 @@ export const execute = (event: PointerEvent): void =>
 
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
 
     const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }
 
-    element.style.cursor = "ew-resize";
+    element.style.cursor = "";
 };

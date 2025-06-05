@@ -17,10 +17,9 @@ export const execute = async (): Promise<void> =>
 
     // 現在のフレームをセット
     const frame = movieClip.currentFrame;
-    const scale = workSpace.scale;
 
-    const x = transformSetting.x / scale;
-    const y = transformSetting.y / scale;
+    const x = transformSetting.x;
+    const y = transformSetting.y;
 
     // 選択中のDisplayObjectの座標を更新
     for (const [layerIndex, depths] of movieClip.selectedDepths) {

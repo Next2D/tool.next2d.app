@@ -37,8 +37,8 @@ export const execute = async (
 
     // 選択中のElementを移動
     const frame = movieClip.currentFrame;
-    const dx = transformSetting.x / workSpace.scale;
-    const dy = transformSetting.y / workSpace.scale;
+    const dx = transformSetting.x;
+    const dy = transformSetting.y;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
         const layer = movieClip.getLayer(layerIndex);

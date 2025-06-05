@@ -1,11 +1,12 @@
-import { execute } from "./ZoomPlusToolMouseOverEventService";
+import { execute } from "./ZoomPlusToolPointerOverEventService";
 import { $setCursor } from "../../../../global/GlobalUtil";
 import { $registerDefaultTool } from "../../ToolUtil";
 import { $TOOL_ZOOM_PLUS_NAME } from "../../../../config/ToolConfig";
+import { describe, expect, it, vi } from "vitest";
 
-describe("ZoomPlusToolMouseOverEventServiceeTest", () =>
+describe("ZoomPlusToolPointerOverEventService Test", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const mock = {
             "name": $TOOL_ZOOM_PLUS_NAME,
@@ -24,11 +25,15 @@ describe("ZoomPlusToolMouseOverEventServiceeTest", () =>
         // test case mock1
         expect(style.getPropertyValue("--tool-cursor")).toBe("auto");
 
-        execute({
-            "stopPropagation": () => {},
-            "preventDefault": () => {}
-        });
+        let stopPropagation = false;
+        const mockEvent = {
+            "stopPropagation": vi.fn(() => { stopPropagation = true; })
+        } as unknown as PointerEvent;
 
+        expect(stopPropagation).toBe(false);
+        execute(mockEvent);
+
+        expect(stopPropagation).toBe(true);
         expect(style.getPropertyValue("--tool-cursor")).toBe(mock.cursor);
     });
 });
