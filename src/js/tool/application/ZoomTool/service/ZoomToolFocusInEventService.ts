@@ -1,3 +1,4 @@
+import { $setEditingElement } from "@/global/GlobalUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
@@ -11,18 +12,19 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
  */
 export const execute = (event: FocusEvent): void =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
-    // フォーカスを初期化
     const element: HTMLInputElement | null = event.currentTarget as HTMLInputElement;
     if (!element) {
         return ;
     }
 
+    // イベントの伝播を止める
+    event.stopPropagation();
+
     // 入力モードをOnにする
     $updateKeyLock(true);
+
+    // 編集中のelementを設定
+    $setEditingElement(element);
 
     element.style.cursor = "";
 };

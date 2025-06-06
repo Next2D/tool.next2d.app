@@ -23,7 +23,6 @@ export const execute = (
 
     // 変形スタイルを生成
     const transform = $createTransformStyle(character);
-    console.log("transform", transform);
 
     const x = $getScreenOffsetLeft() + character.globalMinX;
     const y = $getScreenOffsetTop()  + character.globalMinY;

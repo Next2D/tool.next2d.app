@@ -16,7 +16,7 @@ let $pointerDownQueue: Promise<void> = Promise.resolve();
  */
 export const execute = (): void =>
 {
-    window.addEventListener("keydown", async (event: KeyboardEvent) =>
+    window.addEventListener("keydown", (event: KeyboardEvent): void =>
     {
         $pointerDownQueue = $pointerDownQueue
             .then(() => shortcutCommandService(event));

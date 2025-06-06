@@ -1,12 +1,10 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
-import { $BITMAP_TYPE, $VIDEO_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 指定レイヤーの指定DisplayObjectのElementの座標を内部データに合わせる

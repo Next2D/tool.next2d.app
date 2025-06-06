@@ -35,10 +35,6 @@ let mode: string = "";
  */
 export const execute = async (event: WheelEvent): Promise<void> =>
 {
-    // 他のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     await new Promise<void>((resolve): void =>
     {
         requestAnimationFrame(async (): Promise<void> =>

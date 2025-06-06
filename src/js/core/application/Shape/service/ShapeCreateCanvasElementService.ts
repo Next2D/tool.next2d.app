@@ -3,11 +3,11 @@ import type { Shape } from "@/core/domain/model/Shape";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCanvas } from "@/global/GlobalUtil";
 import { Matrix } from "@next2d/geom";
+import { $multiplyMatrix } from "../../CoreUtil";
 import {
     Shape as DisplayShape,
     Sprite
 } from "@next2d/display";
-import { $multiplyMatrix } from "../../CoreUtil";
 
 /**
  * @description ShapeからCanvasを生成

@@ -1,7 +1,13 @@
-import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
-import { $clamp } from "@/global/GlobalUtil";
-import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "./ZoomToolRealodWorkSpaceUseCase";
+import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
+import {
+    $clamp,
+    $setEditingElement
+} from "@/global/GlobalUtil";
+import {
+    $ZOOM_MAX_VALUE,
+    $ZOOM_MIN_VALUE
+} from "@/config/ZoomConfig";
 
 /**
  * @description ズームinputのフォーカスアウト処理
@@ -14,17 +20,19 @@ import { execute as zoomToolRealodWorkSpaceUseCase } from "./ZoomToolRealodWorkS
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-    event.preventDefault();
-
-    // 入力モードを終了する
-    $updateKeyLock(false);
-
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
+
+    // 入力モードを終了する
+    $updateKeyLock(false);
+
+    // 編集中のelementをnullにする
+    $setEditingElement(null);
 
     // inputの値を更新
     const scale = $clamp(parseInt(element.value), $ZOOM_MIN_VALUE, $ZOOM_MAX_VALUE);

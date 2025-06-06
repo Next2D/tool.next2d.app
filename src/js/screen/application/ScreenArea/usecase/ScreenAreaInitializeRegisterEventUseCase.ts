@@ -5,6 +5,13 @@ import { execute as screenAreaMouseOverEventService } from "../service/ScreenAre
 import { execute as screenAreaMouseOutEventService } from "../service/ScreenAreaMouseOutEventService";
 import { execute as screenAreaMouseMoveEventService } from "../service/ScreenAreaMouseMoveEventService";
 import { execute as screenAreaWheelEventUseCase } from "./ScreenAreaWheelEventUseCase";
+import { P } from "vitest/dist/chunks/environment.d.Dmw5ulng.js";
+
+/**
+ * @type {Promise}
+ * @private
+ */
+let $pointerDownQueue: Promise<void> = Promise.resolve();
 
 /**
  * @description スクリーン全体のマウスダウンイベントを登録
@@ -23,10 +30,16 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener("wheel",
-        screenAreaWheelEventUseCase,
-        { "passive": false }
-    );
+    element.addEventListener("wheel", (event: WheelEvent): void =>
+    {
+        // イベントの伝達を止める
+        event.preventDefault();
+        event.stopPropagation();
+
+        $pointerDownQueue = $pointerDownQueue
+            .then(() => screenAreaWheelEventUseCase(event));
+
+    }, { "passive": false });
 
     // マウスイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,

@@ -1,5 +1,7 @@
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { execute as zoomToolRegisterPointerEventUseCase } from "./ZoomToolRegisterPointerEventUseCase";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description ズームInputのマウスダウンイベント
@@ -12,7 +14,9 @@ import { execute as zoomToolRegisterPointerEventUseCase } from "./ZoomToolRegist
  */
 export const execute = (event: PointerEvent): void =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 
@@ -23,6 +27,12 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // メニューを非表示
+    $allHideMenu();
+
+    // 編集中のElementを初期化
+    $setEditingElement(null);
+
     // イベントの伝播を止める
     event.preventDefault();
 
@@ -31,6 +41,6 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    // windowのイベントを登録
+    // pointerイベントを登録
     zoomToolRegisterPointerEventUseCase(event);
 };

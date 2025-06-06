@@ -34,7 +34,6 @@ export const execute = async (
 ): Promise<HTMLDivElement> => {
 
     const cacheKey = character.cacheKey;
-    console.log("ShapeCreateDisplayObjectElementUseCase", cacheKey);
 
     let canvas = $getCacheCanvas(work_space_id, instance.id, cacheKey);
     if (!canvas) {
