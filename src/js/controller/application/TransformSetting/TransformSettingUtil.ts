@@ -5,7 +5,7 @@ import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
-import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,

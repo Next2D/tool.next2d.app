@@ -5,8 +5,6 @@ import type { Layer } from "./Layer";
 import type { IBounds } from "@/interface/IBounds";
 import type { IPosition } from "@/interface/IPosition";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $clamp } from "@/global/GlobalUtil";
-import { $getCurrentWorkSpace, $getMatrixBounds, $multiplyMatrix } from "@/core/application/CoreUtil";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
@@ -14,12 +12,17 @@ import { execute as characterCalcSetScaleYService } from "@/core/application/Cha
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $clamp } from "@/global/GlobalUtil";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import {
+    $getCurrentWorkSpace,
+    $getMatrixBounds
+} from "@/core/application/CoreUtil";
 
 /**
  * @description DisplayObjectのユニークID

@@ -6,7 +6,6 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { execute as targetRectMoveElementService } from "@/screen/application/TargetRect/service/TargetRectMoveElementService";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getPointerId, $globalToLocal } from "../DisplayObjectUtil";
 
 /**

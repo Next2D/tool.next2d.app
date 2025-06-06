@@ -1,8 +1,6 @@
 import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "./ZoomToolRealodWorkSpaceUseCase";
-import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description ズームinuputの値操作のマウスムーブイベント

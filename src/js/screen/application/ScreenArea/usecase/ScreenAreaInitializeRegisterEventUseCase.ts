@@ -5,7 +5,6 @@ import { execute as screenAreaMouseOverEventService } from "../service/ScreenAre
 import { execute as screenAreaMouseOutEventService } from "../service/ScreenAreaMouseOutEventService";
 import { execute as screenAreaMouseMoveEventService } from "../service/ScreenAreaMouseMoveEventService";
 import { execute as screenAreaWheelEventUseCase } from "./ScreenAreaWheelEventUseCase";
-import { P } from "vitest/dist/chunks/environment.d.Dmw5ulng.js";
 
 /**
  * @type {Promise}

@@ -3,12 +3,6 @@ import { execute as zoomToolPointerMoveEventUseCase } from "./ZoomToolPointerMov
 import { execute as zoomToolPointerUpEventUseCase } from "./ZoomToolPointerUpEventUseCase";
 
 /**
- * @type {Promise}
- * @private
- */
-let $pointerDownQueue: Promise<void> = Promise.resolve();
-
-/**
  * @description ズームinputのマウス操作イベントを登録
  *              Register mouse operation events for zoom input
  *
