@@ -1,5 +1,5 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
-import { $clamp, $setEditingElement } from "@/global/GlobalUtil";
+import { $clamp } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
@@ -28,9 +28,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     // 入力モードを終了する
     $updateKeyLock(false);
-
-    // 編集中の要素を解除
-    $setEditingElement(null);
 
     const height = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
     element.value = `${height}`;

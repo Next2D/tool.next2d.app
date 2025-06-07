@@ -1,6 +1,6 @@
-import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as zoomToolPointerMoveEventUseCase } from "./ZoomToolPointerMoveEventUseCase";
+import { $setCursor } from "@/global/GlobalUtil";
 
 /**
  * @description ズームinputの値のマウスアップイベント
@@ -11,7 +11,7 @@ import { execute as zoomToolPointerMoveEventUseCase } from "./ZoomToolPointerMov
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     // イベントの伝播を止める
     event.stopPropagation();

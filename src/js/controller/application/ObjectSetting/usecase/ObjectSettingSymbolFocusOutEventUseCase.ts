@@ -4,7 +4,6 @@ import { $getSelectedMode } from "../../PropertyArea/PropertyAreaUtil";
 import { ExternalItem } from "@/external/core/domain/model/ExternalItem";
 import { execute as detailModalCustomFadeInUseCase } from "@/menu/application/DetailModal/usecase/DetailModalCustomFadeInUseCase";
 import { $ERROR_DUPLICATE_SYMBOL_TEXT } from "@/config/ErrorTextConfig";
-import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
  * @description シンボルのフォーカスアウトイベント処理
@@ -28,9 +27,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     if (!element) {
         return ;
     }
-
-    // 編集中の要素をnullにする
-    $setEditingElement(null);
 
     // イベントの伝播を止める
     event.stopPropagation();

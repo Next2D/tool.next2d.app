@@ -1,7 +1,6 @@
 import { $STAGE_DEFAULT_FPS } from "@/config/StageSettingConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalStage } from "@/external/core/domain/model/ExternalStage";
-import { $setEditingElement } from "@/global/GlobalUtil";
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
@@ -22,9 +21,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     // 入力モードを終了する
     $updateKeyLock(false);
-
-    // 入力モードを終了する
-    $setEditingElement(null);
 
     // イベントの伝播を止める
     // fixed logic

@@ -1,5 +1,6 @@
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
+import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description コントローラーエリアでマウスダウンした際の関数
@@ -22,6 +23,9 @@ export const execute = (event: PointerEvent): void =>
 
     // 編集中のElementを初期化
     $setEditingElement(null);
+
+    // 入力モードを終了する
+    $updateKeyLock(false);
 
     // 親のイベントを中止
     event.stopPropagation();

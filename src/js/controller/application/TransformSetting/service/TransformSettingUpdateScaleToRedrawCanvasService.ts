@@ -46,6 +46,10 @@ export const execute = async (): Promise<void> =>
 
             // 変更前の値に戻す
             const beforeMatrix = transformSetting.matrixs[index++];
+            if (!beforeMatrix) {
+                continue;
+            }
+
             const beforeScaleX = Math.sqrt(
                 beforeMatrix[0] * beforeMatrix[0]
                 + beforeMatrix[1] * beforeMatrix[1]
