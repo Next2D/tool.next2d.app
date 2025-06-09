@@ -2,7 +2,7 @@ import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingScaleXPointerMoveEventUseCase } from "./TransformSettingScaleXPointerMoveEventUseCase";
-import { execute as transformSettingUpdateScaleToRedrawCanvasService } from "../service/TransformSettingUpdateScaleToRedrawCanvasService";
+import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
@@ -60,7 +60,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     // 変更後のmatrixで表示を更新
-    await transformSettingUpdateScaleToRedrawCanvasService();
+    await transformSettingUpdateScaleToRedrawCanvasUseCase();
 
     // 親のMovieClipのキャッシュを削除
     timelineSceneListCacheRemoveService();

@@ -147,13 +147,13 @@ export const $createTransformElementStyle = (
 
     // 中心点を原点に変形
     const multiMatrix = $multiplicationMatrix(
-        new Float32Array([matrix[0], matrix[1], matrix[2], matrix[3], 0, 0]),
+        new Float32Array([Math.abs(matrix[0]), matrix[1], matrix[2], Math.abs(matrix[3]), 0, 0]),
         new Float32Array([1, 0, 0, 1, -referenceX, -referenceY])
     );
 
     // 変形分の座標を補正
-    multiMatrix[4] += referenceX - concatenatedMatrix[4];
-    multiMatrix[5] += referenceY - concatenatedMatrix[5];
+    multiMatrix[4] += referenceX;
+    multiMatrix[5] += referenceY;
     transform.unshift(`translate(${-multiMatrix[4]}px, ${-multiMatrix[5]}px)`);
 
     return `transform: ${transform.join(" ")}; `;

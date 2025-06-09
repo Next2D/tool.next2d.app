@@ -4,7 +4,7 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
-import { execute as transformSettingUpdateScaleToRedrawCanvasService } from "../service/TransformSettingUpdateScaleToRedrawCanvasService";
+import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
 import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 
 /**
@@ -51,7 +51,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     }
 
     // 変更後のmatrixで表示を更新
-    await transformSettingUpdateScaleToRedrawCanvasService();
+    await transformSettingUpdateScaleToRedrawCanvasUseCase();
 
     // 親のMovieClipのキャッシュを削除
     timelineSceneListCacheRemoveService();

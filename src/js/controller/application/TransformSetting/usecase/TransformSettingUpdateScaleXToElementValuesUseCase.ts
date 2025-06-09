@@ -113,9 +113,6 @@ export const execute = (scale_x: number): void =>
                         if (transform) {
                             node.style.transform = transform.replace(/transform: /, "").replace(";", "");
                         }
-
-                        const x = $getScreenOffsetLeft() + character.x * workSpace.scale;
-                        node.style.left = `${x}px`;
                     }
                     break;
 
@@ -126,13 +123,14 @@ export const execute = (scale_x: number): void =>
                             continue ;
                         }
                         canvas.style.width = `${Math.ceil(character.width  * workSpace.scale)}px`;
-
-                        const x = $getScreenOffsetLeft() + character.offsetX * workSpace.scale;
-                        node.style.left = `${x}px`;
                     }
                     break;
 
             }
+
+            // 変形エリアのx座標を更新
+            const x = $getScreenOffsetLeft() + character.globalMinX;
+            node.style.left = `${x}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateXElementService(character.x);

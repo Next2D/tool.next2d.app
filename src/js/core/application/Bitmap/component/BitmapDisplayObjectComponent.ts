@@ -2,6 +2,7 @@ import { $createTransformElementStyle } from "@/controller/application/Transform
 import { Character } from "@/core/domain/model/Character";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
+import { IBounds } from "@/interface/IBounds";
 
 /**
  * @description 指定されたBitmap用のdivを生成して返却
@@ -22,8 +23,8 @@ export const execute = (
     const workSpace = $getCurrentWorkSpace();
     const transform = $createTransformElementStyle(character, workSpace);
 
-    const x = $getScreenOffsetLeft() + character.x * workSpace.scale;
-    const y = $getScreenOffsetTop()  + character.y * workSpace.scale;
+    const x = $getScreenOffsetLeft() + character.globalMinX;
+    const y = $getScreenOffsetTop()  + character.globalMinY;
     const alpha = character.alpha;
     const depth = character.depth;
 

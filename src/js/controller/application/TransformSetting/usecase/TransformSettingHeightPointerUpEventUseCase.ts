@@ -7,7 +7,7 @@ import { execute as timelineSceneListCacheRemoveService } from "@/timeline/appli
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
 import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
-import { execute as transformSettingUpdateScaleToRedrawCanvasService } from "../service/TransformSettingUpdateScaleToRedrawCanvasService";
+import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -64,7 +64,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     // 変更後のmatrixで表示を更新
-    await transformSettingUpdateScaleToRedrawCanvasService();
+    await transformSettingUpdateScaleToRedrawCanvasUseCase();
 
     // 親のMovieClipのキャッシュを削除
     timelineSceneListCacheRemoveService();
