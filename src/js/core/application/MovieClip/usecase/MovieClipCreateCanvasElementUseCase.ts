@@ -80,14 +80,25 @@ export const execute = async (
         matrix.d = parentMatrix[3];
     }
 
-    const scaleX = Math.sqrt(
-        tMatrix[0] * tMatrix[0]
-            + tMatrix[1] * tMatrix[1]
-    );
-    const scaleY = Math.sqrt(
-        tMatrix[2] * tMatrix[2]
-            + tMatrix[3] * tMatrix[3]
-    );
+    const scaleX = tMatrix[0] > 0
+        ? Math.sqrt(
+            tMatrix[0] * tMatrix[0]
+                + tMatrix[1] * tMatrix[1]
+        )
+        : -Math.sqrt(
+            tMatrix[0] * tMatrix[0]
+                + tMatrix[1] * tMatrix[1]
+        );
+
+    const scaleY = tMatrix[3] > 0
+        ? Math.sqrt(
+            tMatrix[2] * tMatrix[2]
+                + tMatrix[3] * tMatrix[3]
+        )
+        : -Math.sqrt(
+            tMatrix[2] * tMatrix[2]
+                + tMatrix[3] * tMatrix[3]
+        );
 
     const rectangle = movieClip.getBounds();
     const canvas = await next2d.captureToCanvas(container, {

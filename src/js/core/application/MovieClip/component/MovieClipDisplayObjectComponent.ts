@@ -19,11 +19,10 @@ export const execute = (
 ): string => {
 
     // 変形スタイルを生成
-    const workSpace = $getCurrentWorkSpace();
     const transform = $createTransformStyle(character);
 
-    const x = $getScreenOffsetLeft() + character.offsetX * workSpace.scale;
-    const y = $getScreenOffsetTop()  + character.offsetY * workSpace.scale;
+    const x = $getScreenOffsetLeft() + character.globalMinX;
+    const y = $getScreenOffsetTop()  + character.globalMinY;
     const alpha = character.alpha;
     const depth = character.depth;
 
