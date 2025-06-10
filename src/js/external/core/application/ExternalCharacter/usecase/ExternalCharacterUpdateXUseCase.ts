@@ -14,6 +14,7 @@ import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/applica
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { $removeLibraryCache } from "@/cache/CacheUtil";
 
 /**
  * @description DisplayObjectのx座標を更新
@@ -110,4 +111,7 @@ export const execute = async (
 
     // 先祖のキャッシュを削除する
     timelineSceneListCacheRemoveService(work_space.id);
+
+    // 自分のキャッシュを削除する
+    $removeLibraryCache(work_space.id, movie_clip.id);
 };
