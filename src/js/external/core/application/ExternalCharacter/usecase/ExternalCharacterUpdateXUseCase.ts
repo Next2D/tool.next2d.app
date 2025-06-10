@@ -13,6 +13,7 @@ import { $getMaskMatrix } from "@/controller/application/TransformSetting/Transf
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 
 /**
  * @description DisplayObjectのx座標を更新
@@ -106,4 +107,7 @@ export const execute = async (
             );
         }
     }
+
+    // 先祖のキャッシュを削除する
+    timelineSceneListCacheRemoveService(work_space.id);
 };

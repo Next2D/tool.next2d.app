@@ -6,13 +6,13 @@ import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
  * @description 先祖のキャッシュを削除するユースケース
  *              Use case to delete ancestor cache
  *
+ * @param  {number} work_space_id
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (work_space_id: number): void =>
 {
-    const workSpace = $getCurrentWorkSpace();
     for (let idx = 0; idx < timelineSceneList.parents.length; idx++) {
 
         const parentObject = timelineSceneList.parents[idx];
@@ -26,6 +26,6 @@ export const execute = (): void =>
         }
 
         // キャッシュを削除
-        $removeLibraryCache(workSpace.id, character.libraryId);
+        $removeLibraryCache(work_space_id, character.libraryId);
     }
 };
