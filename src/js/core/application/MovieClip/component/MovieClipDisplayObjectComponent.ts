@@ -1,6 +1,5 @@
 import { Character } from "@/core/domain/model/Character";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
-import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { $createTransformStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**

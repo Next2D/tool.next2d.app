@@ -1,5 +1,4 @@
 import { $removeLibraryCache } from "@/cache/CacheUtil";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 
 /**
