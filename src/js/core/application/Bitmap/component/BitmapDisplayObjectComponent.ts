@@ -2,7 +2,6 @@ import { $createTransformElementStyle } from "@/controller/application/Transform
 import { Character } from "@/core/domain/model/Character";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
-import { IBounds } from "@/interface/IBounds";
 
 /**
  * @description 指定されたBitmap用のdivを生成して返却

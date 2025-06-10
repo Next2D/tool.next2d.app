@@ -21,24 +21,24 @@
     "@types/ace": "^0.0.52",
     "@types/node": "^22.15.30",
     "@types/qrcode": "^1.5.5",
-    "@typescript-eslint/eslint-plugin": "^8.33.1",
-    "@typescript-eslint/parser": "^8.33.1",
-    "@vitest/web-worker": "^3.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
+    "@vitest/web-worker": "^3.2.3",
     "eslint": "^9.28.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^16.2.0",
     "jsdom": "^26.1.0",
-    "sass": "^1.89.1",
+    "sass": "^1.89.2",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vitest": "^3.2.2",
+    "vitest": "^3.2.3",
     "vitest-webgl-canvas-mock": "^1.1.0"
   },
   "dependencies": {
     "fflate": "^0.8.2",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.4",
-    "terser": "^5.41.0"
+    "terser": "^5.42.0"
   },
   "peerDependencies": {
     "@next2d/cache": "file:../player/packages/cache",
