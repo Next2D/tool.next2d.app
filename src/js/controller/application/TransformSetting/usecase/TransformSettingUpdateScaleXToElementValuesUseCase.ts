@@ -9,6 +9,7 @@ import { $getScreenOffsetLeft } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $createTransformElementStyle,
+    $createMoveTransformElementStyle,
     $multiplicationMatrix
 } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import {
@@ -103,7 +104,6 @@ export const execute = (scale_x: number): void =>
             );
 
             character.scaleX = multiMatrix[0] > 0 ? scaleX : scaleX * -1;
-
             switch (instance.type) {
 
                 case $BITMAP_TYPE:
@@ -122,7 +122,15 @@ export const execute = (scale_x: number): void =>
                         if (!canvas) {
                             continue ;
                         }
-                        canvas.style.width = `${Math.ceil(character.width  * workSpace.scale)}px`;
+
+                        const beforeValue  = transformSetting.beforeValue / 100;
+                        const currentValue = transformSetting.scaleX * scale_x;
+                        const transform = $createMoveTransformElementStyle(character, workSpace, currentValue / beforeValue);
+                        if (!transform) {
+                            continue;
+                        }
+
+                        canvas.style.transform = transform;
                     }
                     break;
 

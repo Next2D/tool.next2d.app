@@ -3,9 +3,7 @@ import { execute as transformSettingScaleXPointerUpEventUseCase } from "./Transf
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
-import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
@@ -79,38 +77,36 @@ export const execute = (event: PointerEvent): void =>
     transformSettingCacheBeforeMatrixService();
 
     // 中心点を設定
-    const tool = $getActiveTool();
-    if (tool.name === $TOOL_ARROW_NAME) {
-        // 矢印ツールの場合は選択幅の中心を中心点を設定
+    if (movieClip.isSingleSelectedOfDisplayObject()) {
+        const layer = movieClip.getLayer(
+            movieClip.selectedDepths.keys().next().value as number
+        );
+
+        if (!layer) {
+            return ;
+        }
+
+        const depths = movieClip.selectedDepths.values().next().value as number[];
+        const character = layer.getCharacter(
+            movieClip.currentFrame,
+            depths[0]
+        );
+
+        if (!character) {
+            return ;
+        }
+
+        referenceSetting.x = character.referencePosition.x;
+        referenceSetting.y = character.referencePosition.y;
+
+        transformSetting.beforeValue = character.scaleX * 100;
+        transformSetting.scaleX = character.scaleX;
+    } else {
         referenceSetting.x = bounds.xMin + width / 2;
         referenceSetting.y = bounds.yMin + height / 2;
-    } else {
-        // 自由変形ツールなら設定の位置に中心点を設定
-        if (movieClip.isSingleSelectedOfDisplayObject()) {
-            const layer = movieClip.getLayer(
-                movieClip.selectedDepths.keys().next().value as number
-            );
 
-            if (!layer) {
-                return ;
-            }
-
-            const depths = movieClip.selectedDepths.values().next().value as number[];
-            const character = layer.getCharacter(
-                movieClip.currentFrame,
-                depths[0]
-            );
-
-            if (!character) {
-                return ;
-            }
-
-            referenceSetting.x = character.referencePosition.x;
-            referenceSetting.y = character.referencePosition.y;
-        } else {
-            referenceSetting.x = bounds.xMin + width / 2;
-            referenceSetting.y = bounds.yMin + height / 2;
-        }
+        transformSetting.beforeValue = 100;
+        transformSetting.scaleX = 1;
     }
 
     element.setPointerCapture(event.pointerId);

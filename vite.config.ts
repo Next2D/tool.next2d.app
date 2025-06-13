@@ -14,6 +14,7 @@ export default defineConfig({
         "modulePreload": {
             "polyfill": false
         },
+        "chunkSizeWarningLimit": 2048, // チャンクサイズの警告を1MBに設定
         "rollupOptions": { //ファイル出力設定
             "output": {
                 "assetFileNames": (assetInfo) =>

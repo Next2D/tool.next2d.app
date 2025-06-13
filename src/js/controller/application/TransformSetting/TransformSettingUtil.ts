@@ -12,6 +12,7 @@ import {
     $SHAPE_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description 行列の掛け算
@@ -47,7 +48,7 @@ export const $getConcatenatedMatrix = (): Float32Array =>
 {
     const workSpace = $getCurrentWorkSpace();
 
-    let matrix = new Float32Array([workSpace.scale, 0, 0, workSpace.scale, 0, 0]);
+    const matrix = new Float32Array([workSpace.scale, 0, 0, workSpace.scale, 0, 0]);
     for (let idx = 0; idx < timelineSceneList.parents.length; idx++) {
 
         const parentObject = timelineSceneList.parents[idx];
@@ -60,7 +61,8 @@ export const $getConcatenatedMatrix = (): Float32Array =>
             continue;
         }
 
-        matrix = $multiplicationMatrix(matrix, character.matrix);
+        const multiMatrix = $multiplicationMatrix(matrix, character.matrix);
+        matrix.set(multiMatrix);
     }
 
     return matrix;
@@ -92,6 +94,68 @@ export const $createTransformStyle = (character: Character): string =>
     }
 
     return `transform: ${transform.join(" ")}; `;
+};
+
+/**
+ * @description ポインターでのスケール処理時のTransformStyleを生成
+ *              Generate TransformStyle for scaling with pointer
+ *
+ * @param  {Character} character
+ * @param  {WorkSpace} work_space
+ * @param  {number} [scale_x=1]
+ * @param  {number} [scale_y=1]
+ * @param  {number} [rotation=0]
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $createMoveTransformElementStyle = (
+    character: Character,
+    work_space: WorkSpace,
+    scale_x: number = 1,
+    scale_y: number = 1,
+    rotation: number = 0
+): string => {
+
+    const transform = [];
+    if (scale_x !== 1 || scale_y !== 1) {
+        transform.push(`scale(${scale_x}, ${scale_y})`);
+    }
+
+    if (rotation) {
+        transform.push(`rotate(${rotation}deg)`);
+    }
+
+    if (!transform.length) {
+        return "";
+    }
+
+    const instance = work_space.getLibrary(character.libraryId);
+    if (!instance) {
+        return "";
+    }
+
+    const bounds = instance.getRawBounds();
+    if (!bounds) {
+        return "";
+    }
+
+    // 実寸の中心座標を取得
+    const referenceX = transformSetting.w / 2;
+    const referenceY = transformSetting.h / 2;
+
+    // 中心点を原点に変形
+    const multiMatrix = $multiplicationMatrix(
+        new Float32Array([Math.abs(scale_x), 0, 0, Math.abs(scale_y), 0, 0]),
+        new Float32Array([1, 0, 0, 1, -referenceX, -referenceY])
+    );
+
+    // 変形分の座標を補正
+    multiMatrix[4] += referenceX;
+    multiMatrix[5] += referenceY;
+    transform.unshift(`translate(${-multiMatrix[4]}px, ${-multiMatrix[5]}px)`);
+
+    return `${transform.join(" ")}`;
 };
 
 /**
