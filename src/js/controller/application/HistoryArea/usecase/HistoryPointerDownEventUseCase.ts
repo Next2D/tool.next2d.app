@@ -1,4 +1,3 @@
-import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $useSocket } from "@/share/ShareUtil";
