@@ -1,5 +1,8 @@
 import { $SCREEN_STANDARD_POINT_ID } from "@/config/ScreenConfig";
-import { $getStandardPointState, $setStandardPointState } from "../StandardPointUtil";
+import {
+    $getStandardPointState,
+    $setStandardPointState
+} from "../StandardPointUtil";
 
 /**
  * @description 標準点Elementを非表示

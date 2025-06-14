@@ -50,9 +50,6 @@ export const execute = async (
     // 内部データを更新
     character.x = x;
 
-    // 中心点も移動量に合わせて移動
-    character.referencePosition.x += x - beforeX;
-
     // 履歴を登録
     await characterUpdateXHistoryUseCase(
         work_space,

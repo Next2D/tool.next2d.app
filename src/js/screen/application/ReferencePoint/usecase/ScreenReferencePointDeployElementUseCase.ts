@@ -1,16 +1,20 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { $setReferencePointState } from "../ReferencePointUtil";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
-import { execute as screenStandardPointShowElementService } from "../service/ScreenStandardPointShowElementService";
-import { execute as screenStandardPointHideElementService } from "../service/ScreenStandardPointHideElementService";
-import { $setStandardPointState } from "../StandardPointUtil";
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import {
+    $getScreenOffsetLeft,
+    $getScreenOffsetTop
+} from "@/global/GlobalUtil";
+import { execute as screenReferencePointShowService } from "../service/ScreenReferencePointShowService";
+import { execute as screenReferencePointHideService } from "../service/ScreenReferencePointHideService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { $globalToLocal } from "../../DisplayObject/DisplayObjectUtil";
 
 /**
- * @description MovieClipの標準点Elementを配置
- *              Place the standard point Element of the MovieClip
+ * @description 変形の基準点のElementを配置
+ *              Places the Element at the reference point of the deformation
  *
  * @return {void}
  * @method
@@ -23,13 +27,13 @@ export const execute = (): void =>
 
     // 選択中のDisplayObjectがなければ終了
     if (!movieClip.selectedDepths.size) {
-        screenStandardPointHideElementService();
+        screenReferencePointHideService();
         return ;
     }
 
     // 複数選択なら終了
     if (!movieClip.isSingleSelectedOfDisplayObject()) {
-        screenStandardPointHideElementService();
+        screenReferencePointHideService();
         return ;
     }
 
@@ -37,39 +41,44 @@ export const execute = (): void =>
         movieClip.selectedDepths.keys().next().value as number
     );
     if (!layer) {
-        screenStandardPointHideElementService();
+        screenReferencePointHideService();
         return ;
     }
 
     const values = movieClip.selectedDepths.values().next().value as number[];
     const character = layer.getCharacter(movieClip.currentFrame, values[0]);
     if (!character) {
-        screenStandardPointHideElementService();
+        screenReferencePointHideService();
         return ;
     }
 
     // MovieClipでなければ終了
     const instance = workSpace.getLibrary(character.libraryId) as MovieClip;
-    if (!instance || instance.type !== $MOVIE_CLIP_TYPE) {
-        screenStandardPointHideElementService();
+    if (!instance) {
+        screenReferencePointHideService();
         return ;
     }
 
     const bounds = screenAreaCalcSelectedBoundsService(movieClip);
     if (!bounds) {
-        screenStandardPointHideElementService();
+        screenReferencePointHideService();
         return;
     }
 
     // 後続で表示処理を行うので、基準点のElement状態を非表示に更新
-    $setStandardPointState("hide");
+    $setReferencePointState("hide");
 
     // 先祖からのmatrixを加算
     const matrix = $getConcatenatedMatrix();
 
+    const point = $globalToLocal(
+        character.referencePosition.x,
+        character.referencePosition.y
+    );
+
     // 基準点のElementの表示処理
-    screenStandardPointShowElementService(
-        $getScreenOffsetLeft() + character.x * workSpace.scale + matrix[4],
-        $getScreenOffsetTop() + character.y * workSpace.scale + matrix[5]
+    screenReferencePointShowService(
+        $getScreenOffsetLeft() + character.x + point.x * workSpace.scale + matrix[4],
+        $getScreenOffsetTop() + character.y + point.y * workSpace.scale + matrix[5]
     );
 };

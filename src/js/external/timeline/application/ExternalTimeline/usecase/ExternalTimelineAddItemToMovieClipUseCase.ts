@@ -104,15 +104,18 @@ export const execute = async (
         const character = new Character();
 
         // 配置位置を設定
+        // fixed logic
         character.x = dx;
         character.y = dy;
 
         // 外部アイテムを読み込む
+        // fixed logic
         character.loadExternalItem(item);
 
         // 中心点を中央に設定（初期値）
-        character.referencePosition.x = dx + (character.offsetX - dx) + character.width  / 2;
-        character.referencePosition.y = dy + (character.offsetY - dy) + character.height / 2;
+        // fixed logic
+        character.referencePosition.x = character.width  / 2;
+        character.referencePosition.y = character.height / 2;
 
         // 空のキーフレームがあれば記録に残す
         let emptyCharacterIndex = -1;

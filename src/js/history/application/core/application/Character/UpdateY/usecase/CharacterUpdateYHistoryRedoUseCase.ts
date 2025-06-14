@@ -49,10 +49,6 @@ export const execute = (
         return ;
     }
 
-    // 中心点を移動に合わせて移動
-    // fixed logic
-    character.referencePosition.y += after_y - character.y;
-
     // データを更新
     character.y = after_y;
 

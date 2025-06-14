@@ -15,10 +15,8 @@ import { $getConcatenatedMatrix } from "@/controller/application/TransformSettin
  */
 export const execute = (): void =>
 {
-    const length = timelineSceneList.parents.length;
-
     // 親のMovieClipがない場合は非表示にして終了
-    if (!length) {
+    if (!timelineSceneList.parents.length) {
         screenParentStandardPointHideElementService();
         return ;
     }
