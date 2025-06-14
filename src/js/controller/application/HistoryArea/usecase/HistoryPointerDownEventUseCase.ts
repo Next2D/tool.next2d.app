@@ -51,24 +51,40 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 指定のMovieClipを取得
-    const workSpace = $getCurrentWorkSpace();
-    const libraryId: number = parseInt(element.dataset.libraryId as string);
-    const movieClip = workSpace.getLibrary(libraryId) as MovieClip;
-    if (!movieClip) {
+    const parentElement = element.parentElement;
+    if (!parentElement) {
         return ;
     }
 
-    const index: number = parseInt(element.dataset.index as string);
+    const children = parentElement.children;
+    if (!children || !children.length) {
+        return ;
+    }
+
+    // 指定のMovieClipを取得
+    const workSpace = $getCurrentWorkSpace();
+    const index = parseInt(element.dataset.index as string);
     if (workSpace.historyIndex > index) {
         while (workSpace.historyIndex !== index) {
-            if (!await historyUndoUseCase(workSpace.id, movieClip.id)) {
+            const element = children[workSpace.historyIndex - 1] as HTMLElement;
+            if (!element) {
+                break;
+            }
+
+            const libraryId = parseInt(element.dataset.libraryId as string);
+            if (!await historyUndoUseCase(workSpace.id, libraryId)) {
                 break;
             }
         }
     } else {
         while (index >= workSpace.historyIndex) {
-            if (!await historyRedoUseCase(workSpace.id, movieClip.id)) {
+            const element = children[workSpace.historyIndex] as HTMLElement;
+            if (!element) {
+                break;
+            }
+
+            const libraryId = parseInt(element.dataset.libraryId as string);
+            if (!await historyRedoUseCase(workSpace.id, libraryId)) {
                 break;
             }
         }
