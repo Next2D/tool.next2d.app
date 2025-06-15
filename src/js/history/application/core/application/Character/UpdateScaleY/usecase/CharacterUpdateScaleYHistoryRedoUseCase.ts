@@ -53,6 +53,9 @@ export const execute = async (
     // データを更新
     character.scaleY = after_scale_y / 100;
 
+    // 変形の基準点を移動
+    character.referencePosition.y *= after_scale_y / 100;
+
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {
         if (movieClip.selectedDepths.size > 0) {

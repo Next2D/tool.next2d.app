@@ -8,6 +8,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
+    $createMoveTransformElementStyle,
     $createTransformElementStyle,
     $multiplicationMatrix
 } from "@/controller/application/TransformSetting/TransformSettingUtil";
@@ -46,13 +47,14 @@ export const execute = (scale_y: number): void =>
         return ;
     }
 
+    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+    if (!bounds) {
+        return ;
+    }
+
     const parentMatrix = $multiplicationMatrix(
         new Float32Array([1, 0, 0, scale_y, 0, 0]),
-        new Float32Array([
-            1, 0, 0, 1,
-            -referenceSetting.x,
-            -referenceSetting.y
-        ])
+        new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
     );
 
     // 選択中のElementを移動
@@ -89,14 +91,20 @@ export const execute = (scale_y: number): void =>
                 parentMatrix, character.matrix
             );
 
-            character.x = multiMatrix[4] + referenceSetting.x;
-            character.y = multiMatrix[5] + referenceSetting.y;
+            const tMatrix = $multiplicationMatrix(
+                new Float32Array([1, 0, 0, 1, referenceSetting.x, referenceSetting.y]),
+                multiMatrix
+            );
 
-            character.scaleY = Math.sqrt(
+            character.x = tMatrix[4];
+            character.y = tMatrix[5];
+
+            const scaleY = Math.sqrt(
                 multiMatrix[2] * multiMatrix[2]
                 + multiMatrix[3] * multiMatrix[3]
             );
 
+            character.scaleY = multiMatrix[3] > 0 ? scaleY : scaleY * -1;
             switch (instance.type) {
 
                 case $BITMAP_TYPE:
@@ -115,7 +123,17 @@ export const execute = (scale_y: number): void =>
                         if (!canvas) {
                             continue ;
                         }
-                        canvas.style.height = `${Math.ceil(character.height * workSpace.scale)}px`;
+
+                        const beforeValue  = transformSetting.beforeValue / 100;
+                        const currentValue = transformSetting.scaleY * scale_y;
+                        const transform = $createMoveTransformElementStyle(
+                            character, workSpace, 1, currentValue / beforeValue
+                        );
+                        if (!transform) {
+                            continue;
+                        }
+
+                        canvas.style.transform = transform;
                     }
                     break;
 
@@ -123,13 +141,16 @@ export const execute = (scale_y: number): void =>
 
             const y = $getScreenOffsetTop() + character.y * workSpace.scale;
             node.style.top = `${y}px`;
+
+            if (movieClip.isSingleSelectedOfDisplayObject()) {
+                transformSettingUpdateYElementService(character.y);
+            }
         }
     }
 
     // 変形エリアのy座標を更新
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (bounds) {
-        transformSettingUpdateYElementService(bounds.yMin);
+    if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
+        transformSettingUpdateYElementService(bounds.xMin);
     }
 
     // 変形エリアのyスケールを更新

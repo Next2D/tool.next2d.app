@@ -1,7 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $setReferencePointState } from "../ReferencePointUtil";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $getScreenOffsetLeft,

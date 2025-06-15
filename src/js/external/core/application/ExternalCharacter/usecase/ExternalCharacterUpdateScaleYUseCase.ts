@@ -47,6 +47,10 @@ export const execute = async (
     // 内部データを更新
     character.scaleY = scale_y;
 
+    // 変形の基準点を移動
+    character.referencePosition.y /= beforeScaleY;
+    character.referencePosition.y *= scale_y;
+
     // 履歴を登録
     await characterUpdateScaleYHistoryUseCase(
         work_space,

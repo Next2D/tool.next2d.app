@@ -96,8 +96,8 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        referenceSetting.x = character.referencePosition.x;
-        referenceSetting.y = character.referencePosition.y;
+        referenceSetting.x = bounds.xMin + character.referencePosition.x;
+        referenceSetting.y = bounds.yMin + character.referencePosition.y;
 
         transformSetting.beforeValue = character.scaleX * 100;
         transformSetting.scaleX = character.scaleX;

@@ -47,13 +47,14 @@ export const execute = (scale_x: number): void =>
         return ;
     }
 
+    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+    if (!bounds) {
+        return ;
+    }
+
     const parentMatrix = $multiplicationMatrix(
         new Float32Array([scale_x, 0, 0, 1, 0, 0]),
-        new Float32Array([
-            1, 0, 0, 1,
-            -referenceSetting.x,
-            -referenceSetting.y
-        ])
+        new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
     );
 
     // 選択中のElementを移動
@@ -147,11 +148,8 @@ export const execute = (scale_x: number): void =>
     }
 
     // 変形エリアのx座標を更新
-    if (!movieClip.isSingleSelectedOfDisplayObject()) {
-        const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-        if (bounds) {
-            transformSettingUpdateXElementService(bounds.xMin);
-        }
+    if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
+        transformSettingUpdateXElementService(bounds.xMin);
     }
 
     // 変形エリアのxスケールを更新

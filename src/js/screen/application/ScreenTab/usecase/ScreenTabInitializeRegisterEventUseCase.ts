@@ -3,7 +3,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenTabRemoveWorkSpaceService } from "../service/ScreenTabRemoveWorkSpaceService";
 import { execute as screenTabGetListElementService } from "../service/ScreenTabGetListElementService";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
-import { execute as screenTabMouseDownEventUseCase } from "./ScreenTabMouseDownEventUseCase";
+import { execute as screenTabPointerDownEventUseCase } from "./ScreenTabPointerDownEventUseCase";
 import { execute as screenTabGetTextElementService } from "../service/ScreenTabGetTextElementService";
 import { execute as screenTabChangeWorkSpaceServce } from "../service/ScreenTabChangeWorkSpaceServce";
 import { execute as screenTabKeyPressEventService } from "../service/ScreenTabKeyPressEventService";
@@ -70,7 +70,7 @@ export const execute = (
     if (tabElement) {
 
         // クリック＆ダブルクリック イベント
-        tabElement.addEventListener(EventType.POINTER_DOWN, screenTabMouseDownEventUseCase);
+        tabElement.addEventListener(EventType.POINTER_DOWN, screenTabPointerDownEventUseCase);
 
         // drop & drag イベント
         tabElement.addEventListener("dragstart", screenTabDragStartService);

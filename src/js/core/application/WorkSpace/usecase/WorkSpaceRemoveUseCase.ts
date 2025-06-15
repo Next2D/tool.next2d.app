@@ -4,6 +4,7 @@ import { execute as progressMenuUpdateMessageService } from "@/menu/application/
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 import { $removeWorkSpace } from "@/core/application/CoreUtil";
 import { $replace } from "@/language/application/LanguageUtil";
+import { $removeLibraryCache, $removeWorkSpaceCache } from "@/cache/CacheUtil";
 
 /**
  * @description ワークスペースの削除処理のユースケース
@@ -25,6 +26,9 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
         // 進行状況のテキストを更新
         progressMenuUpdateMessageService($replace("{{プロジェクトを閉じる}}"));
     }
+
+    // キャッシュを削除
+    $removeWorkSpaceCache(work_space.id);
 
     // タブを削除
     work_space.screenTab.remove();
