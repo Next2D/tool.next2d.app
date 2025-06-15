@@ -71,11 +71,11 @@ export const execute = (event: PointerEvent): void =>
 
     // 変形エリアの幅を設定
     transformSetting.w = width;
-    transformSetting.beforeValue = width;
+    transformSetting.beforeWidth = width;
 
     if (transformSetting.sizeLocked) {
         transformSetting.h = height;
-        transformSetting.lockValue = height;
+        transformSetting.beforeHeight = height;
     }
 
     // 変更前のmatrixを格納
@@ -103,7 +103,6 @@ export const execute = (event: PointerEvent): void =>
 
         referenceSetting.x = bounds.xMin + character.referencePosition.x;
         referenceSetting.y = bounds.yMin + character.referencePosition.y;
-
         transformSetting.scaleX = character.scaleX;
         transformSetting.scaleY = character.scaleY;
     } else {

@@ -45,7 +45,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 変形に合わせて表示を更新
     const height = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
-    transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.beforeValue);
+    transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.beforeHeight);
 
     if (transformSetting.sizeLocked) {
         const widthElement = document
@@ -59,7 +59,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         widthElement.value = `${width}`;
 
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.lockValue);
+        transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.beforeWidth);
     }
 
     // 変更後のmatrixで表示を更新

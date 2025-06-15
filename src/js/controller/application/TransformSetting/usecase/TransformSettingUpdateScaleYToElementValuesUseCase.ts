@@ -124,7 +124,7 @@ export const execute = (scale_y: number): void =>
                             continue ;
                         }
 
-                        const beforeValue  = transformSetting.beforeValue / 100;
+                        const beforeValue  = transformSetting.beforeScaleY;
                         const currentValue = transformSetting.scaleY * scale_y;
                         const transform = $createMoveTransformElementStyle(
                             character, workSpace, 1, currentValue / beforeValue

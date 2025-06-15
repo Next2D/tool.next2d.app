@@ -117,8 +117,6 @@ export const execute = async (): Promise<void> =>
             // 変更元のcanvasを元のサイズに戻す
             if (canvas) {
                 canvas.style.transform = "";
-                // canvas.style.width  = `${Math.ceil(canvas.width  / window.devicePixelRatio)}px`;
-                // canvas.style.height = `${Math.ceil(canvas.height / window.devicePixelRatio)}px`;
             }
         }
     }

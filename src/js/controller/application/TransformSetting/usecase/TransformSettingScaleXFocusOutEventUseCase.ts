@@ -36,7 +36,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     element.value = `${scaleX}`;
 
     // 変形に合わせて表示を更新
-    transformSettingUpdateScaleXToElementValuesUseCase(scaleX / transformSetting.beforeValue);
+    transformSettingUpdateScaleXToElementValuesUseCase(scaleX / transformSetting.beforeScaleX);
 
     if (transformSetting.scaleLocked) {
 
@@ -46,7 +46,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
             return ;
         }
 
-        const value  = parseFloat(parseFloat(scaleYElement.value).toFixed(2)) + (scaleX - transformSetting.beforeValue);
+        const value  = parseFloat(parseFloat(scaleYElement.value).toFixed(2)) + (scaleX - transformSetting.beforeScaleX);
         let scaleY = $clamp(value, -Number.MAX_VALUE, Number.MAX_VALUE);
         if (!scaleY) {
             scaleY = 0.01;
@@ -55,7 +55,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         scaleYElement.value = `${scaleY}`;
 
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleYToElementValuesUseCase(scaleY / transformSetting.lockValue);
+        transformSettingUpdateScaleYToElementValuesUseCase(scaleY / (transformSetting.beforeScaleY * 100));
     }
 
     // 変更後のmatrixで表示を更新

@@ -71,11 +71,11 @@ export const execute = (event: PointerEvent): void =>
 
     // 変形エリアの高さを設定
     transformSetting.h = height;
-    transformSetting.beforeValue = height;
+    transformSetting.beforeHeight = height;
 
     if (transformSetting.sizeLocked) {
         transformSetting.w = width;
-        transformSetting.lockValue = width;
+        transformSetting.beforeWidth = width;
     }
 
     // 変更前のmatrixを格納
@@ -104,13 +104,13 @@ export const execute = (event: PointerEvent): void =>
         referenceSetting.x = bounds.xMin + character.referencePosition.x;
         referenceSetting.y = bounds.yMin + character.referencePosition.y;
 
-        transformSetting.scaleX = character.scaleX;
-        transformSetting.scaleY = character.scaleY;
+        transformSetting.beforeScaleX = transformSetting.scaleX = character.scaleX;
+        transformSetting.beforeScaleY = transformSetting.scaleY = character.scaleY;
     } else {
         referenceSetting.x = bounds.xMin + width / 2;
         referenceSetting.y = bounds.yMin + height / 2;
-        transformSetting.scaleX = 1;
-        transformSetting.scaleY = 1;
+        transformSetting.beforeScaleX = transformSetting.scaleX = 1;
+        transformSetting.beforeScaleY = transformSetting.scaleY = 1;
     }
 
     element.setPointerCapture(event.pointerId);

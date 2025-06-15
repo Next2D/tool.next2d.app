@@ -32,7 +32,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     element.value = `${width}`;
 
     // 変形に合わせて表示を更新
-    transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.beforeValue);
+    transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.beforeWidth);
 
     if (transformSetting.sizeLocked) {
 
@@ -42,12 +42,12 @@ export const execute = async (event: FocusEvent): Promise<void> =>
             return ;
         }
 
-        const value  = parseFloat(parseFloat(heightElement.value).toFixed(2)) + (width - transformSetting.beforeValue);
+        const value  = parseFloat(parseFloat(heightElement.value).toFixed(2)) + (width - transformSetting.beforeWidth);
         const height = $clamp(value, 1, Number.MAX_VALUE);
         heightElement.value = `${height}`;
 
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.lockValue);
+        transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.beforeHeight);
     }
 
     // 変更後のmatrixで表示を更新
