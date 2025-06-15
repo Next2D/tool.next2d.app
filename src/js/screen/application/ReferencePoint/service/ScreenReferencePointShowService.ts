@@ -1,5 +1,8 @@
 import { $SCREEN_REFERENCE_POINT_ID } from "@/config/ScreenConfig";
-import { $getReferencePointState, $setReferencePointState } from "../ReferencePointUtil";
+import {
+    $getReferencePointState,
+    $setReferencePointState
+} from "../ReferencePointUtil";
 
 /**
  * @description 標準点Elementを表示

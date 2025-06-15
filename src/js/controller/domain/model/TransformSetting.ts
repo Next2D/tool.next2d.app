@@ -110,6 +110,42 @@ class TransformSetting
     public lockValue: number;
 
     /**
+     * @description 変形エリアの変更前の幅を返却
+     *              Return the width before changing the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    public beforeWidth: number;
+
+    /**
+     * @description 変形エリアの変更前の高さを返却
+     *              Return the height before changing the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    public beforeHeight: number;
+
+    /**
+     * @description 変形エリアの変更前のスケールxを返却
+     *              Return the scale x before changing the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    public beforeScaleX: number;
+
+    /**
+     * @description 変形エリアの変更前のスケールyを返却
+     *              Return the scale y before changing the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    public beforeScaleY: number;
+
+    /**
      * @description 移動する前のxy座標を返却
      *              Return the xy coordinates before moving
      *
@@ -142,6 +178,12 @@ class TransformSetting
         this.scaleLocked = false;
         this.beforeValue = 0;
         this.lockValue   = 0;
+
+        this.beforeWidth    = 0;
+        this.beforeHeight   = 0;
+        this.beforeScaleX   = 0;
+        this.beforeScaleY   = 0;
+        this.beforeRotation = 0;
 
         this.matrixs = [];
         this.tempPosition = {

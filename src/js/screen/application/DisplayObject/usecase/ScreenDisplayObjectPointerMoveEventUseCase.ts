@@ -2,6 +2,7 @@ import { execute as transformSettingUpdateXElementService } from "@/controller/a
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as screenDisplayObjectSelectedMoveElementUseCase } from "./ScreenDisplayObjectSelectedMoveElementUseCase";
 import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
+import { execute as screenReferencePointMoveElementService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
@@ -55,6 +56,9 @@ export const execute = (event: PointerEvent): void =>
 
         // 選択範囲のElementを移動
         targetRectMoveElementService(movementX, movementY);
+
+        // 変形の基準点を移動
+        screenReferencePointMoveElementService(movementX, movementY);
 
         // プロパティーの値を更新
         transformSettingUpdateXElementService(
