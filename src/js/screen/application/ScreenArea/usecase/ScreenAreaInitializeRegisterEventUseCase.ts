@@ -1,9 +1,9 @@
 import { $SCREEN_ID } from "@/config/ScreenConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as screenAreaMouseDownEventUseCase } from "./ScreenAreaMouseDownEventUseCase";
-import { execute as screenAreaMouseOverEventService } from "../service/ScreenAreaMouseOverEventService";
-import { execute as screenAreaMouseOutEventService } from "../service/ScreenAreaMouseOutEventService";
-import { execute as screenAreaMouseMoveEventService } from "../service/ScreenAreaMouseMoveEventService";
+import { execute as screenAreaPointerDownEventUseCase } from "./ScreenAreaPointerDownEventUseCase";
+import { execute as screenAreaPointerOverEventService } from "../service/ScreenAreaPointerOverEventService";
+import { execute as screenAreaPointerOutEventService } from "../service/ScreenAreaPointerOutEventService";
+import { execute as screenAreaPointerMoveEventService } from "../service/ScreenAreaPointerMoveEventService";
 import { execute as screenAreaWheelEventUseCase } from "./ScreenAreaWheelEventUseCase";
 
 /**
@@ -42,23 +42,24 @@ export const execute = (): void =>
 
     // マウスイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        screenAreaMouseDownEventUseCase
+        screenAreaPointerDownEventUseCase,
+        { "passive": false }
     );
 
     // マウスオーバーイベントを登録
     element.addEventListener(EventType.POINTER_OVER,
-        screenAreaMouseOverEventService
+        screenAreaPointerOverEventService
     );
 
     // マウスアウトイベントを登録
     element.addEventListener(EventType.POINTER_OUT,
-        screenAreaMouseOutEventService
+        screenAreaPointerOutEventService
     );
 
     // マウスムーブイベントを登録
     element.addEventListener(
         EventType.POINTER_MOVE,
-        screenAreaMouseMoveEventService,
+        screenAreaPointerMoveEventService,
         { "passive": false }
     );
 };

@@ -32,7 +32,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     const workSpace = $getCurrentWorkSpace();
 
     // 移動した座標に更新
-    transformSetting.x = (value - transformSetting.beforeValue) * workSpace.scale;
+    transformSetting.x = (value - transformSetting.beforeX) * workSpace.scale;
 
     // 選択中のDisplayObjectを指定した値で更新
     await screenDisplayObjectUpdateSelectedValueService();

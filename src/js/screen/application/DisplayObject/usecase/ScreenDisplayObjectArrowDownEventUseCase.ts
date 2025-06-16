@@ -3,6 +3,7 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "../service/ScreenDisplayObjectUpdateSelectedValueService";
 import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
+import { execute as screenReferencePointMoveElementService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService";
 
 /**
  * @description DisplayObjectのキーボードイベント、下方向に移動
@@ -41,6 +42,9 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
 
     // プロパティーエリアの値を更新
     transformSettingUpdateYElementService(position.y + y);
+
+    // 基準点のElementを移動
+    screenReferencePointMoveElementService(0, y);
 
     // 内部情報を更新
     await screenDisplayObjectUpdateSelectedValueService();

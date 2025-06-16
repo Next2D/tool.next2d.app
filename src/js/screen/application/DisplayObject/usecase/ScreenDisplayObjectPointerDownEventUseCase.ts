@@ -124,8 +124,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     transformSetting.rotation = 0;
 
     // 移動前の座標を保存
-    transformSetting.tempPosition.x = position.x;
-    transformSetting.tempPosition.y = position.y;
+    transformSetting.beforeX = position.x;
+    transformSetting.beforeY = position.y;
 
     $setPointerId(event.pointerId);
 

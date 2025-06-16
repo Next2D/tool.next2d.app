@@ -3,6 +3,7 @@ import { execute as transformSettingInputPointerOverEventService } from "../serv
 import { execute as transformSettingInputPointerOutEventService } from "../service/TransformSettingInputPointerOutEventService";
 import { execute as transformSettingSizeInputFocusInEventUseCase } from "./TransformSettingSizeInputFocusInEventUseCase";
 import { execute as transformSettingPositionInputFocusInEventUseCase } from "./TransformSettingPositionInputFocusInEventUseCase";
+import { execute as transformSettingXFocusInEventUseCase } from "./TransformSettingXFocusInEventUseCase";
 import { execute as transformSettingScaleInputFocusInEventUseCase } from "./TransformSettingScaleInputFocusInEventUseCase";
 import { execute as transformSettingWidthFocusOutEventUseCase } from "./TransformSettingWidthFocusOutEventUseCase";
 import { execute as transformSettingHeightFocusOutEventUseCase } from "./TransformSettingHeightFocusOutEventUseCase";
@@ -64,7 +65,7 @@ export const execute = (): void =>
             { "passive": false }
         );
         xElement.addEventListener("focusin",
-            transformSettingPositionInputFocusInEventUseCase
+            transformSettingXFocusInEventUseCase
         );
         xElement.addEventListener("focusout",
             transformSettingXFocusOutEventUseCase

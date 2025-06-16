@@ -1,4 +1,3 @@
-import type { IPosition } from "@/interface/IPosition";
 import { execute as transformSettingInitializeRegisterEventUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingInitializeRegisterEventUseCase";
 
 /**
@@ -146,13 +145,31 @@ class TransformSetting
     public beforeScaleY: number;
 
     /**
-     * @description 移動する前のxy座標を返却
-     *              Return the xy coordinates before moving
+     * @description 変形エリアの変更前のx座標を返却
+     *              Return the x coordinate before changing the transformation area
      *
-     * @member {object}
+     * @member {number}
      * @public
      */
-    public readonly tempPosition: IPosition;
+    public beforeX: number;
+
+    /**
+     * @description 変形エリアの変更前のy座標を返却
+     *              Return the y coordinate before changing the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    public beforeY: number;
+
+    /**
+     * @description 変形エリアの変更前の回転を返却
+     *              Return the rotation before changing the transformation area
+     *
+     * @member {number}
+     * @public
+     */
+    public beforeRotation: number;
 
     /**
      * @description 変形行列を行う前のmatrix配列
@@ -183,14 +200,11 @@ class TransformSetting
         this.beforeHeight   = 0;
         this.beforeScaleX   = 0;
         this.beforeScaleY   = 0;
+        this.beforeX        = 0;
+        this.beforeY        = 0;
         this.beforeRotation = 0;
 
-        this.matrixs = [];
-        this.tempPosition = {
-            "x": 0,
-            "y": 0
-        };
-
+        this.matrixs  = [];
         this.scaleX   = 0;
         this.scaleY   = 0;
         this.rotation = 0;

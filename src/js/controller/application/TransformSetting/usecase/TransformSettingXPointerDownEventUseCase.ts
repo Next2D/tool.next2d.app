@@ -50,7 +50,7 @@ export const execute = (event: PointerEvent): void =>
     // マウスで移動した量を更新
     transformSetting.x = 0;
     transformSetting.y = 0;
-    transformSetting.tempPosition.x = parseFloat(element.value);
+    transformSetting.beforeX = parseFloat(element.value);
 
     // 移動のイベントを登録
     element.setPointerCapture(event.pointerId);

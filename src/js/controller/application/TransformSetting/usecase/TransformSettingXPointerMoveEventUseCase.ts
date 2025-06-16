@@ -44,7 +44,7 @@ export const execute = (event: PointerEvent): void =>
         element.value = `${x}`;
 
         // マウスで移動した量を更新
-        transformSetting.x += movementX;
+        transformSetting.x += x - value;
 
         // スクリーンで選択中のElementを移動
         await screenDisplayObjectSelectedMoveElementUseCase(

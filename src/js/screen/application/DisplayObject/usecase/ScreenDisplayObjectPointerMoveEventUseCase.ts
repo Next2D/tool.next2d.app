@@ -62,10 +62,10 @@ export const execute = (event: PointerEvent): void =>
 
         // プロパティーの値を更新
         transformSettingUpdateXElementService(
-            transformSetting.tempPosition.x + transformSetting.x
+            transformSetting.beforeX + transformSetting.x
         );
         transformSettingUpdateYElementService(
-            transformSetting.tempPosition.y + transformSetting.y
+            transformSetting.beforeY + transformSetting.y
         );
     });
 };

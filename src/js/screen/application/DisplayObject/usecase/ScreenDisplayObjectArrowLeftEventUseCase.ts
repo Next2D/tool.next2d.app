@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "../service/ScreenDisplayObjectUpdateSelectedValueService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as screenReferencePointMoveElementService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService";
 import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
 
 /**
@@ -41,6 +42,9 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
 
     // プロパティーエリアの値を更新
     transformSettingUpdateXElementService(position.x - x);
+
+    // 基準点のElementを移動
+    screenReferencePointMoveElementService(-x);
 
     // 内部情報を更新
     await screenDisplayObjectUpdateSelectedValueService();
