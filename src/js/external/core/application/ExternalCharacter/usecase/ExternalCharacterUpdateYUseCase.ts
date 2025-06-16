@@ -15,6 +15,7 @@ import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/scr
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { $removeLibraryCache } from "@/cache/CacheUtil";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 
 /**
  * @description DisplayObjectのx座標を更新
@@ -68,6 +69,9 @@ export const execute = async (
 
         // MovieClipの基準点のElementを再配置
         screenStandardPointDeployElementUseCase();
+
+        // 変形の基準点のElementを再配置
+        screenReferencePointDeployElementUseCase();
 
         if (movie_clip.selectedDepths.size > 0) {
 

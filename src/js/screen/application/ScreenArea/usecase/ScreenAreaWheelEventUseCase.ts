@@ -1,10 +1,18 @@
-import { $SCREEN_ID, $SCREEN_SCROLL_BAR_X_ID, $SCREEN_SCROLL_BAR_Y_ID } from "@/config/ScreenConfig";
 import { $SCREEN_SCALE_ID } from "@/config/ToolConfig";
-import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $clamp } from "@/global/GlobalUtil";
 import { screenArea } from "@/screen/domain/model/ScreenArea";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "@/tool/application/ZoomTool/usecase/ZoomToolRealodWorkSpaceUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import {
+    $ZOOM_MAX_VALUE,
+    $ZOOM_MIN_VALUE
+} from "@/config/ZoomConfig";
+import {
+    $SCREEN_ID,
+    $SCREEN_SCROLL_BAR_X_ID,
+    $SCREEN_SCROLL_BAR_Y_ID
+} from "@/config/ScreenConfig";
 
 /**
  * @description タイマーID
@@ -13,7 +21,16 @@ import { execute as zoomToolRealodWorkSpaceUseCase } from "@/tool/application/Zo
  * @type {NodeJS.Timeout}
  * @private
  */
-let timerId: NodeJS.Timeout;
+let $timerId: NodeJS.Timeout;
+
+/**
+ * @description ズームタイマーID
+ *              Zoom timer ID
+ *
+ * @type {NodeJS.Timeout}
+ * @private
+ */
+let $zoomTimerId: NodeJS.Timeout;
 
 /**
  * @description 移動モード、x: 横方向、y: 縦方向
@@ -22,7 +39,7 @@ let timerId: NodeJS.Timeout;
  * @type {string}
  * @private
  */
-let mode: string = "";
+let $mode: string = "";
 
 /**
  * @description スクリーンエリアのホイールイベント
@@ -47,7 +64,7 @@ export const execute = async (event: WheelEvent): Promise<void> =>
             }
 
             // タイマーをクリア
-            clearTimeout(timerId);
+            clearTimeout($timerId);
 
             if (event.ctrlKey && !event.metaKey // windows
                 || !event.ctrlKey && event.metaKey // mac
@@ -71,18 +88,24 @@ export const execute = async (event: WheelEvent): Promise<void> =>
                     return resolve();
                 }
 
-                await zoomToolRealodWorkSpaceUseCase(scale / 100);
+                await zoomToolRealodWorkSpaceUseCase(scale / 100, false);
+
+                clearTimeout($zoomTimerId);
+                $zoomTimerId = setTimeout(async (): Promise<void> =>
+                {
+                    await screenAreaRedrawUseCase(workSpace.scene);
+                }, 100);
 
                 return resolve();
             }
 
             // 移動モードを設定
-            if (!mode) {
-                mode = event.deltaX ? "x" : "y";
+            if (!$mode) {
+                $mode = event.deltaX ? "x" : "y";
             }
 
             // 移動モードに合わせて移動
-            switch (mode) {
+            switch ($mode) {
 
                 case "x":
                     {
@@ -109,9 +132,9 @@ export const execute = async (event: WheelEvent): Promise<void> =>
 
             }
 
-            timerId = setTimeout((): void =>
+            $timerId = setTimeout((): void =>
             {
-                mode = "";
+                $mode = "";
             }, 60);
 
             resolve();

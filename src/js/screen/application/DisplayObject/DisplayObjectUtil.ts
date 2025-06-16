@@ -56,3 +56,24 @@ export const $globalToLocal = (x: number = 0, y: number = 0): IPosition =>
         "y": x * matrix.b + y * matrix.d
     };
 };
+
+/**
+ * @description ローカル座標をグローバル座標に変換
+ *              Convert local coordinates to global coordinates
+ *
+ * @param {number} [x=0]
+ * @param {number} [y=0]
+ * @return {IPosition}
+ * @method
+ * @public
+ */
+export const $localToGlobal = (x: number = 0, y: number = 0): IPosition =>
+{
+    const concatenatedMatrix = $getConcatenatedMatrix();
+    const matrix = new Matrix(concatenatedMatrix[0], concatenatedMatrix[1], concatenatedMatrix[2], concatenatedMatrix[3], 0, 0);
+
+    return {
+        "x": x * matrix.a + y * matrix.c,
+        "y": x * matrix.b + y * matrix.d
+    };
+};

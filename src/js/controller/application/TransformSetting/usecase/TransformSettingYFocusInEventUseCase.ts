@@ -5,8 +5,8 @@ import { execute as transformSettingCacheBeforeMatrixService } from "../service/
 import { $setEditingElement } from "@/global/GlobalUtil";
 
 /**
- * @description 変形エリアのxy座標のフォーカスイベント処理
- *              Focus event processing of the transformation area xy coordinates
+ * @description 変形エリアのy座標のフォーカスイベント処理
+ *              Focus event processing of the transformation area y coordinates
  *
  * @param  {FocusEvent} event
  * @return {void}
@@ -37,8 +37,12 @@ export const execute = (event: FocusEvent): void =>
         return ;
     }
 
+    // 移動情報を初期化
+    transformSetting.x = 0;
+    transformSetting.y = 0;
+
     // 変更前の値を保持
-    transformSetting.beforeValue = parseFloat(element.value);
+    transformSetting.beforeY = parseFloat(element.value);
 
     // 変更前のmatrixを格納
     transformSettingCacheBeforeMatrixService();

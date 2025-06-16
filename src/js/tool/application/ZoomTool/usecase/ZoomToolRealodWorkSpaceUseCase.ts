@@ -3,23 +3,25 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
 import { execute as stageStyleUpdateSizeService } from "@/core/application/Stage/service/StageStyleUpdateSizeService";
 import { execute as screenStageAreaUpdateSizeService } from "@/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService";
 import { execute as screenStageOffsetUpdateService } from "@/screen/application/ScreenStage/service/ScreenStageOffsetUpdateService";
-import { $SCREEN_ID } from "@/config/ScreenConfig";
-import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenScrollResizeService } from "@/screen/application/ScreenScroll/service/ScreenScrollResizeService";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenParentStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { $SCREEN_ID } from "@/config/ScreenConfig";
+import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 
 /**
  * @description ワークスペースをスケール値に合わせて再描画
  *              Redraw the workspace according to the scale value
  *
  * @param  {number} scale
+ * @param  {boolean} [redraw=true]
  * @return {Promise}
  * @method
  * @public
  */
-export const execute = async (scale: number): Promise<void> =>
+export const execute = async (scale: number, redraw: boolean = true): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
     if (workSpace.scale === scale) {
@@ -64,6 +66,9 @@ export const execute = async (scale: number): Promise<void> =>
     // 親のMovieClipの標準点Elementを配置
     screenParentStandardPointDeployElementUseCase();
 
+    // 変形の基準点のElementを配置
+    screenReferencePointDeployElementUseCase();
+
     // スクリーンのスクロール位置を更新
     screenElement.scrollLeft = $getScreenOffsetLeft() + dx - centerX;
     screenElement.scrollTop  = $getScreenOffsetTop()  + dy - centerY;
@@ -72,5 +77,7 @@ export const execute = async (scale: number): Promise<void> =>
     screenScrollResizeService();
 
     // スクリーンを再描画
-    await screenAreaRedrawUseCase(workSpace.scene);
+    if (redraw) {
+        await screenAreaRedrawUseCase(workSpace.scene);
+    }
 };

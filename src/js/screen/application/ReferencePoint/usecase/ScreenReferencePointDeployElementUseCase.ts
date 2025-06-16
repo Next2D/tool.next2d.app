@@ -9,7 +9,7 @@ import {
 import { execute as screenReferencePointShowService } from "../service/ScreenReferencePointShowService";
 import { execute as screenReferencePointHideService } from "../service/ScreenReferencePointHideService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
-import { $globalToLocal } from "../../DisplayObject/DisplayObjectUtil";
+import { $localToGlobal } from "../../DisplayObject/DisplayObjectUtil";
 
 /**
  * @description 変形の基準点のElementを配置
@@ -70,14 +70,14 @@ export const execute = (): void =>
     // 先祖からのmatrixを加算
     const matrix = $getConcatenatedMatrix();
 
-    const point = $globalToLocal(
+    const point = $localToGlobal(
         character.referencePosition.x,
         character.referencePosition.y
     );
 
     // 基準点のElementの表示処理
     screenReferencePointShowService(
-        $getScreenOffsetLeft() + character.x + point.x * workSpace.scale + matrix[4],
-        $getScreenOffsetTop() + character.y + point.y * workSpace.scale + matrix[5]
+        $getScreenOffsetLeft() + character.x * workSpace.scale + point.x + matrix[4],
+        $getScreenOffsetTop() + character.y * workSpace.scale + point.y + matrix[5]
     );
 };

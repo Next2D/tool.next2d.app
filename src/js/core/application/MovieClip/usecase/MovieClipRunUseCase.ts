@@ -15,6 +15,7 @@ import { execute as targetRectUpdateElementUseCase } from "@/screen/application/
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenParentStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -59,13 +60,6 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     // MovieClipのLayerからタイムラインを生成
     timelineLayerBuildElementUseCase();
 
-    if (movie_clip.selectedDepths.size) {
-        await propertyAreaChangeDisplayUseCase();
-    } else {
-        // プロパティーエリアを初期表示に切り替える
-        await propertyAreaShowDefaultSettingItemUseCase(movie_clip);
-    }
-
     // スクリーンの基準点のElementの表示を更新
     screenStandardPointDeployElementUseCase();
 
@@ -74,6 +68,16 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
     // 選択中のDisplayObjectがあれば選択範囲を表示
     targetRectUpdateElementUseCase();
+
+    // 変形の基準点の表示を更新
+    screenReferencePointDeployElementUseCase();
+
+    if (movie_clip.selectedDepths.size) {
+        await propertyAreaChangeDisplayUseCase();
+    } else {
+        // プロパティーエリアを初期表示に切り替える
+        await propertyAreaShowDefaultSettingItemUseCase(movie_clip);
+    }
 
     // スクリーンエリアを再描画
     await screenAreaRedrawUseCase(movie_clip);

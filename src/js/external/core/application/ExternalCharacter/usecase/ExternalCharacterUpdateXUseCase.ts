@@ -6,6 +6,7 @@ import { execute as screenAreaMoveDisplayObjectElementUseCase } from "@/screen/a
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as characterUpdateXHistoryUseCase } from "@/history/application/core/application/Character/UpdateX/usecase/CharacterUpdateXHistoryUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
@@ -68,6 +69,9 @@ export const execute = async (
 
         // MovieClipの基準点のElementを再配置
         screenStandardPointDeployElementUseCase();
+
+        // 変形の基準点のElementを再配置
+        screenReferencePointDeployElementUseCase();
 
         if (movie_clip.selectedDepths.size > 0) {
 

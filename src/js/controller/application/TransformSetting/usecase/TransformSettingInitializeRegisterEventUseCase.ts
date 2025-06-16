@@ -2,8 +2,8 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingInputPointerOverEventService } from "../service/TransformSettingInputPointerOverEventService";
 import { execute as transformSettingInputPointerOutEventService } from "../service/TransformSettingInputPointerOutEventService";
 import { execute as transformSettingSizeInputFocusInEventUseCase } from "./TransformSettingSizeInputFocusInEventUseCase";
-import { execute as transformSettingPositionInputFocusInEventUseCase } from "./TransformSettingPositionInputFocusInEventUseCase";
 import { execute as transformSettingXFocusInEventUseCase } from "./TransformSettingXFocusInEventUseCase";
+import { execute as transformSettingYFocusInEventUseCase } from "./TransformSettingYFocusInEventUseCase";
 import { execute as transformSettingScaleInputFocusInEventUseCase } from "./TransformSettingScaleInputFocusInEventUseCase";
 import { execute as transformSettingWidthFocusOutEventUseCase } from "./TransformSettingWidthFocusOutEventUseCase";
 import { execute as transformSettingHeightFocusOutEventUseCase } from "./TransformSettingHeightFocusOutEventUseCase";
@@ -90,7 +90,7 @@ export const execute = (): void =>
             { "passive": false }
         );
         yElement.addEventListener("focusin",
-            transformSettingPositionInputFocusInEventUseCase
+            transformSettingYFocusInEventUseCase
         );
         yElement.addEventListener("focusout",
             transformSettingYFocusOutEventUseCase
@@ -210,9 +210,9 @@ export const execute = (): void =>
         rotateElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputPointerOutEventService
         );
-        rotateElement.addEventListener("focusin",
-            transformSettingPositionInputFocusInEventUseCase
-        );
+        // rotateElement.addEventListener("focusin",
+        //     transformSettingPositionInputFocusInEventUseCase
+        // );
         rotateElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService
         );
