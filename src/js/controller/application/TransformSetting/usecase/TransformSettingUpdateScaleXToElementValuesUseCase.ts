@@ -128,6 +128,7 @@ export const execute = (scale_x: number): void =>
                         const currentValue = transformSetting.scaleX * scale_x;
                         const transform = $createMoveTransformElementStyle(
                             character, workSpace,
+                            canvas.clientWidth, canvas.clientHeight,
                             currentValue / beforeValue,
                             transformSetting.scaleY / transformSetting.beforeScaleY
                         );

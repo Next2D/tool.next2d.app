@@ -91,24 +91,6 @@ class TransformSetting
     public scaleLocked: boolean;
 
     /**
-     * @description 変形エリアの変更前のinput値を返却
-     *              Get the lock state of the transformation scale
-     *
-     * @member {number}
-     * @public
-     */
-    public beforeValue: number;
-
-    /**
-     * @description ロック時の対象となる値
-     *              The value to be locked when locked
-     *
-     * @member {number}
-     * @public
-     */
-    public lockValue: number;
-
-    /**
      * @description 変形エリアの変更前の幅を返却
      *              Return the width before changing the transformation area
      *
@@ -193,8 +175,6 @@ class TransformSetting
 
         this.sizeLocked  = false;
         this.scaleLocked = false;
-        this.beforeValue = 0;
-        this.lockValue   = 0;
 
         this.beforeWidth    = 0;
         this.beforeHeight   = 0;
@@ -221,6 +201,30 @@ class TransformSetting
     initialize (): void
     {
         transformSettingInitializeRegisterEventUseCase();
+    }
+
+    clear (): void
+    {
+        this.x = 0;
+        this.y = 0;
+        this.w = 0;
+        this.h = 0;
+
+        this.sizeLocked  = false;
+        this.scaleLocked = false;
+
+        this.beforeWidth    = 0;
+        this.beforeHeight   = 0;
+        this.beforeScaleX   = 0;
+        this.beforeScaleY   = 0;
+        this.beforeX        = 0;
+        this.beforeY        = 0;
+        this.beforeRotation = 0;
+
+        this.matrixs.length = 0;
+        this.scaleX         = 0;
+        this.scaleY         = 0;
+        this.rotation       = 0;
     }
 }
 

@@ -3,14 +3,11 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
-import {
-    $TRANSFORM_OBJECT_SCALE_X_ID,
-    $TRANSFORM_OBJECT_SCALE_Y_ID
-} from "@/config/TransformSettingConfig";
+import { $TRANSFORM_OBJECT_SCALE_X_ID } from "@/config/TransformSettingConfig";
 
 /**
- * @description 変形エリアのxyスケールのフォーカスイベント処理
- *              Focus event processing of the transformation area xy scale
+ * @description 変形エリアのyスケールのフォーカスイベント処理
+ *              Focus event processing of the transformation area y scale
  *
  * @param  {FocusEvent} event
  * @return {void}
@@ -42,18 +39,15 @@ export const execute = (event: FocusEvent): void =>
     }
 
     // 変更前の値を保持
-    transformSetting.beforeValue = parseFloat(element.value);
+    transformSetting.beforeScaleY = parseFloat(element.value);
 
+    // ロック時はyスケールの値も保持
     if (transformSetting.scaleLocked) {
-        // ロック時は高さの時は幅を幅の時は高さを保持
-        const lockElement = document
-            .getElementById(element.id === $TRANSFORM_OBJECT_SCALE_X_ID
-                ? $TRANSFORM_OBJECT_SCALE_Y_ID
-                : $TRANSFORM_OBJECT_SCALE_X_ID
-            ) as HTMLInputElement;
+        const xScaleElement = document
+            .getElementById($TRANSFORM_OBJECT_SCALE_X_ID) as HTMLInputElement;
 
-        if (lockElement) {
-            transformSetting.lockValue = parseFloat(lockElement.value);
+        if (xScaleElement) {
+            transformSetting.beforeScaleX = parseFloat(xScaleElement.value);
         }
     }
 

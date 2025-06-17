@@ -6,13 +6,13 @@ import { execute as characterCalcGetScaleXService } from "@/core/application/Cha
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
     $SHAPE_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description 行列の掛け算
@@ -112,17 +112,16 @@ export const $createTransformStyle = (character: Character): string =>
 export const $createMoveTransformElementStyle = (
     character: Character,
     work_space: WorkSpace,
+    width: number,
+    height: number,
     scale_x: number = 1,
     scale_y: number = 1,
     rotation: number = 0
 ): string => {
 
     const transform = [];
-    if (scale_x !== 1) {
-        transform.push(`scaleX(${scale_x})`);
-    }
-    if (scale_y !== 1) {
-        transform.push(`scaleY(${scale_y})`);
+    if (scale_x !== 1 || scale_y !== 1) {
+        transform.push(`scale(${scale_x}, ${scale_y})`);
     }
 
     if (rotation) {
@@ -144,8 +143,8 @@ export const $createMoveTransformElementStyle = (
     }
 
     // 実寸の中心座標を取得
-    const referenceX = transformSetting.beforeWidth / 2;
-    const referenceY = transformSetting.beforeHeight / 2;
+    const referenceX = width / 2;
+    const referenceY = height / 2;
 
     // 中心点を原点に変形
     const multiMatrix = $multiplicationMatrix(
