@@ -2,6 +2,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingXPointerMoveEventUseCase } from "./TransformSettingXPointerMoveEventUseCase";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 
 /**
  * @description 変形エリアのx座標の値操作のマウスアップイベント
@@ -36,6 +37,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // x座標に変更があれば、最終位置をセット
     await screenDisplayObjectUpdateSelectedValueService();
+
+    // 変形設定の値をクリア
+    transformSetting.clear();
 
     // input要素のフォーカス
     element.focus();
