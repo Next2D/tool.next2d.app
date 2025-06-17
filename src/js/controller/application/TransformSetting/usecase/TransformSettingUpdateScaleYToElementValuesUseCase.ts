@@ -127,7 +127,9 @@ export const execute = (scale_y: number): void =>
                         const beforeValue  = transformSetting.beforeScaleY;
                         const currentValue = transformSetting.scaleY * scale_y;
                         const transform = $createMoveTransformElementStyle(
-                            character, workSpace, 1, currentValue / beforeValue
+                            character, workSpace,
+                            transformSetting.scaleX / transformSetting.beforeScaleX,
+                            currentValue / beforeValue
                         );
                         if (!transform) {
                             continue;

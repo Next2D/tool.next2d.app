@@ -118,8 +118,11 @@ export const $createMoveTransformElementStyle = (
 ): string => {
 
     const transform = [];
-    if (scale_x !== 1 || scale_y !== 1) {
-        transform.push(`scale(${scale_x}, ${scale_y})`);
+    if (scale_x !== 1) {
+        transform.push(`scaleX(${scale_x})`);
+    }
+    if (scale_y !== 1) {
+        transform.push(`scaleY(${scale_y})`);
     }
 
     if (rotation) {
@@ -141,8 +144,8 @@ export const $createMoveTransformElementStyle = (
     }
 
     // 実寸の中心座標を取得
-    const referenceX = transformSetting.w / 2;
-    const referenceY = transformSetting.h / 2;
+    const referenceX = transformSetting.beforeWidth / 2;
+    const referenceY = transformSetting.beforeHeight / 2;
 
     // 中心点を原点に変形
     const multiMatrix = $multiplicationMatrix(

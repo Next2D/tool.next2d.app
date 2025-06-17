@@ -1,6 +1,17 @@
 import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "./ZoomToolRealodWorkSpaceUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+
+/**
+ * @description ズームタイマーID
+ *              Zoom timer ID
+ *
+ * @type {NodeJS.Timeout}
+ * @private
+ */
+let $zoomTimerId: NodeJS.Timeout;
 
 /**
  * @description ズームinuputの値操作のマウスムーブイベント
@@ -35,7 +46,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             const scale = $clamp(value + event.movementX, $ZOOM_MIN_VALUE, $ZOOM_MAX_VALUE);
             element.value = `${scale}`;
 
-            await zoomToolRealodWorkSpaceUseCase(scale / 100);
+            await zoomToolRealodWorkSpaceUseCase(scale / 100, false);
+
+            clearTimeout($zoomTimerId);
+            $zoomTimerId = setTimeout(async (): Promise<void> =>
+            {
+                const workSpace = $getCurrentWorkSpace();
+                await screenAreaRedrawUseCase(workSpace.scene);
+            }, 100);
 
             resolve();
         });

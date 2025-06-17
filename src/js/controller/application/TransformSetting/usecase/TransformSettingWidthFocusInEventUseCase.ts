@@ -3,14 +3,11 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
-import {
-    $TRANSFORM_OBJECT_HEIGHT_ID,
-    $TRANSFORM_OBJECT_WIDTH_ID
-} from "@/config/TransformSettingConfig";
+import { $TRANSFORM_OBJECT_HEIGHT_ID } from "@/config/TransformSettingConfig";
 
 /**
- * @description 変形エリアの幅・高さのフォーカスイベント処理
- *              Focus event processing of the transformation area width and height
+ * @description 変形エリアの幅のフォーカスイベント処理
+ *              Transformation area width focus event processing
  *
  * @param  {FocusEvent} event
  * @return {void}
@@ -42,18 +39,15 @@ export const execute = (event: FocusEvent): void =>
     }
 
     // 変更前の値を保持
-    transformSetting.beforeValue = parseFloat(element.value);
+    transformSetting.beforeWidth = parseFloat(element.value);
 
+    // ロック時は高さの値を保持
     if (transformSetting.sizeLocked) {
-        // ロック時は高さの時は幅を幅の時は高さを保持
-        const lockElement = document
-            .getElementById(element.id === $TRANSFORM_OBJECT_WIDTH_ID
-                ? $TRANSFORM_OBJECT_HEIGHT_ID
-                : $TRANSFORM_OBJECT_WIDTH_ID
-            ) as HTMLInputElement;
+        const heightElement = document
+            .getElementById($TRANSFORM_OBJECT_HEIGHT_ID) as HTMLInputElement;
 
-        if (lockElement) {
-            transformSetting.lockValue = parseFloat(lockElement.value);
+        if (heightElement) {
+            transformSetting.beforeHeight = parseFloat(heightElement.value);
         }
     }
 

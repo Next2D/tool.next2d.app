@@ -1,7 +1,8 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingInputPointerOverEventService } from "../service/TransformSettingInputPointerOverEventService";
 import { execute as transformSettingInputPointerOutEventService } from "../service/TransformSettingInputPointerOutEventService";
-import { execute as transformSettingSizeInputFocusInEventUseCase } from "./TransformSettingSizeInputFocusInEventUseCase";
+import { execute as transformSettingHeightFocusInEventUseCase } from "./TransformSettingHeightFocusInEventUseCase";
+import { execute as transformSettingWidthFocusInEventUseCase } from "./TransformSettingWidthFocusInEventUseCase";
 import { execute as transformSettingXFocusInEventUseCase } from "./TransformSettingXFocusInEventUseCase";
 import { execute as transformSettingYFocusInEventUseCase } from "./TransformSettingYFocusInEventUseCase";
 import { execute as transformSettingScaleInputFocusInEventUseCase } from "./TransformSettingScaleInputFocusInEventUseCase";
@@ -114,7 +115,7 @@ export const execute = (): void =>
             transformSettingWidthPointerDownEventUseCase
         );
         widthElement.addEventListener("focusin",
-            transformSettingSizeInputFocusInEventUseCase
+            transformSettingWidthFocusInEventUseCase
         );
         widthElement.addEventListener("focusout",
             transformSettingWidthFocusOutEventUseCase
@@ -138,7 +139,7 @@ export const execute = (): void =>
             transformSettingHeightPointerDownEventUseCase
         );
         heightElement.addEventListener("focusin",
-            transformSettingSizeInputFocusInEventUseCase
+            transformSettingHeightFocusInEventUseCase
         );
         heightElement.addEventListener("focusout",
             transformSettingHeightFocusOutEventUseCase

@@ -103,13 +103,13 @@ export const execute = (event: PointerEvent): void =>
 
         referenceSetting.x = bounds.xMin + character.referencePosition.x;
         referenceSetting.y = bounds.yMin + character.referencePosition.y;
-        transformSetting.scaleX = character.scaleX;
-        transformSetting.scaleY = character.scaleY;
+        transformSetting.scaleX = transformSetting.beforeScaleX = character.scaleX;
+        transformSetting.scaleY = transformSetting.beforeScaleY = character.scaleY;
     } else {
         referenceSetting.x = bounds.xMin + width / 2;
         referenceSetting.y = bounds.yMin + height / 2;
-        transformSetting.scaleX = 1;
-        transformSetting.scaleY = 1;
+        transformSetting.scaleX = transformSetting.beforeScaleX = 1;
+        transformSetting.scaleY = transformSetting.beforeScaleY = 1;
     }
 
     element.setPointerCapture(event.pointerId);
