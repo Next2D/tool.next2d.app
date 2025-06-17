@@ -38,7 +38,7 @@
     "fflate": "^0.8.2",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.4",
-    "terser": "^5.42.0"
+    "terser": "^5.43.0"
   },
   "peerDependencies": {
     "@next2d/cache": "file:../player/packages/cache",
