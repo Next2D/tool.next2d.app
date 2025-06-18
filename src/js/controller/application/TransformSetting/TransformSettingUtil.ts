@@ -6,7 +6,6 @@ import { execute as characterCalcGetScaleXService } from "@/core/application/Cha
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
@@ -120,8 +119,11 @@ export const $createMoveTransformElementStyle = (
 ): string => {
 
     const transform = [];
-    if (scale_x !== 1 || scale_y !== 1) {
-        transform.push(`scale(${scale_x}, ${scale_y})`);
+    if (scale_x !== 1) {
+        transform.push(`scaleX(${scale_x})`);
+    }
+    if (scale_y !== 1) {
+        transform.push(`scaleY(${scale_y})`);
     }
 
     if (rotation) {
@@ -134,11 +136,6 @@ export const $createMoveTransformElementStyle = (
 
     const instance = work_space.getLibrary(character.libraryId);
     if (!instance) {
-        return "";
-    }
-
-    const bounds = instance.getRawBounds();
-    if (!bounds) {
         return "";
     }
 

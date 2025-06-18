@@ -105,7 +105,7 @@ export const execute = async (
     }
 
     // 先祖のキャッシュを削除する
-    timelineSceneListCacheRemoveService(work_space.id);
+    timelineSceneListCacheRemoveService(work_space);
 
     // 自分のキャッシュを削除する
     $removeLibraryCache(work_space.id, movie_clip.id);

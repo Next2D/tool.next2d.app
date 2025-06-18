@@ -6,6 +6,7 @@ import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/histor
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase";
+import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import {
     $FOLDER_TYPE,
     $SOUND_TYPE
@@ -103,19 +104,25 @@ export const execute = async (
         // 新規のDisplayObjectを作成
         const character = new Character();
 
+        // 外部アイテムを読み込む
+        // fixed logic
+        character.loadExternalItem(item);
+
         // 配置位置を設定
         // fixed logic
         character.x = dx;
         character.y = dy;
 
-        // 外部アイテムを読み込む
         // fixed logic
-        character.loadExternalItem(item);
+        const bounds = character.getBounds();
+        if (!bounds) {
+            continue;
+        }
 
         // 中心点を中央に設定（初期値）
         // fixed logic
-        character.referencePosition.x = character.width  / 2;
-        character.referencePosition.y = character.height / 2;
+        character.referencePosition.x = bounds.xMin - dx + character.width  / 2;
+        character.referencePosition.y = bounds.yMin - dy + character.height / 2;
 
         // 空のキーフレームがあれば記録に残す
         let emptyCharacterIndex = -1;
@@ -164,4 +171,7 @@ export const execute = async (
             await screenAreaAppendCharacterService(character, layer);
         }
     }
+
+    // 先祖のキャッシュを削除
+    timelineSceneListCacheRemoveService(work_space);
 };

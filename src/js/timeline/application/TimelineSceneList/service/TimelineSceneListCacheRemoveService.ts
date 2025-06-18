@@ -1,16 +1,18 @@
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $removeLibraryCache } from "@/cache/CacheUtil";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 先祖のキャッシュを削除するユースケース
  *              Use case to delete ancestor cache
  *
- * @param  {number} work_space_id
+ * @param  {WorkSpace} work_space
  * @return {void}
  * @method
  * @public
  */
-export const execute = (work_space_id: number): void =>
+export const execute = (work_space: WorkSpace): void =>
 {
     for (let idx = 0; idx < timelineSceneList.parents.length; idx++) {
 
@@ -24,7 +26,12 @@ export const execute = (work_space_id: number): void =>
             continue;
         }
 
+        const instance = work_space.getLibrary(character.libraryId);
+        if (!instance || instance.type !== $MOVIE_CLIP_TYPE) {
+            continue;
+        }
+
         // キャッシュを削除
-        $removeLibraryCache(work_space_id, character.libraryId);
+        $removeLibraryCache(work_space.id, character.libraryId);
     }
 };
