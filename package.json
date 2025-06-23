@@ -23,7 +23,7 @@
     "@types/qrcode": "^1.5.5",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
-    "@vitest/web-worker": "^3.2.3",
+    "@vitest/web-worker": "^3.2.4",
     "eslint": "^9.29.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^16.2.0",
@@ -31,14 +31,14 @@
     "sass": "^1.89.2",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vitest": "^3.2.3",
+    "vitest": "^3.2.4",
     "vitest-webgl-canvas-mock": "^1.1.0"
   },
   "dependencies": {
     "fflate": "^0.8.2",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.4",
-    "terser": "^5.43.0"
+    "terser": "^5.43.1"
   },
   "peerDependencies": {
     "@next2d/cache": "file:../player/packages/cache",
