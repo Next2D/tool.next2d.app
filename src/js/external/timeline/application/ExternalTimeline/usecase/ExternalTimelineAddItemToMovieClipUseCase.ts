@@ -113,16 +113,10 @@ export const execute = async (
         character.x = dx;
         character.y = dy;
 
-        // fixed logic
-        const bounds = character.getBounds();
-        if (!bounds) {
-            continue;
-        }
-
         // 中心点を中央に設定（初期値）
         // fixed logic
-        character.referencePosition.x = bounds.xMin - dx + character.width  / 2;
-        character.referencePosition.y = bounds.yMin - dy + character.height / 2;
+        character.referencePosition.x = character.width  / 2;
+        character.referencePosition.y = character.height / 2;
 
         // 空のキーフレームがあれば記録に残す
         let emptyCharacterIndex = -1;

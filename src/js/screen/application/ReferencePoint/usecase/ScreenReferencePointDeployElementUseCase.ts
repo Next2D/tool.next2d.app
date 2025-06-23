@@ -70,6 +70,10 @@ export const execute = (): void =>
     // 先祖からのmatrixを加算
     const matrix = $getConcatenatedMatrix();
 
+    const boundsPoint = $localToGlobal(
+        bounds.xMin,
+        bounds.yMin
+    );
     const point = $localToGlobal(
         character.referencePosition.x,
         character.referencePosition.y
@@ -77,7 +81,7 @@ export const execute = (): void =>
 
     // 基準点のElementの表示処理
     screenReferencePointShowService(
-        $getScreenOffsetLeft() + character.x * workSpace.scale + point.x + matrix[4],
-        $getScreenOffsetTop() + character.y * workSpace.scale + point.y + matrix[5]
+        $getScreenOffsetLeft() + boundsPoint.x + matrix[4] + point.x,
+        $getScreenOffsetTop() + boundsPoint.y + matrix[5] + point.y
     );
 };

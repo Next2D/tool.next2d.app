@@ -142,7 +142,7 @@ export const execute = (scale_y: number): void =>
 
             }
 
-            const y = $getScreenOffsetTop() + character.y * workSpace.scale;
+            const y = $getScreenOffsetTop() + character.globalMinY;
             node.style.top = `${y}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
@@ -153,7 +153,7 @@ export const execute = (scale_y: number): void =>
 
     // 変形エリアのy座標を更新
     if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
-        transformSettingUpdateYElementService(bounds.xMin);
+        transformSettingUpdateYElementService(bounds.yMin);
     }
 
     // 変形エリアのyスケールを更新
