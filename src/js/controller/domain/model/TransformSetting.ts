@@ -210,9 +210,6 @@ class TransformSetting
         this.w = 0;
         this.h = 0;
 
-        this.sizeLocked  = false;
-        this.scaleLocked = false;
-
         this.beforeWidth    = 0;
         this.beforeHeight   = 0;
         this.beforeScaleX   = 0;
