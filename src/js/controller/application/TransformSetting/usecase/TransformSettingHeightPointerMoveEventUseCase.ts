@@ -44,7 +44,8 @@ export const execute = (event: PointerEvent): void =>
         element.value = `${height}`;
 
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.h);
+        const scale = height / transformSetting.h;
+        transformSettingUpdateScaleYToElementValuesUseCase(scale);
         transformSetting.h = height;
 
         if (transformSetting.sizeLocked) {
@@ -55,10 +56,10 @@ export const execute = (event: PointerEvent): void =>
             }
 
             const value = parseFloat(parseFloat(widthElement.value).toFixed(2));
-            const width = $clamp(value + event.movementX, 1, Number.MAX_VALUE);
+            const width = $clamp(parseFloat((value * scale).toFixed(2)), 1, Number.MAX_VALUE);
             widthElement.value = `${width}`;
 
-            transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.w);
+            transformSettingUpdateScaleXToElementValuesUseCase(scale);
             transformSetting.w = width;
         }
 

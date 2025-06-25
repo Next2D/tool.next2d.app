@@ -38,8 +38,7 @@ export const execute = (event: FocusEvent): void =>
     }
 
     // 移動情報を初期化
-    transformSetting.x = 0;
-    transformSetting.y = 0;
+    transformSetting.clear();
 
     // 変更前の値を保持
     transformSetting.beforeX = parseFloat(element.value);
