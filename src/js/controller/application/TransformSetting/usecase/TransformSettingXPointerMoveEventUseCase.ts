@@ -5,7 +5,6 @@ import { execute as targetRectMoveElementService } from "@/screen/application/Ta
 import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
 import { execute as screenReferencePointMoveElementService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService";
 import { $globalToLocal } from "@/screen/application/DisplayObject/DisplayObjectUtil";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 変形エリアのx座標の値操作のマウスムーブイベント

@@ -4,7 +4,6 @@ import { execute as screenDisplayObjectSelectedMoveElementUseCase } from "@/scre
 import { execute as targetRectMoveElementService } from "@/screen/application/TargetRect/service/TargetRectMoveElementService";
 import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
 import { execute as screenReferencePointMoveElementService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $globalToLocal } from "@/screen/application/DisplayObject/DisplayObjectUtil";
 
 /**
