@@ -4,11 +4,11 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
-import { $TRANSFORM_OBJECT_SCALE_Y_ID } from "@/config/TransformSettingConfig";
+import { $TRANSFORM_OBJECT_SCALE_X_ID } from "@/config/TransformSettingConfig";
 
 /**
- * @description xスケールの入力完了処理
- *              X scale input completion processing
+ * @description yスケールの入力完了処理
+ *              Y scale input completion processing
  *
  * @param  {FocusEvent} event
  * @return {Promise<void>}
@@ -28,34 +28,34 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 入力モードを終了する
     $updateKeyLock(false);
 
-    let scaleX = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
-    if (!scaleX) {
-        scaleX = 0.01;
+    let scaleY = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+    if (!scaleY) {
+        scaleY = 0.01;
     }
 
-    element.value = `${scaleX}`;
+    element.value = `${scaleY}`;
 
     // 変形に合わせて表示を更新
-    transformSettingUpdateScaleXToElementValuesUseCase(scaleX / transformSetting.beforeScaleX);
+    transformSettingUpdateScaleYToElementValuesUseCase(scaleY / transformSetting.beforeScaleY);
 
     if (transformSetting.scaleLocked) {
 
-        const scaleYElement = document
-            .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
-        if (!scaleYElement) {
+        const scaleXElement = document
+            .getElementById($TRANSFORM_OBJECT_SCALE_X_ID) as HTMLInputElement;
+        if (!scaleXElement) {
             return ;
         }
 
-        const value  = parseFloat(parseFloat(scaleYElement.value).toFixed(2)) + (scaleX - transformSetting.beforeScaleX);
-        let scaleY = $clamp(value, -Number.MAX_VALUE, Number.MAX_VALUE);
-        if (!scaleY) {
-            scaleY = 0.01;
+        const value  = parseFloat(parseFloat(scaleXElement.value).toFixed(2)) + (scaleY - transformSetting.beforeScaleY);
+        let scaleX = $clamp(value, -Number.MAX_VALUE, Number.MAX_VALUE);
+        if (!scaleX) {
+            scaleX = 0.01;
         }
 
-        scaleYElement.value = `${scaleY}`;
+        scaleXElement.value = `${scaleX}`;
 
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleYToElementValuesUseCase(scaleY / (transformSetting.beforeScaleY * 100));
+        transformSettingUpdateScaleXToElementValuesUseCase(scaleX / (transformSetting.beforeScaleX * 100));
     }
 
     // 変更後のmatrixで表示を更新

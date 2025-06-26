@@ -1,5 +1,5 @@
-import { execute as transformSettingScaleXPointerMoveEventUseCase } from "./TransformSettingScaleXPointerMoveEventUseCase";
-import { execute as transformSettingScaleXPointerUpEventUseCase } from "./TransformSettingScaleXPointerUpEventUseCase";
+import { execute as transformSettingScaleYPointerMoveEventUseCase } from "./TransformSettingScaleYPointerMoveEventUseCase";
+import { execute as transformSettingScaleYPointerUpEventUseCase } from "./TransformSettingScaleYPointerUpEventUseCase";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
@@ -14,8 +14,8 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
- * @description 変形エリアのスケールXの変更のポインターダウンイベント
- *              Transformation Area Scale X Pointer Down Event
+ * @description 変形エリアのスケールYの変更のポインターダウンイベント
+ *              Transformation Area Scale Y Pointer Down Event
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -110,19 +110,19 @@ export const execute = (event: PointerEvent): void =>
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
         EventType.POINTER_MOVE,
-        transformSettingScaleXPointerMoveEventUseCase,
+        transformSettingScaleYPointerMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        transformSettingScaleXPointerUpEventUseCase
+        transformSettingScaleYPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        transformSettingScaleXPointerUpEventUseCase
+        transformSettingScaleYPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_LEAVE,
-        transformSettingScaleXPointerUpEventUseCase
+        transformSettingScaleYPointerUpEventUseCase
     );
 };

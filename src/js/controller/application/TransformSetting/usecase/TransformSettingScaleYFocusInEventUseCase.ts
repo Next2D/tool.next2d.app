@@ -6,8 +6,8 @@ import { execute as transformSettingCacheBeforeMatrixService } from "../service/
 import { $TRANSFORM_OBJECT_SCALE_X_ID } from "@/config/TransformSettingConfig";
 
 /**
- * @description 変形エリアのyスケールのフォーカスイベント処理
- *              Focus event processing of the transformation area y scale
+ * @description 変形エリアのxスケールのフォーカスイベント処理
+ *              Focus event processing of the transformation area x scale
  *
  * @param  {FocusEvent} event
  * @return {void}

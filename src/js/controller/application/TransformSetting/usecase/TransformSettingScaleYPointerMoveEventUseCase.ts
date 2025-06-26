@@ -2,15 +2,15 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleYToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { $TRANSFORM_OBJECT_SCALE_Y_ID } from "@/config/TransformSettingConfig";
+import { $TRANSFORM_OBJECT_SCALE_X_ID } from "@/config/TransformSettingConfig";
 import {
     $clamp,
     $setCursor
 } from "@/global/GlobalUtil";
 
 /**
- * @description 変形エリアのxスケールの値操作の処理関数
- *              Processing function for x-scale value manipulation of deformation area
+ * @description 変形エリアのyスケールの値操作の処理関数
+ *              Processing function for y-scale value manipulation of deformation area
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -40,31 +40,31 @@ export const execute = (event: PointerEvent): void =>
 
         // 表示を更新
         const value  = parseFloat(parseFloat(element.value).toFixed(2));
-        let scaleX = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
-        if (!scaleX) {
-            scaleX = 0.01;
+        let scaleY = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
+        if (!scaleY) {
+            scaleY = 0.01;
         }
-        element.value = `${scaleX}`;
+        element.value = `${scaleY}`;
 
         // 変形に合わせて表示を更新
-        const scale = scaleX / 100 / transformSetting.scaleX;
-        transformSettingUpdateScaleXToElementValuesUseCase(scale);
+        const scale = scaleY / 100 / transformSetting.scaleY;
+        transformSettingUpdateScaleYToElementValuesUseCase(scale);
 
         if (transformSetting.scaleLocked) {
-            const scaleYElement = document
-                .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
-            if (!scaleYElement) {
+            const scaleXElement = document
+                .getElementById($TRANSFORM_OBJECT_SCALE_X_ID) as HTMLInputElement;
+            if (!scaleXElement) {
                 return ;
             }
 
-            const value = parseFloat(parseFloat(scaleYElement.value).toFixed(2));
-            let scaleY = $clamp(value * scale, -Number.MAX_VALUE, Number.MAX_VALUE);
-            if (!scaleY) {
-                scaleY = 0.01;
+            const value = parseFloat(parseFloat(scaleXElement.value).toFixed(2));
+            let scaleX = $clamp(value * scale, -Number.MAX_VALUE, Number.MAX_VALUE);
+            if (!scaleX) {
+                scaleX = 0.01;
             }
-            scaleYElement.value = `${scaleY}`;
+            scaleXElement.value = `${scaleX}`;
 
-            transformSettingUpdateScaleYToElementValuesUseCase(scale);
+            transformSettingUpdateScaleXToElementValuesUseCase(scale);
         }
 
         // 選択中の表示領域を更新

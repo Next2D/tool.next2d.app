@@ -17,7 +17,9 @@ import { execute as transformSettingYFocusOutEventUseCase } from "./TransformSet
 import { execute as transformSettingWidthPointerDownEventUseCase } from "./TransformSettingWidthPointerDownEventUseCase";
 import { execute as transformSettingHeightPointerDownEventUseCase } from "./TransformSettingHeightPointerDownEventUseCase";
 import { execute as transformSettingScaleXPointerDownEventUseCase } from "./TransformSettingScaleXPointerDownEventUseCase";
+import { execute as transformSettingScaleYPointerDownEventUseCase } from "./TransformSettingScaleYPointerDownEventUseCase";
 import { execute as transformSettingScaleXFocusOutEventUseCase } from "./TransformSettingScaleXFocusOutEventUseCase";
+import { execute as transformSettingScaleYFocusOutEventUseCase } from "./TransformSettingScaleYFocusOutEventUseCase";
 import { execute as transformSettingSizeLockPointerDownEventService } from "../service/TransformSettingSizeLockPointerDownEventService";
 import { execute as transformSettingScaleLockPointerDownEventService } from "../service/TransformSettingScaleLockPointerDownEventService";
 import {
@@ -194,8 +196,14 @@ export const execute = (): void =>
         scaleYElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputPointerOutEventService
         );
+        scaleYElement.addEventListener(EventType.POINTER_DOWN,
+            transformSettingScaleYPointerDownEventUseCase
+        );
         scaleYElement.addEventListener("focusin",
             transformSettingScaleYFocusInEventUseCase
+        );
+        scaleYElement.addEventListener("focusout",
+            transformSettingScaleYFocusOutEventUseCase
         );
         scaleYElement.addEventListener("keypress",
             transformSettingInputKeyPressEventService

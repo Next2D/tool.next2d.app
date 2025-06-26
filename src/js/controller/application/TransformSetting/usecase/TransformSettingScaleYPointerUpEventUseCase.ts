@@ -6,11 +6,11 @@ import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./T
 import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
-import { $TRANSFORM_OBJECT_SCALE_Y_ID } from "@/config/TransformSettingConfig";
+import { $TRANSFORM_OBJECT_SCALE_X_ID } from "@/config/TransformSettingConfig";
 
 /**
- * @description 変形エリアのxスケールの値操作のマウスアップイベント
- *              Mouse up event for value operation of x scale of deformation area
+ * @description 変形エリアのyスケールの値操作のマウスアップイベント
+ *              Mouse up event for value operation of y scale of deformation area
  *
  * @param  {PointerEvent} event
  * @return {Promise<void>}
@@ -44,18 +44,18 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     transformSettingRestoreBeforeMatrixService();
 
     // 変形に合わせて表示を更新
-    const scaleX = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
-    transformSettingUpdateScaleXToElementValuesUseCase(scaleX / 100 / transformSetting.scaleX);
+    const scaleY = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+    transformSettingUpdateScaleYToElementValuesUseCase(scaleY / 100 / transformSetting.scaleY);
 
     if (transformSetting.scaleLocked) {
-        const scaleYElement = document
-            .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
-        if (!scaleYElement) {
+        const scaleXElement = document
+            .getElementById($TRANSFORM_OBJECT_SCALE_X_ID) as HTMLInputElement;
+        if (!scaleXElement) {
             return ;
         }
 
-        const scaleY = $clamp(parseFloat(parseFloat(scaleYElement.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
-        transformSettingUpdateScaleYToElementValuesUseCase(scaleY / 100 / transformSetting.scaleY);
+        const scaleX = $clamp(parseFloat(parseFloat(scaleXElement.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+        transformSettingUpdateScaleXToElementValuesUseCase(scaleX / 100 / transformSetting.scaleX);
     }
 
     // 変更後のmatrixで表示を更新
