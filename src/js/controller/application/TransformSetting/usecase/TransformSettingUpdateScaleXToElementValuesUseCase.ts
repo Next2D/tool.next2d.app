@@ -2,6 +2,7 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -147,6 +148,7 @@ export const execute = (scale_x: number): void =>
             node.style.left = `${x}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
+                transformSettingUpdateWidthElementService(character.width);
                 transformSettingUpdateXElementService(character.x);
             }
         }
@@ -154,6 +156,9 @@ export const execute = (scale_x: number): void =>
 
     // 変形エリアのx座標を更新
     if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
+        transformSettingUpdateWidthElementService(
+            parseFloat(Math.abs(bounds.xMax - bounds.xMin).toFixed(2))
+        );
         transformSettingUpdateXElementService(bounds.xMin);
     }
 

@@ -2,6 +2,7 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
+import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -146,6 +147,7 @@ export const execute = (scale_y: number): void =>
             node.style.top = `${y}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
+                transformSettingUpdateHeightElementService(character.height);
                 transformSettingUpdateYElementService(character.y);
             }
         }
@@ -153,6 +155,9 @@ export const execute = (scale_y: number): void =>
 
     // 変形エリアのy座標を更新
     if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
+        transformSettingUpdateHeightElementService(
+            parseFloat(Math.abs(bounds.yMax - bounds.yMin).toFixed(2))
+        );
         transformSettingUpdateYElementService(bounds.yMin);
     }
 

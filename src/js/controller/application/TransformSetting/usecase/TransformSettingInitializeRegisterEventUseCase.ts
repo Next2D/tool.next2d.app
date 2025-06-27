@@ -22,6 +22,7 @@ import { execute as transformSettingScaleXFocusOutEventUseCase } from "./Transfo
 import { execute as transformSettingScaleYFocusOutEventUseCase } from "./TransformSettingScaleYFocusOutEventUseCase";
 import { execute as transformSettingSizeLockPointerDownEventService } from "../service/TransformSettingSizeLockPointerDownEventService";
 import { execute as transformSettingScaleLockPointerDownEventService } from "../service/TransformSettingScaleLockPointerDownEventService";
+import { execute as transformSettingRotatePointerDownEventUseCase } from "./TransformSettingRotatePointerDownEventUseCase";
 import {
     $TRANSFORM_OBJECT_HEIGHT_ID,
     $TRANSFORM_OBJECT_ROTATE_ID,
@@ -219,6 +220,9 @@ export const execute = (): void =>
         );
         rotateElement.addEventListener(EventType.POINTER_OUT,
             transformSettingInputPointerOutEventService
+        );
+        rotateElement.addEventListener(EventType.POINTER_DOWN,
+            transformSettingRotatePointerDownEventUseCase
         );
         // rotateElement.addEventListener("focusin",
         //     transformSettingPositionInputFocusInEventUseCase

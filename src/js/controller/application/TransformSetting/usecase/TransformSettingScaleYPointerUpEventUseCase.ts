@@ -1,7 +1,7 @@
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as transformSettingScaleXPointerMoveEventUseCase } from "./TransformSettingScaleXPointerMoveEventUseCase";
+import { execute as transformSettingScaleYPointerMoveEventUseCase } from "./TransformSettingScaleYPointerMoveEventUseCase";
 import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
 import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
@@ -33,7 +33,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // windowのイベントを削除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE,
-        transformSettingScaleXPointerMoveEventUseCase
+        transformSettingScaleYPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
