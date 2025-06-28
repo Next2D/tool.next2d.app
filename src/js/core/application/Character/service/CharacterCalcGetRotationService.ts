@@ -9,5 +9,5 @@
  */
 export const execute = (matrix: Float32Array): number =>
 {
-    return Math.atan2(matrix[1], Math.abs(matrix[0])) * (180 / Math.PI);
+    return Math.round(Math.atan2(matrix[1], matrix[0]) * (180 / Math.PI)) % 360;
 };

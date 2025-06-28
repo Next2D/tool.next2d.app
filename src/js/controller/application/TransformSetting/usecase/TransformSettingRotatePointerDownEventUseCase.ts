@@ -1,5 +1,5 @@
-import { execute as transformSettingScaleXPointerMoveEventUseCase } from "./TransformSettingScaleXPointerMoveEventUseCase";
-import { execute as transformSettingScaleXPointerUpEventUseCase } from "./TransformSettingScaleXPointerUpEventUseCase";
+import { execute as transformSettingRotatePointerMoveEventUseCase } from "./TransformSettingRotatePointerMoveEventUseCase";
+import { execute as transformSettingRotatePointerUpEventUseCase } from "./TransformSettingRotatePointerUpEventUseCase";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
@@ -98,31 +98,29 @@ export const execute = (event: PointerEvent): void =>
 
         referenceSetting.x = bounds.xMin + character.referencePosition.x;
         referenceSetting.y = bounds.yMin + character.referencePosition.y;
-        transformSetting.scaleX = transformSetting.beforeScaleX = character.scaleX;
-        transformSetting.scaleY = transformSetting.beforeScaleY = character.scaleY;
+        transformSetting.rotation = transformSetting.beforeRotation = character.rotation;
     } else {
         referenceSetting.x = bounds.xMin + width / 2;
         referenceSetting.y = bounds.yMin + height / 2;
-        transformSetting.scaleX = transformSetting.beforeScaleX = 1;
-        transformSetting.scaleY = transformSetting.beforeScaleY = 1;
+        transformSetting.rotation = transformSetting.beforeRotation = 0;
     }
 
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
         EventType.POINTER_MOVE,
-        transformSettingScaleXPointerMoveEventUseCase,
+        transformSettingRotatePointerMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        transformSettingScaleXPointerUpEventUseCase
+        transformSettingRotatePointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        transformSettingScaleXPointerUpEventUseCase
+        transformSettingRotatePointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_LEAVE,
-        transformSettingScaleXPointerUpEventUseCase
+        transformSettingRotatePointerUpEventUseCase
     );
 };

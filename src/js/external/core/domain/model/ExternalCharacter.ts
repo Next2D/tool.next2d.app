@@ -194,6 +194,33 @@ export class ExternalCharacter
     }
 
     /**
+     * @description DisplayObjectの回転を返却
+     *              Returns the rotation of DisplayObject
+     *
+     * @return {number}
+     * @method
+     * @public
+     */
+    getRotation (): number
+    {
+        return this._$character.rotation;
+    }
+
+    /**
+     * @description DisplayObjectの回転を設定
+     *              Set the rotation of DisplayObject
+     *
+     * @param  {number} rotation
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    setRotation (rotation: number): Promise<void>
+    {
+        return Promise.resolve();
+    }
+
+    /**
      * @description DisplayObjectの名前を返却
      *              Returns the name of DisplayObject
      *

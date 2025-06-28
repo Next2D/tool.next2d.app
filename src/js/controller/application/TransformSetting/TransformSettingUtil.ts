@@ -179,7 +179,11 @@ export const $createTransformElementStyle = (
     const scaleX = characterCalcGetScaleXService(matrix);
     const scaleY = characterCalcGetScaleYService(matrix);
     if (scaleX !== 1 || scaleY !== 1) {
-        transform.push(`scale(${scaleX}, ${scaleY})`);
+        transform.push(`scale(${Math.abs(scaleX)}, ${scaleY})`);
+    }
+
+    if (0 > scaleX) {
+        transform.push(`rotateX(${Math.PI}rad)`);
     }
 
     const rotation = characterCalcGetRotationService(matrix);
