@@ -217,7 +217,7 @@ export class Character
      */
     get cacheKey (): string
     {
-        let cacheKey = "@";
+        let cacheKey = `${this.id}@`;
 
         // colorTransformがデフォルト値以外の場合はキャッシュキーに追加
         switch (true) {
