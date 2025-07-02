@@ -12,7 +12,7 @@ import { execute as characterCalcSetScaleYService } from "@/core/application/Cha
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getConcatenatedMatrix, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $clamp } from "@/global/GlobalUtil";
 import {
     $BITMAP_TYPE,

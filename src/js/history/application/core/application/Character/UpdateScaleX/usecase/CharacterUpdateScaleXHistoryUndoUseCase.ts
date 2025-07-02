@@ -50,10 +50,6 @@ export const execute = async (
         return ;
     }
 
-    // 変形の基準点を変更前に戻す
-    // fixed logic
-    character.referencePosition.x /= character.scaleX;
-
     // データを更新
     character.scaleX = before_scale_x / 100;
 

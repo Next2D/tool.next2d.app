@@ -39,10 +39,10 @@ export const execute = (event: PointerEvent): void =>
 
         // 表示を更新
         const value  = parseInt(element.value);
-        const rotation = $clamp((value + event.movementX) % 360, 0, 360);
+        const rotation = $clamp((value + event.movementX) % 360, -360, 360);
         element.value = `${rotation}`;
 
-        transformSettingUpdateRotateToElementValuesUseCase(rotation);
+        transformSettingUpdateRotateToElementValuesUseCase((360 + rotation) % 360);
         transformSetting.rotation = rotation;
 
         // 選択中の表示領域を更新

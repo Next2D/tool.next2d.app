@@ -52,11 +52,14 @@ export const execute = (rotation: number): void =>
     }
 
     const matrix = new Float32Array([1, 0, 0, 1, 0, 0]);
-    if (rotation !== 0) {
+    if (rotation) {
         const radian = rotation * (Math.PI / 180);
         const cos = Math.cos(radian);
         const sin = Math.sin(radian);
-        matrix.set([cos, sin, -sin, cos, 0, 0]);
+        matrix[0] = cos;
+        matrix[1] = sin;
+        matrix[2] = -sin;
+        matrix[3] = cos;
     }
 
     const parentMatrix = $multiplicationMatrix(
@@ -93,30 +96,43 @@ export const execute = (rotation: number): void =>
                 continue ;
             }
 
+            const radian = -character.rotation * (Math.PI / 180);
+            const cos = Math.cos(radian);
+            const sin = Math.sin(radian);
+            const invertMatrix = $multiplicationMatrix(
+                new Float32Array([cos, sin, -sin, cos, 0, 0]),
+                new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
+            );
+
             // 中心点に合わせて変形
-            character.rotation = 0;
+            const scaleX = character.scaleX;
+            const scaleY = character.scaleY;
+            const beforeMatrix = $multiplicationMatrix(
+                invertMatrix,
+                new Float32Array([scaleX, 0, 0, scaleY, character.x, character.y])
+            );
+
             const multiMatrix = $multiplicationMatrix(
-                parentMatrix, character.matrix
+                parentMatrix,
+                new Float32Array([scaleX, 0, 0, scaleY,
+                    beforeMatrix[4] + referenceSetting.x,
+                    beforeMatrix[5] + referenceSetting.y
+                ])
             );
 
-            const tMatrix = $multiplicationMatrix(
-                new Float32Array([1, 0, 0, 1, referenceSetting.x, referenceSetting.y]),
-                multiMatrix
-            );
+            character.rotation = rotation;
+            character.x = multiMatrix[4] + referenceSetting.x;
+            character.y = multiMatrix[5] + referenceSetting.y;
 
-            character.x = tMatrix[4];
-            character.y = tMatrix[5];
-
-            character.rotation = characterCalcGetRotationService(multiMatrix);
             switch (instance.type) {
 
                 case $BITMAP_TYPE:
                 case $VIDEO_TYPE:
                     {
+                        node.style.transform = "";
                         const transform = $createTransformElementStyle(character, workSpace);
                         if (transform) {
                             node.style.transform = transform.replace(/transform: /, "").replace(";", "");
-                            // node.style.transformOrigin = `${character.referencePosition.x}px ${character.referencePosition.y}px`;
                         }
                     }
                     break;

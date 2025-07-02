@@ -50,7 +50,7 @@ export const execute = (
     } else {
 
         let radianX = Math.atan2(matrix[1], matrix[0]);
-        let radianY = Math.atan2(-matrix[3], matrix[4]);
+        let radianY = Math.atan2(-matrix[2], matrix[3]);
 
         const radian = rotation * $Deg2Rad;
         radianY = radianY + radian - radianX;

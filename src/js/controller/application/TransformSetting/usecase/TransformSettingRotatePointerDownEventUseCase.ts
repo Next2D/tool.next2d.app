@@ -12,6 +12,7 @@ import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
+import { execute as characterGetReferencePositionService } from "@/core/application/Character/service/CharacterGetReferencePositionService";
 
 /**
  * @description 変形エリアの回転の変更のポインターダウンイベント
@@ -96,8 +97,9 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        referenceSetting.x = bounds.xMin + character.referencePosition.x;
-        referenceSetting.y = bounds.yMin + character.referencePosition.y;
+        const point = characterGetReferencePositionService(character);
+        referenceSetting.x = point.x;
+        referenceSetting.y = point.y;
         transformSetting.rotation = transformSetting.beforeRotation = character.rotation;
     } else {
         referenceSetting.x = bounds.xMin + width / 2;

@@ -172,32 +172,6 @@ export const $createTransformElementStyle = (
     work_space: WorkSpace
 ): string => {
 
-    const concatenatedMatrix = $getConcatenatedMatrix();
-    const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
-
-    const transform = [];
-    const scaleX = characterCalcGetScaleXService(matrix);
-    const scaleY = characterCalcGetScaleYService(matrix);
-    if (scaleX !== 1 || scaleY !== 1) {
-        transform.push(`scale(${Math.abs(scaleX)}, ${scaleY})`);
-    }
-
-    if (0 > scaleX) {
-        transform.push(`rotateX(${Math.PI}rad)`);
-    }
-
-    const rotation = characterCalcGetRotationService(matrix);
-    if (rotation) {
-        transform.push(`rotate(${rotation}deg)`);
-    }
-
-    if (!transform.length
-        && !concatenatedMatrix[4]
-        && !concatenatedMatrix[5]
-    ) {
-        return "";
-    }
-
     const instance = work_space.getLibrary(character.libraryId);
     if (!instance) {
         return "";
@@ -212,16 +186,35 @@ export const $createTransformElementStyle = (
     const referenceX = Math.abs(bounds.xMax - bounds.xMin) / 2;
     const referenceY = Math.abs(bounds.yMax - bounds.yMin) / 2;
 
-    // 中心点を原点に変形
-    const multiMatrix = $multiplicationMatrix(
-        new Float32Array([Math.abs(matrix[0]), matrix[1], matrix[2], Math.abs(matrix[3]), 0, 0]),
-        new Float32Array([1, 0, 0, 1, -referenceX, -referenceY])
-    );
+    const transform = [];
+    transform.push(`translate(${referenceX}px, ${referenceY}px)`);
 
-    // 変形分の座標を補正
-    multiMatrix[4] += referenceX;
-    multiMatrix[5] += referenceY;
-    transform.unshift(`translate(${-multiMatrix[4]}px, ${-multiMatrix[5]}px)`);
+    if (character.rotation) {
+        transform.push(`rotate(${character.rotation}deg)`);
+    }
+
+    const concatenatedMatrix = $getConcatenatedMatrix();
+    const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
+
+    const scaleX = characterCalcGetScaleXService(matrix);
+    const scaleY = characterCalcGetScaleYService(matrix);
+
+    if (scaleX !== 1 || scaleY !== 1) {
+        transform.push(`scale(${scaleX}, ${scaleY})`);
+    }
+
+    if (0 > scaleX) {
+        transform.push(`rotateX(${Math.PI}rad)`);
+    }
+
+    transform.push(`translate(${-referenceX}px, ${-referenceY}px)`);
+
+    if (!transform.length
+        && !concatenatedMatrix[4]
+        && !concatenatedMatrix[5]
+    ) {
+        return "";
+    }
 
     return `transform: ${transform.join(" ")}; `;
 };

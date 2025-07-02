@@ -47,10 +47,6 @@ export const execute = async (
     // 内部データを更新
     character.scaleX = scale_x;
 
-    // 変形の基準点を移動
-    character.referencePosition.x /= beforeScaleX;
-    character.referencePosition.x *= scale_x;
-
     // 履歴を登録
     await characterUpdateScaleXHistoryUseCase(
         work_space,

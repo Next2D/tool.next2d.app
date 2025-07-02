@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $setReferencePointState } from "../ReferencePointUtil";
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getConcatenatedMatrix, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $getScreenOffsetLeft,
@@ -10,6 +10,7 @@ import { execute as screenReferencePointShowService } from "../service/ScreenRef
 import { execute as screenReferencePointHideService } from "../service/ScreenReferencePointHideService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { $localToGlobal } from "../../DisplayObject/DisplayObjectUtil";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 変形の基準点のElementを配置
@@ -51,37 +52,22 @@ export const execute = (): void =>
         return ;
     }
 
-    // MovieClipでなければ終了
-    const instance = workSpace.getLibrary(character.libraryId) as MovieClip;
-    if (!instance) {
-        screenReferencePointHideService();
-        return ;
-    }
-
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (!bounds) {
-        screenReferencePointHideService();
-        return;
-    }
-
     // 後続で表示処理を行うので、基準点のElement状態を非表示に更新
     $setReferencePointState("hide");
 
     // 先祖からのmatrixを加算
-    const matrix = $getConcatenatedMatrix();
+    const concatenatedMatrix = $getConcatenatedMatrix();
+    const matrix = $multiplicationMatrix(
+        concatenatedMatrix,
+        character.matrix
+    );
 
-    const boundsPoint = $localToGlobal(
-        bounds.xMin,
-        bounds.yMin
-    );
-    const point = $localToGlobal(
-        character.referencePosition.x,
-        character.referencePosition.y
-    );
+    const x = character.referencePosition.x * matrix[0] + character.referencePosition.y * matrix[2] + matrix[4];
+    const y = character.referencePosition.x * matrix[1] + character.referencePosition.y * matrix[3] + matrix[5];
 
     // 基準点のElementの表示処理
     screenReferencePointShowService(
-        $getScreenOffsetLeft() + boundsPoint.x + matrix[4] + point.x,
-        $getScreenOffsetTop() + boundsPoint.y + matrix[5] + point.y
+        $getScreenOffsetLeft() + x,
+        $getScreenOffsetTop() + y
     );
 };

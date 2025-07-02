@@ -37,11 +37,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 選択中のDisplayObjectを変更前の状態に戻す
     // fixed logic
-    transformSettingRestoreBeforeMatrixService();
+    // transformSettingRestoreBeforeMatrixService();
 
     // 変形に合わせて表示を更新
-    const rotation = $clamp(parseInt(element.value), 1, Number.MAX_VALUE);
-    console.log("rotation", rotation);
+    const rotation = $clamp(parseInt(element.value), 0, 359);
 
     // 変更前のmatrixを削除
     transformSetting.clear();
