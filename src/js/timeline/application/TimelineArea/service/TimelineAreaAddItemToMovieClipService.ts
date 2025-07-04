@@ -35,5 +35,5 @@ export const execute = async (x: number, y: number, path: string): Promise<void>
     // ドロップした座標に対してoffset値と拡大値を適用
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
     await externalTimeline
-        .addItemToMovieClip(localX, localY, path);
+        .addItemToMovieClip(localX | 0, localY | 0, path);
 };

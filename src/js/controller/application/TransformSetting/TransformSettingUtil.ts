@@ -186,28 +186,33 @@ export const $createTransformElementStyle = (
     const referenceX = Math.abs(bounds.xMax - bounds.xMin) / 2;
     const referenceY = Math.abs(bounds.yMax - bounds.yMin) / 2;
 
-    const transform = [];
-    transform.push(`translate(${referenceX}px, ${referenceY}px)`);
-
-    if (character.rotation) {
-        transform.push(`rotate(${character.rotation}deg)`);
-    }
-
     const concatenatedMatrix = $getConcatenatedMatrix();
     const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
 
     const scaleX = characterCalcGetScaleXService(matrix);
     const scaleY = characterCalcGetScaleYService(matrix);
 
-    if (scaleX !== 1 || scaleY !== 1) {
-        transform.push(`scale(${scaleX}, ${scaleY})`);
-    }
+    const tx = referenceX * Math.abs(scaleX) - referenceX * matrix[0] - referenceY * matrix[2];
+    const ty = referenceY * Math.abs(scaleY) - referenceX * matrix[1] - referenceY * matrix[3];
 
-    if (0 > scaleX) {
-        transform.push(`rotateX(${Math.PI}rad)`);
-    }
+    const transform = [];
+    // if (character.rotation) {
+    //     transform.push(`translate(${referenceX}px, ${referenceY}px)`);
+    //     transform.push(`rotate(${character.rotation}deg)`);
+    //     transform.push(`translate(${-referenceX}px, ${-referenceY}px)`);
+    // }
 
-    transform.push(`translate(${-referenceX}px, ${-referenceY}px)`);
+    transform.push(`matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, ${tx.toFixed(2)}, ${ty.toFixed(2)})`);
+
+    // if (scaleX !== 1 || scaleY !== 1) {
+    //     transform.push(`translate(${referenceX}px, ${referenceY}px)`);
+    //     transform.push(`scale(${scaleX}, ${scaleY})`);
+    //     transform.push(`translate(${-referenceX}px, ${-referenceY}px)`);
+    // }
+
+    // if (0 > scaleX) {
+    //     transform.push(`rotateX(${Math.PI}rad)`);
+    // }
 
     if (!transform.length
         && !concatenatedMatrix[4]

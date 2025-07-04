@@ -44,7 +44,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     transformSettingRestoreBeforeMatrixService();
 
     // 変形に合わせて表示を更新
-    const scaleX = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+
+    const scaleX = $clamp(Math.round(parseFloat(element.value) * 10000) / 10000, -Number.MAX_VALUE, Number.MAX_VALUE);
     transformSettingUpdateScaleXToElementValuesUseCase(scaleX / 100 / transformSetting.scaleX);
 
     if (transformSetting.scaleLocked) {
@@ -54,7 +55,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             return ;
         }
 
-        const scaleY = $clamp(parseFloat(parseFloat(scaleYElement.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+        const scaleY = $clamp(Math.round(parseFloat(scaleYElement.value) * 10000) / 10000, -Number.MAX_VALUE, Number.MAX_VALUE);
         transformSettingUpdateScaleYToElementValuesUseCase(scaleY / 100 / transformSetting.scaleY);
     }
 

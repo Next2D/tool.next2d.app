@@ -107,6 +107,7 @@ export const execute = (scale_y: number): void =>
                 case $VIDEO_TYPE:
                     {
                         const transform = $createTransformElementStyle(character, workSpace);
+                        node.style.transform = "";
                         if (transform) {
                             node.style.transform = transform.replace(/transform: /g, "").replace(";", "");
                         }
@@ -128,11 +129,8 @@ export const execute = (scale_y: number): void =>
                             transformSetting.scaleX / transformSetting.beforeScaleX,
                             currentValue / beforeValue
                         );
-                        if (!transform) {
-                            continue;
-                        }
 
-                        canvas.style.transform = transform;
+                        canvas.style.transform = transform ? transform : "";
                     }
                     break;
 

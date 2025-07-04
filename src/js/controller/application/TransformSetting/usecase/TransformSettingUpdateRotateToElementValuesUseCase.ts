@@ -105,8 +105,15 @@ export const execute = (rotation: number): void =>
             );
 
             // 中心点に合わせて変形
-            const scaleX = character.scaleX;
-            const scaleY = character.scaleY;
+            const matrix = character.matrix;
+            const scaleX = Math.sqrt(
+                matrix[0] * matrix[0]
+                + matrix[1] * matrix[1]
+            );
+            const scaleY = Math.sqrt(
+                matrix[2] * matrix[2]
+                + matrix[3] * matrix[3]
+            );
             const beforeMatrix = $multiplicationMatrix(
                 invertMatrix,
                 new Float32Array([scaleX, 0, 0, scaleY, character.x, character.y])
@@ -129,8 +136,8 @@ export const execute = (rotation: number): void =>
                 case $BITMAP_TYPE:
                 case $VIDEO_TYPE:
                     {
-                        node.style.transform = "";
                         const transform = $createTransformElementStyle(character, workSpace);
+                        node.style.transform = "";
                         if (transform) {
                             node.style.transform = transform.replace(/transform: /, "").replace(";", "");
                         }

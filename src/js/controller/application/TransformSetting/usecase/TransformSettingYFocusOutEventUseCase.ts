@@ -26,7 +26,10 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 入力モードを終了する
     $updateKeyLock(false);
 
-    const value = parseFloat($clamp(parseFloat(element.value), -Number.MAX_VALUE, Number.MAX_VALUE).toFixed(2));
+    const value = $clamp(
+        Math.round(parseFloat(element.value) * 10000) / 10000,
+        -Number.MAX_VALUE, Number.MAX_VALUE
+    );
     element.value = `${value}`;
 
     const workSpace = $getCurrentWorkSpace();

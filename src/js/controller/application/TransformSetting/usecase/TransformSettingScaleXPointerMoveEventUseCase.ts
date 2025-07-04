@@ -39,7 +39,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 表示を更新
-        const value  = parseFloat(parseFloat(element.value).toFixed(2));
+        const value = Math.round(parseFloat(element.value) * 10000) / 10000;
         let scaleX = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
         if (!scaleX) {
             scaleX = 0.01;
@@ -57,7 +57,7 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
-            const value = parseFloat(parseFloat(scaleYElement.value).toFixed(2));
+            const value = Math.round(parseFloat(scaleYElement.value) * 10000) / 10000;
             let scaleY = $clamp(value * scale, -Number.MAX_VALUE, Number.MAX_VALUE);
             if (!scaleY) {
                 scaleY = 0.01;

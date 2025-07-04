@@ -37,9 +37,12 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 表示を更新
-        const value = parseFloat(parseFloat(element.value).toFixed(2));
-        const movementX = parseFloat(event.movementX.toFixed(2));
-        const x = $clamp(value + $globalToLocal(movementX).x, -Number.MAX_VALUE, Number.MAX_VALUE);
+        const value = Math.round(parseFloat(element.value) * 10000) / 10000;
+        const movementX = event.movementX;
+        const x = $clamp(
+            value + Math.round($globalToLocal(movementX).x * 10000) / 10000,
+            -Number.MAX_VALUE, Number.MAX_VALUE
+        );
         element.value = `${x}`;
 
         // マウスで移動した量を更新
