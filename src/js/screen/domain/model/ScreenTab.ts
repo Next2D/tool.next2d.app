@@ -30,7 +30,7 @@ export class ScreenTab
      * @description 初期起動関数
      *              initial invoking function
      *
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */

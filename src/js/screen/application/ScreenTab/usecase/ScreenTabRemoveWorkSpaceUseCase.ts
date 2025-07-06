@@ -1,5 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $replace } from "@/language/application/LanguageUtil";
+import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
 
 /**
  * @description タブの終了実行のユースケース
@@ -24,5 +25,5 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
     }
 
     // プロジェクトを終了
-    await work_space.remove();
+    await workSpaceRemoveUseCase(work_space);
 };

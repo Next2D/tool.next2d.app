@@ -1,4 +1,3 @@
-import { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $getAllWorkSpace } from "../../CoreUtil";
 // @ts-ignore
 import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
@@ -22,20 +21,20 @@ export const execute = (): Promise<Uint8Array | null> =>
     return new Promise((reslove) =>
     {
         // 全てのWorkSpcaceからobjectを取得
-        const workSpaces: WorkSpace[] = $getAllWorkSpace();
+        const workSpaces = $getAllWorkSpace();
         if (!workSpaces.length) {
             return reslove(null);
         }
 
         const objects = [];
         for (let idx = 0; idx < workSpaces.length; ++idx) {
-            const workSpace: WorkSpace = workSpaces[idx];
+            const workSpace = workSpaces[idx];
             objects.push(workSpace.toObject());
         }
 
         const value = encodeURIComponent(JSON.stringify(objects));
-        const buffer: Uint8Array = new Uint8Array(value.length);
-        for (let idx: number = 0; idx < value.length; ++idx) {
+        const buffer = new Uint8Array(value.length);
+        for (let idx = 0; idx < value.length; ++idx) {
             buffer[idx] = value[idx].charCodeAt(0);
         }
 

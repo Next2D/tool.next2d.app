@@ -11,8 +11,6 @@ import { MovieClip } from "./MovieClip";
 import { Stage } from "./Stage";
 import { execute as workSpaceRunUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRunUseCase";
 import { execute as workSpaceStopUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceStopUseCase";
-import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
-import { execute as workSpaceRemoveUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceRemoveUseCase";
 import { execute as workSpaceLoadLibraryService } from "@/core/application/WorkSpace/service/WorkSpaceLoadLibraryService";
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
 import { execute as workSpaceCreateSymbolMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSymbolMapService";
@@ -45,24 +43,184 @@ let $workSpaceId: number = 1;
  */
 export class WorkSpace<I extends Instance = Instance>
 {
-    private _$id: number;
-    private _$name: string;
-    private _$scene: MovieClip;
-    private _$active: boolean;
-    private _$historyIndex: number;
-    private _$scale: number;
-    private readonly _$root: MovieClip;
-    private readonly _$stage: Stage;
-    private readonly _$libraries: Map<number, I>;
-    private readonly _$pathMap: Map<string, number>;
-    private readonly _$symbolMap: Map<string, number>;
-    private readonly _$screenTab: ScreenTab;
-    private readonly _$toolAreaState: IUserToolAreaStateObject;
-    private readonly _$timelineAreaState: IUserTimelineAreaStateObject;
-    private readonly _$propertyAreaState: IUserPropertyAreaStateObject;
-    private readonly _$controllerAreaState: IUserControllerAreaStateObject;
-    private readonly _$plugins: Map<any, any>;
-    private readonly _$histories: IHistoryObject[];
+    /**
+     * @description プロジェクトのユニークIDを返却
+     *              Return the unique ID of the project
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    public id: number;
+
+    /**
+     * @description プロジェクト名を返す
+     *              Return project name
+     *
+     * @member {string} name
+     * @return {string}
+     * @public
+     */
+    public name: string;
+
+    /**
+     * @description プロジェクトのスケールを返す
+     *              Returns the scale of the project
+     *
+     * @return {number}
+     * @readonly
+     * @public
+     */
+    public scale: number;
+
+    /**
+     * @description 選択中のMovieClipを返却
+     *              Return the selected MovieClip
+     *
+     * @member {MovieClip}
+     * @public
+     */
+    public scene: MovieClip;
+
+    /**
+     * @description プロジェクトの起動状態を返却
+     *              Project startup status returned
+     *
+     * @return {boolean}
+     * @readonly
+     * @public
+     */
+    public active: boolean;
+
+    /**
+     * @description 作業履歴の配列のポインター情報
+     *              Pointer information for the work history array
+     *
+     * @member {number} index
+     * @return {number}
+     * @public
+     */
+    public historyIndex: number;
+
+    /**
+     * @description rootのMovieClipを返す
+     *              Returns the root MovieClip
+     *
+     * @return {MovieClip}
+     * @readonly
+     * @public
+     */
+    public readonly root: MovieClip;
+
+    /**
+     * @description プロジェクトのStageオブジェクトを返す
+     *              Returns the Stage object of the project
+     *
+     * @return {Stage}
+     * @readonly
+     * @public
+     */
+    public readonly stage: Stage;
+
+    /**
+     * @description ライブラリのアイテム情報を全て返却
+     *              Return all item information in the library
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    public readonly libraries: Map<number, I>;
+
+    /**
+     * @description ライブラリ名とIDのマッピング情報を返却
+     *              Return library name and ID mapping information
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    public readonly pathMap: Map<string, number>;
+
+    /**
+     * @description シンボル名とIDのマッピング情報を返却
+     *              Symbol name and ID mapping information returned
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    public readonly symbolMap: Map<string, number>;
+
+    /**
+     * @description プロジェクトのタブオブジェクトを返す
+     *              Returns the tab object of the project
+     *
+     * @return {Stage}
+     * @readonly
+     * @public
+     */
+    public readonly screenTab: ScreenTab;
+
+    /**
+     * @description ツールエリアの移動状況のオブジェクトを返却
+     *              Returns tool area movement status objects
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    public readonly toolAreaState: IUserToolAreaStateObject;
+
+    /**
+     * @description タイムラインエリアの移動状況のオブジェクトを返却
+     *              Returns movement status objects in the timeline area
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    public readonly timelineAreaState: IUserTimelineAreaStateObject;
+
+    /**
+     * @description プロパティエリアの移動状況のオブジェクトを返却
+     *              Returns an object of the movement status of the property area
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    public readonly propertyAreaState: IUserPropertyAreaStateObject;
+
+    /**
+     * @description コントローラーエリアの状況オブジェクトを返却
+     *              Returns controller area status object
+     *
+     * @return {object}
+     * @readonly
+     * @public
+     */
+    public readonly controllerAreaState: IUserControllerAreaStateObject;
+
+    /**
+     * @description プラグインのマッピング情報を返却
+     *              Returns plugin mapping information
+     *
+     * @return {Map}
+     * @readonly
+     * @public
+     */
+    public readonly plugins: Map<any, any>;
+
+    /**
+     * @description 作業履歴の配列を返却
+     *              Returns an array of work history
+     *
+     * @return {array}
+     * @readonly
+     * @public
+     */
+    public readonly histories: IHistoryObject[];
 
     /**
      * @constructor
@@ -70,48 +228,14 @@ export class WorkSpace<I extends Instance = Instance>
      */
     constructor ()
     {
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$id = $workSpaceId++;
+        this.id        = $workSpaceId++;
+        this.name      = `Untitled-${this.id}`;
+        this.libraries = new Map();
+        this.pathMap   = new Map();
+        this.symbolMap = new Map();
 
-        /**
-         * @type {string}
-         * @default ""
-         * @private
-         */
-        this._$name = `Untitled-${this._$id}`;
-
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$libraries = new Map();
-
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$pathMap = new Map();
-
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$symbolMap = new Map();
-
-        /**
-         * @type {Stage}
-         * @private
-         */
-        this._$stage = new Stage();
-
-        /**
-         * @type {MovieClip}
-         * @private
-         */
-        this._$root = new MovieClip({
+        this.stage = new Stage();
+        this.root  = new MovieClip({
             "id": 0,
             "type": $MOVIE_CLIP_TYPE,
             "name": "main",
@@ -119,32 +243,18 @@ export class WorkSpace<I extends Instance = Instance>
         });
 
         // root情報をセット
-        externalWorkSpaceRegisterInstanceService(this, this._$root);
+        externalWorkSpaceRegisterInstanceService(this, this.root);
 
-        /**
-         * @type {MovieClip}
-         * @private
-         */
-        this._$scene = this._$root;
-
-        /**
-         * @type {ScreenTab}
-         * @private
-         */
-        this._$screenTab = new ScreenTab(this);
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$active = false;
+        this.scene     = this.root;
+        this.screenTab = new ScreenTab(this);
+        this.active    = false;
+        this.scale     = 1;
 
         /**
          * @type {object}
          * @private
          */
-        this._$toolAreaState = {
+        this.toolAreaState = {
             "state": "fixed",
             "offsetLeft": 0,
             "offsetTop": 0
@@ -154,7 +264,7 @@ export class WorkSpace<I extends Instance = Instance>
          * @type {object}
          * @private
          */
-        this._$timelineAreaState = {
+        this.timelineAreaState = {
             "state": "fixed",
             "offsetLeft": 0,
             "offsetTop": 0,
@@ -168,7 +278,7 @@ export class WorkSpace<I extends Instance = Instance>
          * @type {object}
          * @private
          */
-        this._$propertyAreaState = {
+        this.propertyAreaState = {
             "state": "fixed",
             "offsetLeft": 0,
             "offsetTop": 0
@@ -178,40 +288,16 @@ export class WorkSpace<I extends Instance = Instance>
          * @type {object}
          * @private
          */
-        this._$controllerAreaState = {
+        this.controllerAreaState = {
             "width": $CONTROLLER_DEFAULT_WIDTH_SIZE
         };
 
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$histories = [];
+        // 履歴の配列
+        this.histories    = [];
+        this.historyIndex = 0;
 
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$historyIndex = 0;
-
-        // /**
-        //  * @type {Map}
-        //  * @private
-        //  */
-        // this._$nameMap = new Map();
-
-        /**
-         * @type {Map}
-         * @private
-         */
-        this._$plugins = new Map();
-
-        /**
-         * @type {number}
-         * @default 1
-         * @private
-         */
-        this._$scale = 1;
+        // プラグインのマッピング情報
+        this.plugins = new Map();
     }
 
     /**
@@ -231,242 +317,6 @@ export class WorkSpace<I extends Instance = Instance>
     }
 
     /**
-     * @description プロジェクトのユニークIDを返却
-     *              Return the unique ID of the project
-     *
-     * @return {number}
-     * @readonly
-     * @public
-     */
-    get id (): number
-    {
-        return this._$id;
-    }
-
-    /**
-     * @description プロジェクトの起動状態を返却
-     *              Project startup status returned
-     *
-     * @return {boolean}
-     * @readonly
-     * @public
-     */
-    get active (): boolean
-    {
-        return this._$active;
-    }
-
-    /**
-     * @description rootのMovieClipを返す
-     *              Returns the root MovieClip
-     *
-     * @return {MovieClip}
-     * @readonly
-     * @public
-     */
-    get root (): MovieClip
-    {
-        return this._$root;
-    }
-
-    /**
-     * @description プロジェクトのStageオブジェクトを返す
-     *              Returns the Stage object of the project
-     *
-     * @return {Stage}
-     * @readonly
-     * @public
-     */
-    get stage (): Stage
-    {
-        return this._$stage;
-    }
-
-    /**
-     * @description 作業履歴の配列を返却
-     *              Returns an array of work history
-     *
-     * @return {array}
-     * @readonly
-     * @public
-     */
-    get histories (): IHistoryObject[]
-    {
-        return this._$histories;
-    }
-
-    /**
-     * @description 作業履歴の配列のポインター情報
-     *              Pointer information for the work history array
-     *
-     * @member {number} index
-     * @return {number}
-     * @public
-     */
-    get historyIndex (): number
-    {
-        return this._$historyIndex;
-    }
-    set historyIndex (index: number)
-    {
-        this._$historyIndex = index | 0;
-    }
-
-    /**
-     * @description 選択中のMovieClipを返却
-     *              Return the selected MovieClip
-     *
-     * @member {MovieClip}
-     * @public
-     */
-    get scene (): MovieClip
-    {
-        return this._$scene;
-    }
-    set scene (scene: MovieClip)
-    {
-        this._$scene = scene;
-    }
-
-    /**
-     * @description ライブラリのアイテム情報を全て返却
-     *              Return all item information in the library
-     *
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get libraries ():  Map<number, I>
-    {
-        return this._$libraries;
-    }
-
-    /**
-     * @description ライブラリ名とIDのマッピング情報を返却
-     *              Return library name and ID mapping information
-     *
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get pathMap (): Map<string, number>
-    {
-        return this._$pathMap;
-    }
-
-    /**
-     * @description シンボル名とIDのマッピング情報を返却
-     *              Symbol name and ID mapping information returned
-     *
-     * @return {Map}
-     * @readonly
-     * @public
-     */
-    get symbolMap (): Map<string, number>
-    {
-        return this._$symbolMap;
-    }
-
-    /**
-     * @description プロジェクトのタブオブジェクトを返す
-     *              Returns the tab object of the project
-     *
-     * @return {Stage}
-     * @readonly
-     * @public
-     */
-    get screenTab (): ScreenTab
-    {
-        return this._$screenTab;
-    }
-
-    /**
-     * @description ツールエリアの移動状況のオブジェクトを返却
-     *              Returns tool area movement status objects
-     *
-     * @return {object}
-     * @readonly
-     * @public
-     */
-    get toolAreaState (): IUserToolAreaStateObject
-    {
-        return this._$toolAreaState;
-    }
-
-    /**
-     * @description タイムラインエリアの移動状況のオブジェクトを返却
-     *              Returns movement status objects in the timeline area
-     *
-     * @return {object}
-     * @readonly
-     * @public
-     */
-    get timelineAreaState (): IUserTimelineAreaStateObject
-    {
-        return this._$timelineAreaState;
-    }
-
-    /**
-     * @description コントローラーエリアの状況オブジェクトを返却
-     *              Returns controller area status object
-     *
-     * @return {object}
-     * @readonly
-     * @public
-     */
-    get controllerAreaState (): IUserControllerAreaStateObject
-    {
-        return this._$controllerAreaState;
-    }
-
-    /**
-     * @description プロパティエリアの移動状況のオブジェクトを返却
-     *              Returns an object of the movement status of the property area
-     *
-     * @return {object}
-     * @readonly
-     * @public
-     */
-    get propertyAreaState (): IUserPropertyAreaStateObject
-    {
-        return this._$propertyAreaState;
-    }
-
-    /**
-     * @description プロジェクトのスケールを返す
-     *              Returns the scale of the project
-     *
-     * @return {number}
-     * @readonly
-     * @public
-     */
-    get scale (): number
-    {
-        return this._$scale;
-    }
-    set scale (scale: number)
-    {
-        this._$scale = scale;
-    }
-
-    /**
-     * @description プロジェクト名を返す
-     *              Return project name
-     *
-     * @member {string} name
-     * @return {string}
-     * @public
-     */
-    get name (): string
-    {
-        return this._$name;
-    }
-    set name (name: string)
-    {
-        this._$name = `${name}`;
-    }
-
-    /**
      * @description ライブラリのユニークIDを生成
      *              Generate unique ID for library
      *
@@ -476,7 +326,7 @@ export class WorkSpace<I extends Instance = Instance>
      */
     get nextLibraryId (): number
     {
-        const keys: number[] = Array.from(this._$libraries.keys());
+        const keys: number[] = Array.from(this.libraries.keys());
         keys.sort((a: number, b: number): number =>
         {
             if (a > b) {
@@ -490,21 +340,8 @@ export class WorkSpace<I extends Instance = Instance>
             return 0;
         });
 
-        const lastLibraryId: number = (this._$libraries.get(keys.pop() || 0) as I).id;
+        const lastLibraryId: number = (this.libraries.get(keys.pop() || 0) as I).id;
         return lastLibraryId + 1;
-    }
-
-    /**
-     * @description 初期起動関数
-     *              initial invoking function
-     *
-     * @return {Promise}
-     * @method
-     * @public
-     */
-    async initialize (): Promise<void>
-    {
-        await workSpaceInitializeUseCase(this);
     }
 
     /**
@@ -522,11 +359,11 @@ export class WorkSpace<I extends Instance = Instance>
         this.name = object.name;
 
         if (share && object.id) {
-            this._$id = object.id;
+            this.id = object.id;
         }
 
         // Stageをセット
-        this._$stage.load(object.stage);
+        this.stage.load(object.stage);
 
         if (object.libraries) {
             await this.loadLibrary(object.libraries);
@@ -552,11 +389,11 @@ export class WorkSpace<I extends Instance = Instance>
         }
 
         if (object.historyIndex) {
-            this._$historyIndex = object.historyIndex | 0;
+            this.historyIndex = object.historyIndex | 0;
         }
 
         if (object.histories) {
-            this._$histories.push(...object.histories);
+            this.histories.push(...object.histories);
         }
     }
 
@@ -571,8 +408,8 @@ export class WorkSpace<I extends Instance = Instance>
      */
     getLibrary (library_id: number): I | null
     {
-        return this._$libraries.has(library_id)
-            ? this._$libraries.get(library_id) as I
+        return this.libraries.has(library_id)
+            ? this.libraries.get(library_id) as I
             : null;
     }
 
@@ -607,16 +444,12 @@ export class WorkSpace<I extends Instance = Instance>
      */
     addHistory (history_object: IHistoryObject): void
     {
-        if (!history_object) {
-            throw new Error("");
-        }
-
         // ポジション以降の履歴を削除
-        this._$histories.length = this._$historyIndex;
-        this._$histories[this._$historyIndex++] = history_object;
+        this.histories.length = this.historyIndex;
+        this.histories[this.historyIndex++] = history_object;
 
-        while (this._$histories.length > $HISTORY_LIMIT) {
-            this._$histories.shift();
+        while (this.histories.length > $HISTORY_LIMIT) {
+            this.histories.shift();
         }
     }
 
@@ -631,7 +464,7 @@ export class WorkSpace<I extends Instance = Instance>
      */
     updateToolArea (object: IUserToolAreaStateObject): void
     {
-        Object.assign(this._$toolAreaState, object);
+        Object.assign(this.toolAreaState, object);
     }
 
     /**
@@ -645,7 +478,7 @@ export class WorkSpace<I extends Instance = Instance>
      */
     updatePropertyArea (object: IUserPropertyAreaStateObject): void
     {
-        Object.assign(this._$propertyAreaState, object);
+        Object.assign(this.propertyAreaState, object);
     }
 
     /**
@@ -659,7 +492,7 @@ export class WorkSpace<I extends Instance = Instance>
      */
     updateTimelineArea (object: IUserTimelineAreaStateObject): void
     {
-        Object.assign(this._$timelineAreaState, object);
+        Object.assign(this.timelineAreaState, object);
     }
 
     /**
@@ -673,7 +506,7 @@ export class WorkSpace<I extends Instance = Instance>
      */
     updateControllerArea (object: IUserControllerAreaStateObject): void
     {
-        Object.assign(this._$controllerAreaState, object);
+        Object.assign(this.controllerAreaState, object);
     }
 
     /**
@@ -687,7 +520,7 @@ export class WorkSpace<I extends Instance = Instance>
     async stop (): Promise<void>
     {
         // 状態を終了状態に更新
-        this._$active = false;
+        this.active = false;
 
         // 終了処理を実行
         await workSpaceStopUseCase(this);
@@ -704,24 +537,10 @@ export class WorkSpace<I extends Instance = Instance>
     async run (): Promise<void>
     {
         // 状態を起動状態に更新
-        this._$active = true;
+        this.active = true;
 
         // 起動処理を実行
         await workSpaceRunUseCase(this);
-    }
-
-    /**
-     * @description ワークスペースの削除処理
-     *              Workspace deletion process
-     *
-     * @return {Promise}
-     * @method
-     * @public
-     */
-    async remove (): Promise<void>
-    {
-        // 削除処理を実行
-        await workSpaceRemoveUseCase(this);
     }
 
     /**
@@ -735,7 +554,7 @@ export class WorkSpace<I extends Instance = Instance>
     toObject (): IWorkSpaceSaveObject
     {
         const libraries = [];
-        for (const instance of this._$libraries.values()) {
+        for (const instance of this.libraries.values()) {
             libraries.push(instance.toObject());
         }
 
@@ -745,13 +564,13 @@ export class WorkSpace<I extends Instance = Instance>
             "name": this.name,
             "stage": this.stage.toObject(),
             "libraries": libraries,
-            "plugins": Array.from(this._$plugins.values()),
-            "tool": structuredClone(this._$toolAreaState),
-            "timeline": structuredClone(this._$timelineAreaState),
-            "property": structuredClone(this._$propertyAreaState),
-            "controller": structuredClone(this._$controllerAreaState),
-            "historyIndex": this._$historyIndex,
-            "histories": this._$histories
+            "plugins": Array.from(this.plugins.values()),
+            "tool": structuredClone(this.toolAreaState),
+            "timeline": structuredClone(this.timelineAreaState),
+            "property": structuredClone(this.propertyAreaState),
+            "controller": structuredClone(this.controllerAreaState),
+            "historyIndex": this.historyIndex,
+            "histories": this.histories
         };
     }
 }

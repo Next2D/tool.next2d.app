@@ -1,9 +1,10 @@
 import { execute } from "./StageStyleUpdateColorService";
 import { $SCREEN_STAGE_ID } from "../../../../config/ScreenConfig";
+import { describe, expect, it } from "vitest";
 
 describe("StageStyleUpdateColorServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const div = document.createElement("div");
         div.id = $SCREEN_STAGE_ID;

@@ -1,5 +1,4 @@
 import "../css/style.scss";
-
 import "@next2d/player";
 import {
     initialize,

@@ -1,6 +1,6 @@
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as screenTabRemoveWorkSpaceService } from "../service/ScreenTabRemoveWorkSpaceService";
+import { execute as screenTabRemoveWorkSpaceUseCase } from "./ScreenTabRemoveWorkSpaceUseCase";
 import { execute as screenTabGetListElementService } from "../service/ScreenTabGetListElementService";
 import { execute as screenTabGetElementService } from "../service/ScreenTabGetElementService";
 import { execute as screenTabPointerDownEventUseCase } from "./ScreenTabPointerDownEventUseCase";
@@ -61,7 +61,7 @@ export const execute = (
             event.stopPropagation();
 
             // 終了処理
-            await screenTabRemoveWorkSpaceService(work_space);
+            await screenTabRemoveWorkSpaceUseCase(work_space);
         });
     }
 

@@ -119,7 +119,7 @@ export const $registerWorkSpace = (workSpace: WorkSpace): void =>
  */
 export const $createWorkSpace = (): WorkSpace =>
 {
-    const workSpace: WorkSpace = new WorkSpace();
+    const workSpace = new WorkSpace();
 
     // 配列に登録
     $workSpaces.push(workSpace);
@@ -145,9 +145,9 @@ export const $createWorkSpace = (): WorkSpace =>
 export const $removeWorkSpace = async (
     work_space: WorkSpace,
     active: boolean
-): Promise<void> => {
+): Promise<WorkSpace | void> => {
 
-    const index: number = $workSpaces.indexOf(work_space);
+    const index = $workSpaces.indexOf(work_space);
     if (index === -1) {
         return ;
     }
@@ -160,8 +160,9 @@ export const $removeWorkSpace = async (
         // 削除するプロジェクトがアクティブなら別のプロジェクトを起動
         if (active) {
             $workSpace = null;
-            await $changeCurrentWorkSpace($workSpaces[0] as NonNullable<WorkSpace>);
-            return;
+            const workSpace = $workSpaces[0] as NonNullable<WorkSpace>
+            await $changeCurrentWorkSpace(workSpace);
+            return workSpace;
         }
 
         return ;
@@ -169,14 +170,13 @@ export const $removeWorkSpace = async (
 
     // 起動中のWorkSpaceがなければ自動的に起動
     WorkSpace.workSpaceId = 1;
-    const workSpace: WorkSpace = $createWorkSpace();
+    const workSpace = $createWorkSpace();
 
     // 削除するプロジェクトを停止して、新しいプロジェクト起動
     await work_space.stop();
 
     // 初期化して起動
-    await workSpace.initialize();
-    await workSpace.run();
+    return workSpace;
 };
 
 /**

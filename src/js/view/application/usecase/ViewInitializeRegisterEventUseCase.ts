@@ -1,6 +1,6 @@
 import { $VIEW_ID } from "@/config/ViewConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as viewMouseDownEventService } from "../service/ViewMouseDownEventService";
+import { execute as viewPointerDownEventService } from "../service/ViewPointerDownEventService";
 
 /**
  * @description Viewコンテナの初期起動時のユースケース
@@ -17,5 +17,5 @@ export const execute = (): void =>
         return ;
     }
 
-    element.addEventListener(EventType.POINTER_DOWN, viewMouseDownEventService);
+    element.addEventListener(EventType.POINTER_DOWN, viewPointerDownEventService);
 };

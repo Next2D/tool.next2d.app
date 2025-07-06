@@ -5,6 +5,7 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
 import { $removeWorkSpace } from "@/core/application/CoreUtil";
 import { $replace } from "@/language/application/LanguageUtil";
 import { $removeWorkSpaceCache } from "@/cache/CacheUtil";
+import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
 
 /**
  * @description ワークスペースの削除処理のユースケース
@@ -34,7 +35,11 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
     work_space.screenTab.remove();
 
     // プロジェクトを終了
-    await $removeWorkSpace(work_space, active);
+    const workSpace = await $removeWorkSpace(work_space, active);
+    if (workSpace && !workSpace.active) {
+        await workSpaceInitializeUseCase(workSpace);
+        await workSpace.run();
+    }
 
     // 自動保存を予約
     await userDatabaseAutoSaveReservationUseCase();

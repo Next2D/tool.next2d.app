@@ -1,10 +1,11 @@
 import { execute } from "./StageStyleUpdateSizeService";
 import { $SCREEN_STAGE_ID } from "../../../../config/ScreenConfig";
 import { $getCurrentWorkSpace, $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { describe, expect, it } from "vitest";
 
 describe("StageStyleUpdateSizeServiceTest", () =>
 {
-    test("execute test", () =>
+    it("execute test", () =>
     {
         const workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 

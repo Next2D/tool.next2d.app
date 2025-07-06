@@ -1,6 +1,5 @@
 import type { IStageObject } from "@/interface/IStageObject";
 import { execute as stageRunUseCase } from "@/core/application/Stage/usecase/StageRunUseCase";
-import { $clamp } from "@/global/GlobalUtil";
 import {
     $STAGE_DEFAULT_FPS,
     $STAGE_DEFAULT_HEIGHT,
@@ -17,46 +16,6 @@ import {
  */
 export class Stage
 {
-    private _$width: number;
-    private _$height: number;
-    private _$fps: number;
-    private _$bgColor: string;
-
-    /**
-     * @constructor
-     * @public
-     */
-    constructor ()
-    {
-        /**
-         * @type {number}
-         * @default $STAGE_DEFAULT_WIDTH
-         * @private
-         */
-        this._$width = $STAGE_DEFAULT_WIDTH;
-
-        /**
-         * @type {number}
-         * @default $STAGE_DEFAULT_HEIGHT
-         * @private
-         */
-        this._$height = $STAGE_DEFAULT_HEIGHT;
-
-        /**
-         * @type {number}
-         * @default $STAGE_DEFAULT_FPS
-         * @private
-         */
-        this._$fps = $STAGE_DEFAULT_FPS;
-
-        /**
-         * @type {number}
-         * @default $STAGE_DEFAULT_COLOR
-         * @private
-         */
-        this._$bgColor = $STAGE_DEFAULT_COLOR;
-    }
-
     /**
      * @description ステージの表示の幅
      *              Stage display width
@@ -65,14 +24,7 @@ export class Stage
      * @default $STAGE_DEFAULT_WIDTH
      * @public
      */
-    get width (): number
-    {
-        return this._$width;
-    }
-    set width (width: number)
-    {
-        this._$width = $clamp(+width, 1, 1024 * 4);
-    }
+    public width: number;
 
     /**
      * @description ステージの表示の高さ
@@ -82,14 +34,7 @@ export class Stage
      * @default $STAGE_DEFAULT_HEIGHT
      * @public
      */
-    get height (): number
-    {
-        return this._$height;
-    }
-    set height (height: number)
-    {
-        this._$height = $clamp(+height, 1, 1024 * 4);
-    }
+    public height: number;
 
     /**
      * @description ステージの描画速度の設定
@@ -99,30 +44,28 @@ export class Stage
      * @default $STAGE_DEFAULT_FPS
      * @public
      */
-    get fps (): number
-    {
-        return this._$fps;
-    }
-    set fps (fps: number)
-    {
-        this._$fps = $clamp(fps | 0, 1, 60);
-    }
+    public fps: number;
 
     /**
      * @description ステージの背景色の設定
      *              Setting the background color of the stage
      *
-     * @return {string}
+     * @member {string}
      * @default $STAGE_DEFAULT_COLOR
      * @public
      */
-    get bgColor (): string
+    public bgColor: string;
+
+    /**
+     * @constructor
+     * @public
+     */
+    constructor ()
     {
-        return this._$bgColor;
-    }
-    set bgColor (color: string)
-    {
-        this._$bgColor = `${color}`.toLowerCase();
+        this.width   = $STAGE_DEFAULT_WIDTH;
+        this.height  = $STAGE_DEFAULT_HEIGHT;
+        this.fps     = $STAGE_DEFAULT_FPS;
+        this.bgColor = $STAGE_DEFAULT_COLOR;
     }
 
     /**

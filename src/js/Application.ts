@@ -10,10 +10,11 @@ import { execute as initializeShortcut } from "@/shortcut/application/Initialize
 import { execute as initializeController } from "@/controller/application/Initialize";
 import { execute as initializeView } from "@/view/application/Initialize";
 import { execute as initializeShare } from "@/share/Initialize";
-import { execute as bootUser } from "@/user/application/UserBoot";
 import { execute as detailModalRegisterFadeEventUseCase } from "@/menu/application/DetailModal/usecase/DetailModalRegisterFadeEventUseCase";
 import { execute as languageTranslationService } from "@/language/application/service/LanguageTranslationService";
 import { execute as registerWindowResizeEventUseCase } from "@/global/application/usecase/GlobalWindowResizeEventUseCase";
+import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
+import { execute as userDatabaseInitializeLoadUseCase } from "@/user/application/Database/usecase/UserDatabaseInitializeLoadUseCase";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { ExternalApplication } from "./external/ExternalApplication";
@@ -52,7 +53,7 @@ const initializes: Function[] = [
  * @private
  */
 const boots: Function[] = [
-    bootUser
+    userDatabaseInitializeLoadUseCase
 ];
 
 /**
@@ -153,7 +154,7 @@ export const run = async (): Promise<void> =>
         if (!workSpace) {
             continue ;
         }
-        await workSpace.initialize();
+        await workSpaceInitializeUseCase(workSpace);
     }
 
     // リサイズイベントを登録

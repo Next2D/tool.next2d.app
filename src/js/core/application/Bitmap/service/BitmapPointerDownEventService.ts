@@ -23,7 +23,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントをキャンセル
     event.stopPropagation();
-    event.preventDefault();
 
     // 移動用のwindowイベントを登録
     const tool = $getActiveTool();
