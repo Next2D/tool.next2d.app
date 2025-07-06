@@ -16,7 +16,7 @@ describe("TimelineLayerControllerNameTextInactiveStyleServiceTest", () =>
         } as unknown as FocusEvent;
 
         expect(nameElement.contentEditable).toBe("true");
-        expect(nameElement.style.borderBottom).toBe("1px solid #f5f5f5");
+        expect(nameElement.style.borderBottom).toBe("1px solid rgb(245, 245, 245)");
 
         execute(eventMock);
 

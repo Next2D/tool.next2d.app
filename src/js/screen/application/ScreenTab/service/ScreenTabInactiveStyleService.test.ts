@@ -14,7 +14,7 @@ describe("ScreenTabInactiveStyleServiceTest", () =>
 
         expect(tabElement.draggable).toBe(false);
         expect(textElement.contentEditable).toBe("true");
-        expect(tabElement.style.borderBottom).toBe("1px solid #f5f5f5");
+        expect(tabElement.style.borderBottom).toBe("1px solid rgb(245, 245, 245)");
 
         execute(textElement, tabElement);
 

@@ -29,7 +29,13 @@ describe("TimelineLayerControllerUpdateLightIconElementStyleServiceTest", () =>
         execute(layer);
 
         expect(span.style.display).toBe("none");
-        expect(layerElement.style.borderBottom).toBe(`1px solid ${layer.color}`);
+
+        const intVal = parseInt(layer.color.replace("#", ""), 16);
+        const r = (intVal >> 16) & 0xff;
+        const g = (intVal >> 8) & 0xff;
+        const b = intVal & 0xff;
+
+        expect(layerElement.style.borderBottom).toBe(`1px solid rgb(${r}, ${g}, ${b})`);
 
         layer.light = false;
         execute(layer);
