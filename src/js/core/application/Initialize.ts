@@ -1,3 +1,4 @@
+import { EventType } from "@/tool/domain/event/EventType";
 import { $bootAudioContext } from "./CoreUtil";
 
 /**
@@ -11,5 +12,5 @@ import { $bootAudioContext } from "./CoreUtil";
 export const execute = async (): Promise<void> =>
 {
     // AudioContextの起動用クリックイベントを登録
-    window.addEventListener("pointerup", $bootAudioContext);
+    window.addEventListener(EventType.POINTER_UP, $bootAudioContext);
 };

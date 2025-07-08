@@ -42,6 +42,9 @@ export const execute = async (work_space: WorkSpace): Promise<void> =>
     // ライブラリで選択中のIDを初期化
     libraryArea.clear();
 
+    // プロジェクトをアクティブにする
+    work_space.active = true;
+
     // Stageを起動
     work_space.stage.run();
 

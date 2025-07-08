@@ -15,7 +15,6 @@ import { execute as workSpaceLoadLibraryService } from "@/core/application/WorkS
 import { execute as workSpaceCreatePathMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreatePathMapService";
 import { execute as workSpaceCreateSymbolMapService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSymbolMapService";
 import { execute as externalWorkSpaceRegisterInstanceService } from "@/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService";
-import { $VERSION } from "@/config/Config";
 import { $CONTROLLER_DEFAULT_WIDTH_SIZE } from "@/config/ControllerConfig";
 import { $clamp } from "@/global/GlobalUtil";
 import { $HISTORY_LIMIT } from "@/config/HistoryConfig";
@@ -326,7 +325,7 @@ export class WorkSpace<I extends Instance = Instance>
      */
     get nextLibraryId (): number
     {
-        const keys: number[] = Array.from(this.libraries.keys());
+        const keys = Array.from(this.libraries.keys());
         keys.sort((a: number, b: number): number =>
         {
             if (a > b) {
@@ -340,7 +339,7 @@ export class WorkSpace<I extends Instance = Instance>
             return 0;
         });
 
-        const lastLibraryId: number = (this.libraries.get(keys.pop() || 0) as I).id;
+        const lastLibraryId = (this.libraries.get(keys.pop() || 0) as I).id;
         return lastLibraryId + 1;
     }
 
@@ -348,7 +347,7 @@ export class WorkSpace<I extends Instance = Instance>
      * @description セーブデータからWorkSpaceを再構築
      *              Rebuild WorkSpace from saved data
      *
-     * @param  {object} object
+     * @param  {IWorkSpaceSaveObject} object
      * @param  {boolean} [share=false]
      * @return {Promise}
      * @method
@@ -541,36 +540,5 @@ export class WorkSpace<I extends Instance = Instance>
 
         // 起動処理を実行
         await workSpaceRunUseCase(this);
-    }
-
-    /**
-     * @description 今の状態をIndexedDBに保存
-     *              Save the current state to IndexedDB.
-     *
-     * @return {Promise}
-     * @method
-     * @public
-     */
-    toObject (): IWorkSpaceSaveObject
-    {
-        const libraries = [];
-        for (const instance of this.libraries.values()) {
-            libraries.push(instance.toObject());
-        }
-
-        return {
-            "version": $VERSION,
-            "id": this.id,
-            "name": this.name,
-            "stage": this.stage.toObject(),
-            "libraries": libraries,
-            "plugins": Array.from(this.plugins.values()),
-            "tool": structuredClone(this.toolAreaState),
-            "timeline": structuredClone(this.timelineAreaState),
-            "property": structuredClone(this.propertyAreaState),
-            "controller": structuredClone(this.controllerAreaState),
-            "historyIndex": this.historyIndex,
-            "histories": this.histories
-        };
     }
 }

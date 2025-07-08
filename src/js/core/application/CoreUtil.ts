@@ -160,7 +160,7 @@ export const $removeWorkSpace = async (
         // 削除するプロジェクトがアクティブなら別のプロジェクトを起動
         if (active) {
             $workSpace = null;
-            const workSpace = $workSpaces[0] as NonNullable<WorkSpace>
+            const workSpace = $workSpaces[0] as NonNullable<WorkSpace>;
             await $changeCurrentWorkSpace(workSpace);
             return workSpace;
         }

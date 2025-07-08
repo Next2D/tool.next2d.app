@@ -1,7 +1,7 @@
 import type { IShareInitializeSendObject } from "@/interface/IShareInitializeSendObject";
 import { $getSocket } from "../ShareUtil";
 import { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
+import { execute as workSpaceCreateSaveDataUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceCreateSaveDataUseCase";
 import { execute as shareGetS3EndPointRepository } from "../domain/repository/ShareGetS3EndPointRepository";
 import { execute as sharePutS3FileRepository } from "../domain/repository/SharePutS3FileRepository";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
@@ -23,7 +23,7 @@ export const execute = async (connection_id: string): Promise<void> =>
         return ;
     }
 
-    const buffer: Uint8Array | null = await workSpaceCreateSaveDataService();
+    const buffer: Uint8Array | null = await workSpaceCreateSaveDataUseCase();
     if (!buffer) {
         return ;
     }

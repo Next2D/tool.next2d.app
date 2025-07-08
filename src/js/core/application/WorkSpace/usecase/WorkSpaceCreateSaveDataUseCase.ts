@@ -1,4 +1,5 @@
 import { $getAllWorkSpace } from "../../CoreUtil";
+import { execute as workSpaceToObjectUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceToObjectUseCase";
 // @ts-ignore
 import ZlibDeflateWorker from "@/worker/ZlibDeflateWorker?worker&inline";
 
@@ -29,7 +30,10 @@ export const execute = (): Promise<Uint8Array | null> =>
         const objects = [];
         for (let idx = 0; idx < workSpaces.length; ++idx) {
             const workSpace = workSpaces[idx];
-            objects.push(workSpace.toObject());
+            if (!workSpace) {
+                continue;
+            }
+            objects.push(workSpaceToObjectUseCase(workSpace));
         }
 
         const value = encodeURIComponent(JSON.stringify(objects));

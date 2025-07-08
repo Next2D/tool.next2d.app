@@ -2,7 +2,7 @@ import type { ProgressMenu } from "@/menu/domain/model/ProgressMenu";
 import { $PROGRESS_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "@/menu/application/MenuUtil";
 import { execute as userDatabaseGetOpenDBRequestService } from "../service/UserDatabaseGetOpenDBRequestService";
-import { execute as workSpaceCreateSaveDataService } from "@/core/application/WorkSpace/service/WorkSpaceCreateSaveDataService";
+import { execute as workSpaceCreateSaveDataUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceCreateSaveDataUseCase";
 import { execute as bufferToBinaryService } from "@/core/service/BufferToBinaryService";
 import {
     $USER_DATABASE_NAME,
@@ -20,7 +20,7 @@ import {
 export const execute = async (): Promise<void> =>
 {
     // バイナリを生成
-    const buffer = await workSpaceCreateSaveDataService();
+    const buffer = await workSpaceCreateSaveDataUseCase();
     if (!buffer) {
         return ;
     }
