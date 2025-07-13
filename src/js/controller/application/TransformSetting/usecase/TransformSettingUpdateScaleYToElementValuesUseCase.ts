@@ -6,7 +6,7 @@ import { execute as transformSettingUpdateHeightElementService } from "@/control
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getScreenOffsetTop } from "@/global/GlobalUtil";
+import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $createMoveTransformElementStyle,
@@ -106,11 +106,10 @@ export const execute = (scale_y: number): void =>
                 case $BITMAP_TYPE:
                 case $VIDEO_TYPE:
                     {
-                        const transform = $createTransformElementStyle(character, workSpace);
-                        node.style.transform = "";
-                        if (transform) {
-                            node.style.transform = transform.replace(/transform: /g, "").replace(";", "");
-                        }
+                        const transform = $createTransformElementStyle(character);
+                        node.style.width  = `${character.width}px`;
+                        node.style.height = `${character.height}px`;
+                        node.style.transform = transform ? transform.replace(/transform: /, "").replace(";", "") : "";
                     }
                     break;
 
@@ -136,8 +135,8 @@ export const execute = (scale_y: number): void =>
 
             }
 
-            const y = $getScreenOffsetTop() + character.globalMinY;
-            node.style.top = `${y}px`;
+            node.style.left = `${$getScreenOffsetLeft() + character.globalMinX}px`;
+            node.style.top  = `${$getScreenOffsetTop()  + character.globalMinY}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateHeightElementService(character.height);

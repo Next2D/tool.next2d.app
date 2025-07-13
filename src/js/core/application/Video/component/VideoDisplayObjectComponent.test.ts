@@ -11,6 +11,6 @@ describe("VideoDisplayObjectComponent Test", () =>
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const character = new Character();
         expect(execute(character, 1))
-            .toBe(`<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; opacity: 1; "></div>`);
+            .toBe(`<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px; opacity: 1; transform: matrix(1, 0, 0, 1, 0, 0); "></div>`);
     });
 });

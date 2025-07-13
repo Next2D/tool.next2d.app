@@ -115,15 +115,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     // 移動量のオブジェクトを初期化
-    transformSetting.x = 0;
-    transformSetting.y = 0;
+    transformSetting.clear();
 
-    // 変形情報を初期化
-    transformSetting.scaleX   = 0;
-    transformSetting.scaleY   = 0;
-    transformSetting.rotation = 0;
-
-    // 移動前の座標を保存
+    // 移動前の座標を保持
     transformSetting.beforeX = position.x;
     transformSetting.beforeY = position.y;
 

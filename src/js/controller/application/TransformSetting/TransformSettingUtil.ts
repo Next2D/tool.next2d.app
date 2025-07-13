@@ -162,66 +162,15 @@ export const $createMoveTransformElementStyle = (
  *              Generate TransformStyle
  *
  * @param  {Character} character
- * @param  {WorkSpace} work_space
  * @return {string}
  * @method
  * @public
  */
-export const $createTransformElementStyle = (
-    character: Character,
-    work_space: WorkSpace
-): string => {
-
-    const instance = work_space.getLibrary(character.libraryId);
-    if (!instance) {
-        return "";
-    }
-
-    const bounds = instance.getRawBounds();
-    if (!bounds) {
-        return "";
-    }
-
-    // 実寸の中心座標を取得
-    const referenceX = Math.abs(bounds.xMax - bounds.xMin) / 2;
-    const referenceY = Math.abs(bounds.yMax - bounds.yMin) / 2;
-
+export const $createTransformElementStyle = (character: Character): string =>
+{
     const concatenatedMatrix = $getConcatenatedMatrix();
     const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
-
-    const scaleX = characterCalcGetScaleXService(matrix);
-    const scaleY = characterCalcGetScaleYService(matrix);
-
-    const tx = referenceX * Math.abs(scaleX) - referenceX * matrix[0] - referenceY * matrix[2];
-    const ty = referenceY * Math.abs(scaleY) - referenceX * matrix[1] - referenceY * matrix[3];
-
-    const transform = [];
-    // if (character.rotation) {
-    //     transform.push(`translate(${referenceX}px, ${referenceY}px)`);
-    //     transform.push(`rotate(${character.rotation}deg)`);
-    //     transform.push(`translate(${-referenceX}px, ${-referenceY}px)`);
-    // }
-
-    transform.push(`matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, ${tx.toFixed(2)}, ${ty.toFixed(2)})`);
-
-    // if (scaleX !== 1 || scaleY !== 1) {
-    //     transform.push(`translate(${referenceX}px, ${referenceY}px)`);
-    //     transform.push(`scale(${scaleX}, ${scaleY})`);
-    //     transform.push(`translate(${-referenceX}px, ${-referenceY}px)`);
-    // }
-
-    // if (0 > scaleX) {
-    //     transform.push(`rotateX(${Math.PI}rad)`);
-    // }
-
-    if (!transform.length
-        && !concatenatedMatrix[4]
-        && !concatenatedMatrix[5]
-    ) {
-        return "";
-    }
-
-    return `transform: ${transform.join(" ")}; `;
+    return `transform: matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, 0, 0); `;
 };
 
 /**

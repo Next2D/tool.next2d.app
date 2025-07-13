@@ -136,7 +136,9 @@ export const execute = (rotation: number): void =>
                 case $BITMAP_TYPE:
                 case $VIDEO_TYPE:
                     {
-                        const transform = $createTransformElementStyle(character, workSpace);
+                        const transform = $createTransformElementStyle(character);
+                        node.style.width  = `${character.width}px`;
+                        node.style.height = `${character.height}px`;
                         node.style.transform = "";
                         if (transform) {
                             node.style.transform = transform.replace(/transform: /, "").replace(";", "");
@@ -170,10 +172,8 @@ export const execute = (rotation: number): void =>
             }
 
             // 変形エリアのx座標を更新
-            // const x = $getScreenOffsetLeft() + character.globalMinX;
-            // node.style.left = `${x}px`;
-            // const y = $getScreenOffsetTop() + character.globalMinY;
-            // node.style.top = `${y}px`;
+            node.style.left = `${$getScreenOffsetLeft() + character.globalMinX}px`;
+            node.style.top  = `${$getScreenOffsetTop()  + character.globalMinY}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateXElementService(character.x);

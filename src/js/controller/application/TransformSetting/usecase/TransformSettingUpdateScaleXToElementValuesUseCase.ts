@@ -6,7 +6,7 @@ import { execute as transformSettingUpdateWidthElementService } from "@/controll
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getScreenOffsetLeft } from "@/global/GlobalUtil";
+import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $createTransformElementStyle,
@@ -106,11 +106,10 @@ export const execute = (scale_x: number): void =>
                 case $BITMAP_TYPE:
                 case $VIDEO_TYPE:
                     {
-                        const transform = $createTransformElementStyle(character, workSpace);
-                        node.style.transform = "";
-                        if (transform) {
-                            node.style.transform = transform.replace(/transform: /, "").replace(";", "");
-                        }
+                        const transform = $createTransformElementStyle(character);
+                        node.style.width  = `${character.width}px`;
+                        node.style.height = `${character.height}px`;
+                        node.style.transform = transform ? transform.replace(/transform: /, "").replace(";", "") : "";
                     }
                     break;
 
@@ -137,8 +136,8 @@ export const execute = (scale_x: number): void =>
             }
 
             // 変形エリアのx座標を更新
-            const x = $getScreenOffsetLeft() + character.globalMinX;
-            node.style.left = `${x}px`;
+            node.style.left = `${$getScreenOffsetLeft() + character.globalMinX}px`;
+            node.style.top  = `${$getScreenOffsetTop()  + character.globalMinY}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateWidthElementService(character.width);
