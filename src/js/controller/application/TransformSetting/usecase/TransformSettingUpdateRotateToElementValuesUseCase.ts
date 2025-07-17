@@ -131,29 +131,33 @@ export const execute = (rotation: number): void =>
             character.x = multiMatrix[4] + referenceSetting.x;
             character.y = multiMatrix[5] + referenceSetting.y;
 
+            const canvas = node.querySelector("canvas");
             switch (instance.type) {
 
                 case $BITMAP_TYPE:
                 case $VIDEO_TYPE:
                     {
-                        const transform = $createTransformElementStyle(character);
                         node.style.width  = `${character.width}px`;
                         node.style.height = `${character.height}px`;
-                        node.style.transform = "";
-                        if (transform) {
-                            node.style.transform = transform.replace(/transform: /, "").replace(";", "");
+                        const container = node.querySelector(".canvas-container") as HTMLDivElement;
+                        if (container) {
+                            const bounds = character.getRawBounds();
+                            if (canvas && bounds) {
+                                container.style.width = canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * character.scaleX))}px`;
+                                container.style.height = canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * character.scaleY))}px`;
+                            }
+                            container.style.transform = $createTransformElementStyle(character);
                         }
                     }
                     break;
 
                 default:
                     {
-                        const canvas = node.querySelector("canvas");
                         if (!canvas) {
                             continue ;
                         }
 
-                        // const beforeValue  = transformSetting.beforeScaleX;
+                        const beforeValue  = transformSetting.beforeScaleX;
                         // const currentValue = transformSetting.scaleX * scale_x;
                         // const transform = $createMoveTransformElementStyle(
                         //     character, workSpace,

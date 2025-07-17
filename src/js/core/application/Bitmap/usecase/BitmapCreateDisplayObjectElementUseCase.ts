@@ -59,7 +59,17 @@ export const execute = async (
     );
 
     const div = element.lastElementChild as HTMLDivElement;
-    div.appendChild(canvas);
+    const container = div.querySelector(".canvas-container") as HTMLDivElement;
+    if (!container) {
+        throw new Error("Canvas container not found in the display object element.");
+    }
+    container.appendChild(canvas);
+
+    const bounds = character.getRawBounds();
+    if (bounds) {
+        canvas.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * Math.abs(character.scaleX))}px`;
+        canvas.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * Math.abs(character.scaleY))}px`;
+    }
 
     // マスクのスタイルを更新
     if (layer.mode === $MASK_IN_MODE) {

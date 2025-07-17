@@ -36,14 +36,31 @@
 
     .display-object
     {
-        display  : flex;
-        position : absolute;
-        align-items: center;
-        justify-content: center;
+        display         : flex;
+        position        : absolute;
+        align-items     : center;
+        justify-content : center;
 
-        &:hover
+        .canvas-container
         {
-            cursor : move;
+            display : flex;
+
+            canvas
+            {
+                width   : 100%;
+                height  : 100%;
+                display : block;
+            }
+
+            &:hover
+            {
+                cursor : move;
+            }
+        }
+
+        .active
+        {
+            border: 1px solid #29628e;
         }
     }
 

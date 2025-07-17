@@ -170,7 +170,9 @@ export const $createTransformElementStyle = (character: Character): string =>
 {
     const concatenatedMatrix = $getConcatenatedMatrix();
     const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
-    return `transform: matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, 0, 0); `;
+    const radianX = Math.atan2(matrix[1], matrix[0]);
+    const radianY = Math.atan2(matrix[2], matrix[3]);
+    return `matrix(${Math.cos(radianX)}, ${Math.sin(radianX)}, ${Math.sin(radianY)}, ${Math.cos(radianY)}, 0, 0)`;
 };
 
 /**

@@ -101,21 +101,29 @@ export const execute = (scale_x: number): void =>
             );
 
             character.scaleX = multiMatrix[0] > 0 ? scaleX : scaleX * -1;
+
+            const canvas = node.querySelector("canvas");
             switch (instance.type) {
 
                 case $BITMAP_TYPE:
                 case $VIDEO_TYPE:
                     {
-                        const transform = $createTransformElementStyle(character);
                         node.style.width  = `${character.width}px`;
                         node.style.height = `${character.height}px`;
-                        node.style.transform = transform ? transform.replace(/transform: /, "").replace(";", "") : "";
+                        const container = node.querySelector(".canvas-container") as HTMLDivElement;
+                        if (container) {
+                            const bounds = character.getRawBounds();
+                            if (canvas && bounds) {
+                                container.style.width = canvas.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * Math.abs(character.scaleX))}px`;
+                                container.style.height = canvas.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * Math.abs(character.scaleY))}px`;
+                            }
+                            container.style.transform = $createTransformElementStyle(character);
+                        }
                     }
                     break;
 
                 default:
                     {
-                        const canvas = node.querySelector("canvas");
                         if (!canvas) {
                             continue ;
                         }

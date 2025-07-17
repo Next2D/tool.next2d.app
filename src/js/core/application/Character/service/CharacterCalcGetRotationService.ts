@@ -1,4 +1,10 @@
 /**
+ * @member {number};
+ * @private
+ */
+const $radToDeg = 180 / Math.PI;
+
+/**
  * @description DisplayObjectの回転角度を返却
  *              Returns the rotation angle of DisplayObject
  *
@@ -9,5 +15,5 @@
  */
 export const execute = (matrix: Float32Array): number =>
 {
-    return Math.round(Math.atan2(matrix[1], matrix[0]) * (180 / Math.PI)) % 360;
+    return Math.round(Math.atan2(matrix[1], matrix[0]) * $radToDeg) % 360;
 };
