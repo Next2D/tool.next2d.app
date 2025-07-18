@@ -39,6 +39,7 @@ export const execute = (event: FocusEvent): void =>
     }
 
     // 変更前の値を保持
+    transformSetting.clear();
     transformSetting.beforeScaleY = parseFloat(element.value);
 
     // ロック時はyスケールの値も保持

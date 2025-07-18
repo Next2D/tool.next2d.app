@@ -39,6 +39,7 @@ export const execute = (event: FocusEvent): void =>
     }
 
     // 変更前の値を保持
+    transformSetting.clear();
     transformSetting.beforeHeight = parseFloat(element.value);
 
     // ロック時は幅の値を保持

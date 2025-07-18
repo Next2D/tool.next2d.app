@@ -1,18 +1,18 @@
-import { execute as transformSettingRotatePointerMoveEventUseCase } from "./TransformSettingRotatePointerMoveEventUseCase";
-import { execute as transformSettingRotatePointerUpEventUseCase } from "./TransformSettingRotatePointerUpEventUseCase";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
-import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
+import { execute as transformSettingRotatePointerMoveEventUseCase } from "./TransformSettingRotatePointerMoveEventUseCase";
+import { execute as transformSettingRotatePointerUpEventUseCase } from "./TransformSettingRotatePointerUpEventUseCase";
+import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
+import { execute as characterGetReferencePositionService } from "@/core/application/Character/service/CharacterGetReferencePositionService";
 import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
-import { execute as characterGetReferencePositionService } from "@/core/application/Character/service/CharacterGetReferencePositionService";
 
 /**
  * @description 変形エリアの回転の変更のポインターダウンイベント
@@ -97,11 +97,13 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        const point = characterGetReferencePositionService(character);
-        referenceSetting.x = point.x;
-        referenceSetting.y = point.y;
+        referenceSetting.isSingleSelected = true;
+        // const point = characterGetReferencePositionService(character);
+        // referenceSetting.x = point.x;
+        // referenceSetting.y = point.y;
         transformSetting.rotation = transformSetting.beforeRotation = character.rotation;
     } else {
+        referenceSetting.isSingleSelected = false;
         referenceSetting.x = bounds.xMin + width / 2;
         referenceSetting.y = bounds.yMin + height / 2;
         transformSetting.rotation = transformSetting.beforeRotation = 0;

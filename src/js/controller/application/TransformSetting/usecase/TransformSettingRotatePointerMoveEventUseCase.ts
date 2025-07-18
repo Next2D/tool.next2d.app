@@ -1,7 +1,6 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateRotateToElementValuesUseCase } from "./TransformSettingUpdateRotateToElementValuesUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { $TRANSFORM_OBJECT_SCALE_Y_ID } from "@/config/TransformSettingConfig";
 import {
     $clamp,
     $setCursor
@@ -39,10 +38,14 @@ export const execute = (event: PointerEvent): void =>
 
         // 表示を更新
         const value  = parseInt(element.value);
-        const rotation = $clamp((value + event.movementX) % 360, -360, 360);
+        let rotation = (value + event.movementX) % 360;
+        if (0 > rotation) {
+            rotation &= 360;
+        }
+
         element.value = `${rotation}`;
 
-        transformSettingUpdateRotateToElementValuesUseCase((360 + rotation) % 360);
+        transformSettingUpdateRotateToElementValuesUseCase(rotation);
         transformSetting.rotation = rotation;
 
         // 選択中の表示領域を更新

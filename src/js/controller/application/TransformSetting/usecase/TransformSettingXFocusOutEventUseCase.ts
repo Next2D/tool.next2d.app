@@ -39,7 +39,4 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     // 選択中のDisplayObjectを指定した値で更新
     await screenDisplayObjectUpdateSelectedValueService();
-
-    // 変形設定の値をクリア
-    transformSetting.clear();
 };

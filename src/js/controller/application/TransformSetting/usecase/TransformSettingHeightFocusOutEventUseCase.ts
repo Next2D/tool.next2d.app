@@ -17,6 +17,11 @@ import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
+    // 数値が0では割れないので、スキップ
+    if (!transformSetting.beforeHeight) {
+        return ;
+    }
+
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
@@ -34,7 +39,9 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 変形に合わせて表示を更新
     transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.beforeHeight);
 
-    if (transformSetting.sizeLocked) {
+    if (transformSetting.sizeLocked
+        && transformSetting.beforeWidth
+    ) {
         const widthElement = document
             .getElementById($TRANSFORM_OBJECT_WIDTH_ID) as HTMLInputElement;
         if (!widthElement) {
@@ -51,7 +58,4 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     // 変更後のmatrixで表示を更新
     await transformSettingUpdateScaleToRedrawCanvasUseCase();
-
-    // 変更前のmatrixを削除
-    transformSetting.clear();
 };

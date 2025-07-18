@@ -17,6 +17,11 @@ import { $TRANSFORM_OBJECT_SCALE_X_ID } from "@/config/TransformSettingConfig";
  */
 export const execute = async (event: FocusEvent): Promise<void> =>
 {
+    // 数値が0では割れないので、スキップ
+    if (!transformSetting.beforeScaleY) {
+        return ;
+    }
+
     const element = event.target as HTMLInputElement;
     if (!element) {
         return ;
@@ -39,7 +44,9 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     const scale = scaleY / transformSetting.beforeScaleY;
     transformSettingUpdateScaleYToElementValuesUseCase(scale);
 
-    if (transformSetting.scaleLocked) {
+    if (transformSetting.scaleLocked
+        && !transformSetting.beforeScaleX
+    ) {
 
         const scaleXElement = document
             .getElementById($TRANSFORM_OBJECT_SCALE_X_ID) as HTMLInputElement;
@@ -61,7 +68,4 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     // 変更後のmatrixで表示を更新
     await transformSettingUpdateScaleToRedrawCanvasUseCase();
-
-    // 変更前のmatrixを削除
-    transformSetting.clear();
 };
