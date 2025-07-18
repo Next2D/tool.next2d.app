@@ -1,10 +1,7 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateRotateToElementValuesUseCase } from "./TransformSettingUpdateRotateToElementValuesUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import {
-    $clamp,
-    $setCursor
-} from "@/global/GlobalUtil";
+import { $setCursor } from "@/global/GlobalUtil";
 
 /**
  * @description 変形エリアの回転の値操作の処理関数

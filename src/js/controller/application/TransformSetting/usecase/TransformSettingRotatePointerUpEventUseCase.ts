@@ -1,8 +1,6 @@
-import { $clamp, $setCursor } from "@/global/GlobalUtil";
+import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingRotatePointerMoveEventUseCase } from "./TransformSettingRotatePointerMoveEventUseCase";
-import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
 
 /**
  * @description 変形エリアの回転の値操作のマウスアップイベント
@@ -40,7 +38,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // transformSettingRestoreBeforeMatrixService();
 
     // 変形に合わせて表示を更新
-    const rotation = $clamp(parseInt(element.value), 0, 359);
+    // const rotation = $clamp(parseInt(element.value), 0, 359);
 
     // input要素のフォーカス
     element.focus();

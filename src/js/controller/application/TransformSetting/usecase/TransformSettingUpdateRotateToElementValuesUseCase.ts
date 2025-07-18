@@ -151,24 +151,8 @@ export const execute = (rotation: number): void =>
                     break;
 
                 default:
-                    {
-                        if (!canvas) {
-                            continue ;
-                        }
-
-                        const beforeValue  = transformSetting.beforeScaleX;
-                        // const currentValue = transformSetting.scaleX * scale_x;
-                        // const transform = $createMoveTransformElementStyle(
-                        //     character, workSpace,
-                        //     canvas.clientWidth, canvas.clientHeight,
-                        //     currentValue / beforeValue,
-                        //     transformSetting.scaleY / transformSetting.beforeScaleY
-                        // );
-                        // if (!transform) {
-                        //     continue;
-                        // }
-
-                        // canvas.style.transform = transform;
+                    if (!canvas) {
+                        continue ;
                     }
                     break;
 
