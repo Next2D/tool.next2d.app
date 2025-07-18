@@ -31,10 +31,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
+    const parentElement = element.parentElement;
+    if (!parentElement) {
+        return ;
+    }
+
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
-    const layerId = parseInt(element.dataset.layerId as string);
+    const layerId = parseInt(parentElement.dataset.layerId as string);
     const layer = movieClip.getLayerById(layerId);
     if (!layer) {
         return ;
@@ -56,7 +61,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
     const layerIndex = externalLayer.index;
 
-    const depth = parseInt(element.dataset.depth as string);
+    const depth = parseInt(parentElement.dataset.depth as string);
 
     // 外部APIを起動
     const externalScreen = new ExternalScreen(workSpace, movieClip);

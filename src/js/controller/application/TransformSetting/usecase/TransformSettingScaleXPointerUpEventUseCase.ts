@@ -44,11 +44,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     transformSettingRestoreBeforeMatrixService();
 
     // 変形に合わせて表示を更新
-
-    const scaleX = $clamp(Math.round(parseFloat(element.value) * 10000) / 10000, -Number.MAX_VALUE, Number.MAX_VALUE);
+    const scaleX = $clamp(
+        Math.round(parseFloat(element.value) * 10000) / 10000,
+        -Number.MAX_VALUE, Number.MAX_VALUE
+    );
     transformSettingUpdateScaleXToElementValuesUseCase(scaleX / 100 / transformSetting.scaleX);
 
-    if (transformSetting.scaleLocked) {
+    if (transformSetting.scaleLocked
+        && transformSetting.scaleY
+    ) {
         const scaleYElement = document
             .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
         if (!scaleYElement) {
@@ -61,9 +65,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 変更後のmatrixで表示を更新
     await transformSettingUpdateScaleToRedrawCanvasUseCase();
-
-    // 変更前のmatrixを削除
-    transformSetting.clear();
 
     // input要素のフォーカス
     element.focus();

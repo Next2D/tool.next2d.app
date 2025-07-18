@@ -18,6 +18,10 @@ export const execute = (): void =>
 {
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
+    // if (movieClip.isSingleSelectedOfDisplayObject()) {
+    //     targetRectHideElementService();
+    //     return ;
+    // }
 
     const calcBounds = screenAreaCalcSelectedBoundsService(movieClip);
     if (!calcBounds) {

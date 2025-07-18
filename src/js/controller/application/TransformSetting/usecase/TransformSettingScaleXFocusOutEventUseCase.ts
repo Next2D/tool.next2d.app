@@ -32,7 +32,10 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 入力モードを終了する
     $updateKeyLock(false);
 
-    let scaleX = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+    let scaleX = $clamp(
+        Math.round(parseFloat(element.value) * 10000) / 10000,
+        -Number.MAX_VALUE, Number.MAX_VALUE
+    );
     if (!scaleX) {
         scaleX = 0.01;
     }

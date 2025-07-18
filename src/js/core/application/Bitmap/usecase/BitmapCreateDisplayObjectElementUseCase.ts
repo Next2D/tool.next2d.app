@@ -86,7 +86,7 @@ export const execute = async (
 
     // イベントを登録
     if (!$getDeactivated()) {
-        bitmapRegisterEventUseCase(div);
+        bitmapRegisterEventUseCase(container);
     } else {
         screenAreaReadOnlyElementService(div);
     }

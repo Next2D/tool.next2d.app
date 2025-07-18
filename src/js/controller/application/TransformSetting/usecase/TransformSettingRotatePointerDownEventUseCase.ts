@@ -71,6 +71,7 @@ export const execute = (event: PointerEvent): void =>
     }
 
     // 変形エリアの高さを設定
+    transformSetting.clear();
     transformSetting.w = width;
     transformSetting.h = height;
 
@@ -98,9 +99,9 @@ export const execute = (event: PointerEvent): void =>
         }
 
         referenceSetting.isSingleSelected = true;
-        // const point = characterGetReferencePositionService(character);
-        // referenceSetting.x = point.x;
-        // referenceSetting.y = point.y;
+        const point = characterGetReferencePositionService(character);
+        referenceSetting.x = point.x;
+        referenceSetting.y = point.y;
         transformSetting.rotation = transformSetting.beforeRotation = character.rotation;
     } else {
         referenceSetting.isSingleSelected = false;

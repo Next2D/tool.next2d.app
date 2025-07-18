@@ -61,9 +61,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 変更後のmatrixで表示を更新
     await transformSettingUpdateScaleToRedrawCanvasUseCase();
 
-    // 変更前のmatrixを削除
-    transformSetting.clear();
-
     // input要素のフォーカス
     element.focus();
 };

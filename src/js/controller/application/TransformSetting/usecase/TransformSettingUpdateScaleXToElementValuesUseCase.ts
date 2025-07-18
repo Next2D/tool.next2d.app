@@ -8,7 +8,6 @@ import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as characterGetReferencePositionService } from "@/core/application/Character/service/CharacterGetReferencePositionService";
 import {
     $createTransformElementStyle,
     $createMoveTransformElementStyle,
@@ -54,6 +53,11 @@ export const execute = (scale_x: number): void =>
         return ;
     }
 
+    const parentMatrix = $multiplicationMatrix(
+        new Float32Array([scale_x, 0, 0, 1, 0, 0]),
+        new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
+    );
+
     // 選択中のElementを移動
     const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
@@ -83,19 +87,13 @@ export const execute = (scale_x: number): void =>
                 continue ;
             }
 
-            const point = characterGetReferencePositionService(character);
-            const parentMatrix = $multiplicationMatrix(
-                new Float32Array([scale_x, 0, 0, 1, 0, 0]),
-                new Float32Array([1, 0, 0, 1, -point.x, -point.y])
-            );
-
             // 中心点に合わせて変形
             const multiMatrix = $multiplicationMatrix(
                 parentMatrix, character.matrix
             );
 
-            character.x = multiMatrix[4] + point.x;
-            character.y = multiMatrix[5] + point.y;
+            character.x = multiMatrix[4] + referenceSetting.x;
+            character.y = multiMatrix[5] + referenceSetting.y;
 
             const scaleX = Math.sqrt(
                 multiMatrix[0] * multiMatrix[0]

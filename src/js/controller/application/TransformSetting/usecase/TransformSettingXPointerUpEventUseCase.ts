@@ -38,9 +38,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // x座標に変更があれば、最終位置をセット
     await screenDisplayObjectUpdateSelectedValueService();
 
-    // 変形設定の値をクリア
-    transformSetting.clear();
-
     // input要素のフォーカス
     element.focus();
 };

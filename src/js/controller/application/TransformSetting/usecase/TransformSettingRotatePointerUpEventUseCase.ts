@@ -42,9 +42,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 変形に合わせて表示を更新
     const rotation = $clamp(parseInt(element.value), 0, 359);
 
-    // 変更前のmatrixを削除
-    transformSetting.clear();
-
     // input要素のフォーカス
     element.focus();
 };
