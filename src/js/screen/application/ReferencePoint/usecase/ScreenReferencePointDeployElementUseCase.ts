@@ -1,4 +1,3 @@
-import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $setReferencePointState } from "../ReferencePointUtil";
 import { $getConcatenatedMatrix, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -8,9 +7,6 @@ import {
 } from "@/global/GlobalUtil";
 import { execute as screenReferencePointShowService } from "../service/ScreenReferencePointShowService";
 import { execute as screenReferencePointHideService } from "../service/ScreenReferencePointHideService";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
-import { $localToGlobal } from "../../DisplayObject/DisplayObjectUtil";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 変形の基準点のElementを配置

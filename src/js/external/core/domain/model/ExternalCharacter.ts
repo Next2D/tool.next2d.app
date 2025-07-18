@@ -217,6 +217,7 @@ export class ExternalCharacter
      */
     setRotation (rotation: number): Promise<void>
     {
+        console.log("TODO: ", rotation);
         return Promise.resolve();
     }
 
