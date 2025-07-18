@@ -9,6 +9,7 @@ import { execute as screenAreaReadOnlyElementService } from "@/screen/applicatio
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $getCacheCanvas,
     $setCacheCanvas
@@ -67,8 +68,9 @@ export const execute = async (
 
     const bounds = character.getRawBounds();
     if (bounds) {
-        canvas.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * Math.abs(character.scaleX))}px`;
-        canvas.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * Math.abs(character.scaleY))}px`;
+        const workSpace = $getCurrentWorkSpace();
+        canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * character.scaleX * workSpace.scale))}px`;
+        canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * character.scaleY * workSpace.scale))}px`;
     }
 
     // マスクのスタイルを更新

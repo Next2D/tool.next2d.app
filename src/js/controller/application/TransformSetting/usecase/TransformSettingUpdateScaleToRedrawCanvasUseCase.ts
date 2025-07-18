@@ -3,10 +3,6 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
-import {
-    $BITMAP_TYPE,
-    $VIDEO_TYPE
-} from "@/config/InstanceConfig";
 
 /**
  * @description スケールの操作によるキャンバスの再描画
@@ -64,20 +60,6 @@ export const execute = async (): Promise<void> =>
             character.scaleX = beforeMatrix[0] > 0 ? beforeScaleX : beforeScaleX * -1;
             character.scaleY = beforeMatrix[3] > 0 ? beforeScaleY : beforeScaleY * -1;
 
-            const instance = workSpace.getLibrary(character.libraryId);
-            if (!instance) {
-                continue;
-            }
-
-            // 変更中のcanvasを取得
-            let canvas = null;
-            if (instance.type !== $BITMAP_TYPE && instance.type !== $VIDEO_TYPE) {
-                const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-                if (node) {
-                    canvas = node.querySelector("canvas");
-                }
-            }
-
             const externalCharacter = new ExternalCharacter(
                 workSpace,
                 movieClip,
@@ -112,11 +94,6 @@ export const execute = async (): Promise<void> =>
                         layer
                     );
                 }
-            }
-
-            // 変更元のcanvasを元のサイズに戻す
-            if (canvas) {
-                canvas.style.transform = "";
             }
         }
     }

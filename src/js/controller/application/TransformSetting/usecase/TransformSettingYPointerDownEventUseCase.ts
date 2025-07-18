@@ -48,6 +48,7 @@ export const execute = (event: PointerEvent): void =>
     element.style.cursor = "ew-resize";
 
     // マウスで移動した量を更新
+    transformSetting.clear();
     transformSetting.x = 0;
     transformSetting.y = 0;
     transformSetting.beforeY = parseFloat(element.value);

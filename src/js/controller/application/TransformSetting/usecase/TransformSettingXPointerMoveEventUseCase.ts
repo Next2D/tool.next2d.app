@@ -41,7 +41,7 @@ export const execute = (event: PointerEvent): void =>
         const movementX = event.movementX;
         const x = $clamp(
             value + Math.round($globalToLocal(movementX).x * 10000) / 10000,
-            -Number.MAX_VALUE, Number.MAX_VALUE
+            Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
         );
         element.value = `${x}`;
 
