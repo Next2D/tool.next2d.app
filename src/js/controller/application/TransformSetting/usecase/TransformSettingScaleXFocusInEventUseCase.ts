@@ -40,7 +40,7 @@ export const execute = (event: FocusEvent): void =>
 
     // 変更前の値を保持
     transformSetting.clear();
-    transformSetting.scaleX = transformSetting.beforeScaleX = Math.round(parseFloat(element.value) * 10000) / 10000;
+    transformSetting.scaleX = transformSetting.beforeScaleX = Math.round(parseFloat(element.value) * 100) / 100;
 
     // ロック時はyスケールの値も保持
     if (transformSetting.scaleLocked) {

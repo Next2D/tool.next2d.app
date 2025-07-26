@@ -45,23 +45,26 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 変形に合わせて表示を更新
     const scaleX = $clamp(
-        Math.round(parseFloat(element.value) * 10000) / 10000,
+        Math.round(parseFloat(element.value) * 100) / 100,
         Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
     );
-    transformSettingUpdateScaleXToElementValuesUseCase(scaleX / 100 / transformSetting.beforeScaleX);
+    transformSettingUpdateScaleXToElementValuesUseCase(scaleX / 100 / transformSetting.scaleX);
 
-    // if (transformSetting.scaleLocked
-    //     && transformSetting.scaleY
-    // ) {
-    //     const scaleYElement = document
-    //         .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
-    //     if (!scaleYElement) {
-    //         return ;
-    //     }
+    if (transformSetting.scaleLocked
+        && transformSetting.scaleY
+    ) {
+        const scaleYElement = document
+            .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
+        if (!scaleYElement) {
+            return ;
+        }
 
-    //     const scaleY = $clamp(Math.round(parseFloat(scaleYElement.value) * 10000) / 10000, -Number.MAX_VALUE, Number.MAX_VALUE);
-    //     transformSettingUpdateScaleYToElementValuesUseCase(scaleY / 100 / transformSetting.scaleY);
-    // }
+        const scaleY = $clamp(
+            Math.round(parseFloat(scaleYElement.value) * 100) / 100,
+            Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
+        );
+        transformSettingUpdateScaleYToElementValuesUseCase(scaleY / 100 / transformSetting.scaleY);
+    }
 
     // 変更後のmatrixで表示を更新
     await transformSettingUpdateScaleToRedrawCanvasUseCase();

@@ -1,4 +1,3 @@
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateRotateToElementValuesUseCase } from "./TransformSettingUpdateRotateToElementValuesUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { $setCursor } from "@/global/GlobalUtil";
@@ -34,16 +33,14 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 表示を更新
-        const value  = parseInt(element.value);
-        let rotation = (value + event.movementX) % 360;
+        let rotation = (parseInt(element.value) + event.movementX) % 360;
         if (0 > rotation) {
             rotation &= 360;
         }
 
         element.value = `${rotation}`;
 
-        transformSettingUpdateRotateToElementValuesUseCase(rotation);
-        transformSetting.rotation = rotation;
+        transformSettingUpdateRotateToElementValuesUseCase(event.movementX);
 
         // 選択中の表示領域を更新
         targetRectUpdateElementUseCase();

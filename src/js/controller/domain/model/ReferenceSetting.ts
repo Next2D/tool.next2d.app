@@ -38,16 +38,6 @@ class ReferenceSetting
     public state: "hide" | "show";
 
     /**
-     * @description 選択中のElementが単一かどうかを返却
-     *             Return whether the selected Element is single
-     *
-     * @member {boolean}
-     * @default false
-     * @public
-     */
-    public isSingleSelected: boolean = false;
-
-    /**
      * @constructor
      * @public
      */

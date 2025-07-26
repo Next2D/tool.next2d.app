@@ -30,6 +30,10 @@ import {
  */
 export const execute = (rotation: number): void =>
 {
+    if (!rotation) {
+        return ;
+    }
+
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
@@ -51,20 +55,13 @@ export const execute = (rotation: number): void =>
     }
 
     const matrix = new Float32Array([1, 0, 0, 1, 0, 0]);
-    if (rotation) {
-        const radian = rotation * (Math.PI / 180);
-        const cos = Math.cos(radian);
-        const sin = Math.sin(radian);
-        matrix[0] = cos;
-        matrix[1] = sin;
-        matrix[2] = -sin;
-        matrix[3] = cos;
-    }
-
-    const parentMatrix = $multiplicationMatrix(
-        matrix,
-        new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
-    );
+    const radian = rotation * Math.PI / 180;
+    const cos = Math.cos(radian);
+    const sin = Math.sin(radian);
+    matrix[0] = cos;
+    matrix[1] = sin;
+    matrix[2] = -sin;
+    matrix[3] = cos;
 
     // 選択中のElementを移動
     const frame = movieClip.currentFrame;
@@ -95,40 +92,25 @@ export const execute = (rotation: number): void =>
                 continue ;
             }
 
-            const radian = -character.rotation * (Math.PI / 180);
-            const cos = Math.cos(radian);
-            const sin = Math.sin(radian);
-            const invertMatrix = $multiplicationMatrix(
-                new Float32Array([cos, sin, -sin, cos, 0, 0]),
-                new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
-            );
-
-            // 中心点に合わせて変形
-            const matrix = character.matrix;
-            const scaleX = Math.sqrt(
-                matrix[0] * matrix[0]
-                + matrix[1] * matrix[1]
-            );
-            const scaleY = Math.sqrt(
-                matrix[2] * matrix[2]
-                + matrix[3] * matrix[3]
-            );
-            const beforeMatrix = $multiplicationMatrix(
-                invertMatrix,
-                new Float32Array([scaleX, 0, 0, scaleY, character.x, character.y])
-            );
+            const prevX = character.matrix[0] * referenceSetting.x + character.matrix[2] * referenceSetting.y + character.matrix[4];
+            const prevY = character.matrix[1] * referenceSetting.x + character.matrix[3] * referenceSetting.y + character.matrix[5];
 
             const multiMatrix = $multiplicationMatrix(
-                parentMatrix,
-                new Float32Array([scaleX, 0, 0, scaleY,
-                    beforeMatrix[4] + referenceSetting.x,
-                    beforeMatrix[5] + referenceSetting.y
-                ])
+                matrix, character.matrix
             );
 
+            const radian = Math.atan2(multiMatrix[1], multiMatrix[0]);
+            let rotation = Math.round(radian * 180 / Math.PI);
+            if (rotation < 0) {
+                rotation += 360;
+            }
+
             character.rotation = rotation;
-            character.x = multiMatrix[4] + referenceSetting.x;
-            character.y = multiMatrix[5] + referenceSetting.y;
+
+            const nextX = character.matrix[0] * referenceSetting.x + character.matrix[2] * referenceSetting.y;
+            const nextY = character.matrix[1] * referenceSetting.x + character.matrix[3] * referenceSetting.y;
+            character.x = prevX - nextX;
+            character.y = prevY - nextY;
 
             const canvas = node.querySelector("canvas");
             switch (instance.type) {
@@ -177,10 +159,4 @@ export const execute = (rotation: number): void =>
     //     );
     //     transformSettingUpdateXElementService(bounds.xMin);
     // }
-
-    // 変形エリアのxスケールを更新
-    // transformSetting.scaleX *= scale_x;
-    // transformSettingUpdateScaleXElementService(
-    //     Math.round(transformSetting.scaleX * 10000) / 100
-    // );
 };

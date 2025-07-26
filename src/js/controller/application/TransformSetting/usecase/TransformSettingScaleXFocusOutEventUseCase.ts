@@ -26,15 +26,16 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     if (!element) {
         return ;
     }
-    // イベントの伝播を止める
-    event.stopPropagation();
 
     // 入力モードを終了する
     $updateKeyLock(false);
 
+    // イベントの伝播を止める
+    event.stopPropagation();
+
     let scaleX = $clamp(
-        Math.round(parseFloat(element.value) * 10000) / 10000,
-        -Number.MAX_VALUE, Number.MAX_VALUE
+        Math.round(parseFloat(element.value) * 100) / 100,
+        Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
     );
     if (!scaleX) {
         scaleX = 0.01;

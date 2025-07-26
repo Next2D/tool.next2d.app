@@ -2,6 +2,7 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
@@ -54,11 +55,15 @@ export const execute = (scale_x: number): void =>
     }
 
     const parentMatrix = $multiplicationMatrix(
-        new Float32Array([scale_x, 0, 0, 1, 0, 0]),
-        new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
+        new Float32Array([1, 0, 0, 1, referenceSetting.x, referenceSetting.y]),
+        $multiplicationMatrix(
+            new Float32Array([scale_x, 0, 0, 1, 0, 0]),
+            new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
+        )
     );
 
     // 選択中のElementを移動
+    const scale = workSpace.scale;
     const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
@@ -87,20 +92,18 @@ export const execute = (scale_x: number): void =>
                 continue ;
             }
 
-            // 中心点に合わせて変形
-            const multiMatrix = $multiplicationMatrix(
-                parentMatrix, character.matrix
-            );
-
-            character.x = multiMatrix[4] + referenceSetting.x;
-            character.y = multiMatrix[5] + referenceSetting.y;
-
-            const scaleX = Math.sqrt(
+            const multiMatrix = $multiplicationMatrix(character.matrix, parentMatrix);
+            const afterScaleX = Math.sqrt(
                 multiMatrix[0] * multiMatrix[0]
                 + multiMatrix[1] * multiMatrix[1]
             );
 
-            character.scaleX = multiMatrix[0] > 0 ? scaleX : scaleX * -1;
+            const determinant = multiMatrix[0] * multiMatrix[3] - multiMatrix[1] * multiMatrix[2];
+            const isReflection = determinant < 0;
+
+            character.scaleX = isReflection ? afterScaleX * -1 : afterScaleX;
+            character.x = multiMatrix[4];
+            character.y = multiMatrix[5];
 
             const canvas = node.querySelector("canvas");
             switch (instance.type) {
@@ -108,14 +111,14 @@ export const execute = (scale_x: number): void =>
                 case $BITMAP_TYPE:
                 case $VIDEO_TYPE:
                     {
-                        node.style.width  = `${character.width}px`;
-                        node.style.height = `${character.height}px`;
+                        node.style.width  = `${character.width * scale}px`;
+                        node.style.height = `${character.height * scale}px`;
                         const container = node.querySelector(".canvas-container") as HTMLDivElement;
                         if (container) {
                             const bounds = character.getRawBounds();
                             if (canvas && bounds) {
-                                container.style.width = canvas.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * Math.abs(character.scaleX))}px`;
-                                container.style.height = canvas.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * Math.abs(character.scaleY))}px`;
+                                container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * Math.abs(character.scaleX) * scale)}px`;
+                                container.style.height = canvas.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * Math.abs(character.scaleY) * scale)}px`;
                             }
                             container.style.transform = $createTransformElementStyle(character);
                         }
@@ -148,11 +151,9 @@ export const execute = (scale_x: number): void =>
             node.style.top  = `${$getScreenOffsetTop()  + character.globalMinY}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
-                referenceSetting.x = character.referencePosition.x * character.matrix[0] + character.referencePosition.y * character.matrix[2] + character.matrix[4];
-                referenceSetting.y = character.referencePosition.x * character.matrix[1] + character.referencePosition.y * character.matrix[3] + character.matrix[5];
-
                 transformSettingUpdateWidthElementService(character.width);
                 transformSettingUpdateXElementService(character.x);
+                transformSettingUpdateYElementService(character.y);
             }
         }
     }
