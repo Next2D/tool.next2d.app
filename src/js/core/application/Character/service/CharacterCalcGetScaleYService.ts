@@ -12,7 +12,7 @@ export const execute = (matrix: Float32Array): number =>
     const yScale = Math.round(Math.sqrt(
         matrix[2] * matrix[2]
         + matrix[3] * matrix[3]
-    ) * 10000) / 10000;
+    ) * 100) / 100;
 
     return 0 > matrix[3] ? yScale * -1 : yScale;
 };

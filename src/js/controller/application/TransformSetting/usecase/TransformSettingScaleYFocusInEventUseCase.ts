@@ -40,7 +40,7 @@ export const execute = (event: FocusEvent): void =>
 
     // 変更前の値を保持
     transformSetting.clear();
-    transformSetting.beforeScaleY = parseFloat(element.value);
+    transformSetting.scaleY = transformSetting.beforeScaleY = parseFloat(element.value);
 
     // ロック時はyスケールの値も保持
     if (transformSetting.scaleLocked) {
@@ -48,7 +48,7 @@ export const execute = (event: FocusEvent): void =>
             .getElementById($TRANSFORM_OBJECT_SCALE_X_ID) as HTMLInputElement;
 
         if (xScaleElement) {
-            transformSetting.beforeScaleX = parseFloat(xScaleElement.value);
+            transformSetting.scaleY = transformSetting.beforeScaleX = parseFloat(xScaleElement.value);
         }
     }
 

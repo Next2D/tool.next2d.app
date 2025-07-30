@@ -99,9 +99,8 @@ export const execute = (scale_x: number): void =>
             );
 
             const determinant = multiMatrix[0] * multiMatrix[3] - multiMatrix[1] * multiMatrix[2];
-            const isReflection = determinant < 0;
-
-            character.scaleX = isReflection ? afterScaleX * -1 : afterScaleX;
+            const sign = determinant / (afterScaleX * character.scaleY) >= 0 ? 1 : -1;
+            character.scaleX = afterScaleX * sign;
             character.x = multiMatrix[4];
             character.y = multiMatrix[5];
 
@@ -161,7 +160,7 @@ export const execute = (scale_x: number): void =>
     // 変形エリアのx座標を更新
     if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
         transformSettingUpdateWidthElementService(
-            parseFloat(Math.abs(bounds.xMax - bounds.xMin).toFixed(2))
+            Math.round(Math.abs(bounds.xMax - bounds.xMin) * 100) / 100
         );
         transformSettingUpdateXElementService(bounds.xMin);
     }

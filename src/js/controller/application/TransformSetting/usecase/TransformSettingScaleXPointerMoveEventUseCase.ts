@@ -60,7 +60,7 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
-            const value = Math.round(parseFloat(scaleYElement.value) * 10000) / 10000;
+            const value = Math.round(parseFloat(scaleYElement.value) * 100) / 100;
             let scaleY = $clamp(value * scale, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
             if (!scaleY) {
                 scaleY = 0.01;

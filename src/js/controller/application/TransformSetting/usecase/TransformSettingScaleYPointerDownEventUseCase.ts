@@ -12,7 +12,6 @@ import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
-import { execute as characterGetReferencePositionService } from "@/core/application/Character/service/CharacterGetReferencePositionService";
 
 /**
  * @description 変形エリアのスケールYの変更のポインターダウンイベント
@@ -96,10 +95,8 @@ export const execute = (event: PointerEvent): void =>
         if (!character) {
             return ;
         }
-
-        const point = characterGetReferencePositionService(character);
-        referenceSetting.x = point.x;
-        referenceSetting.y = point.y;
+        referenceSetting.x = character.referencePosition.x;
+        referenceSetting.y = character.referencePosition.y;
         transformSetting.scaleX = transformSetting.beforeScaleX = character.scaleX;
         transformSetting.scaleY = transformSetting.beforeScaleY = character.scaleY;
     } else {

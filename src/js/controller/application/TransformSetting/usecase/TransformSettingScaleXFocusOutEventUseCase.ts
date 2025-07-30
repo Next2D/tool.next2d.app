@@ -58,7 +58,9 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         }
 
         const value  = parseFloat(scaleYElement.value);
-        let scaleY = $clamp(parseFloat((value * scale).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+        let scaleY = $clamp(parseFloat((value * scale).toFixed(2)),
+            Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
+        );
         if (!scaleY) {
             scaleY = 0.01;
         }

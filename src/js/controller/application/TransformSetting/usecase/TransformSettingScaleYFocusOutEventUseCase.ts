@@ -27,13 +27,16 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         return ;
     }
 
-    // イベントの伝播を止める
-    event.stopPropagation();
-
     // 入力モードを終了する
     $updateKeyLock(false);
 
-    let scaleY = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+    // イベントの伝播を止める
+    event.stopPropagation();
+
+    let scaleY = $clamp(
+        Math.round(parseFloat(element.value) * 100) / 100,
+        Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
+    );
     if (!scaleY) {
         scaleY = 0.01;
     }
@@ -45,7 +48,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     transformSettingUpdateScaleYToElementValuesUseCase(scale);
 
     if (transformSetting.scaleLocked
-        && !transformSetting.beforeScaleX
+        && transformSetting.beforeScaleX
     ) {
 
         const scaleXElement = document
@@ -54,8 +57,10 @@ export const execute = async (event: FocusEvent): Promise<void> =>
             return ;
         }
 
-        const value = parseFloat(scaleXElement.value);
-        let scaleX = $clamp(parseFloat((value * scale).toFixed(2)), -Number.MAX_VALUE, Number.MAX_VALUE);
+        const value  = parseFloat(scaleXElement.value);
+        let scaleX = $clamp(parseFloat((value * scale).toFixed(2)),
+            Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
+        );
         if (!scaleX) {
             scaleX = 0.01;
         }

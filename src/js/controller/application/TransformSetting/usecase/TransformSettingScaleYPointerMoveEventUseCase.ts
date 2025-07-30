@@ -39,8 +39,11 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 表示を更新
-        const value  = parseFloat(parseFloat(element.value).toFixed(2));
-        let scaleY = $clamp(value + event.movementX, -Number.MAX_VALUE, Number.MAX_VALUE);
+        const value = Math.round(parseFloat(element.value) * 100) / 100;
+        let scaleY = $clamp(
+            value + event.movementX,
+            Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
+        );
         if (!scaleY) {
             scaleY = 0.01;
         }
@@ -57,8 +60,8 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
-            const value = parseFloat(parseFloat(scaleXElement.value).toFixed(2));
-            let scaleX = $clamp(value * scale, -Number.MAX_VALUE, Number.MAX_VALUE);
+            const value = Math.round(parseFloat(scaleXElement.value) * 100) / 100;
+            let scaleX = $clamp(value * scale, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
             if (!scaleX) {
                 scaleX = 0.01;
             }
