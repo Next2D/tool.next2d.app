@@ -27,7 +27,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 親のイベントをキャンセル
     event.stopPropagation();
-    event.preventDefault();
 
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;

@@ -2,8 +2,8 @@ import type { ITool } from "@/interface/ITool";
 import type { ArrowTool } from "@/tool/domain/model/ArrowTool";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenDisplayObjectPointerDownEventUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectPointerDownEventUseCase";
-import { execute as screenAreaArrowToolMouseDownEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaArrowToolMouseDownEventUseCase";
-import { execute as arrowToolStageRectMouseDownEventUseCase } from "./ArrowToolStageRectMouseDownEventUseCase";
+import { execute as screenAreaArrowToolPointerDownEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaArrowToolPointerDownEventUseCase";
+import { execute as arrowToolStageRectPointerDownEventUseCase } from "./ArrowToolStageRectPointerDownEventUseCase";
 import { execute as arrowToolActiveService } from "../service/ArrowToolActiveService";
 import { execute as arrowToolStartEventUseCase } from "./ArrowToolStartEventUseCase";
 
@@ -30,12 +30,12 @@ export const execute = (tool: ITool<ArrowTool>): void =>
 
     // Screen選択時のイベントを登録
     tool.addEventListener(EventType.SCREEN,
-        screenAreaArrowToolMouseDownEventUseCase
+        screenAreaArrowToolPointerDownEventUseCase
     );
 
     // 範囲選択のイベントを登録
     tool.addEventListener(EventType.STAGE_RECT,
-        arrowToolStageRectMouseDownEventUseCase
+        arrowToolStageRectPointerDownEventUseCase
     );
 
     // 初期選択ツールとしてセット

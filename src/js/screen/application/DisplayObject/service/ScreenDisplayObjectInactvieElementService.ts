@@ -2,8 +2,8 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import type { Layer } from "@/core/domain/model/Layer";
 
 /**
- * @description DisplayObjectをアクティブ状態に更新
- *              Update the DisplayObject to the active state
+ * @description DisplayObjectを非アクティブ状態に更新
+ *              Update the DisplayObject to the inactive state
  *
  * @param  {Layer} layer
  * @param  {array} depths
@@ -27,9 +27,9 @@ export const execute = (layer: Layer, depths: number[]): void =>
         const depth = depths[idx];
 
         const displayObject = displayObjects[depth] as HTMLElement | null;
-        if (!displayObject || displayObject.classList.contains("active")) {
+        if (!displayObject || !displayObject.classList.contains("active")) {
             continue;
         }
-        displayObject.classList.add("active");
+        displayObject.classList.remove("active");
     }
 };
