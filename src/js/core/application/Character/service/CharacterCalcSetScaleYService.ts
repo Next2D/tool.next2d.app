@@ -14,7 +14,7 @@ export const execute = (
 ): void => {
 
     scale_y = Math.round(scale_y * 100) / 100;
-    const currentScaleY = Math.round(Math.hypot(matrix[0], matrix[1]) * 100) / 100;
+    const currentScaleY = Math.round(Math.hypot(matrix[2], matrix[3]) * 100) / 100;
     if (currentScaleY === scale_y) {
         return ;
     }
@@ -25,12 +25,23 @@ export const execute = (
 
     } else {
 
-        let radianY = Math.atan2(-matrix[2], matrix[3]);
-        if (radianY === -Math.PI) {
-            radianY = 0;
-        }
-        matrix[2] = -scale_y * Math.sin(radianY);
-        matrix[3] = scale_y  * Math.cos(radianY);
+        const targetAbs = Math.max(0, Math.abs(scale_y));
 
+        const EPS = 1e-12;
+        let theta = Math.atan2(matrix[1], matrix[0]);
+        if (matrix[0] < 0 || Math.abs(matrix[0]) < EPS && matrix[1] < 0) {
+            theta -= Math.PI;
+        }
+        if (theta <= -Math.PI) {
+            theta += 2 * Math.PI;
+        }
+        if (theta > Math.PI) {
+            theta -= 2 * Math.PI;
+        }
+
+        const thetaUse = theta + (scale_y < 0 ? Math.PI : 0);
+
+        matrix[2] = -targetAbs * Math.sin(thetaUse);
+        matrix[3] =  targetAbs * Math.cos(thetaUse);
     }
 };

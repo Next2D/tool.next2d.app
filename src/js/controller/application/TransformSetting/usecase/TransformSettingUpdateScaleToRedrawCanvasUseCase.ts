@@ -58,7 +58,6 @@ export const execute = async (): Promise<void> =>
                 character
             );
 
-            console.log(afterScaleX, afterScaleY);
             await externalCharacter.setScaleX(afterScaleX);
             await externalCharacter.setX(afterX);
             await externalCharacter.setScaleY(afterScaleY);

@@ -5,6 +5,8 @@ import { execute as transformSettingUpdateYElementService } from "@/controller/a
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
+import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
+import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
@@ -148,6 +150,10 @@ export const execute = (scale_y: number): void =>
                 transformSettingUpdateHeightElementService(character.height);
                 transformSettingUpdateXElementService(character.x);
                 transformSettingUpdateYElementService(character.y);
+                transformSettingUpdateRotationElementService(character.rotation);
+                transformSettingUpdateScaleXElementService(
+                    Math.round(transformSetting.scaleX * 10000) / 100
+                );
             }
         }
     }

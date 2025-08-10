@@ -5,6 +5,8 @@ import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
+import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
+import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $createTransformElementStyle,
@@ -147,6 +149,12 @@ export const execute = (rotation: number): void =>
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateXElementService(character.x);
                 transformSettingUpdateYElementService(character.y);
+                transformSettingUpdateScaleXElementService(
+                    Math.round(character.scaleX * 10000) / 100
+                );
+                transformSettingUpdateScaleYElementService(
+                    Math.round(character.scaleY * 10000) / 100
+                );
             }
         }
     }

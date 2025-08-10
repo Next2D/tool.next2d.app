@@ -3,6 +3,8 @@ import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/scr
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
+import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
+import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
@@ -149,6 +151,10 @@ export const execute = (scale_x: number): void =>
                 transformSettingUpdateWidthElementService(character.width);
                 transformSettingUpdateXElementService(character.x);
                 transformSettingUpdateYElementService(character.y);
+                transformSettingUpdateScaleYElementService(
+                    Math.round(transformSetting.scaleY * 10000) / 100
+                );
+                transformSettingUpdateRotationElementService(character.rotation);
             }
         }
     }

@@ -9,10 +9,10 @@
  */
 export const execute = (matrix: Float32Array): number =>
 {
-    const yScale = Math.round(Math.sqrt(
-        matrix[2] * matrix[2]
-        + matrix[3] * matrix[3]
-    ) * 100) / 100;
+    const EPS = 1e-12;
 
-    return Math.sign(matrix[0] * matrix[3] - matrix[1] * matrix[2]) * yScale;
+    const sxAbs = Math.round(Math.hypot(matrix[0], matrix[1]) * 100) / 100;
+    const signX = (Math.abs(matrix[0]) >= EPS ? Math.sign(matrix[0]) : Math.sign(matrix[1])) || 1;
+
+    return (matrix[0] * matrix[3] - matrix[1] * matrix[2]) / (sxAbs * signX);
 };

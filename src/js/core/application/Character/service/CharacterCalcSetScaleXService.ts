@@ -25,13 +25,22 @@ export const execute = (
 
     } else {
 
-        let radianX = Math.atan2(matrix[1], matrix[0]);
-        if (radianX === -Math.PI) {
-            radianX = 0;
-        }
+        const EPS = 1e-12;
+        const theta = Math.atan2(matrix[1], matrix[0]);
 
-        matrix[1] = scale_x * Math.sin(radianX);
-        matrix[0] = scale_x * Math.cos(radianX);
+        // 現在の「符号付き scaleX」を推定（a が 0 近傍なら b で判定）
+        const sxAbs = Math.hypot(matrix[0], matrix[1]);
+        const signX = (Math.abs(matrix[0]) >= EPS ? Math.sign(matrix[0]) : Math.sign(matrix[1])) || 1;
+        const sxSigned = sxAbs * signX;
 
+        // 角度正規化：scaleX を「非負」で表せる角度に直す（符号は角度から外す）
+        const thetaPos = sxSigned >= 0 ? theta : theta - Math.PI;
+
+        // ターゲットの符号を角度に載せる
+        const thetaUse = thetaPos + (scale_x < 0 ? Math.PI : 0);
+
+        const use = Math.abs(scale_x);
+        matrix[0] = use * Math.cos(thetaUse);
+        matrix[1] = use * Math.sin(thetaUse);
     }
 };
