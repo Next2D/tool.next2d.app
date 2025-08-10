@@ -3,21 +3,20 @@
  *              Calculate the scale X of DisplayObject
  *
  * @param  {number} scale_x
- * @param  {number} current_scale_x
  * @param  {Float32Array} matrix
- * @return {number}
+ * @return {void}
  * @method
  * @public
  */
 export const execute = (
     scale_x: number,
-    current_scale_x: number | null,
     matrix: Float32Array
-): number => {
+): void => {
 
-    scale_x = Math.round(scale_x * 10000) / 10000;
-    if (current_scale_x === scale_x) {
-        return scale_x;
+    scale_x = Math.round(scale_x * 100) / 100;
+    const currentScaleX = Math.round(Math.hypot(matrix[0], matrix[1]) * 100) / 100;
+    if (currentScaleX === scale_x) {
+        return ;
     }
 
     if (matrix[1] === 0 || isNaN(matrix[1])) {
@@ -35,6 +34,4 @@ export const execute = (
         matrix[0] = scale_x * Math.cos(radianX);
 
     }
-
-    return scale_x;
 };

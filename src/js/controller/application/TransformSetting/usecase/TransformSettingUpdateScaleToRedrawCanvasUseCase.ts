@@ -38,7 +38,10 @@ export const execute = async (): Promise<void> =>
             }
 
             // 変更後の値をセット
-            const afterMatrix = character.matrix.slice();
+            const afterScaleX = character.scaleX;
+            const afterScaleY = character.scaleY;
+            const afterX = character.x;
+            const afterY = character.y;
 
             // 変更前の値に戻す
             const beforeMatrix = transformSetting.matrixs[index++];
@@ -46,19 +49,7 @@ export const execute = async (): Promise<void> =>
                 continue;
             }
 
-            const beforeScaleX = Math.sqrt(
-                beforeMatrix[0] * beforeMatrix[0]
-                + beforeMatrix[1] * beforeMatrix[1]
-            );
-            const beforeScaleY = Math.sqrt(
-                beforeMatrix[2] * beforeMatrix[2]
-                + beforeMatrix[3] * beforeMatrix[3]
-            );
-
-            character.x      = beforeMatrix[4];
-            character.y      = beforeMatrix[5];
-            character.scaleX = beforeMatrix[0] > 0 ? beforeScaleX : beforeScaleX * -1;
-            character.scaleY = beforeMatrix[3] > 0 ? beforeScaleY : beforeScaleY * -1;
+            character.matrix.set(beforeMatrix);
 
             const externalCharacter = new ExternalCharacter(
                 workSpace,
@@ -67,20 +58,11 @@ export const execute = async (): Promise<void> =>
                 character
             );
 
-            // fixed logic
-            const afterScaleX = Math.round(Math.sqrt(
-                afterMatrix[0] * afterMatrix[0]
-                + afterMatrix[1] * afterMatrix[1]
-            ) * 10000) / 10000;
-            const afterScaleY = Math.round(Math.sqrt(
-                afterMatrix[2] * afterMatrix[2]
-                + afterMatrix[3] * afterMatrix[3]
-            ) * 10000) / 10000;
-
-            await externalCharacter.setScaleX(afterMatrix[0] > 0 ? afterScaleX : afterScaleX * -1);
-            await externalCharacter.setX(afterMatrix[4]);
-            await externalCharacter.setScaleY(afterMatrix[3] > 0 ? afterScaleY : afterScaleY * -1);
-            await externalCharacter.setY(afterMatrix[5]);
+            console.log(afterScaleX, afterScaleY);
+            await externalCharacter.setScaleX(afterScaleX);
+            await externalCharacter.setX(afterX);
+            await externalCharacter.setScaleY(afterScaleY);
+            await externalCharacter.setY(afterY);
 
             // 固定時はこのタイミングでcanvasを入れ替える
             if (transformSetting.sizeLocked

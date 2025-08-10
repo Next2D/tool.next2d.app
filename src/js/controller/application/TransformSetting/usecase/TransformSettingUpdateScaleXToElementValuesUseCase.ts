@@ -93,16 +93,12 @@ export const execute = (scale_x: number): void =>
             }
 
             const multiMatrix = $multiplicationMatrix(character.matrix, parentMatrix);
-            const afterScaleX = Math.sqrt(
-                multiMatrix[0] * multiMatrix[0]
-                + multiMatrix[1] * multiMatrix[1]
-            );
-
-            const determinant = multiMatrix[0] * multiMatrix[3] - multiMatrix[1] * multiMatrix[2];
-            const sign = determinant / (afterScaleX * character.scaleY) >= 0 ? 1 : -1;
-            character.scaleX = afterScaleX * sign;
-            character.x = multiMatrix[4];
-            character.y = multiMatrix[5];
+            character.matrix[0] = multiMatrix[0];
+            character.matrix[1] = multiMatrix[1];
+            character.matrix[2] = multiMatrix[2];
+            character.matrix[3] = multiMatrix[3];
+            character.matrix[4] = multiMatrix[4];
+            character.matrix[5] = multiMatrix[5];
 
             const canvas = node.querySelector("canvas");
             switch (instance.type) {

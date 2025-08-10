@@ -14,7 +14,7 @@ describe("CharacterCalcSetRotationService Test", () =>
         expect(matrix[4]).toBe(10);
         expect(matrix[5]).toBe(20);
 
-        execute(10, 20, matrix);
+        execute(10, matrix);
 
         expect(matrix[0]).toBe(1.2181400060653687);
         expect(matrix[1]).toBe(0.214790940284729);

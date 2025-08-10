@@ -144,10 +144,6 @@ export class Character
      */
     public name: string;
 
-    private _$scaleX: number | null;
-    private _$scaleY: number | null;
-    private _$rotation: number | null;
-
     /**
      * @constructor
      * @public
@@ -169,27 +165,6 @@ export class Character
             "x": 0,
             "y": 0
         };
-
-        /**
-         * @type {number}
-         * @default null
-         * @private
-         */
-        this._$scaleX = null;
-
-        /**
-         * @type {number}
-         * @default null
-         * @private
-         */
-        this._$scaleY = null;
-
-        /**
-         * @type {number}
-         * @default null
-         * @private
-         */
-        this._$rotation = null;
     }
 
     /**
@@ -390,7 +365,7 @@ export class Character
     }
     set x (x: number)
     {
-        this.matrix[4] = Math.round(x * 10000) / 10000;
+        this.matrix[4] = Math.round(x * 100) / 100;
     }
 
     /**
@@ -406,7 +381,7 @@ export class Character
     }
     set y (y: number)
     {
-        this.matrix[5] =  Math.round(y * 10000) / 10000;
+        this.matrix[5] =  Math.round(y * 100) / 100;
     }
 
     /**
@@ -458,18 +433,11 @@ export class Character
      */
     get scaleX (): number
     {
-        if (this._$scaleX === null) {
-            this._$scaleX = characterCalcGetScaleXService(this.matrix);
-        }
-        return this._$scaleX;
+        return characterCalcGetScaleXService(this.matrix);
     }
     set scaleX (scale_x: number)
     {
-        this._$scaleX = characterCalcSetScaleXService(
-            scale_x,
-            this._$scaleX,
-            this.matrix
-        );
+        characterCalcSetScaleXService(scale_x, this.matrix);
     }
 
     /**
@@ -481,18 +449,11 @@ export class Character
      */
     get scaleY (): number
     {
-        if (this._$scaleY === null) {
-            this._$scaleY = characterCalcGetScaleYService(this.matrix);
-        }
-        return this._$scaleY;
+        return characterCalcGetScaleYService(this.matrix);
     }
     set scaleY (scale_y: number)
     {
-        this._$scaleY = characterCalcSetScaleYService(
-            scale_y,
-            this._$scaleY,
-            this.matrix
-        );
+        characterCalcSetScaleYService(scale_y, this.matrix);
     }
 
     /**
@@ -504,18 +465,11 @@ export class Character
      */
     get rotation (): number
     {
-        if (this._$rotation === null) {
-            this._$rotation = characterCalcGetRotationService(this.matrix);
-        }
-        return this._$rotation;
+        return characterCalcGetRotationService(this.matrix);
     }
     set rotation (rotation: number)
     {
-        this._$rotation = characterCalcSetRotationService(
-            rotation,
-            this._$rotation,
-            this.matrix
-        );
+        characterCalcSetRotationService(rotation, this.matrix);
     }
 
     /**

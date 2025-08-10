@@ -39,35 +39,23 @@ export const execute = (): void =>
                 continue;
             }
 
-            const beforeScaleX = Math.round(Math.sqrt(
-                beforeMatrix[0] * beforeMatrix[0]
-                + beforeMatrix[1] * beforeMatrix[1]
-            ) * 10000) / 10000;
-            const beforeScaleY = Math.round(Math.sqrt(
-                beforeMatrix[2] * beforeMatrix[2]
-                + beforeMatrix[3] * beforeMatrix[3]
-            ) * 10000) / 10000;
-
-            character.x      = beforeMatrix[4];
-            character.y      = beforeMatrix[5];
-            character.scaleX = beforeMatrix[0] > 0 ? beforeScaleX : beforeScaleX * -1;
-            character.scaleY = beforeMatrix[3] > 0 ? beforeScaleY : beforeScaleY * -1;
+            character.matrix.set(beforeMatrix);
         }
     }
 
-    transformSetting.scaleX = 1;
-    transformSetting.scaleY = 1;
-    if (transformSetting.matrixs.length === 1) {
-        const matrix = transformSetting.matrixs[0];
-        const scaleX = Math.round(Math.sqrt(
-            matrix[0] * matrix[0]
-            + matrix[1] * matrix[1]
-        ) * 10000) / 10000;
-        const scaleY = Math.round(Math.sqrt(
-            matrix[2] * matrix[2]
-            + matrix[3] * matrix[3]
-        ) * 10000) / 10000;
-        transformSetting.scaleX = matrix[0] > 0 ? scaleX : scaleX * -1;
-        transformSetting.scaleY = matrix[3] > 0 ? scaleY : scaleY * -1;
+    if (transformSetting.matrixs.length !== 1) {
+        transformSetting.scaleX = 1;
+        transformSetting.scaleY = 1;
+        // const matrix = transformSetting.matrixs[0];
+        // const scaleX = Math.round(Math.sqrt(
+        //     matrix[0] * matrix[0]
+        //     + matrix[1] * matrix[1]
+        // ) * 100) / 100;
+        // const scaleY = Math.round(Math.sqrt(
+        //     matrix[2] * matrix[2]
+        //     + matrix[3] * matrix[3]
+        // ) * 100) / 100;
+        // transformSetting.scaleX = matrix[0] > 0 ? scaleX : scaleX * -1;
+        // transformSetting.scaleY = matrix[3] > 0 ? scaleY : scaleY * -1;
     }
 };

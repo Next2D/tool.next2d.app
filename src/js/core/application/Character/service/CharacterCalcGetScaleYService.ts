@@ -14,5 +14,5 @@ export const execute = (matrix: Float32Array): number =>
         + matrix[3] * matrix[3]
     ) * 100) / 100;
 
-    return 0 > matrix[3] ? yScale * -1 : yScale;
+    return Math.sign(matrix[0] * matrix[3] - matrix[1] * matrix[2]) * yScale;
 };

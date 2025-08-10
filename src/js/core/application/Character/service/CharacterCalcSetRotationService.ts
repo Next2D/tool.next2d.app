@@ -14,7 +14,6 @@ const $Deg2Rad = Math.PI / 180;
  *              Update rotation information
  *
  * @param {number} rotation
- * @param {number} current_rotation
  * @param {Float32Array} matrix
  * @return {void}
  * @method
@@ -22,13 +21,14 @@ const $Deg2Rad = Math.PI / 180;
  */
 export const execute = (
     rotation: number,
-    current_rotation: number | null,
     matrix: Float32Array
-): number => {
+): void => {
 
     rotation = $clamp(rotation % 360, 0, 360);
-    if (current_rotation === rotation) {
-        return rotation;
+    const radian = Math.round(Math.atan2(matrix[1], matrix[0]) * 180 / Math.PI);
+    const currentRotation = radian < 0 ? radian + 360 : radian;
+    if (currentRotation === rotation) {
+        return ;
     }
 
     const scaleX = Math.sqrt(
@@ -70,6 +70,4 @@ export const execute = (
             matrix[3] = scaleY * Math.cos(radianY);
         }
     }
-
-    return rotation;
 };
