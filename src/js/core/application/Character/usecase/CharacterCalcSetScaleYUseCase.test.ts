@@ -1,4 +1,4 @@
-import { execute } from "./CharacterCalcSetScaleYService";
+import { execute } from "./CharacterCalcSetScaleYUseCase";
 import { describe, expect, it } from "vitest";
 
 describe("CharacterCalcSetScaleYService Test", () =>

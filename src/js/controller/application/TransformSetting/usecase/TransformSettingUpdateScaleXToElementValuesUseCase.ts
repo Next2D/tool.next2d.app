@@ -94,13 +94,9 @@ export const execute = (scale_x: number): void =>
                 continue ;
             }
 
-            const multiMatrix = $multiplicationMatrix(character.matrix, parentMatrix);
-            character.matrix[0] = multiMatrix[0];
-            character.matrix[1] = multiMatrix[1];
-            character.matrix[2] = multiMatrix[2];
-            character.matrix[3] = multiMatrix[3];
-            character.matrix[4] = multiMatrix[4];
-            character.matrix[5] = multiMatrix[5];
+            character.matrix.set(
+                $multiplicationMatrix(character.matrix, parentMatrix)
+            );
 
             const canvas = node.querySelector("canvas");
             switch (instance.type) {
@@ -148,13 +144,13 @@ export const execute = (scale_x: number): void =>
             node.style.top  = `${$getScreenOffsetTop()  + character.globalMinY}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
-                transformSettingUpdateWidthElementService(character.width);
                 transformSettingUpdateXElementService(character.x);
                 transformSettingUpdateYElementService(character.y);
-                transformSettingUpdateScaleYElementService(
-                    Math.round(transformSetting.scaleY * 10000) / 100
-                );
+                transformSettingUpdateWidthElementService(character.width);
                 transformSettingUpdateRotationElementService(character.rotation);
+                transformSettingUpdateScaleYElementService(
+                    Math.round(character.scaleY * 10000) / 100
+                );
             }
         }
     }

@@ -7,8 +7,8 @@ import type { IPosition } from "@/interface/IPosition";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
-import { execute as characterCalcSetScaleXService } from "@/core/application/Character/service/CharacterCalcSetScaleXService";
-import { execute as characterCalcSetScaleYService } from "@/core/application/Character/service/CharacterCalcSetScaleYService";
+import { execute as characterCalcSetScaleXUseCase } from "@/core/application/Character/usecase/CharacterCalcSetScaleXUseCase";
+import { execute as characterCalcSetScaleYService } from "@/core/application/Character/usecase/CharacterCalcSetScaleYUseCase";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
@@ -437,7 +437,7 @@ export class Character
     }
     set scaleX (scale_x: number)
     {
-        characterCalcSetScaleXService(scale_x, this.matrix);
+        characterCalcSetScaleXUseCase(scale_x, this.matrix);
     }
 
     /**

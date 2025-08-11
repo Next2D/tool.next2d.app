@@ -33,11 +33,15 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 入力モードを終了する
     $updateKeyLock(false);
 
-    const width = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
+    const width = $clamp(
+        Math.round(parseFloat(element.value) * 100) / 100,
+        1, Number.MAX_VALUE
+    );
     element.value = `${width}`;
 
     // 変形に合わせて表示を更新
-    transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.beforeWidth);
+    const scale = width / transformSetting.beforeWidth;
+    transformSettingUpdateScaleXToElementValuesUseCase(scale);
 
     if (transformSetting.sizeLocked
         && transformSetting.beforeHeight
@@ -49,12 +53,14 @@ export const execute = async (event: FocusEvent): Promise<void> =>
             return ;
         }
 
-        const value  = parseFloat(parseFloat(heightElement.value).toFixed(2)) + (width - transformSetting.beforeWidth);
-        const height = $clamp(value, 1, Number.MAX_VALUE);
+        const height = $clamp(
+            Math.round(parseFloat(heightElement.value) * scale * 100) / 100,
+            1, Number.MAX_VALUE
+        );
         heightElement.value = `${height}`;
 
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.beforeHeight);
+        transformSettingUpdateScaleYToElementValuesUseCase(scale);
     }
 
     // 変更後のmatrixで表示を更新

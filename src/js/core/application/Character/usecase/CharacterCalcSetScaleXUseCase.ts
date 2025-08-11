@@ -1,3 +1,5 @@
+import { execute as characterCalcGetScaleXService } from "../service/CharacterCalcGetScaleXService";
+
 /**
  * @description DisplayObjectのスケールXを計算
  *              Calculate the scale X of DisplayObject
@@ -14,7 +16,7 @@ export const execute = (
 ): void => {
 
     scale_x = Math.round(scale_x * 100) / 100;
-    const currentScaleX = Math.round(Math.hypot(matrix[0], matrix[1]) * 100) / 100;
+    const currentScaleX = characterCalcGetScaleXService(matrix);
     if (currentScaleX === scale_x) {
         return ;
     }

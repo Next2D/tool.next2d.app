@@ -47,13 +47,11 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 表示を更新
-        console.log("before: ", element.value);
         const height = $clamp(
             Math.round((parseFloat(element.value) + event.movementX) * 100) / 100,
             1, Number.MAX_VALUE
         );
         element.value = `${height}`;
-        console.log("after: ", element.value);
 
         // 変形に合わせて表示を更新
         const scale = height / transformSetting.h;

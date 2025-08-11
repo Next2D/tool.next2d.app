@@ -38,6 +38,14 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
+        if (!transformSetting.w) {
+            return ;
+        }
+
+        if (transformSetting.sizeLocked && !transformSetting.h) {
+            return ;
+        }
+
         // 表示を更新
         const value = parseFloat(parseFloat(element.value).toFixed(2));
         const width = $clamp(value + event.movementX, 1, Number.MAX_VALUE);
