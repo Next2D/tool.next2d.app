@@ -44,8 +44,13 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     transformSettingRestoreBeforeMatrixService();
 
     // 変形に合わせて表示を更新
-    const height = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
-    transformSettingUpdateScaleYToElementValuesUseCase(height / transformSetting.beforeHeight);
+    const height = $clamp(
+        Math.round(parseFloat(element.value) * 100) / 100,
+        1, Number.MAX_VALUE
+    );
+
+    const scale = height / transformSetting.beforeHeight;
+    transformSettingUpdateScaleYToElementValuesUseCase(scale);
 
     if (transformSetting.sizeLocked) {
         const widthElement = document
@@ -54,12 +59,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             return ;
         }
 
-        const value = parseFloat(parseFloat(widthElement.value).toFixed(2));
-        const width = $clamp(value + event.movementX, 1, Number.MAX_VALUE);
+        const width = $clamp(
+            Math.round(parseFloat(widthElement.value) * scale * 100) / 100,
+            1, Number.MAX_VALUE
+        );
         widthElement.value = `${width}`;
 
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleXToElementValuesUseCase(width / transformSetting.beforeWidth);
+        transformSettingUpdateScaleXToElementValuesUseCase(scale);
     }
 
     // 変更後のmatrixで表示を更新

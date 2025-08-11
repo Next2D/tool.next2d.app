@@ -63,8 +63,10 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
-            const value  = parseFloat(parseFloat(heightElement.value).toFixed(2));
-            const height = $clamp(parseFloat((value * scale).toFixed(2)), 1, Number.MAX_VALUE);
+            const height = $clamp(
+                Math.round(parseFloat(heightElement.value) * scale * 100) / 100,
+                1, Number.MAX_VALUE
+            );
             heightElement.value = `${height}`;
 
             transformSettingUpdateScaleYToElementValuesUseCase(scale);
