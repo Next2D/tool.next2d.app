@@ -25,6 +25,12 @@ export const execute = async (
         return ;
     }
 
+    const container = div.querySelector(".canvas-container") as HTMLDivElement;
+    if (!container) {
+        return ;
+    }
+    container.classList.add("active");
+
     // 変更前のcanvasを削除してプールに戻す
     const canvas = element.querySelector("canvas");
     if (canvas) {

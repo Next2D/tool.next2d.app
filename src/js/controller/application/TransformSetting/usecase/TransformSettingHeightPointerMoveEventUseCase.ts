@@ -38,10 +38,22 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
+        if (!transformSetting.h) {
+            return ;
+        }
+
+        if (transformSetting.sizeLocked && !transformSetting.w) {
+            return ;
+        }
+
         // 表示を更新
-        const value  = parseFloat(parseFloat(element.value).toFixed(2));
-        const height = $clamp(value + event.movementX, 1, Number.MAX_VALUE);
+        console.log("before: ", element.value);
+        const height = $clamp(
+            Math.round((parseFloat(element.value) + event.movementX) * 100) / 100,
+            1, Number.MAX_VALUE
+        );
         element.value = `${height}`;
+        console.log("after: ", element.value);
 
         // 変形に合わせて表示を更新
         const scale = height / transformSetting.h;
@@ -55,8 +67,10 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
-            const value = parseFloat(parseFloat(widthElement.value).toFixed(2));
-            const width = $clamp(parseFloat((value * scale).toFixed(2)), 1, Number.MAX_VALUE);
+            const width = $clamp(
+                Math.round(parseFloat(widthElement.value) * scale * 100) / 100,
+                1, Number.MAX_VALUE
+            );
             widthElement.value = `${width}`;
 
             transformSettingUpdateScaleXToElementValuesUseCase(scale);

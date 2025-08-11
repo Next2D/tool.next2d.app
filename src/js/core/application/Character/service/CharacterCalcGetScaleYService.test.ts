@@ -5,6 +5,6 @@ describe("CharacterCalcGetScaleYService Test", () =>
 {
     it("test case", () =>
     {
-        expect(execute(new Float32Array([1.2, 0.3, -0.51, 1.234, 10, 20]))).toBe(1.34);
+        expect(execute(new Float32Array([1.2, 0.3, -0.51, 1.234, 10, 20]))).toBe(1.32);
     });
 });

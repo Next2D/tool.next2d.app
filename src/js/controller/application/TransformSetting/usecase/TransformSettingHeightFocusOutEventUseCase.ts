@@ -33,7 +33,10 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 入力モードを終了する
     $updateKeyLock(false);
 
-    const height = $clamp(parseFloat(parseFloat(element.value).toFixed(2)), 1, Number.MAX_VALUE);
+    const height = $clamp(
+        Math.round(parseFloat(element.value) * 100) / 100,
+        1, Number.MAX_VALUE
+    );
     element.value = `${height}`;
 
     // 変形に合わせて表示を更新

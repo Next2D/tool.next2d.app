@@ -18,5 +18,5 @@ export const execute = (height: number): void =>
         return ;
     }
 
-    element.value = `${parseFloat(height.toFixed(2))}`;
+    element.value = `${Math.round(height * 100) / 100}`;
 };

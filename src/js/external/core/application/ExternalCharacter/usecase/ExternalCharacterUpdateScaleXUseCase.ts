@@ -87,7 +87,9 @@ export const execute = async (
                 transformSettingUpdateScaleXElementService(character.scaleX * 100);
             } else {
                 if (bounds) {
-                    transformSettingUpdateScaleXElementService(bounds.xMin);
+                    transformSettingUpdateScaleXElementService(
+                        Math.round(scale_x * 10000) / 100
+                    );
                 }
             }
         }

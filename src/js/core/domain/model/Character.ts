@@ -395,7 +395,7 @@ export class Character
     {
         const bounds = this.getBounds();
         return bounds
-            ? Math.abs(bounds.xMax - bounds.xMin)
+            ? Math.round(Math.abs(bounds.xMax - bounds.xMin) * 100) / 100
             : 0;
     }
     set width (width: number)
@@ -415,7 +415,7 @@ export class Character
     {
         const bounds = this.getBounds();
         return bounds
-            ? Math.abs(bounds.yMax - bounds.yMin)
+            ? Math.round(Math.abs(bounds.yMax - bounds.yMin) * 100) / 100
             : 0;
     }
     set height (height: number)

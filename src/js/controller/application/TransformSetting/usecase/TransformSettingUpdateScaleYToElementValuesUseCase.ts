@@ -94,13 +94,10 @@ export const execute = (scale_y: number): void =>
                 continue ;
             }
 
-            const multiMatrix = $multiplicationMatrix(character.matrix, parentMatrix);
-            character.matrix[0] = multiMatrix[0];
-            character.matrix[1] = multiMatrix[1];
-            character.matrix[2] = multiMatrix[2];
-            character.matrix[3] = multiMatrix[3];
-            character.matrix[4] = multiMatrix[4];
-            character.matrix[5] = multiMatrix[5];
+            // matrix情報を更新
+            character.matrix.set(
+                $multiplicationMatrix(character.matrix, parentMatrix)
+            );
 
             const canvas = node.querySelector("canvas");
             switch (instance.type) {
@@ -147,9 +144,9 @@ export const execute = (scale_y: number): void =>
             node.style.top  = `${$getScreenOffsetTop()  + character.globalMinY}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
-                transformSettingUpdateHeightElementService(character.height);
                 transformSettingUpdateXElementService(character.x);
                 transformSettingUpdateYElementService(character.y);
+                transformSettingUpdateHeightElementService(character.height);
                 transformSettingUpdateRotationElementService(character.rotation);
                 transformSettingUpdateScaleXElementService(
                     Math.round(transformSetting.scaleX * 10000) / 100
@@ -160,10 +157,11 @@ export const execute = (scale_y: number): void =>
 
     // 変形エリアのy座標を更新
     if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
+        transformSettingUpdateXElementService(bounds.xMin);
+        transformSettingUpdateYElementService(bounds.yMin);
         transformSettingUpdateHeightElementService(
             Math.round(Math.abs(bounds.yMax - bounds.yMin) * 100) / 100
         );
-        transformSettingUpdateYElementService(bounds.yMin);
     }
 
     // 変形エリアのyスケールを更新

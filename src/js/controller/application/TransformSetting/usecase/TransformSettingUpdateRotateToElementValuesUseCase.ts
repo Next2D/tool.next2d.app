@@ -1,13 +1,15 @@
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
+import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
+import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $createTransformElementStyle,
     $multiplicationMatrix
@@ -66,6 +68,7 @@ export const execute = (rotation: number): void =>
     matrix[3] = cos;
 
     // 選択中のElementを移動
+    const scale = workSpace.scale;
     const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
@@ -120,14 +123,14 @@ export const execute = (rotation: number): void =>
                 case $BITMAP_TYPE:
                 case $VIDEO_TYPE:
                     {
-                        node.style.width  = `${character.width}px`;
-                        node.style.height = `${character.height}px`;
+                        node.style.width  = `${character.width * scale}px`;
+                        node.style.height = `${character.height * scale}px`;
                         const container = node.querySelector(".canvas-container") as HTMLDivElement;
                         if (container) {
                             const bounds = character.getRawBounds();
                             if (canvas && bounds) {
-                                container.style.width = canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * character.scaleX))}px`;
-                                container.style.height = canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * character.scaleY))}px`;
+                                container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * Math.abs(character.scaleX) * scale))}px`;
+                                container.style.height = canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * Math.abs(character.scaleY) * scale))}px`;
                             }
                             container.style.transform = $createTransformElementStyle(character);
                         }
@@ -149,6 +152,8 @@ export const execute = (rotation: number): void =>
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateXElementService(character.x);
                 transformSettingUpdateYElementService(character.y);
+                transformSettingUpdateWidthElementService(character.width);
+                transformSettingUpdateHeightElementService(character.height);
                 transformSettingUpdateScaleXElementService(
                     Math.round(character.scaleX * 10000) / 100
                 );

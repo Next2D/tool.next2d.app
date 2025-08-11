@@ -95,13 +95,14 @@ export const execute = (event: PointerEvent): void =>
         if (!character) {
             return ;
         }
+
         referenceSetting.x = character.referencePosition.x;
         referenceSetting.y = character.referencePosition.y;
         transformSetting.scaleX = transformSetting.beforeScaleX = character.scaleX;
         transformSetting.scaleY = transformSetting.beforeScaleY = character.scaleY;
     } else {
-        referenceSetting.x = bounds.xMin + width / 2;
-        referenceSetting.y = bounds.yMin + height / 2;
+        referenceSetting.x = width / 2;
+        referenceSetting.y = height / 2;
         transformSetting.scaleX = transformSetting.beforeScaleX = 1;
         transformSetting.scaleY = transformSetting.beforeScaleY = 1;
     }

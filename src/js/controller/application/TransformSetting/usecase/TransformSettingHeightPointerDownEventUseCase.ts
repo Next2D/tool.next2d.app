@@ -12,7 +12,6 @@ import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
-import { execute as characterGetReferencePositionService } from "@/core/application/Character/service/CharacterGetReferencePositionService";
 
 /**
  * @description 変形エリアの幅変更のマウスダウンイベント
@@ -70,6 +69,9 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 値を初期化
+    transformSetting.clear();
+
     // 変形エリアの高さを設定
     transformSetting.h = height;
     transformSetting.beforeHeight = height;
@@ -102,14 +104,13 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        const point = characterGetReferencePositionService(character);
-        referenceSetting.x = point.x;
-        referenceSetting.y = point.y;
+        referenceSetting.x = character.referencePosition.x;
+        referenceSetting.y = character.referencePosition.y;
         transformSetting.scaleX = transformSetting.beforeScaleX = character.scaleX;
         transformSetting.scaleY = transformSetting.beforeScaleY = character.scaleY;
     } else {
-        referenceSetting.x = bounds.xMin + width / 2;
-        referenceSetting.y = bounds.yMin + height / 2;
+        referenceSetting.x = width / 2;
+        referenceSetting.y = height / 2;
         transformSetting.scaleX = transformSetting.beforeScaleX = 1;
         transformSetting.scaleY = transformSetting.beforeScaleY = 1;
     }

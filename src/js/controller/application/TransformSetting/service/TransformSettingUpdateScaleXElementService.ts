@@ -18,5 +18,5 @@ export const execute = (scale_x: number): void =>
         return ;
     }
 
-    element.value = `${parseFloat(scale_x.toFixed(2))}`;
+    element.value = `${Math.round(scale_x * 100) / 100}`;
 };
