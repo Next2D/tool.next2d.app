@@ -101,8 +101,8 @@ export const execute = (event: PointerEvent): void =>
         referenceSetting.y = character.referencePosition.y;
         transformSetting.rotation = transformSetting.beforeRotation = character.rotation;
     } else {
-        referenceSetting.x = bounds.xMin + width / 2;
-        referenceSetting.y = bounds.yMin + height / 2;
+        referenceSetting.x = width / 2;
+        referenceSetting.y = height / 2;
         transformSetting.rotation = transformSetting.beforeRotation = 0;
     }
 

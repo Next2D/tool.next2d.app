@@ -3,6 +3,7 @@ import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/scr
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
@@ -48,11 +49,6 @@ export const execute = (scale_y: number): void =>
         .getElementById($SCREEN_STAGE_AREA_ID);
 
     if (!element) {
-        return ;
-    }
-
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (!bounds) {
         return ;
     }
 
@@ -146,22 +142,29 @@ export const execute = (scale_y: number): void =>
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateXElementService(character.x);
                 transformSettingUpdateYElementService(character.y);
+                transformSettingUpdateWidthElementService(character.width);
                 transformSettingUpdateHeightElementService(character.height);
                 transformSettingUpdateRotationElementService(character.rotation);
                 transformSettingUpdateScaleXElementService(
-                    Math.round(transformSetting.scaleX * 10000) / 100
+                    Math.round(character.scaleX * 10000) / 100
                 );
             }
         }
     }
 
     // 変形エリアのy座標を更新
-    if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
-        transformSettingUpdateXElementService(bounds.xMin);
-        transformSettingUpdateYElementService(bounds.yMin);
-        transformSettingUpdateHeightElementService(
-            Math.round(Math.abs(bounds.yMax - bounds.yMin) * 100) / 100
-        );
+    if (!movieClip.isSingleSelectedOfDisplayObject()) {
+        const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+        if (bounds) {
+            transformSettingUpdateXElementService(bounds.xMin);
+            transformSettingUpdateYElementService(bounds.yMin);
+            transformSettingUpdateWidthElementService(
+                Math.round(Math.abs(bounds.xMax - bounds.xMin) * 100) / 100
+            );
+            transformSettingUpdateHeightElementService(
+                Math.round(Math.abs(bounds.yMax - bounds.yMin) * 100) / 100
+            );
+        }
     }
 
     // 変形エリアのyスケールを更新

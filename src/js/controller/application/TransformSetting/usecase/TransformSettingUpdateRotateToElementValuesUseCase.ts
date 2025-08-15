@@ -53,19 +53,10 @@ export const execute = (rotation: number): void =>
         return ;
     }
 
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (!bounds) {
-        return ;
-    }
-
-    const matrix = new Float32Array([1, 0, 0, 1, 0, 0]);
     const radian = rotation * Math.PI / 180;
     const cos = Math.cos(radian);
     const sin = Math.sin(radian);
-    matrix[0] = cos;
-    matrix[1] = sin;
-    matrix[2] = -sin;
-    matrix[3] = cos;
+    const matrix = new Float32Array([cos, sin, -sin, cos, 0, 0]);
 
     // 選択中のElementを移動
     const scale = workSpace.scale;
@@ -165,11 +156,17 @@ export const execute = (rotation: number): void =>
     }
 
     transformSetting.rotation = rotation;
-    // // 変形エリアのx座標を更新
-    // if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
-    //     transformSettingUpdateWidthElementService(
-    //         parseFloat(Math.abs(bounds.xMax - bounds.xMin).toFixed(2))
-    //     );
-    //     transformSettingUpdateXElementService(bounds.xMin);
-    // }
+
+    // 変形エリアのx座標を更新
+    // TODO
+    if (!movieClip.isSingleSelectedOfDisplayObject()) {
+        const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+        if (bounds) {
+            transformSettingUpdateWidthElementService(
+                Math.round(Math.abs(bounds.xMax - bounds.xMin) * 100) / 100
+            );
+            transformSettingUpdateXElementService(bounds.xMin);
+            transformSettingUpdateYElementService(bounds.yMin);
+        }
+    }
 };

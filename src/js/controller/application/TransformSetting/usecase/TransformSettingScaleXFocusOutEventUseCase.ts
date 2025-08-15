@@ -57,8 +57,8 @@ export const execute = async (event: FocusEvent): Promise<void> =>
             return ;
         }
 
-        const value  = parseFloat(scaleYElement.value);
-        let scaleY = $clamp(parseFloat((value * scale).toFixed(2)),
+        let scaleY = $clamp(
+            Math.round(parseFloat(scaleYElement.value) * scale * 100) / 100,
             Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
         );
         if (!scaleY) {
@@ -68,7 +68,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         scaleYElement.value = `${scaleY}`;
 
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleYToElementValuesUseCase(scaleY / transformSetting.beforeScaleY);
+        transformSettingUpdateScaleYToElementValuesUseCase(scale);
     }
 
     // 変更後のmatrixで表示を更新

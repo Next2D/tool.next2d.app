@@ -1,5 +1,5 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleYToElementValuesUseCase";
+import { execute as transformSettingUpdateHeightToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateHeightToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
@@ -55,7 +55,7 @@ export const execute = (event: PointerEvent): void =>
 
         // 変形に合わせて表示を更新
         const scale = height / transformSetting.h;
-        transformSettingUpdateScaleYToElementValuesUseCase(scale);
+        transformSettingUpdateHeightToElementValuesUseCase(scale);
         transformSetting.h = height;
 
         if (transformSetting.sizeLocked) {

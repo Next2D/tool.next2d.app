@@ -21,7 +21,6 @@ export const execute = async (): Promise<void> =>
     }
 
     let index = 0;
-
     const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
         const layer = movieClip.getLayer(layerIndex);
