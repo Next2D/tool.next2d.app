@@ -64,6 +64,7 @@ import { execute as libraryAreaUpdateShapeGraphicsHistoryUndoUseCase } from "@/h
 import { execute as characterUpdateNameHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateName/usecase/CharacterUpdateNameHistoryUndoUseCase";
 import { execute as characterUpdateScaleXHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryUndoUseCase";
 import { execute as characterUpdateScaleYHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateScaleY/usecase/CharacterUpdateScaleYHistoryUndoUseCase";
+import { execute as characterUpdateRotateHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateRotate/usecase/CharacterUpdateRotateHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -119,7 +120,8 @@ import {
     $LIBRARY_UPDATE_SHAPE_GRAPHICS_COMMAND,
     $CHARACTER_UPDATE_NAME_COMMAND,
     $CHARACTER_UPDATE_SCALE_X_COMMAND,
-    $CHARACTER_UPDATE_SCALE_Y_COMMAND
+    $CHARACTER_UPDATE_SCALE_Y_COMMAND,
+    $CHARACTER_UPDATE_ROTATE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -677,6 +679,18 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[5] as number  // Before ScaleY
+            );
+            break;
+
+        // DisplayObjectの回転を更新
+        case $CHARACTER_UPDATE_ROTATE_COMMAND:
+            await characterUpdateRotateHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as number  // Before Rotation
             );
             break;
 

@@ -3,7 +3,6 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingWidthPointerMoveEventUseCase } from "./TransformSettingWidthPointerMoveEventUseCase";
 import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
-import { execute as transformSettingRestoreBeforeMatrixService } from "../service/TransformSettingRestoreBeforeMatrixService";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
 import { $TRANSFORM_OBJECT_HEIGHT_ID } from "@/config/TransformSettingConfig";
@@ -38,10 +37,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
-
-    // 選択中のDisplayObjectを変更前の状態に戻す
-    // fixed logic
-    transformSettingRestoreBeforeMatrixService();
 
     // 変形に合わせて表示を更新
     const width = $clamp(

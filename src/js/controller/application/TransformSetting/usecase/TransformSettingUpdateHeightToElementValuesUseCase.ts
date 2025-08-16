@@ -95,7 +95,7 @@ export const execute = (scale_y: number): void =>
                         new Float32Array([1, 0, 0, scale_y, 0, 0]),
                         $multiplicationMatrix(
                             new Float32Array([Math.cos(rad), Math.sin(rad), -Math.sin(rad), Math.cos(rad), 0, 0]),
-                            new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y]),
+                            new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
                         )
                     )
                 )

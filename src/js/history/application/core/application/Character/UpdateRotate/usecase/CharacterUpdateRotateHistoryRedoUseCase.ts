@@ -8,15 +8,15 @@ import { execute as transformSettingUpdateWidthElementService } from "@/controll
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 
 /**
- * @description DisplayObjectのx座標を変更後に戻す
- *              Reset the x coordinate of the DisplayObject
+ * @description DisplayObjectの回転値を変更後に戻す
+ *              Reset the rotation of the DisplayObject
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
  * @param  {number} keyframe
  * @param  {number} depth
- * @param  {number} after_scale_x
+ * @param  {number} after_rotation
  * @return {Promise<void>}
  * @method
  * @public
@@ -27,7 +27,7 @@ export const execute = async (
     index: number,
     keyframe: number,
     depth: number,
-    after_scale_x: number
+    after_rotation: number
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -51,7 +51,7 @@ export const execute = async (
     }
 
     // データを更新
-    character.scaleX = after_scale_x / 100;
+    character.rotation = after_rotation;
 
     // アクティブなら表示を更新
     if (workSpace.active && movieClip.active) {

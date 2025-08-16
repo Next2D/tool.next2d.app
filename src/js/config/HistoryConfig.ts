@@ -600,3 +600,12 @@ export const $CHARACTER_UPDATE_SCALE_X_COMMAND: number = 60;
  * @constant
  */
 export const $CHARACTER_UPDATE_SCALE_Y_COMMAND: number = 61;
+
+/**
+ * @description DisplayObjectの回転更新の識別コマンド名
+ *              Identification command name for updating the rotation of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_ROTATE_COMMAND: number = 62;

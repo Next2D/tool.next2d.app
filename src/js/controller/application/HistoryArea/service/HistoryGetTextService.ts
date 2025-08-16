@@ -54,7 +54,8 @@ import {
     $LIBRARY_ADD_NEW_TEXT_COMMAND,
     $CHARACTER_UPDATE_NAME_COMMAND,
     $CHARACTER_UPDATE_SCALE_X_COMMAND,
-    $CHARACTER_UPDATE_SCALE_Y_COMMAND
+    $CHARACTER_UPDATE_SCALE_Y_COMMAND,
+    $CHARACTER_UPDATE_ROTATE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -232,6 +233,9 @@ export const execute = (command: number): string =>
 
         case $CHARACTER_UPDATE_SCALE_Y_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のyスケールを%s5%から%s6%に変更";
+
+        case $CHARACTER_UPDATE_ROTATE_COMMAND:
+            return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の回転を%s5°から%s6°に変更";
 
         default:
             break;

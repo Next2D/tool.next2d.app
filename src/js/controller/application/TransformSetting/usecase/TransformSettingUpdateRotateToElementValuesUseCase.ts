@@ -155,8 +155,6 @@ export const execute = (rotation: number): void =>
         }
     }
 
-    transformSetting.rotation = rotation;
-
     // 変形エリアのx座標を更新
     // TODO
     if (!movieClip.isSingleSelectedOfDisplayObject()) {

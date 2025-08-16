@@ -1,15 +1,16 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 
 /**
- * @description 選択中のDisplayObjectを変更前のmatrixに戻す
- *              Restore the selected DisplayObject to the matrix before changing
+ * @description 回転の操作によるキャンバスの再描画
+ *              Redraw canvas by rotation operation
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
@@ -33,6 +34,11 @@ export const execute = (): void =>
                 continue;
             }
 
+            // 変更後の値をセット
+            const afterRotation = character.rotation;
+            const afterX = character.x;
+            const afterY = character.y;
+
             // 変更前の値に戻す
             const beforeMatrix = transformSetting.matrixs[index++];
             if (!beforeMatrix) {
@@ -40,22 +46,17 @@ export const execute = (): void =>
             }
 
             character.matrix.set(beforeMatrix);
-        }
-    }
 
-    if (transformSetting.matrixs.length !== 1) {
-        transformSetting.scaleX = 1;
-        transformSetting.scaleY = 1;
-        // const matrix = transformSetting.matrixs[0];
-        // const scaleX = Math.round(Math.sqrt(
-        //     matrix[0] * matrix[0]
-        //     + matrix[1] * matrix[1]
-        // ) * 100) / 100;
-        // const scaleY = Math.round(Math.sqrt(
-        //     matrix[2] * matrix[2]
-        //     + matrix[3] * matrix[3]
-        // ) * 100) / 100;
-        // transformSetting.scaleX = matrix[0] > 0 ? scaleX : scaleX * -1;
-        // transformSetting.scaleY = matrix[3] > 0 ? scaleY : scaleY * -1;
+            const externalCharacter = new ExternalCharacter(
+                workSpace,
+                movieClip,
+                layer,
+                character
+            );
+
+            await externalCharacter.setRotation(afterRotation);
+            await externalCharacter.setX(afterX);
+            await externalCharacter.setY(afterY);
+        }
     }
 };

@@ -6,6 +6,7 @@ import { execute as externalCharacterUpdateXUseCase } from "@/external/core/appl
 import { execute as externalCharacterUpdateYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateYUseCase";
 import { execute as externalCharacterUpdateScaleXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateScaleXUseCase";
 import { execute as externalCharacterUpdateScaleYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateScaleYUseCase";
+import { execute as externalCharacterUpdateRotateUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateRotateUseCase";
 import { execute as externalCharacterUpdateNameUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateNameUseCase";
 
 /**
@@ -215,9 +216,34 @@ export class ExternalCharacter
      * @method
      * @public
      */
-    setRotation (rotation: number): Promise<void>
+    async setRotation (rotation: number): Promise<void>
     {
-        console.log("TODO: ", rotation);
+        await externalCharacterUpdateRotateUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            rotation
+        );
+    }
+
+    /**
+     * @description DisplayObjectの変形行列を設定
+     *              Set the transformation matrix of DisplayObject
+     *
+     * @param  {number} a
+     * @param  {number} b
+     * @param  {number} c
+     * @param  {number} d
+     * @param  {number} tx
+     * @param  {number} ty
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setMatrix (a: number, b: number, c: number, d: number, tx: number, ty: number): Promise<void>
+    {
+        console.log("TODO: ", { a, b, c, d, tx, ty });
         return Promise.resolve();
     }
 
