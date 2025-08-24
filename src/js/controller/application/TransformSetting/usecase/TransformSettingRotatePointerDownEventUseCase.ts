@@ -71,8 +71,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 変形エリアの高さを設定
     transformSetting.clear();
-    transformSetting.w = width;
-    transformSetting.h = height;
 
     // 変更前のmatrixを格納
     transformSettingCacheBeforeMatrixService();

@@ -13,8 +13,8 @@ const $Deg2Rad = Math.PI / 180;
  * @description 回転情報を更新する
  *              Update rotation information
  *
- * @param {number} rotation
- * @param {Float32Array} matrix
+ * @param  {number} rotation
+ * @param  {Float32Array} matrix
  * @return {void}
  * @method
  * @public
@@ -25,7 +25,7 @@ export const execute = (
 ): void => {
 
     rotation = $clamp(rotation % 360, 0, 360);
-    const currentRotation = Math.round(Math.atan2(matrix[1], matrix[0]) * $Deg2Rad);
+    const currentRotation = Math.round(Math.atan2(matrix[1], matrix[0]) * 180 / Math.PI);
     if (currentRotation === rotation) {
         return ;
     }
