@@ -1,8 +1,6 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
-import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 
 /**
  * @description スケールの操作によるキャンバスの再描画
@@ -61,20 +59,6 @@ export const execute = async (): Promise<void> =>
             await externalCharacter.setX(afterX);
             await externalCharacter.setScaleY(afterScaleY);
             await externalCharacter.setY(afterY);
-
-            // 固定時はこのタイミングでcanvasを入れ替える
-            // if (transformSetting.sizeLocked
-            //     || transformSetting.scaleLocked
-            // ) {
-            //     const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-            //     if (element) {
-            //         await screenAreaReplaceCanvasUseCase(
-            //             character,
-            //             element,
-            //             layer
-            //         );
-            //     }
-            // }
         }
     }
 };
