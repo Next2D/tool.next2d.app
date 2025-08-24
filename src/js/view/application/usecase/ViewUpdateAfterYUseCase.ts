@@ -9,17 +9,17 @@ import { $removeLibraryCache } from "@/cache/CacheUtil";
 import { execute as screenAreaMoveDisplayObjectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveDisplayObjectElementUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
-import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
-import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
+import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 
 /**
- * @description x座標を更新した際のViewエリアの表示要素を更新
- *              Update the display elements in the View area when the x coordinate is updated
+ * @description y座標を更新した際のViewエリアの表示要素を更新
+ *              Update the display elements in the View area when the y coordinate is updated
  *
  * @param {WorkSpace} work_space
  * @param {MovieClip} movie_clip
@@ -53,7 +53,7 @@ export const execute = async (
                     screenStandardPointDeployElementUseCase();
 
                     // 変形エリアのx座標の値を更新
-                    transformSettingUpdateXElementService(character.x);
+                    transformSettingUpdateYElementService(character.y);
                 }
             } else {
 
@@ -63,15 +63,13 @@ export const execute = async (
                 // 選択範囲のバウンディングボックスを取得
                 const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
                 if (bounds) {
-                    transformSettingUpdateXElementService(bounds.xMin);
+                    transformSettingUpdateYElementService(bounds.yMin);
                 }
             }
         }
 
         // マスクのstyleを更新
-        // todo
         if (layer.mode === $MASK_IN_MODE) {
-
             const element: HTMLElement | null = document
                 .getElementById($SCREEN_STAGE_AREA_ID);
 
