@@ -1,10 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as screenAreaMoveDisplayObjectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveDisplayObjectElementUseCase";
-import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
-import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
+import { execute as viewUpdateAfterXUseCase } from "@/view/application/usecase/ViewUpdateAfterXUseCase";
 
 /**
  * @description DisplayObjectのx座標を変更後に戻す
@@ -16,18 +12,18 @@ import { execute as transformSettingUpdateWidthElementService } from "@/controll
  * @param  {number} keyframe
  * @param  {number} depth
  * @param  {number} after_x
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     index: number,
     keyframe: number,
     depth: number,
     after_x: number
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -52,21 +48,11 @@ export const execute = (
     // データを更新
     character.x = after_x;
 
-    // アクティブなら表示を更新
-    if (workSpace.active && movieClip.active) {
-        // 表示Elementを移動
-        screenAreaMoveDisplayObjectElementUseCase(layer, character);
-
-        if (movieClip.selectedDepths.size > 0) {
-            // 選択範囲のElementを移動
-            targetRectUpdateElementUseCase();
-
-            // TransformSettingのx座標を更新
-            const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-            if (bounds) {
-                transformSettingUpdateWidthElementService(Math.abs(bounds.xMax - bounds.xMin));
-                transformSettingUpdateXElementService(bounds.xMin);
-            }
-        }
-    }
+    // viewエリアの表示を更新
+    await viewUpdateAfterXUseCase(
+        workSpace,
+        movieClip,
+        layer,
+        character
+    );
 };

@@ -608,7 +608,7 @@ export const execute = async (
 
         // DisplayObjectのX座標を更新
         case $CHARACTER_UPDATE_X_COMMAND:
-            characterUpdateXHistoryUndoUseCase(
+            await characterUpdateXHistoryUndoUseCase(
                 messages[0] as number, // WorkSpace ID
                 messages[1] as number, // MovieClip ID
                 messages[2] as number, // Layer Index

@@ -2,8 +2,8 @@ import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { $clamp } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
-import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
-import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
+import { execute as transformSettingUpdateHeightToElementValuesUseCase } from "./TransformSettingUpdateHeightToElementValuesUseCase";
+import { execute as transformSettingUpdateSizeToRedrawCanvasUseCase } from "./TransformSettingUpdateSizeToRedrawCanvasUseCase";
 import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 
 /**
@@ -37,11 +37,10 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         Math.round(parseFloat(element.value) * 100) / 100,
         1, Number.MAX_VALUE
     );
-    element.value = `${height}`;
 
     // 変形に合わせて表示を更新
     const scale = height / transformSetting.beforeHeight;
-    transformSettingUpdateScaleYToElementValuesUseCase(scale);
+    transformSettingUpdateHeightToElementValuesUseCase(scale);
 
     if (transformSetting.sizeLocked
         && transformSetting.beforeWidth
@@ -63,5 +62,5 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     }
 
     // 変更後のmatrixで表示を更新
-    await transformSettingUpdateScaleToRedrawCanvasUseCase();
+    await transformSettingUpdateSizeToRedrawCanvasUseCase();
 };

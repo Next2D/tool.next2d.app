@@ -9,8 +9,8 @@ import { $getConcatenatedMatrix } from "@/controller/application/TransformSettin
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 
 /**
- * @description MovieClipの標準点Elementを配置
- *              Place the standard point Element of the MovieClip
+ * @description MovieClipの基準点Elementを配置
+ *              Place the reference point Element of the MovieClip
  *
  * @return {void}
  * @method

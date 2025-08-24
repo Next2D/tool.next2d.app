@@ -4,8 +4,7 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 import { execute as transformSettingHeightPointerMoveEventUseCase } from "./TransformSettingHeightPointerMoveEventUseCase";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
-import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
-import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
+import { execute as transformSettingUpdateHeightToElementValuesUseCase } from "./TransformSettingUpdateHeightToElementValuesUseCase";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -44,8 +43,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         1, Number.MAX_VALUE
     );
 
-    const scale = height / transformSetting.beforeHeight;
-    transformSettingUpdateScaleYToElementValuesUseCase(scale);
+    const scale = height / transformSetting.h;
+    transformSettingUpdateHeightToElementValuesUseCase(scale);
 
     if (transformSetting.sizeLocked) {
         const widthElement = document
@@ -65,7 +64,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     // 変更後のmatrixで表示を更新
-    await transformSettingUpdateScaleToRedrawCanvasUseCase();
+    // await transformSettingUpdateSizeToElementValuesUseCase(1, scale);
 
     // input要素のフォーカス
     element.focus();

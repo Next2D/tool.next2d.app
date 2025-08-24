@@ -9,8 +9,8 @@ import { execute as screenReferencePointShowService } from "../service/ScreenRef
 import { execute as screenReferencePointHideService } from "../service/ScreenReferencePointHideService";
 
 /**
- * @description 変形の基準点のElementを配置
- *              Places the Element at the reference point of the deformation
+ * @description 変形の中心点のElementを配置
+ *              Places the Element at the center point of the deformation
  *
  * @return {void}
  * @method

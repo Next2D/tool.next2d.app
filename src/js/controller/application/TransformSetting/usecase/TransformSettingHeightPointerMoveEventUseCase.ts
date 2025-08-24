@@ -51,12 +51,10 @@ export const execute = (event: PointerEvent): void =>
             Math.round((parseFloat(element.value) + event.movementX) * 100) / 100,
             1, Number.MAX_VALUE
         );
-        element.value = `${height}`;
 
         // 変形に合わせて表示を更新
         const scale = height / transformSetting.h;
         transformSettingUpdateHeightToElementValuesUseCase(scale);
-        transformSetting.h = height;
 
         if (transformSetting.sizeLocked) {
             const widthElement = document

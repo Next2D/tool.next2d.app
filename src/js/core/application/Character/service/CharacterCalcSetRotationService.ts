@@ -25,8 +25,7 @@ export const execute = (
 ): void => {
 
     rotation = $clamp(rotation % 360, 0, 360);
-    const radian = Math.round(Math.atan2(matrix[1], matrix[0]) * 180 / Math.PI);
-    const currentRotation = radian < 0 ? radian + 360 : radian;
+    const currentRotation = Math.round(Math.atan2(matrix[1], matrix[0]) * $Deg2Rad);
     if (currentRotation === rotation) {
         return ;
     }
@@ -40,34 +39,24 @@ export const execute = (
             + matrix[3] * matrix[3]
     );
 
-    if (rotation === 0) {
+    const radian = rotation * $Deg2Rad;
+    let radianX  = Math.atan2(matrix[1], matrix[0]);
+    let radianY  = Math.atan2(-matrix[2], matrix[3]);
 
-        matrix[0] = scaleX;
-        matrix[1] = 0;
-        matrix[2] = 0;
-        matrix[3] = scaleY;
+    radianY = radianY + radian - radianX;
+    radianX = radian;
 
+    matrix[1] = scaleX * Math.sin(radianX);
+    if (matrix[1] === 1 || matrix[1] === -1) {
+        matrix[0] = 0;
     } else {
+        matrix[0] = scaleX * Math.cos(radianX);
+    }
 
-        let radianX = Math.atan2(matrix[1], matrix[0]);
-        let radianY = Math.atan2(-matrix[2], matrix[3]);
-
-        const radian = rotation * $Deg2Rad;
-        radianY = radianY + radian - radianX;
-        radianX = radian;
-
-        matrix[1] = scaleX * Math.sin(radianX);
-        if (matrix[1] === 1 || matrix[1] === -1) {
-            matrix[0] = 0;
-        } else {
-            matrix[0] = scaleX * Math.cos(radianX);
-        }
-
-        matrix[2] = -scaleY * Math.sin(radianY);
-        if (matrix[2] === 1 || matrix[2] === -1) {
-            matrix[3] = 0;
-        } else {
-            matrix[3] = scaleY * Math.cos(radianY);
-        }
+    matrix[2] = -scaleY * Math.sin(radianY);
+    if (matrix[2] === 1 || matrix[2] === -1) {
+        matrix[3] = 0;
+    } else {
+        matrix[3] = scaleY * Math.cos(radianY);
     }
 };

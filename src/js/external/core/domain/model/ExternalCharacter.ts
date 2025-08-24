@@ -195,6 +195,72 @@ export class ExternalCharacter
     }
 
     /**
+     * @description DisplayObjectの幅を返却
+     *              Returns the width of DisplayObject
+     *
+     * @returns {number}
+     * @method
+     * @public
+     */
+    getWidth (): number
+    {
+        return this._$character.width;
+    }
+
+    /**
+     * @description DisplayObjectの幅を設定
+     *              Set the width of DisplayObject
+     *
+     * @param  {number} width
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setWidth (width: number): Promise<void>
+    {
+        await externalCharacterUpdateWidthUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            width
+        );
+    }
+
+    /**
+     * @description DisplayObjectの高さを返却
+     *              Returns the height of DisplayObject
+     *
+     * @returns {number}
+     * @method
+     * @public
+     */
+    getHeight (): number
+    {
+        return this._$character.height;
+    }
+
+    /**
+     * @description DisplayObjectの高さを設定
+     *              Set the height of DisplayObject
+     *
+     * @param  {number} height
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setHeight (height: number): Promise<void>
+    {
+        await externalCharacterUpdateHeightUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            height
+        );
+    }
+
+    /**
      * @description DisplayObjectの回転を返却
      *              Returns the rotation of DisplayObject
      *

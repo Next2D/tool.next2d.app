@@ -25,7 +25,7 @@ import {
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
  *              Transform the selected Element on the screen according to the matrix
  *
- * @param  {number} scale_y
+ * @param  {number} [scale_y=1]
  * @return {void}
  * @method
  * @public
@@ -48,11 +48,6 @@ export const execute = (scale_y: number): void =>
         .getElementById($SCREEN_STAGE_AREA_ID);
 
     if (!element) {
-        return ;
-    }
-
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (!bounds) {
         return ;
     }
 
@@ -153,6 +148,7 @@ export const execute = (scale_y: number): void =>
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateXElementService(character.x);
                 transformSettingUpdateYElementService(character.y);
+                transformSetting.h = character.height;
                 transformSettingUpdateHeightElementService(character.height);
                 transformSettingUpdateRotationElementService(character.rotation);
                 transformSettingUpdateScaleXElementService(
@@ -163,12 +159,19 @@ export const execute = (scale_y: number): void =>
     }
 
     // 変形エリアのy座標を更新
-    if (!movieClip.isSingleSelectedOfDisplayObject() && bounds) {
-        transformSettingUpdateXElementService(bounds.xMin);
-        transformSettingUpdateYElementService(bounds.yMin);
-        transformSettingUpdateHeightElementService(
-            Math.round(Math.abs(bounds.yMax - bounds.yMin) * 100) / 100
-        );
+    if (!movieClip.isSingleSelectedOfDisplayObject()) {
+        const bounds = screenAreaCalcSelectedBoundsService(movieClip);
+        if (!bounds) {
+            return ;
+        }
+
+        if (bounds) {
+            transformSettingUpdateXElementService(bounds.xMin);
+            transformSettingUpdateYElementService(bounds.yMin);
+            transformSetting.h = Math.round(Math.abs(bounds.yMax - bounds.yMin) * 100) / 100;
+            transformSettingUpdateHeightElementService(transformSetting.h);
+        }
+
     }
 
     // 変形エリアのyスケールを更新

@@ -8,6 +8,7 @@ import { execute as userDatabaseSaveShowModalUseCase } from "@/user/application/
 import { execute as progressMenuShowService } from "@/menu/application/ProgressMenu/service/ProgressMenuShowService";
 import { execute as shareGetS3FileRepository } from "@/share/domain/repository/ShareGetS3FileRepository";
 import { execute as shareGetS3EndPointRepository } from "@/share/domain/repository/ShareGetS3EndPointRepository";
+import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
 import {
     $getAllWorkSpace,
     $getCurrentWorkSpace,
@@ -18,8 +19,8 @@ import {
  * @description オーナーのプロジェクトデータを受け取って起動、既存のプロジェクトは保存して終了
  *              Receives owner's project data and launches, existing projects are saved and closed
  *
- * @param  {object} message
- * @return {void}
+ * @param  {IShareInitializeSendObject} message
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -54,9 +55,12 @@ export const execute = async (message: IShareInitializeSendObject): Promise<void
     await workSpaceRestoreSaveDataService(binary, true);
 
     const workSpaces = $getAllWorkSpace();
-    for (let idx: number = 0; idx < workSpaces.length; ++idx) {
+    for (let idx = 0; idx < workSpaces.length; ++idx) {
         const workSpace = workSpaces[idx];
-        workSpace.initialize();
+        if (!workSpace) {
+            continue;
+        }
+        await workSpaceInitializeUseCase(workSpace);
     }
 
     await $getCurrentWorkSpace().run();
