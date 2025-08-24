@@ -42,7 +42,6 @@ export const execute = async (
     const historyObject = characterUpdateRotateCreateHistoryObjectService(
         work_space.id, movie_clip, layer, character, before_rotation
     );
-    console.log("historyObject: ", historyObject);
 
     // 作業履歴にElementを追加
     // fixed logic

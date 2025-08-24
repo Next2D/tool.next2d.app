@@ -2,6 +2,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingRotatePointerMoveEventUseCase } from "./TransformSettingRotatePointerMoveEventUseCase";
 import { execute as transformSettingUpdateRotateToRedrawCanvasUseCase } from "./TransformSettingUpdateRotateToRedrawCanvasUseCase";
+
 /**
  * @description 変形エリアの回転の値操作のマウスアップイベント
  *              Mouse up event for value operation of rotation of deformation area
