@@ -13,8 +13,6 @@ import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
-import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
-import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
@@ -22,6 +20,7 @@ import { execute as transformSettingUpdateHeightElementService } from "@/control
 import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 
 /**
  * @description 回転を更新した際のViewエリアの表示要素を更新
@@ -47,6 +46,9 @@ export const execute = async (
 
         if (movie_clip.selectedDepths.size > 0) {
 
+            // 変形の中心点のElementを再配置
+            screenReferencePointDeployElementUseCase();
+
             if (movie_clip.isSingleSelectedOfDisplayObject()) {
                 // 変更対象のDisplayObjectを選択中であれば、xスケールの値を更新
                 if (screenAreaIsCharacterSelectedService(movie_clip, layer, character)) {
@@ -54,11 +56,11 @@ export const execute = async (
                     screenStandardPointDeployElementUseCase();
 
                     // 変形エリアの値を更新
-                    transformSettingUpdateXElementService(character.x);
-                    transformSettingUpdateYElementService(character.y);
                     transformSettingUpdateWidthElementService(character.width);
                     transformSettingUpdateHeightElementService(character.height);
                     transformSettingUpdateRotationElementService(character.rotation);
+
+                    // マイナス変換があるのでスケールは更新する
                     transformSettingUpdateScaleXElementService(
                         Math.round(character.scaleX * 10000) / 100
                     );
@@ -74,8 +76,6 @@ export const execute = async (
                 // 変形エリアの値を更新
                 const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
                 if (bounds) {
-                    transformSettingUpdateXElementService(bounds.xMin);
-                    transformSettingUpdateYElementService(bounds.yMin);
                     transformSettingUpdateWidthElementService(
                         Math.round(Math.abs(bounds.xMax - bounds.xMin) * 100) / 100
                     );
