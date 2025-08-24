@@ -72,7 +72,6 @@ export const execute = async (
         }
 
         // マスクのstyleを更新
-        // todo
         if (layer.mode === $MASK_IN_MODE) {
 
             const element: HTMLElement | null = document

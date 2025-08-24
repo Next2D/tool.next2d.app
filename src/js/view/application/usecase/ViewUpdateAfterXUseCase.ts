@@ -5,7 +5,6 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { $removeLibraryCache } from "@/cache/CacheUtil";
 import { execute as screenAreaMoveDisplayObjectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveDisplayObjectElementUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
@@ -69,7 +68,6 @@ export const execute = async (
         }
 
         // マスクのstyleを更新
-        // todo
         if (layer.mode === $MASK_IN_MODE) {
 
             const element: HTMLElement | null = document
@@ -92,7 +90,4 @@ export const execute = async (
 
     // 先祖のキャッシュを削除する
     timelineSceneListCacheRemoveService(work_space);
-
-    // 自分のキャッシュを削除する
-    $removeLibraryCache(work_space.id, movie_clip.id);
 };
