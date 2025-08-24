@@ -37,10 +37,10 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 表示を更新
-        const value = Math.round(parseFloat(element.value) * 10000) / 10000;
+        const value = Math.round(parseFloat(element.value) * 100) / 100;
         const movementX = event.movementX;
         const x = $clamp(
-            value + Math.round($globalToLocal(movementX).x * 10000) / 10000,
+            Math.round((value + $globalToLocal(movementX).x) * 100) / 100,
             Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
         );
         element.value = `${x}`;

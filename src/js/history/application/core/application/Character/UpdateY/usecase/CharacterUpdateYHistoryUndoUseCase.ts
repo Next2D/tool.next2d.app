@@ -1,10 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as screenAreaMoveDisplayObjectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveDisplayObjectElementUseCase";
-import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
-import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
+import { execute as viewUpdateAfterYUseCase } from "@/view/application/usecase/ViewUpdateAfterYUseCase";
 
 /**
  * @description DisplayObjectのy座標を変更前に戻す
@@ -16,18 +12,18 @@ import { execute as transformSettingUpdateHeightElementService } from "@/control
  * @param  {number} keyframe
  * @param  {number} depth
  * @param  {number} before_y
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     index: number,
     keyframe: number,
     depth: number,
     before_y: number
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -53,20 +49,10 @@ export const execute = (
     character.y = before_y;
 
     // アクティブなら表示を更新
-    if (workSpace.active && movieClip.active) {
-        // 表示Elementを移動
-        screenAreaMoveDisplayObjectElementUseCase(layer, character);
-
-        if (movieClip.selectedDepths.size > 0) {
-            // 選択範囲のElementを移動
-            targetRectUpdateElementUseCase();
-
-            // TransformSettingのy座標を更新
-            const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-            if (bounds) {
-                transformSettingUpdateHeightElementService(Math.abs(bounds.yMax - bounds.yMin));
-                transformSettingUpdateYElementService(bounds.yMin);
-            }
-        }
-    }
+    await viewUpdateAfterYUseCase(
+        workSpace,
+        movieClip,
+        layer,
+        character
+    );
 };

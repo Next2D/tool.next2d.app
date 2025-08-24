@@ -26,7 +26,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     $updateKeyLock(false);
 
     const value = $clamp(
-        Math.round(parseFloat(element.value) * 10000) / 10000,
+        Math.round(parseFloat(element.value) * 100) / 100,
         -Number.MAX_VALUE, Number.MAX_VALUE
     );
     element.value = `${value}`;
