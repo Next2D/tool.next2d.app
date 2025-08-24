@@ -18,5 +18,9 @@ export const execute = (rotate: number): void =>
         return ;
     }
 
-    element.value = `${parseFloat(rotate.toFixed(2))}`;
+    if (0 > rotate) {
+        rotate &= 360;
+    }
+
+    element.value = `${rotate % 360 | 0}`;
 };

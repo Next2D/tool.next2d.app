@@ -18,5 +18,5 @@ export const execute = (width: number): void =>
         return ;
     }
 
-    element.value = `${parseFloat(width.toFixed(2))}`;
+    element.value = `${Math.round(width * 100) / 100}`;
 };

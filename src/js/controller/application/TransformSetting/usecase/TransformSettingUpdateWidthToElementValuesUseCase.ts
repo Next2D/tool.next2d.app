@@ -3,8 +3,7 @@ import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/scr
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
-import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
-import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
+import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
@@ -25,14 +24,14 @@ import {
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
  *              Transform the selected Element on the screen according to the matrix
  *
- * @param  {number} scale_y
+ * @param  {number} scale_x
  * @return {void}
  * @method
  * @public
  */
-export const execute = (scale_y: number): void =>
+export const execute = (scale_x: number): void =>
 {
-    if (scale_y === 1) {
+    if (scale_x === 1) {
         return ;
     }
 
@@ -87,7 +86,7 @@ export const execute = (scale_y: number): void =>
                 $multiplicationMatrix(
                     new Float32Array([Math.cos(-rad), Math.sin(-rad), -Math.sin(-rad), Math.cos(-rad), 0, 0]),
                     $multiplicationMatrix(
-                        new Float32Array([1, 0, 0, scale_y, 0, 0]),
+                        new Float32Array([scale_x, 0, 0, 1, 0, 0]),
                         $multiplicationMatrix(
                             new Float32Array([Math.cos(rad), Math.sin(rad), -Math.sin(rad), Math.cos(rad), 0, 0]),
                             new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
@@ -128,7 +127,7 @@ export const execute = (scale_y: number): void =>
                         }
 
                         const beforeValue  = transformSetting.beforeScaleY;
-                        const currentValue = transformSetting.scaleY * scale_y;
+                        const currentValue = transformSetting.scaleX * scale_x;
                         const transform = $createMoveTransformElementStyle(
                             character, workSpace,
                             canvas.clientWidth, canvas.clientHeight,
@@ -148,8 +147,8 @@ export const execute = (scale_y: number): void =>
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateXElementService(character.x);
                 transformSettingUpdateYElementService(character.y);
-                transformSetting.h = character.height;
-                transformSettingUpdateHeightElementService(character.height);
+                transformSetting.w = character.width;
+                transformSettingUpdateWidthElementService(character.width);
                 transformSettingUpdateRotationElementService(character.rotation);
                 transformSettingUpdateScaleXElementService(
                     Math.round(transformSetting.scaleX * 10000) / 100
@@ -168,15 +167,14 @@ export const execute = (scale_y: number): void =>
         if (bounds) {
             transformSettingUpdateXElementService(bounds.xMin);
             transformSettingUpdateYElementService(bounds.yMin);
-            transformSetting.h = Math.round(Math.abs(bounds.yMax - bounds.yMin) * 100) / 100;
-            transformSettingUpdateHeightElementService(transformSetting.h);
+            transformSetting.w = Math.round(Math.abs(bounds.xMax - bounds.xMin) * 100) / 100;
+            transformSettingUpdateWidthElementService(transformSetting.w);
         }
-
     }
 
     // 変形エリアのyスケールを更新
-    transformSetting.scaleY *= scale_y;
-    transformSettingUpdateScaleYElementService(
-        Math.round(transformSetting.scaleY * 10000) / 100
+    transformSetting.scaleX *= scale_x;
+    transformSettingUpdateScaleXElementService(
+        Math.round(transformSetting.scaleX * 10000) / 100
     );
 };

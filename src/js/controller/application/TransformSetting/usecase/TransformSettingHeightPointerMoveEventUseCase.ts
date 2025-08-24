@@ -1,8 +1,7 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as transformSettingUpdateHeightToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateHeightToElementValuesUseCase";
-import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
+import { execute as transformSettingUpdateHeightToElementValuesUseCase } from "./TransformSettingUpdateHeightToElementValuesUseCase";
+import { execute as transformSettingUpdateWidthToElementValuesUseCase } from "./TransformSettingUpdateWidthToElementValuesUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 import {
     $clamp,
     $setCursor
@@ -57,20 +56,7 @@ export const execute = (event: PointerEvent): void =>
         transformSettingUpdateHeightToElementValuesUseCase(scale);
 
         if (transformSetting.sizeLocked) {
-            const widthElement = document
-                .getElementById($TRANSFORM_OBJECT_WIDTH_ID) as HTMLInputElement;
-            if (!widthElement) {
-                return ;
-            }
-
-            const width = $clamp(
-                Math.round(parseFloat(widthElement.value) * scale * 100) / 100,
-                1, Number.MAX_VALUE
-            );
-            widthElement.value = `${width}`;
-
-            transformSettingUpdateScaleXToElementValuesUseCase(scale);
-            transformSetting.w = width;
+            transformSettingUpdateWidthToElementValuesUseCase(scale);
         }
 
         // 選択中の表示領域を更新

@@ -69,6 +69,9 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    // 値を初期化
+    transformSetting.clear();
+
     // 変形エリアの幅を設定
     transformSetting.w = width;
     transformSetting.beforeWidth = width;

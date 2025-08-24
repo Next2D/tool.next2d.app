@@ -18,5 +18,5 @@ export const execute = (y: number): void =>
         return ;
     }
 
-    element.value = `${parseFloat(y.toFixed(2))}`;
+    element.value = `${Math.round(y * 100) / 100}`;
 };
