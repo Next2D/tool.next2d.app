@@ -1,14 +1,16 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
+import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 指定のelementのcanvasを置き換える
  *              Replace the canvas of the specified element
  *
- * @param {Character} character
- * @param {HTMLElement} element
- * @param {Layer} layer
+ * @param  {Character} character
+ * @param  {HTMLElement} element
+ * @param  {Layer} layer
  * @return {Promise<void>}
  * @method
  * @public
@@ -25,11 +27,14 @@ export const execute = async (
         return ;
     }
 
-    const container = div.querySelector(".canvas-container") as HTMLDivElement;
-    if (!container) {
-        return ;
+    const workSpace = $getCurrentWorkSpace();
+    if (screenAreaIsCharacterSelectedService(workSpace.scene, layer, character)) {
+        const container = div.querySelector(".canvas-container") as HTMLDivElement;
+        if (!container) {
+            return ;
+        }
+        container.classList.add("active");
     }
-    container.classList.add("active");
 
     // 変更前のcanvasを削除してプールに戻す
     const canvas = element.querySelector("canvas");

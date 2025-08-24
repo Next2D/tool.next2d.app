@@ -1,11 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
-import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
-import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as viewUpdateAfterScaleXUseCase } from "@/view/application/usecase/ViewUpdateAfterScaleXUseCase";
 
 /**
  * @description DisplayObjectのxスケールを変更前に戻す
@@ -54,39 +49,10 @@ export const execute = async (
     character.scaleX = before_scale_x / 100;
 
     // アクティブなら表示を更新
-    if (workSpace.active && movieClip.active) {
-
-        if (movieClip.selectedDepths.size > 0) {
-            // 選択範囲のElementを移動
-            targetRectUpdateElementUseCase();
-
-            // 選択範囲のバウンディングボックスを取得
-            const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-            if (bounds) {
-                transformSettingUpdateWidthElementService(Math.abs(bounds.xMax - bounds.xMin));
-            }
-
-            // TransformSettingのxスケールを更新
-            if (movieClip.selectedDepths.size === 1) {
-                for (const [layerIndex, depths] of movieClip.selectedDepths) {
-                    const selectedLayer = movieClip.getLayer(layerIndex);
-                    if (!selectedLayer) {
-                        break;
-                    }
-
-                    if (selectedLayer.id === layer.id
-                        && depths[0] === character.depth
-                    ) {
-                        transformSettingUpdateScaleXElementService(character.scaleX * 100);
-                    }
-                }
-            }
-        }
-
-        // canvasを再描画
-        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-        if (element) {
-            await screenAreaReplaceCanvasUseCase(character, element, layer);
-        }
-    }
+    await viewUpdateAfterScaleXUseCase(
+        workSpace,
+        movieClip,
+        layer,
+        character
+    );
 };

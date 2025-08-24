@@ -1,12 +1,12 @@
 import { $setReferencePointState } from "../ReferencePointUtil";
 import { $getConcatenatedMatrix, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as screenReferencePointShowService } from "../service/ScreenReferencePointShowService";
+import { execute as screenReferencePointHideService } from "../service/ScreenReferencePointHideService";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
-import { execute as screenReferencePointShowService } from "../service/ScreenReferencePointShowService";
-import { execute as screenReferencePointHideService } from "../service/ScreenReferencePointHideService";
 
 /**
  * @description 変形の中心点のElementを配置
@@ -61,7 +61,7 @@ export const execute = (): void =>
     const x = character.referencePosition.x * matrix[0] + character.referencePosition.y * matrix[2] + matrix[4];
     const y = character.referencePosition.x * matrix[1] + character.referencePosition.y * matrix[3] + matrix[5];
 
-    // 基準点のElementの表示処理
+    // 中心点のElementの表示処理
     screenReferencePointShowService(
         $getScreenOffsetLeft() + x,
         $getScreenOffsetTop() + y

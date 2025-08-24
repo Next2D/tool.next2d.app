@@ -5,8 +5,8 @@ import {
 } from "../ReferencePointUtil";
 
 /**
- * @description 標準点Elementを表示
- *              Display the standard point Element
+ * @description 変形の中心点Elementを表示
+ *              Display the center point Element of the transformation
  *
  * @param  {number} x
  * @param  {number} y

@@ -5,6 +5,7 @@ import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -62,6 +63,9 @@ export const execute = async (
 
         // 選択範囲のElementの表示を更新
         targetRectUpdateElementUseCase();
+
+        // 変形の中心点の表示を更新
+        screenReferencePointDeployElementUseCase();
 
         // スクリーンエリアにElementを追加
         await screenAreaAppendCharacterService(character, layer);

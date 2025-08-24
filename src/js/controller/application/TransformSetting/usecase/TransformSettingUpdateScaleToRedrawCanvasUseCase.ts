@@ -63,18 +63,18 @@ export const execute = async (): Promise<void> =>
             await externalCharacter.setY(afterY);
 
             // 固定時はこのタイミングでcanvasを入れ替える
-            if (transformSetting.sizeLocked
-                || transformSetting.scaleLocked
-            ) {
-                const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-                if (element) {
-                    await screenAreaReplaceCanvasUseCase(
-                        character,
-                        element,
-                        layer
-                    );
-                }
-            }
+            // if (transformSetting.sizeLocked
+            //     || transformSetting.scaleLocked
+            // ) {
+            //     const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+            //     if (element) {
+            //         await screenAreaReplaceCanvasUseCase(
+            //             character,
+            //             element,
+            //             layer
+            //         );
+            //     }
+            // }
         }
     }
 };

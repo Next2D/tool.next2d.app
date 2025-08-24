@@ -6,6 +6,7 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
 import { execute as screenAreaRemoveDisplayObjectElementService } from "@/screen/application/ScreenArea/usecase/ScreenAreaRemoveDisplayObjectElementUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -82,6 +83,9 @@ export const execute = async (
 
         // 選択範囲のElementの表示を更新
         targetRectUpdateElementUseCase();
+
+        // 変形の中心点の表示を更新
+        screenReferencePointDeployElementUseCase();
 
         // プロパティーエリアのデフォルト設定項目を表示
         await propertyAreaShowDefaultSettingItemUseCase(movieClip);

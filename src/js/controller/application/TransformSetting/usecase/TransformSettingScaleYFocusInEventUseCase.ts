@@ -48,7 +48,7 @@ export const execute = (event: FocusEvent): void =>
             .getElementById($TRANSFORM_OBJECT_SCALE_X_ID) as HTMLInputElement;
 
         if (xScaleElement) {
-            transformSetting.scaleY = transformSetting.beforeScaleX = parseFloat(xScaleElement.value);
+            transformSetting.scaleX = transformSetting.beforeScaleX = parseFloat(xScaleElement.value);
         }
     }
 

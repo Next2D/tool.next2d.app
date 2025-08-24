@@ -49,23 +49,15 @@ export const execute = (event: PointerEvent): void =>
         transformSetting.y += y - value;
 
         // スクリーンで選択中のElementを移動
-        await screenDisplayObjectSelectedMoveElementUseCase(
-            0, movementY
-        );
+        await screenDisplayObjectSelectedMoveElementUseCase(0, movementY);
 
         // 選択範囲のElementを移動
-        targetRectMoveElementService(
-            0, movementY
-        );
+        targetRectMoveElementService(0, movementY);
 
         // MovieClipの基準点のElementを移動
-        screenStandardPointMoveElementService(
-            0, movementY
-        );
+        screenStandardPointMoveElementService(0, movementY);
 
         // 変形の基準点を移動
-        screenReferencePointMoveElementService(
-            0, movementY
-        );
+        screenReferencePointMoveElementService(0, movementY);
     });
 };
