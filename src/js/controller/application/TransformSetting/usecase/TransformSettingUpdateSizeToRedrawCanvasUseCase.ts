@@ -1,8 +1,6 @@
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
-import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 
 /**
  * @description サイズ変更操作によるキャンバスの再描画
@@ -37,6 +35,7 @@ export const execute = async (): Promise<void> =>
             }
 
             // 変更後の値をセット
+            const afterMatrix = character.matrix.slice();
             const afterWidth  = character.width;
             const afterHeight = character.height;
             const afterX = character.x;
@@ -57,23 +56,16 @@ export const execute = async (): Promise<void> =>
                 character
             );
 
-            await externalCharacter.setWidth(afterWidth);
-            await externalCharacter.setX(afterX);
-            await externalCharacter.setHeight(afterHeight);
-            await externalCharacter.setY(afterY);
-
-            // 固定時はこのタイミングでcanvasを入れ替える
-            if (transformSetting.sizeLocked
-                || transformSetting.scaleLocked
-            ) {
-                const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-                if (element) {
-                    await screenAreaReplaceCanvasUseCase(
-                        character,
-                        element,
-                        layer
-                    );
-                }
+            if (character.rotation) {
+                await externalCharacter.setMatrix(
+                    afterMatrix[0], afterMatrix[1], afterMatrix[2],
+                    afterMatrix[3], afterMatrix[4], afterMatrix[5]
+                );
+            } else {
+                await externalCharacter.setWidth(afterWidth);
+                await externalCharacter.setX(afterX);
+                await externalCharacter.setHeight(afterHeight);
+                await externalCharacter.setY(afterY);
             }
         }
     }

@@ -1,10 +1,10 @@
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 import { execute as transformSettingHeightPointerMoveEventUseCase } from "./TransformSettingHeightPointerMoveEventUseCase";
-import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateHeightToElementValuesUseCase } from "./TransformSettingUpdateHeightToElementValuesUseCase";
+import { execute as transformSettingUpdateWidthToElementValuesUseCase } from "./TransformSettingUpdateWidthToElementValuesUseCase";
+import { execute as transformSettingUpdateSizeToRedrawCanvasUseCase } from "./TransformSettingUpdateSizeToRedrawCanvasUseCase";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -47,24 +47,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     transformSettingUpdateHeightToElementValuesUseCase(scale);
 
     if (transformSetting.sizeLocked) {
-        const widthElement = document
-            .getElementById($TRANSFORM_OBJECT_WIDTH_ID) as HTMLInputElement;
-        if (!widthElement) {
-            return ;
-        }
-
-        const width = $clamp(
-            Math.round(parseFloat(widthElement.value) * scale * 100) / 100,
-            1, Number.MAX_VALUE
-        );
-        widthElement.value = `${width}`;
-
-        // 変形に合わせて表示を更新
-        transformSettingUpdateScaleXToElementValuesUseCase(scale);
+        transformSettingUpdateWidthToElementValuesUseCase(scale);
     }
 
     // 変更後のmatrixで表示を更新
-    // await transformSettingUpdateSizeToElementValuesUseCase(1, scale);
+    await transformSettingUpdateSizeToRedrawCanvasUseCase();
 
     // input要素のフォーカス
     element.focus();

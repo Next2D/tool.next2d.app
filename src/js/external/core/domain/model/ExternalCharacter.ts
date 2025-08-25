@@ -8,6 +8,9 @@ import { execute as externalCharacterUpdateScaleXUseCase } from "@/external/core
 import { execute as externalCharacterUpdateScaleYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateScaleYUseCase";
 import { execute as externalCharacterUpdateRotateUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateRotateUseCase";
 import { execute as externalCharacterUpdateNameUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateNameUseCase";
+import { execute as externalCharacterUpdateMatrixUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateMatrixUseCase";
+import { execute as externalCharacterUpdateWidthUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateWidthUseCase";
+import { execute as externalCharacterUpdateHeightUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateHeightUseCase";
 
 /**
  * @description DisplayObjectの管理クラス
@@ -309,8 +312,7 @@ export class ExternalCharacter
      */
     async setMatrix (a: number, b: number, c: number, d: number, tx: number, ty: number): Promise<void>
     {
-        console.log("TODO: ", { a, b, c, d, tx, ty });
-        return Promise.resolve();
+        return await externalCharacterUpdateMatrixUseCase(a, b, c, d, tx, ty);
     }
 
     /**
