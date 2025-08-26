@@ -312,7 +312,13 @@ export class ExternalCharacter
      */
     async setMatrix (a: number, b: number, c: number, d: number, tx: number, ty: number): Promise<void>
     {
-        return await externalCharacterUpdateMatrixUseCase(a, b, c, d, tx, ty);
+        return await externalCharacterUpdateMatrixUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            [a, b, c, d, tx, ty]
+        );
     }
 
     /**

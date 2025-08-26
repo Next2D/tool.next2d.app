@@ -43,7 +43,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         1, Number.MAX_VALUE
     );
 
-    const scale = width / transformSetting.beforeWidth;
+    const scale = width / transformSetting.w;
     transformSettingUpdateWidthToElementValuesUseCase(scale);
 
     if (transformSetting.sizeLocked) {
