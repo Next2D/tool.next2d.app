@@ -55,7 +55,8 @@ import {
     $CHARACTER_UPDATE_NAME_COMMAND,
     $CHARACTER_UPDATE_SCALE_X_COMMAND,
     $CHARACTER_UPDATE_SCALE_Y_COMMAND,
-    $CHARACTER_UPDATE_ROTATE_COMMAND
+    $CHARACTER_UPDATE_ROTATE_COMMAND,
+    $CHARACTER_UPDATE_MATRIX_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -117,5 +118,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($CHARACTER_UPDATE_SCALE_X_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のxスケールを%s5%から%s6%に変更");
         expect(execute($CHARACTER_UPDATE_SCALE_Y_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4のyスケールを%s5%から%s6%に変更");
         expect(execute($CHARACTER_UPDATE_ROTATE_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の回転を%s5°から%s6°に変更");
+        expect(execute($CHARACTER_UPDATE_MATRIX_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の行列を%s5°から%s6°に変更");
     });
 });

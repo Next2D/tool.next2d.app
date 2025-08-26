@@ -65,6 +65,7 @@ import { execute as characterUpdateNameHistoryUndoUseCase } from "@/history/appl
 import { execute as characterUpdateScaleXHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryUndoUseCase";
 import { execute as characterUpdateScaleYHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateScaleY/usecase/CharacterUpdateScaleYHistoryUndoUseCase";
 import { execute as characterUpdateRotateHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateRotate/usecase/CharacterUpdateRotateHistoryUndoUseCase";
+import { execute as characterUpdateMatrixHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -121,7 +122,8 @@ import {
     $CHARACTER_UPDATE_NAME_COMMAND,
     $CHARACTER_UPDATE_SCALE_X_COMMAND,
     $CHARACTER_UPDATE_SCALE_Y_COMMAND,
-    $CHARACTER_UPDATE_ROTATE_COMMAND
+    $CHARACTER_UPDATE_ROTATE_COMMAND,
+    $CHARACTER_UPDATE_MATRIX_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -691,6 +693,17 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[5] as number  // Before Rotation
+            );
+            break;
+
+        case $CHARACTER_UPDATE_MATRIX_COMMAND:
+            await characterUpdateMatrixHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as number[] // Before Matrix
             );
             break;
 

@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateNameHistoryUseCase } from "@/history/application/core/application/Character/UpdateName/usecase/CharacterUpdateNameHistoryUseCase";
-import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
+import { execute as viewUpdateAfterNameUseCase } from "@/view/application/usecase/ViewUpdateAfterNameUseCase";
 
 /**
  * @description DisplayObjectの名前を更新
@@ -47,32 +47,10 @@ export const execute = async (
     );
 
     // プロジェクトがアクティブなら表示を更新
-    if (work_space.active
-        && movie_clip.active
-        && movie_clip.selectedDepths.size
-    ) {
-        const activeLayer = movie_clip.getLayer(
-            movie_clip.selectedDepths.keys().next().value as number
-        );
-        if (!activeLayer) {
-            return ;
-        }
-
-        const activeCharacters = activeLayer.getActiveCharacters(movie_clip.currentFrame);
-        if (!activeCharacters.length) {
-            return ;
-        }
-
-        const values = movie_clip.selectedDepths.values().next().value as number[];
-        const activeCharacter = activeCharacters[values[0] as number];
-        if (!activeCharacter) {
-            return ;
-        }
-
-        if (character !== activeCharacter) {
-            return ;
-        }
-
-        objectSettingUpdateNameService(name);
-    }
+    viewUpdateAfterNameUseCase(
+        work_space,
+        movie_clip,
+        layer,
+        character
+    );
 };

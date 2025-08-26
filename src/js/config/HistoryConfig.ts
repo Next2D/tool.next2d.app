@@ -609,3 +609,12 @@ export const $CHARACTER_UPDATE_SCALE_Y_COMMAND: number = 61;
  * @constant
  */
 export const $CHARACTER_UPDATE_ROTATE_COMMAND: number = 62;
+
+/**
+ * @description DisplayObjectの行列更新の識別コマンド名
+ *              Identification command name for updating the matrix of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_MATRIX_COMMAND: number = 63;
