@@ -61,6 +61,7 @@ import { execute as characterUpdateNameReceiveUseCase } from "@/share/receive/ap
 import { execute as characterUpdateScaleXReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateScaleXReceiveUseCase";
 import { execute as characterUpdateScaleYReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateScaleYReceiveUseCase";
 import { execute as characterUpdateRotateReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateRotateReceiveUseCase";
+import { execute as characterUpdateMatrixReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateMatrixReceiveUseCase";
 import {
     $HISTORY_REDO_COMMAND,
     $HISTORY_UNDO_COMMAND,
@@ -123,7 +124,8 @@ import {
     $CHARACTER_UPDATE_NAME_COMMAND,
     $CHARACTER_UPDATE_SCALE_X_COMMAND,
     $CHARACTER_UPDATE_SCALE_Y_COMMAND,
-    $CHARACTER_UPDATE_ROTATE_COMMAND
+    $CHARACTER_UPDATE_ROTATE_COMMAND,
+    $CHARACTER_UPDATE_MATRIX_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -454,6 +456,10 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         case $CHARACTER_UPDATE_ROTATE_COMMAND:
             await characterUpdateRotateReceiveUseCase(message);
+            break;
+
+        case $CHARACTER_UPDATE_MATRIX_COMMAND:
+            await characterUpdateMatrixReceiveUseCase(message);
             break;
 
         default:
