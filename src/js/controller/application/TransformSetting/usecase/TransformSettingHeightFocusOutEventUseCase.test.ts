@@ -7,7 +7,7 @@ import { transformSetting } from "../../../../controller/domain/model/TransformS
 
 describe("TransformSettingHeightFocusOutEventUseCase Test", () =>
 {
-    it("execute test", () =>
+    it("execute test", async () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const movieClip = workSpace.scene;
@@ -34,7 +34,7 @@ describe("TransformSettingHeightFocusOutEventUseCase Test", () =>
 
         expect(stopPropagation).toBe(false);
         expect($useKeyboard()).toBe(true);
-        execute(mockEvent);
+        await execute(mockEvent);
         expect(stopPropagation).toBe(true);
         expect($useKeyboard()).toBe(false);
     });
