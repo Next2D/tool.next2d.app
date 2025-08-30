@@ -4,7 +4,6 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
-import { $TRANSFORM_OBJECT_SCALE_Y_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description xスケールの入力完了処理
@@ -41,8 +40,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         scaleX = 0.01;
     }
 
-    element.value = `${scaleX}`;
-
     // 変形に合わせて表示を更新
     const scale = scaleX / transformSetting.beforeScaleX;
     transformSettingUpdateScaleXToElementValuesUseCase(scale);
@@ -50,23 +47,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     if (transformSetting.scaleLocked
         && transformSetting.beforeScaleY
     ) {
-
-        const scaleYElement = document
-            .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
-        if (!scaleYElement) {
-            return ;
-        }
-
-        let scaleY = $clamp(
-            Math.round(parseFloat(scaleYElement.value) * scale * 100) / 100,
-            Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
-        );
-        if (!scaleY) {
-            scaleY = 0.01;
-        }
-
-        scaleYElement.value = `${scaleY}`;
-
         // 変形に合わせて表示を更新
         transformSettingUpdateScaleYToElementValuesUseCase(scale);
     }

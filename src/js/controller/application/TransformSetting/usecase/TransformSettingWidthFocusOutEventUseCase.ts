@@ -36,7 +36,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         Math.round(parseFloat(element.value) * 100) / 100,
         1, Number.MAX_VALUE
     );
-    element.value = `${width}`;
 
     // 変形に合わせて表示を更新
     const scale = width / transformSetting.beforeWidth;

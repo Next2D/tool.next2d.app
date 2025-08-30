@@ -43,22 +43,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         Math.round(parseFloat(element.value) * 100) / 100,
         Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
     );
-    transformSettingUpdateScaleYToElementValuesUseCase(scaleY / 100 / transformSetting.scaleY);
+
+    const scale = scaleY / 100 / transformSetting.scaleY;
+    transformSettingUpdateScaleYToElementValuesUseCase(scale);
 
     if (transformSetting.scaleLocked
         && transformSetting.scaleX
     ) {
-        const scaleXElement = document
-            .getElementById($TRANSFORM_OBJECT_SCALE_X_ID) as HTMLInputElement;
-        if (!scaleXElement) {
-            return ;
-        }
-
-        const scaleX = $clamp(
-            Math.round(parseFloat(scaleXElement.value) * 100) / 100,
-            Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
-        );
-        transformSettingUpdateScaleXToElementValuesUseCase(scaleX / 100 / transformSetting.scaleX);
+        transformSettingUpdateScaleXToElementValuesUseCase(scale);
     }
 
     // 変更後のmatrixで表示を更新

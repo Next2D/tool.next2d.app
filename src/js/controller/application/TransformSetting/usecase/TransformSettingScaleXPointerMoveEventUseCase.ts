@@ -2,7 +2,6 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleYToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { $TRANSFORM_OBJECT_SCALE_Y_ID } from "@/config/TransformSettingConfig";
 import {
     $clamp,
     $setCursor
@@ -47,26 +46,12 @@ export const execute = (event: PointerEvent): void =>
         if (!scaleX) {
             scaleX = 0.01;
         }
-        element.value = `${scaleX}`;
 
         // 変形に合わせて表示を更新
         const scale = scaleX / 100 / transformSetting.scaleX;
         transformSettingUpdateScaleXToElementValuesUseCase(scale);
 
         if (transformSetting.scaleLocked) {
-            const scaleYElement = document
-                .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
-            if (!scaleYElement) {
-                return ;
-            }
-
-            const value = Math.round(parseFloat(scaleYElement.value) * 100) / 100;
-            let scaleY = $clamp(value * scale, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
-            if (!scaleY) {
-                scaleY = 0.01;
-            }
-            scaleYElement.value = `${scaleY}`;
-
             transformSettingUpdateScaleYToElementValuesUseCase(scale);
         }
 

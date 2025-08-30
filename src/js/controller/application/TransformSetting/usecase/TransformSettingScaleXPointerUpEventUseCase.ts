@@ -5,7 +5,6 @@ import { execute as transformSettingScaleXPointerMoveEventUseCase } from "./Tran
 import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
-import { $TRANSFORM_OBJECT_SCALE_Y_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアのxスケールの値操作のマウスアップイベント
@@ -43,22 +42,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         Math.round(parseFloat(element.value) * 100) / 100,
         Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
     );
-    transformSettingUpdateScaleXToElementValuesUseCase(scaleX / 100 / transformSetting.scaleX);
+
+    const scale = scaleX / 100 / transformSetting.scaleX;
+    transformSettingUpdateScaleXToElementValuesUseCase(scale);
 
     if (transformSetting.scaleLocked
         && transformSetting.scaleY
     ) {
-        const scaleYElement = document
-            .getElementById($TRANSFORM_OBJECT_SCALE_Y_ID) as HTMLInputElement;
-        if (!scaleYElement) {
-            return ;
-        }
-
-        const scaleY = $clamp(
-            Math.round(parseFloat(scaleYElement.value) * 100) / 100,
-            Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER
-        );
-        transformSettingUpdateScaleYToElementValuesUseCase(scaleY / 100 / transformSetting.scaleY);
+        transformSettingUpdateScaleYToElementValuesUseCase(scale);
     }
 
     // 変更後のmatrixで表示を更新
