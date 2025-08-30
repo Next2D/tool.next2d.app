@@ -4,7 +4,6 @@ import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/applica
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { $useKeyboard, $updateKeyLock } from "../../../../shortcut/ShortcutUtil";
 import { transformSetting } from "../../../../controller/domain/model/TransformSetting";
-import { $TRANSFORM_OBJECT_WIDTH_ID } from "../../../../config/TransformSettingConfig";
 
 describe("TransformSettingRotateFocusInEventUseCase Test", () =>
 {
