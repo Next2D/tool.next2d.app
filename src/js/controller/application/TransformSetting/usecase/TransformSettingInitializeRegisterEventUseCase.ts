@@ -118,7 +118,8 @@ export const execute = (): void =>
             transformSettingInputPointerOutEventService
         );
         widthElement.addEventListener(EventType.POINTER_DOWN,
-            transformSettingWidthPointerDownEventUseCase
+            transformSettingWidthPointerDownEventUseCase,
+            { "passive": false }
         );
         widthElement.addEventListener("focusin",
             transformSettingWidthFocusInEventUseCase
@@ -142,7 +143,8 @@ export const execute = (): void =>
             transformSettingInputPointerOutEventService
         );
         heightElement.addEventListener(EventType.POINTER_DOWN,
-            transformSettingHeightPointerDownEventUseCase
+            transformSettingHeightPointerDownEventUseCase,
+            { "passive": false }
         );
         heightElement.addEventListener("focusin",
             transformSettingHeightFocusInEventUseCase
@@ -176,7 +178,8 @@ export const execute = (): void =>
             transformSettingInputPointerOutEventService
         );
         scaleXElement.addEventListener(EventType.POINTER_DOWN,
-            transformSettingScaleXPointerDownEventUseCase
+            transformSettingScaleXPointerDownEventUseCase,
+            { "passive": false }
         );
         scaleXElement.addEventListener("focusin",
             transformSettingScaleXFocusInEventUseCase
@@ -200,7 +203,8 @@ export const execute = (): void =>
             transformSettingInputPointerOutEventService
         );
         scaleYElement.addEventListener(EventType.POINTER_DOWN,
-            transformSettingScaleYPointerDownEventUseCase
+            transformSettingScaleYPointerDownEventUseCase,
+            { "passive": false }
         );
         scaleYElement.addEventListener("focusin",
             transformSettingScaleYFocusInEventUseCase
@@ -224,7 +228,8 @@ export const execute = (): void =>
             transformSettingInputPointerOutEventService
         );
         rotateElement.addEventListener(EventType.POINTER_DOWN,
-            transformSettingRotatePointerDownEventUseCase
+            transformSettingRotatePointerDownEventUseCase,
+            { "passive": false }
         );
         rotateElement.addEventListener("focusin",
             transformSettingRotateFocusInEventUseCase

@@ -4,7 +4,6 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateHeightToElementValuesUseCase } from "./TransformSettingUpdateHeightToElementValuesUseCase";
 import { execute as transformSettingUpdateSizeToRedrawCanvasUseCase } from "./TransformSettingUpdateSizeToRedrawCanvasUseCase";
-import { $TRANSFORM_OBJECT_WIDTH_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 高さの入力完了処理
@@ -45,18 +44,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     if (transformSetting.sizeLocked
         && transformSetting.beforeWidth
     ) {
-        const widthElement = document
-            .getElementById($TRANSFORM_OBJECT_WIDTH_ID) as HTMLInputElement;
-        if (!widthElement) {
-            return ;
-        }
-
-        const width = $clamp(
-            Math.round(parseFloat(widthElement.value) * scale * 100) / 100,
-            1, Number.MAX_VALUE
-        );
-        widthElement.value = `${width}`;
-
         // 変形に合わせて表示を更新
         transformSettingUpdateScaleXToElementValuesUseCase(scale);
     }
