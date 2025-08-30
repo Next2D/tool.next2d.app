@@ -72,7 +72,7 @@ describe("TransformSettingHeightFocusInEventUseCase Test", () =>
         expect(stopPropagation).toBe(false);
         expect($useKeyboard()).toBe(false);
         execute(mockEvent);
-         expect(transformSetting.beforeWidth).toBe(200);
+        expect(transformSetting.beforeWidth).toBe(200);
         expect(transformSetting.beforeHeight).toBe(100);
         expect(stopPropagation).toBe(true);
         expect($useKeyboard()).toBe(true);

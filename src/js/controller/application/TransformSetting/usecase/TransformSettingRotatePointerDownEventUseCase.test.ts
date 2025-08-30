@@ -1,4 +1,4 @@
-import { execute } from "./TransformSettingHeightPointerDownEventUseCase";
+import { execute } from "./TransformSettingRotatePointerDownEventUseCase";
 import { describe, expect, it, vi } from "vitest";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
@@ -8,7 +8,7 @@ import { EventType } from "../../../../tool/domain/event/EventType";
 import { Character } from "../../../../core/domain/model/Character";
 import { Bitmap } from "../../../../core/domain/model/Bitmap";
 
-describe("TransformSettingHeightPointerDownEventUseCase Test", () =>
+describe("TransformSettingRotatePointerDownEventUseCase Test", () =>
 {
     it("execute test case1", () =>
     {
@@ -26,6 +26,7 @@ describe("TransformSettingHeightPointerDownEventUseCase Test", () =>
         const character = new Character();
         character.startFrame = 1;
         character.libraryId = 2;
+        character.rotation = 45;
 
         layer.addCharacter(character);
         movieClip.selectedDepths.set(0, [0]);
@@ -85,17 +86,14 @@ describe("TransformSettingHeightPointerDownEventUseCase Test", () =>
 
         // reset
         transformSetting.clear();
-        transformSetting.sizeLocked = true;
-        transformSetting.beforeHeight = 300;
-        transformSetting.beforeWidth = 400;
         $updateKeyLock(false);
 
         expect(preventDefault).toBe(false);
         expect(stopPropagation).toBe(false);
         expect($useKeyboard()).toBe(false);
         expect(pointerId).toBe(0);
-        expect(transformSetting.beforeHeight).toBe(300);
-        expect(transformSetting.beforeWidth).toBe(400);
+        expect(transformSetting.rotation).toBe(0);
+        expect(transformSetting.beforeRotation).toBe(0);
         expect(pointerMove).toBe(false);
         expect(pointerUp).toBe(false);
         expect(pointerCancel).toBe(false);
@@ -107,8 +105,8 @@ describe("TransformSettingHeightPointerDownEventUseCase Test", () =>
         expect(stopPropagation).toBe(true);
         expect($useKeyboard()).toBe(false);
         expect(pointerId).toBe(100);
-        expect(transformSetting.beforeHeight).toBe(100);
-        expect(transformSetting.beforeWidth).toBe(100);
+        expect(transformSetting.rotation).toBe(45);
+        expect(transformSetting.beforeRotation).toBe(45);
         expect(pointerMove).toBe(true);
         expect(pointerUp).toBe(true);
         expect(pointerCancel).toBe(true);
