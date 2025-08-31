@@ -1,8 +1,7 @@
-import { execute } from "./TransformSettingHeightPointerMoveEventUseCase";
+import { execute } from "./TransformSettingWidthPointerMoveEventUseCase";
 import { describe, expect, it, vi } from "vitest";
-import { transformSetting } from "../../../../controller/domain/model/TransformSetting";
 
-describe("TransformSettingHeightPointerMoveEventUseCase Test", () =>
+describe("TransformSettingWidthPointerMoveEventUseCase Test", () =>
 {
     it("execute test", () =>
     {
