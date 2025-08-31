@@ -10,6 +10,7 @@ import { execute as instanceUpdateBlendModeService } from "@/core/application/In
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $getCacheCanvas,
     $setCacheCanvas
@@ -65,7 +66,18 @@ export const execute = async (
     );
 
     const div = element.lastElementChild as HTMLDivElement;
-    div.appendChild(canvas);
+    const container = div.querySelector(".canvas-container") as HTMLDivElement;
+    if (!container) {
+        throw new Error("Canvas container not found in the display object element.");
+    }
+    container.appendChild(canvas);
+
+    const bounds = character.getRawBounds();
+    if (bounds) {
+        const workSpace = $getCurrentWorkSpace();
+        canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * character.scaleX * workSpace.scale))}px`;
+        canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * character.scaleY * workSpace.scale))}px`;
+    }
 
     // マスクのスタイルを更新
     if (layer.mode === $MASK_IN_MODE) {
@@ -82,7 +94,7 @@ export const execute = async (
 
     // イベントを登録
     if (!$getDeactivated()) {
-        videoRegisterEventUseCase(div);
+        videoRegisterEventUseCase(container);
     } else {
         screenAreaReadOnlyElementService(div);
     }
