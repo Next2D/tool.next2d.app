@@ -5,7 +5,6 @@ import { execute as transformSettingScaleYPointerMoveEventUseCase } from "./Tran
 import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
-import { $TRANSFORM_OBJECT_SCALE_X_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアのyスケールの値操作のマウスアップイベント
