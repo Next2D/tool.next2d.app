@@ -24,7 +24,7 @@ export const execute = (tool: ITool<ArrowTool>): void =>
     );
 
     // DisplayObject選択時のイベントを登録
-    tool.addEventListener(EventType.DISPLAY_OBJRCY,
+    tool.addEventListener(EventType.DISPLAY_OBJECT,
         screenDisplayObjectPointerDownEventUseCase
     );
 

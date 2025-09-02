@@ -31,6 +31,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.removeEventListener(EventType.POINTER_MOVE, arrowToolStageRectPointerMoveEventUseCase);
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
+    element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 範囲選択のElementを表示
     const rectElement: HTMLElement | null = document

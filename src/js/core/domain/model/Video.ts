@@ -126,10 +126,10 @@ export class Video extends Instance
             this._$width  = this._$video.videoWidth;
             this._$height = this._$video.videoHeight;
             if (!this._$loaded) {
-                this._$loaded = true;
                 await this._$video.play();
                 this._$video.pause();
                 this._$video.currentTime = 0;
+                this._$loaded = true;
             }
         };
 
@@ -145,7 +145,7 @@ export class Video extends Instance
 
             if (this._$buffer instanceof Uint8Array) {
                 this._$video.src = URL.createObjectURL(new Blob(
-                    [this._$buffer],
+                    [this._$buffer.buffer as ArrayBuffer],
                     { "type": "video/mp4" }
                 ));
 
@@ -245,13 +245,13 @@ export class Video extends Instance
     {
         return new Promise((resolve): void =>
         {
-            if (this._$loaded) {
+            if (this._$video.readyState > 3) {
                 return resolve();
             }
 
             const loop = (): void =>
             {
-                if (this._$loaded) {
+                if (this._$video.readyState > 3) {
                     return resolve();
                 }
                 setTimeout(loop, 200);
@@ -282,7 +282,7 @@ export class Video extends Instance
 
         // videoの再読み込み
         this._$video.src = URL.createObjectURL(new Blob(
-            [this._$buffer],
+            [this._$buffer.buffer as ArrayBuffer],
             { "type": "video/mp4" }
         ));
 

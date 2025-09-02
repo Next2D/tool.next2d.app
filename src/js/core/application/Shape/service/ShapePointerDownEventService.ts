@@ -31,5 +31,5 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
-    tool.dispatchEvent(EventType.DISPLAY_OBJRCY, event);
+    tool.dispatchEvent(EventType.DISPLAY_OBJECT, event);
 };

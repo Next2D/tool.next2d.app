@@ -47,7 +47,7 @@ export const execute = async (
         movieClip.currentFrame - 1
     ) / work_space.stage.fps);
 
-    const cacheKey = character.cacheKey + "_" + sec;
+    const cacheKey = `${character.cacheKey}_${Math.round(sec * 100) / 100}`;
     let canvas = $getCacheCanvas(work_space.id, instance.id, cacheKey);
     if (!canvas) {
         // TODO filters check

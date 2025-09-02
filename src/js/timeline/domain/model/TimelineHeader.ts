@@ -9,60 +9,14 @@ import { execute as timelineHeaderInitializeUseCase } from "../../application/Ti
  */
 class TimelineHeader
 {
-    private _$clientWidth: number;
-    private _$stopFlag: boolean;
-    private _$loopFlag: boolean;
-    private readonly _$elements: HTMLElement[];
-
     /**
-     * @constructor
-     * @public
-     */
-    constructor ()
-    {
-        /**
-         * @type {number}
-         * @default 0
-         * @private
-         */
-        this._$clientWidth = 0;
-
-        /**
-         * @type {array}
-         * @private
-         */
-        this._$elements = [];
-
-        /**
-         * @type {boolean}
-         * @default true
-         * @private
-         */
-        this._$stopFlag = true;
-
-        /**
-         * @type {boolean}
-         * @default false
-         * @private
-         */
-        this._$loopFlag = false;
-    }
-
-    /**
-     * @description タイムラインのループフラグ
-     *              Loop flag of the timeline
+     * @description タイムラインヘッダーの表示幅を返却する
+     *              Return the display width of the timeline header
      *
-     * @member {boolean}
+     * @member {number}
      * @public
      */
-    get loopFlag (): boolean
-    {
-        return this._$loopFlag;
-    }
-    set loopFlag (loop_flag: boolean)
-    {
-        this._$loopFlag = loop_flag;
-    }
+    public clientWidth: number;
 
     /**
      * @description タイムラインの再生停止フラグ
@@ -71,14 +25,16 @@ class TimelineHeader
      * @member {boolean}
      * @public
      */
-    get stopFlag (): boolean
-    {
-        return this._$stopFlag;
-    }
-    set stopFlag (stop_flag: boolean)
-    {
-        this._$stopFlag = stop_flag;
-    }
+    public stopFlag: boolean;
+
+    /**
+     * @description タイムラインのループフラグ
+     *              Loop flag of the timeline
+     *
+     * @member {boolean}
+     * @public
+     */
+    public loopFlag: boolean;
 
     /**
      * @description ヘッダーコンテンツのElement配列
@@ -88,9 +44,18 @@ class TimelineHeader
      * @return {array}
      * @public
      */
-    get elements (): HTMLElement[]
+    public readonly elements: HTMLElement[];
+
+    /**
+     * @constructor
+     * @public
+     */
+    constructor ()
     {
-        return this._$elements;
+        this.clientWidth = 0;
+        this.elements = [];
+        this.stopFlag = true;
+        this.loopFlag = false;
     }
 
     /**
@@ -104,22 +69,6 @@ class TimelineHeader
     async initialize (): Promise<void>
     {
         timelineHeaderInitializeUseCase();
-    }
-
-    /**
-     * @description タイムラインヘッダーの表示幅を返却する
-     *              Return the display width of the timeline header
-     *
-     * @member {number}
-     * @public
-     */
-    get clientWidth (): number
-    {
-        return this._$clientWidth;
-    }
-    set clientWidth (width: number)
-    {
-        this._$clientWidth = width;
     }
 }
 

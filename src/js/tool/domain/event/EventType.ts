@@ -158,9 +158,9 @@ export class EventType
      * @static
      * @const
      */
-    static get DISPLAY_OBJRCY (): "display_objrcy"
+    static get DISPLAY_OBJECT (): "display_object"
     {
-        return "display_objrcy";
+        return "display_object";
     }
 
     /**

@@ -1,7 +1,9 @@
 import { execute as stageRectShowService } from "@/screen/application/StageRect/service/StageRectShowService";
-import { execute as arrowToolStageRectRegisterPointerEventUseCase } from "./ArrowToolStageRectRegisterPointerEventUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as arrowToolStageRectPointerMoveEventUseCase } from "./ArrowToolStageRectPointerMoveEventUseCase";
+import { execute as arrowToolStageRectPointerUpEventUseCase } from "./ArrowToolStageRectPointerUpEventUseCase";
 
 /**
  * @description 範囲選択のマウスダウンイベントの実行関数
@@ -21,11 +23,29 @@ export const execute = (event: PointerEvent): void =>
         return ;
     }
 
+    const element: HTMLElement | null = event.target as HTMLElement;
+    if (!element) {
+        return ;
+    }
+
     // イベントの伝播を停止
     event.stopPropagation();
 
     // イベントを登録
-    arrowToolStageRectRegisterPointerEventUseCase(event);
+    element.setPointerCapture(event.pointerId);
+    element.addEventListener(EventType.POINTER_MOVE,
+        arrowToolStageRectPointerMoveEventUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(EventType.POINTER_UP,
+        arrowToolStageRectPointerUpEventUseCase
+    );
+    element.addEventListener(EventType.POINTER_CANCEL,
+        arrowToolStageRectPointerUpEventUseCase
+    );
+    element.addEventListener(EventType.POINTER_LEAVE,
+        arrowToolStageRectPointerUpEventUseCase
+    );
 
     // 範囲選択のElementを表示
     stageRectShowService(event.offsetX, event.offsetY);

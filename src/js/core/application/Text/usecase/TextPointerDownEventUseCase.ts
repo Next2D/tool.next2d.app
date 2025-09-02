@@ -81,7 +81,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }, 300);
 
         // タップイベントを発火
-        tool.dispatchEvent(EventType.DISPLAY_OBJRCY, event);
+        tool.dispatchEvent(EventType.DISPLAY_OBJECT, event);
 
     } else {
 
