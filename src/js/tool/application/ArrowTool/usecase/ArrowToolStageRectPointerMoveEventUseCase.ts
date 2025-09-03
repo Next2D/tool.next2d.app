@@ -2,10 +2,6 @@ import { $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { stageRect } from "@/screen/domain/model/StageRect";
 import { $setEditingElement } from "@/global/GlobalUtil";
-import {
-    $getScreenOffsetLeft,
-    $getScreenOffsetTop
-} from "@/global/GlobalUtil";
 
 /**
  * @description 範囲選択のマウスムーブイベントの実行関数

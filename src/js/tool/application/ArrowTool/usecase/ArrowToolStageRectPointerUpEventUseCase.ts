@@ -31,6 +31,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
+    event.stopPropagation();
+
     // ポインターイベントを解除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE,
@@ -172,6 +174,5 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                 depths,
                 true
             );
-
     }
 };
