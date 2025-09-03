@@ -63,6 +63,7 @@ describe("ArrowToolStageRectPointerDownEventUseCase Test", () =>
         expect(pointerCancel).toBe(false);
         expect(pointerLeave).toBe(false);
 
+        timelineHeader.stopFlag = true;
         execute(mockEvent);
         expect(stopPropagation).toBe(true);
         expect(pointerId).toBe(100);
@@ -124,6 +125,7 @@ describe("ArrowToolStageRectPointerDownEventUseCase Test", () =>
         timelineHeader.stopFlag = false;
         expect(stopPropagation).toBe(false);
         execute(mockEvent);
+        timelineHeader.stopFlag = true;
         expect(stopPropagation).toBe(false);
     });
 });

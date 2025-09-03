@@ -4,6 +4,7 @@ import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as arrowToolStageRectPointerMoveEventUseCase } from "./ArrowToolStageRectPointerMoveEventUseCase";
 import { execute as arrowToolStageRectPointerUpEventUseCase } from "./ArrowToolStageRectPointerUpEventUseCase";
+import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 
 /**
  * @description 範囲選択のマウスダウンイベントの実行関数
@@ -47,6 +48,12 @@ export const execute = (event: PointerEvent): void =>
         arrowToolStageRectPointerUpEventUseCase
     );
 
+    const stageArea = document.getElementById($SCREEN_STAGE_AREA_ID);
+    if (!stageArea) {
+        return;
+    }
+
     // 範囲選択のElementを表示
-    stageRectShowService(event.offsetX, event.offsetY);
+    const domRect = stageArea.getBoundingClientRect();
+    stageRectShowService(event.pageX, event.pageY, -domRect.x, -domRect.y);
 };

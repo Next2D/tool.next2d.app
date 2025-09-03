@@ -2,6 +2,10 @@ import { $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { stageRect } from "@/screen/domain/model/StageRect";
 import { $setEditingElement } from "@/global/GlobalUtil";
+import {
+    $getScreenOffsetLeft,
+    $getScreenOffsetTop
+} from "@/global/GlobalUtil";
 
 /**
  * @description 範囲選択のマウスムーブイベントの実行関数
@@ -33,15 +37,15 @@ export const execute = (event: PointerEvent): void =>
         // 編集中のElementを初期化
         $setEditingElement(null);
 
-        if (stageRect.x > event.offsetX) {
-            element.style.left = `${event.offsetX}px`;
+        if (stageRect.x > event.pageX) {
+            element.style.left = `${stageRect.offsetX + event.pageX}px`;
         }
 
-        if (stageRect.y > event.offsetY) {
-            element.style.top = `${event.offsetY}px`;
+        if (stageRect.y > event.pageY) {
+            element.style.top = `${stageRect.offsetY + event.pageY}px`;
         }
 
-        element.style.width  = `${Math.abs(event.offsetX - stageRect.x)}px`;
-        element.style.height = `${Math.abs(event.offsetY - stageRect.y)}px`;
+        element.style.width  = `${Math.abs(event.pageX - stageRect.x)}px`;
+        element.style.height = `${Math.abs(event.pageY - stageRect.y)}px`;
     });
 };

@@ -6,28 +6,6 @@
  */
 class StageRect
 {
-    private _$x: number;
-    private _$y: number;
-
-    /**
-     * @constructor
-     * @public
-     */
-    constructor ()
-    {
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$x = 0;
-
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$y = 0;
-    }
-
     /**
      * @description x座標
      *              x coordinate
@@ -35,14 +13,7 @@ class StageRect
      * @type {number}
      * @public
      */
-    get x (): number
-    {
-        return this._$x;
-    }
-    set x (x: number)
-    {
-        this._$x = x;
-    }
+    public x: number;
 
     /**
      * @description y座標
@@ -51,13 +22,36 @@ class StageRect
      * @type {number}
      * @public
      */
-    get y (): number
+    public y: number;
+
+    /**
+     * @description offsetX座標
+     *              offsetX coordinate
+     *
+     * @type {number}
+     * @public
+     */
+    public offsetX: number;
+
+    /**
+     * @description offsetY座標
+     *              offsetY coordinate
+     *
+     * @type {number}
+     * @public
+     */
+    public offsetY: number;
+
+    /**
+     * @constructor
+     * @public
+     */
+    constructor ()
     {
-        return this._$y;
-    }
-    set y (y: number)
-    {
-        this._$y = y;
+        this.x = 0;
+        this.y = 0;
+        this.offsetX = 0;
+        this.offsetY = 0;
     }
 }
 
