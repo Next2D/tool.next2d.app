@@ -4,6 +4,7 @@ import { $clamp } from "@/global/GlobalUtil";
 import { screenArea } from "@/screen/domain/model/ScreenArea";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "@/tool/application/ZoomTool/usecase/ZoomToolRealodWorkSpaceUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 import {
     $ZOOM_MAX_VALUE,
     $ZOOM_MIN_VALUE
@@ -94,6 +95,8 @@ export const execute = async (event: WheelEvent): Promise<void> =>
                 $zoomTimerId = setTimeout(async (): Promise<void> =>
                 {
                     await screenAreaRedrawUseCase(workSpace.scene);
+                    // 選択中のDisplayObjectをアクティブ表示にする
+                    screenDisplayObjectAllSelectedActiveUseCase();
                 }, 100);
 
                 return resolve();

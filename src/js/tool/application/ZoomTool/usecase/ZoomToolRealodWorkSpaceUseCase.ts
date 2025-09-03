@@ -8,6 +8,7 @@ import { execute as screenScrollResizeService } from "@/screen/application/Scree
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenParentStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 import { $SCREEN_ID } from "@/config/ScreenConfig";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 
@@ -79,5 +80,8 @@ export const execute = async (scale: number, redraw: boolean = true): Promise<vo
     // スクリーンを再描画
     if (redraw) {
         await screenAreaRedrawUseCase(workSpace.scene);
+
+        // 選択中のDisplayObjectをアクティブ表示にする
+        screenDisplayObjectAllSelectedActiveUseCase();
     }
 };

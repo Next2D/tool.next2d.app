@@ -1,8 +1,15 @@
-import { $ZOOM_MAX_VALUE, $ZOOM_MIN_VALUE } from "@/config/ZoomConfig";
-import { $clamp, $setCursor } from "@/global/GlobalUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as zoomToolRealodWorkSpaceUseCase } from "./ZoomToolRealodWorkSpaceUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
+import {
+    $ZOOM_MAX_VALUE,
+    $ZOOM_MIN_VALUE
+} from "@/config/ZoomConfig";
+import {
+    $clamp,
+    $setCursor
+} from "@/global/GlobalUtil";
 
 /**
  * @description ズームタイマーID
@@ -53,6 +60,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             {
                 const workSpace = $getCurrentWorkSpace();
                 await screenAreaRedrawUseCase(workSpace.scene);
+
+                // 選択中のDisplayObjectをアクティブ表示にする
+                screenDisplayObjectAllSelectedActiveUseCase();
             }, 100);
 
             resolve();
