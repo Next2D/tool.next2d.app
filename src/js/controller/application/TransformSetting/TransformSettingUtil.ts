@@ -96,68 +96,6 @@ export const $createTransformStyle = (character: Character): string =>
 };
 
 /**
- * @description ポインターでのスケール処理時のTransformStyleを生成
- *              Generate TransformStyle for scaling with pointer
- *
- * @param  {Character} character
- * @param  {WorkSpace} work_space
- * @param  {number} [scale_x=1]
- * @param  {number} [scale_y=1]
- * @param  {number} [rotation=0]
- * @return {string}
- * @method
- * @public
- */
-export const $createMoveTransformElementStyle = (
-    character: Character,
-    work_space: WorkSpace,
-    width: number,
-    height: number,
-    scale_x: number = 1,
-    scale_y: number = 1,
-    rotation: number = 0
-): string => {
-
-    const transform = [];
-    if (scale_x !== 1) {
-        transform.push(`scaleX(${scale_x})`);
-    }
-    if (scale_y !== 1) {
-        transform.push(`scaleY(${scale_y})`);
-    }
-
-    if (rotation) {
-        transform.push(`rotate(${rotation}deg)`);
-    }
-
-    if (!transform.length) {
-        return "";
-    }
-
-    const instance = work_space.getLibrary(character.libraryId);
-    if (!instance) {
-        return "";
-    }
-
-    // 実寸の中心座標を取得
-    const referenceX = width / 2;
-    const referenceY = height / 2;
-
-    // 中心点を原点に変形
-    const multiMatrix = $multiplicationMatrix(
-        new Float32Array([Math.abs(scale_x), 0, 0, Math.abs(scale_y), 0, 0]),
-        new Float32Array([1, 0, 0, 1, -referenceX, -referenceY])
-    );
-
-    // 変形分の座標を補正
-    multiMatrix[4] += referenceX;
-    multiMatrix[5] += referenceY;
-    transform.unshift(`translate(${-multiMatrix[4]}px, ${-multiMatrix[5]}px)`);
-
-    return `${transform.join(" ")}`;
-};
-
-/**
  * @description TransformStyleを生成
  *              Generate TransformStyle
  *

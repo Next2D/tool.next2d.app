@@ -14,13 +14,8 @@ import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $createTransformElementStyle,
-    $createMoveTransformElementStyle,
     $multiplicationMatrix
 } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import {
-    $BITMAP_TYPE,
-    $VIDEO_TYPE
-} from "@/config/InstanceConfig";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -95,44 +90,16 @@ export const execute = (scale_x: number): void =>
             );
 
             const canvas = node.querySelector("canvas");
-            switch (instance.type) {
-
-                case $BITMAP_TYPE:
-                case $VIDEO_TYPE:
-                    {
-                        node.style.width  = `${character.width * scale}px`;
-                        node.style.height = `${character.height * scale}px`;
-                        const container = node.querySelector(".canvas-container") as HTMLDivElement;
-                        if (container) {
-                            const bounds = character.getRawBounds();
-                            if (canvas && bounds) {
-                                container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * Math.abs(character.scaleX) * scale)}px`;
-                                container.style.height = canvas.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * Math.abs(character.scaleY) * scale)}px`;
-                            }
-                            container.style.transform = $createTransformElementStyle(character);
-                        }
-                    }
-                    break;
-
-                default:
-                    {
-                        if (!canvas) {
-                            continue ;
-                        }
-
-                        const beforeValue  = transformSetting.beforeScaleX;
-                        const currentValue = transformSetting.scaleX * scale_x;
-                        const transform = $createMoveTransformElementStyle(
-                            character, workSpace,
-                            canvas.clientWidth, canvas.clientHeight,
-                            currentValue / beforeValue,
-                            transformSetting.scaleY / transformSetting.beforeScaleY
-                        );
-
-                        canvas.style.transform = transform ? "" : transform;
-                    }
-                    break;
-
+            node.style.width  = `${character.width * scale}px`;
+            node.style.height = `${character.height * scale}px`;
+            const container = node.querySelector(".canvas-container") as HTMLDivElement;
+            if (container) {
+                const bounds = character.getRawBounds();
+                if (canvas && bounds) {
+                    container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * Math.abs(character.scaleX) * scale)}px`;
+                    container.style.height = canvas.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * Math.abs(character.scaleY) * scale)}px`;
+                }
+                container.style.transform = $createTransformElementStyle(character);
             }
 
             // 変形エリアのx座標を更新

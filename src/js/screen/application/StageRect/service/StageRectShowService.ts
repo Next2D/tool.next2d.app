@@ -1,9 +1,5 @@
 import { $SCREEN_STAGE_RECT_ID } from "@/config/ScreenConfig";
 import { stageRect } from "@/screen/domain/model/StageRect";
-import {
-    $getScreenOffsetLeft,
-    $getScreenOffsetTop
-} from "@/global/GlobalUtil";
 
 /**
  * @description 範囲選択をアクティブ表示

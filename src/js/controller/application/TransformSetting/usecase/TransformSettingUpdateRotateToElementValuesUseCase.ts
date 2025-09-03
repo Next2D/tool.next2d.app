@@ -108,31 +108,16 @@ export const execute = (rotation: number): void =>
             character.y = prevY - nextY;
 
             const canvas = node.querySelector("canvas");
-            switch (instance.type) {
-
-                case $BITMAP_TYPE:
-                case $VIDEO_TYPE:
-                    {
-                        node.style.width  = `${character.width * scale}px`;
-                        node.style.height = `${character.height * scale}px`;
-                        const container = node.querySelector(".canvas-container") as HTMLDivElement;
-                        if (container) {
-                            const bounds = character.getRawBounds();
-                            if (canvas && bounds) {
-                                container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * Math.abs(character.scaleX) * scale))}px`;
-                                container.style.height = canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * Math.abs(character.scaleY) * scale))}px`;
-                            }
-                            container.style.transform = $createTransformElementStyle(character);
-                        }
-                    }
-                    break;
-
-                default:
-                    if (!canvas) {
-                        continue ;
-                    }
-                    break;
-
+            node.style.width  = `${character.width * scale}px`;
+            node.style.height = `${character.height * scale}px`;
+            const container = node.querySelector(".canvas-container") as HTMLDivElement;
+            if (container) {
+                const bounds = character.getRawBounds();
+                if (canvas && bounds) {
+                    container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * Math.abs(character.scaleX) * scale))}px`;
+                    container.style.height = canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * Math.abs(character.scaleY) * scale))}px`;
+                }
+                container.style.transform = $createTransformElementStyle(character);
             }
 
             // 変形エリアのx座標を更新

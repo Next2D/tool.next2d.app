@@ -62,7 +62,9 @@ export const execute = async (
     const tMatrix = new Float32Array([1, 0, 0, 1, 0, 0]);
     if (character) {
         const multiMatrix = $multiplyMatrix(
-            parentMatrix, character.matrix
+            parentMatrix, new Float32Array([
+                character.scaleX, 0, 0, character.scaleY, character.x, character.y
+            ])
         );
 
         const rawMatrix = $multiplyMatrix(
