@@ -1,13 +1,17 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { MovieClip as DisplayMovieClip } from "@next2d/display";
 import type { Character } from "@/core/domain/model/Character";
+import { execute as publishToolCreateToObjectUseCase } from "@/tool/application/PublishTool/usecase/PublishToolCreateToObjectUseCase";
+import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
+import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCanvas } from "@/global/GlobalUtil";
 import { $clearUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";
-import { Loader, Sprite } from "@next2d/display";
 import { Matrix } from "@next2d/geom";
-import { execute as publishToolCreateToObjectUseCase } from "@/tool/application/PublishTool/usecase/PublishToolCreateToObjectUseCase";
-import { $multiplyMatrix } from "../../CoreUtil";
+import {
+    Loader,
+    Sprite
+} from "@next2d/display";
 
 /**
  * @description MovieClipの現在のフレームの描画を行う
@@ -43,18 +47,20 @@ export const execute = async (
     const concatMatrix = $getConcatenatedMatrix();
 
     const scale = window.devicePixelRatio;
-    const parentMatrix = $multiplyMatrix(
+    const parentMatrix = Matrix.multiply(
         new Float32Array([scale, 0, 0, scale, 0, 0]), concatMatrix
     );
 
     const matrix = new Matrix();
     const tMatrix = new Float32Array([1, 0, 0, 1, 0, 0]);
     if (character) {
-        const multiMatrix = $multiplyMatrix(
-            parentMatrix, character.matrix
+        const multiMatrix = Matrix.multiply(
+            parentMatrix, new Float32Array([
+                character.scaleX, 0, 0, character.scaleY, character.x, character.y
+            ])
         );
 
-        const rawMatrix = $multiplyMatrix(
+        const rawMatrix = Matrix.multiply(
             concatMatrix, character.matrix
         );
 
@@ -80,25 +86,8 @@ export const execute = async (
         matrix.d = parentMatrix[3];
     }
 
-    const scaleX = tMatrix[0] > 0
-        ? Math.sqrt(
-            tMatrix[0] * tMatrix[0]
-                + tMatrix[1] * tMatrix[1]
-        )
-        : -Math.sqrt(
-            tMatrix[0] * tMatrix[0]
-                + tMatrix[1] * tMatrix[1]
-        );
-
-    const scaleY = tMatrix[3] > 0
-        ? Math.sqrt(
-            tMatrix[2] * tMatrix[2]
-                + tMatrix[3] * tMatrix[3]
-        )
-        : -Math.sqrt(
-            tMatrix[2] * tMatrix[2]
-                + tMatrix[3] * tMatrix[3]
-        );
+    const scaleX = characterCalcGetScaleXService(tMatrix);
+    const scaleY = characterCalcGetScaleYService(tMatrix);
 
     const rectangle = movieClip.getBounds();
     const canvas = await next2d.captureToCanvas(container, {

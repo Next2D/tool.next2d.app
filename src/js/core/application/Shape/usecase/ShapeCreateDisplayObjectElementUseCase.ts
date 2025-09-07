@@ -1,17 +1,28 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Shape } from "@/core/domain/model/Shape";
+import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
+import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { execute as shapeRegisterEventUseCase } from "./ShapeRegisterEventUseCase";
 import { execute as shapeDisplayObjectComponent } from "../component/ShapeDisplayObjectComponent";
-import { $getCacheCanvas, $setCacheCanvas } from "@/cache/CacheUtil";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
-import { $getDeactivated, $getReDrawState } from "@/screen/application/ScreenArea/ScreenAreaUtil";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
-import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
-import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { $getCurrentWorkSpace } from "../../CoreUtil";
+import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
+import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
+import {
+    $getCacheCanvas,
+    $setCacheCanvas
+} from "@/cache/CacheUtil";
+import {
+    $getConcatenatedMatrix,
+    $getMaskMatrix
+} from "@/controller/application/TransformSetting/TransformSettingUtil";
+import {
+    $getDeactivated,
+    $getReDrawState
+} from "@/screen/application/ScreenArea/ScreenAreaUtil";
 
 /**
  * @description Shapeをcanvasに描画して返却する
@@ -62,8 +73,12 @@ export const execute = async (
     const bounds = character.getRawBounds();
     if (bounds) {
         const workSpace = $getCurrentWorkSpace();
-        canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * character.scaleX * workSpace.scale))}px`;
-        canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * character.scaleY * workSpace.scale))}px`;
+        const concatMatrix = $getConcatenatedMatrix();
+        const width  = Math.abs(bounds.xMax - bounds.xMin);
+        const height = Math.abs(bounds.yMax - bounds.yMin);
+
+        canvas.style.width  = `${Math.ceil(width  * character.scaleX * workSpace.scale * characterCalcGetScaleXService(concatMatrix))}px`;
+        canvas.style.height = `${Math.ceil(height * character.scaleY * workSpace.scale * characterCalcGetScaleYService(concatMatrix))}px`;
     }
 
     // マスクのスタイルを更新

@@ -11,10 +11,8 @@ import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import {
-    $createTransformElementStyle,
-    $multiplicationMatrix
-} from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $createTransformElementStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { Matrix } from "@next2d/geom";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -77,13 +75,13 @@ export const execute = (scale_y: number): void =>
             }
 
             const rad = character.rotation * Math.PI / 180;
-            const parentMatrix = $multiplicationMatrix(
+            const parentMatrix = Matrix.multiply(
                 new Float32Array([1, 0, 0, 1, referenceSetting.x, referenceSetting.y]),
-                $multiplicationMatrix(
+                Matrix.multiply(
                     new Float32Array([Math.cos(-rad), Math.sin(-rad), -Math.sin(-rad), Math.cos(-rad), 0, 0]),
-                    $multiplicationMatrix(
+                    Matrix.multiply(
                         new Float32Array([1, 0, 0, scale_y, 0, 0]),
-                        $multiplicationMatrix(
+                        Matrix.multiply(
                             new Float32Array([Math.cos(rad), Math.sin(rad), -Math.sin(rad), Math.cos(rad), 0, 0]),
                             new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
                         )
@@ -93,7 +91,7 @@ export const execute = (scale_y: number): void =>
 
             // matrix情報を更新
             character.matrix.set(
-                $multiplicationMatrix(character.matrix, parentMatrix)
+                Matrix.multiply(character.matrix, parentMatrix)
             );
 
             const canvas = node.querySelector("canvas");

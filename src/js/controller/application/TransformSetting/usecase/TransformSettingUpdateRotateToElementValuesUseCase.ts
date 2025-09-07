@@ -9,18 +9,12 @@ import { execute as transformSettingUpdateScaleXElementService } from "@/control
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import {
-    $createTransformElementStyle,
-    $multiplicationMatrix
-} from "@/controller/application/TransformSetting/TransformSettingUtil";
-import {
-    $BITMAP_TYPE,
-    $VIDEO_TYPE
-} from "@/config/InstanceConfig";
+import { $createTransformElementStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
+import { Matrix } from "@next2d/geom";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -90,7 +84,7 @@ export const execute = (rotation: number): void =>
             const prevX = character.matrix[0] * referenceSetting.x + character.matrix[2] * referenceSetting.y + character.matrix[4];
             const prevY = character.matrix[1] * referenceSetting.x + character.matrix[3] * referenceSetting.y + character.matrix[5];
 
-            const multiMatrix = $multiplicationMatrix(
+            const multiMatrix = Matrix.multiply(
                 matrix, character.matrix
             );
 

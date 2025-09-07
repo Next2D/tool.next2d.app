@@ -3,14 +3,30 @@ import { describe, expect, it } from "vitest";
 import { Character } from "../../../../core/domain/model/Character";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
+import { MovieClip } from "../../../../core/domain/model/MovieClip";
+
 
 describe("MovieClipDisplayObjectComponent Test", () =>
 {
     it("test case", () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        const movieClip = new MovieClip({
+            "id": 1,
+            "type": "movie-clip",
+            "name": "MovieClip_1",
+            "bounds": {
+                "xMin": 0,
+                "yMin": 0,
+                "xMax": 100,
+                "yMax": 120
+            }
+        });
+        workSpace.libraries.set(movieClip.id, movieClip);
+
         const character = new Character();
+        character.libraryId = movieClip.id;
         expect(execute(character, 1))
-            .toBe(`<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; opacity: 1; "></div>`);
+            .toBe(`<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px; opacity: 1;"><div class="canvas-container container-layer-id-1" style="width: 0px; height: 0px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>`);
     });
 });

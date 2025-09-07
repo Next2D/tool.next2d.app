@@ -24,7 +24,7 @@ describe("VideoDisplayObjectComponent Test", () =>
 
         expect(execute(character, 1))
             .toBe(`<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 100px; height: 120px; opacity: 1;"><div class="canvas-container container-layer-id-1" style="width: 100px; height: 120px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>`);
-
+        
         workSpace.libraries.delete(bitmap.id);
     });
 });

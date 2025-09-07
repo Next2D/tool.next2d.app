@@ -3,7 +3,8 @@ import type { Shape } from "@/core/domain/model/Shape";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCanvas } from "@/global/GlobalUtil";
 import { Matrix } from "@next2d/geom";
-import { $multiplyMatrix } from "../../CoreUtil";
+import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
+import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import {
     Shape as DisplayShape,
     Sprite
@@ -54,20 +55,25 @@ export const execute = async (
     const concatMatrix = $getConcatenatedMatrix();
 
     const scale = window.devicePixelRatio;
-    const parentMatrix = $multiplyMatrix(
-        new Float32Array([scale, 0, 0, scale, 0, 0]), concatMatrix
+    const parentMatrix = Matrix.multiply(
+        new Float32Array([scale, 0, 0, scale, 0, 0]),
+        new Float32Array([
+            characterCalcGetScaleXService(concatMatrix), 0,
+            0, characterCalcGetScaleYService(concatMatrix),
+            concatMatrix[4], concatMatrix[5]
+        ])
     );
 
     const matrix = new Matrix();
     const tMatrix = new Float32Array([1, 0, 0, 1, 0, 0]);
     if (character) {
-        const multiMatrix = $multiplyMatrix(
+        const multiMatrix = Matrix.multiply(
             parentMatrix, new Float32Array([
                 character.scaleX, 0, 0, character.scaleY, character.x, character.y
             ])
         );
 
-        const rawMatrix = $multiplyMatrix(
+        const rawMatrix = Matrix.multiply(
             concatMatrix, character.matrix
         );
 

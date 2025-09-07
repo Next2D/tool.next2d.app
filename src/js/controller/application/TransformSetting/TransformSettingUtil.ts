@@ -1,39 +1,16 @@
 import type { Character } from "@/core/domain/model/Character";
-import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
-import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { Matrix } from "@next2d/geom";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
     $SHAPE_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-
-/**
- * @description 行列の掛け算
- *              Matrix multiplication
- *
- * @param  {Float32Array} a
- * @param  {Float32Array} b
- * @return {Float32Array}
- * @method
- * @static
- */
-export const $multiplicationMatrix = (a: Float32Array, b: Float32Array): Float32Array =>
-{
-    return new Float32Array([
-        a[0] * b[0] + a[2] * b[1],
-        a[1] * b[0] + a[3] * b[1],
-        a[0] * b[2] + a[2] * b[3],
-        a[1] * b[2] + a[3] * b[3],
-        a[0] * b[4] + a[2] * b[5] + a[4],
-        a[1] * b[4] + a[3] * b[5] + a[5]
-    ]);
-};
 
 /**
  * @description 親のMovieClipとスクリーンの拡大率の行列を返却
@@ -60,7 +37,7 @@ export const $getConcatenatedMatrix = (): Float32Array =>
             continue;
         }
 
-        const multiMatrix = $multiplicationMatrix(matrix, character.matrix);
+        const multiMatrix = Matrix.multiply(matrix, character.matrix);
         matrix.set(multiMatrix);
     }
 
@@ -76,38 +53,10 @@ export const $getConcatenatedMatrix = (): Float32Array =>
  * @method
  * @public
  */
-export const $createTransformStyle = (character: Character): string =>
-{
-    const concatenatedMatrix = $getConcatenatedMatrix();
-    const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
-
-    const transform = [];
-
-    const rotation = characterCalcGetRotationService(matrix);
-    if (rotation) {
-        transform.push(`rotate(${rotation}deg)`);
-    }
-
-    if (!transform.length) {
-        return "";
-    }
-
-    return `transform: ${transform.join(" ")}; `;
-};
-
-/**
- * @description TransformStyleを生成
- *              Generate TransformStyle
- *
- * @param  {Character} character
- * @return {string}
- * @method
- * @public
- */
 export const $createTransformElementStyle = (character: Character): string =>
 {
     const concatenatedMatrix = $getConcatenatedMatrix();
-    const matrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
+    const matrix = Matrix.multiply(concatenatedMatrix, character.matrix);
     const radianX = Math.atan2(matrix[1], matrix[0]);
     const radianY = Math.atan2(matrix[2], matrix[3]);
     return `matrix(${Math.cos(radianX)}, ${Math.sin(radianX)}, ${Math.sin(radianY)}, ${Math.cos(radianY)}, 0, 0)`;
@@ -126,7 +75,7 @@ export const $getElementMaskMatrix = (character: Character): Float32Array =>
 {
     const matrix = new Float32Array([1, 0, 0, 1, 0, 0]);
     const concatenatedMatrix = $getConcatenatedMatrix();
-    const multiMatrix = $multiplicationMatrix(concatenatedMatrix, character.matrix);
+    const multiMatrix = Matrix.multiply(concatenatedMatrix, character.matrix);
 
     matrix[0] = characterCalcGetScaleXService(multiMatrix);
     matrix[3] = characterCalcGetScaleYService(multiMatrix);

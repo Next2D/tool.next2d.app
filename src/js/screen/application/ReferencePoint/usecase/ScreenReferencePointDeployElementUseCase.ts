@@ -1,5 +1,5 @@
 import { $setReferencePointState } from "../ReferencePointUtil";
-import { $getConcatenatedMatrix, $multiplicationMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenReferencePointShowService } from "../service/ScreenReferencePointShowService";
 import { execute as screenReferencePointHideService } from "../service/ScreenReferencePointHideService";
@@ -7,6 +7,7 @@ import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
+import { Matrix } from "@next2d/geom";
 
 /**
  * @description 変形の中心点のElementを配置
@@ -53,7 +54,7 @@ export const execute = (): void =>
 
     // 先祖からのmatrixを加算
     const concatenatedMatrix = $getConcatenatedMatrix();
-    const matrix = $multiplicationMatrix(
+    const matrix = Matrix.multiply(
         concatenatedMatrix,
         character.matrix
     );

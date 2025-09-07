@@ -58,6 +58,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
+    const parentElement = element.parentElement;
+    if (!parentElement) {
+        return ;
+    }
+
     // 親のイベントをキャンセル
     event.stopPropagation();
     event.preventDefault();
@@ -68,8 +73,8 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    const layerId = parseInt(element.dataset.layerId as string);
-    const depth   = parseInt(element.dataset.depth as string);
+    const layerId = parseInt(parentElement.dataset.layerId as string);
+    const depth   = parseInt(parentElement.dataset.depth as string);
     if (!wait) {
         // 初回のタップであればダブルタップを待機モードに変更
         wait = true;

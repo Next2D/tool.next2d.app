@@ -7,8 +7,11 @@ import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/applic
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
+import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
+import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
-import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getConcatenatedMatrix, $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getCurrentWorkSpace } from "../../CoreUtil";
 import {
     $getCacheCanvas,
     $setCacheCanvas
@@ -59,7 +62,22 @@ export const execute = async (
     );
 
     const div = element.lastElementChild as HTMLDivElement;
-    div.appendChild(canvas);
+    const container = div.querySelector(".canvas-container") as HTMLDivElement;
+    if (!container) {
+        throw new Error("Canvas container not found in the display object element.");
+    }
+    container.appendChild(canvas);
+
+    const bounds = character.getRawBounds();
+    if (bounds) {
+        const workSpace = $getCurrentWorkSpace();
+        const concatMatrix = $getConcatenatedMatrix();
+        const width  = Math.abs(bounds.xMax - bounds.xMin);
+        const height = Math.abs(bounds.yMax - bounds.yMin);
+
+        canvas.style.width  = `${Math.ceil(width  * character.scaleX * workSpace.scale * characterCalcGetScaleXService(concatMatrix))}px`;
+        canvas.style.height = `${Math.ceil(height * character.scaleY * workSpace.scale * characterCalcGetScaleYService(concatMatrix))}px`;
+    }
 
     // マスクのスタイルを更新
     if (layer.mode === $MASK_IN_MODE) {
@@ -76,7 +94,7 @@ export const execute = async (
 
     // イベントを登録
     if (!$getDeactivated()) {
-        textRegisterEventUseCase(div);
+        textRegisterEventUseCase(container);
     } else {
         screenAreaReadOnlyElementService(div);
     }
