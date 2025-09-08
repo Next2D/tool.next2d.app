@@ -55,7 +55,11 @@ export const execute = async (
     const tMatrix = new Float32Array([1, 0, 0, 1, 0, 0]);
     if (character) {
         const multiMatrix = Matrix.multiply(
-            parentMatrix, new Float32Array([
+            new Float32Array([
+                Math.hypot(parentMatrix[0], parentMatrix[1]), 0, 0, Math.hypot(parentMatrix[2], parentMatrix[3]), 
+                parentMatrix[4], parentMatrix[5]
+            ]),
+            new Float32Array([
                 character.scaleX, 0, 0, character.scaleY, character.x, character.y
             ])
         );
@@ -86,8 +90,8 @@ export const execute = async (
         matrix.d = parentMatrix[3];
     }
 
-    const scaleX = characterCalcGetScaleXService(tMatrix);
-    const scaleY = characterCalcGetScaleYService(tMatrix);
+    const scaleX = Math.hypot(tMatrix[0], tMatrix[1]);
+    const scaleY = Math.hypot(tMatrix[2], tMatrix[3]);
 
     const rectangle = movieClip.getBounds();
     const canvas = await next2d.captureToCanvas(container, {

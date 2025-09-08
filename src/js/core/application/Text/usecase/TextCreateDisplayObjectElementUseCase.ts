@@ -10,8 +10,10 @@ import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
-import { $getConcatenatedMatrix, $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { $getCurrentWorkSpace } from "../../CoreUtil";
+import {
+    $getConcatenatedMatrix,
+    $getMaskMatrix
+} from "@/controller/application/TransformSetting/TransformSettingUtil";
 import {
     $getCacheCanvas,
     $setCacheCanvas
@@ -70,13 +72,12 @@ export const execute = async (
 
     const bounds = character.getRawBounds();
     if (bounds) {
-        const workSpace = $getCurrentWorkSpace();
         const concatMatrix = $getConcatenatedMatrix();
         const width  = Math.abs(bounds.xMax - bounds.xMin);
         const height = Math.abs(bounds.yMax - bounds.yMin);
 
-        canvas.style.width  = `${Math.ceil(width  * character.scaleX * workSpace.scale * characterCalcGetScaleXService(concatMatrix))}px`;
-        canvas.style.height = `${Math.ceil(height * character.scaleY * workSpace.scale * characterCalcGetScaleYService(concatMatrix))}px`;
+        canvas.style.width  = `${Math.ceil(width  * character.scaleX * characterCalcGetScaleXService(concatMatrix))}px`;
+        canvas.style.height = `${Math.ceil(height * character.scaleY * characterCalcGetScaleYService(concatMatrix))}px`;
     }
 
     // マスクのスタイルを更新

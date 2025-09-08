@@ -2,7 +2,6 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Shape } from "@/core/domain/model/Shape";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
-import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { execute as shapeRegisterEventUseCase } from "./ShapeRegisterEventUseCase";
 import { execute as shapeDisplayObjectComponent } from "../component/ShapeDisplayObjectComponent";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
@@ -72,13 +71,12 @@ export const execute = async (
 
     const bounds = character.getRawBounds();
     if (bounds) {
-        const workSpace = $getCurrentWorkSpace();
         const concatMatrix = $getConcatenatedMatrix();
         const width  = Math.abs(bounds.xMax - bounds.xMin);
         const height = Math.abs(bounds.yMax - bounds.yMin);
 
-        canvas.style.width  = `${Math.ceil(width  * character.scaleX * workSpace.scale * characterCalcGetScaleXService(concatMatrix))}px`;
-        canvas.style.height = `${Math.ceil(height * character.scaleY * workSpace.scale * characterCalcGetScaleYService(concatMatrix))}px`;
+        canvas.style.width  = `${Math.ceil(width  * character.scaleX * characterCalcGetScaleXService(concatMatrix))}px`;
+        canvas.style.height = `${Math.ceil(height * character.scaleY * characterCalcGetScaleYService(concatMatrix))}px`;
     }
 
     // マスクのスタイルを更新
