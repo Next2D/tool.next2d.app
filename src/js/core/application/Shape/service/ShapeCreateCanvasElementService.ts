@@ -88,15 +88,12 @@ export const execute = async (
         ], 0);
 
     } else {
-        tMatrix.set([
-            parentMatrix[0], parentMatrix[1],
-            parentMatrix[2], parentMatrix[3]
-        ], 0);
+        tMatrix.set([scale, 0, 0, scale], 0);
 
-        matrix.a = parentMatrix[0];
-        matrix.b = parentMatrix[1];
-        matrix.c = parentMatrix[2];
-        matrix.d = parentMatrix[3];
+        matrix.a = scale;
+        matrix.b = 0;
+        matrix.c = 0;
+        matrix.d = scale;
     }
 
     const transferredCanvas = await next2d.captureToCanvas(container, {

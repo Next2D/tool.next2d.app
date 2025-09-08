@@ -48,17 +48,19 @@ export const execute = async (
 
     const scale = window.devicePixelRatio;
     const parentMatrix = Matrix.multiply(
-        new Float32Array([scale, 0, 0, scale, 0, 0]), concatMatrix
+        new Float32Array([scale, 0, 0, scale, 0, 0]),
+        new Float32Array([
+            characterCalcGetScaleXService(concatMatrix), 0,
+            0, characterCalcGetScaleYService(concatMatrix),
+            concatMatrix[4], concatMatrix[5]
+        ])
     );
 
     const matrix = new Matrix();
     const tMatrix = new Float32Array([1, 0, 0, 1, 0, 0]);
     if (character) {
         const multiMatrix = Matrix.multiply(
-            new Float32Array([
-                Math.hypot(parentMatrix[0], parentMatrix[1]), 0, 0, Math.hypot(parentMatrix[2], parentMatrix[3]), 
-                parentMatrix[4], parentMatrix[5]
-            ]),
+            parentMatrix,
             new Float32Array([
                 character.scaleX, 0, 0, character.scaleY, character.x, character.y
             ])
@@ -79,15 +81,12 @@ export const execute = async (
         ], 0);
 
     } else {
-        tMatrix.set([
-            parentMatrix[0], parentMatrix[1],
-            parentMatrix[2], parentMatrix[3]
-        ], 0);
+        tMatrix.set([scale, 0, 0, scale], 0);
 
-        matrix.a = parentMatrix[0];
-        matrix.b = parentMatrix[1];
-        matrix.c = parentMatrix[2];
-        matrix.d = parentMatrix[3];
+        matrix.a = scale;
+        matrix.b = 0;
+        matrix.c = 0;
+        matrix.d = scale;
     }
 
     const scaleX = Math.hypot(tMatrix[0], tMatrix[1]);
