@@ -336,7 +336,7 @@ export class MovieClip extends Instance
      * @description MovieClipの起動関数
      *              MovieClip startup functions
      *
-     * @returns {Promise}
+     * @returns {Promise<void>}
      * @method
      * @public
      */

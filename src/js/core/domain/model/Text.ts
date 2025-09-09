@@ -66,7 +66,7 @@ export class Text extends Instance
      *              Return HTMLCanvasElement
      *
      * @param  {Character} character
-     * @return {Promise}
+     * @return {Promise<HTMLCanvasElement>}
      * @method
      * @public
      */

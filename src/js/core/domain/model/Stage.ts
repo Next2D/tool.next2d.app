@@ -110,9 +110,9 @@ export class Stage
      */
     load (object: IStageObject): void
     {
-        this._$width   = object.width;
-        this._$height  = object.height;
-        this._$fps     = object.fps;
-        this._$bgColor = object.bgColor;
+        this.width   = object.width;
+        this.height  = object.height;
+        this.fps     = object.fps;
+        this.bgColor = object.bgColor;
     }
 }

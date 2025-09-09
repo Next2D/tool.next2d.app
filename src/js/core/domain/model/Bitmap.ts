@@ -143,7 +143,7 @@ export class Bitmap extends Instance
      * @description Bitmapで保有しているUint8ArrayからImageElementを生成
      *              Generate ImageElement from Uint8Array held in Bitmap
      *
-     * @return {Promise}
+     * @return {Promise<HTMLCanvasElement>}
      * @method
      * @public
      */

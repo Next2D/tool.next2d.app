@@ -339,7 +339,7 @@ export class Video extends Instance
      *
      * @param  {string} [mode="element"]
      * @param  {number} [sec=0]
-     * @return {Promise}
+     * @return {Promise<HTMLVideoElement | HTMLCanvasElement>}
      * @method
      * @public
      */
