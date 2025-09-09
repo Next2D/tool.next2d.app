@@ -7,11 +7,17 @@ import { execute as transformSettingUpdateWidthElementService } from "@/controll
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $getScreenOffsetLeft, $getScreenOffsetTop } from "@/global/GlobalUtil";
+import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { $createTransformElementStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { Matrix } from "@next2d/geom";
+import {
+    $getScreenOffsetLeft,
+    $getScreenOffsetTop
+} from "@/global/GlobalUtil";
+import {
+    $createTransformElementStyle,
+    $getConcatenatedMatrix
+} from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -44,7 +50,9 @@ export const execute = (scale_x: number): void =>
     }
 
     // 選択中のElementを移動
-    const scale = workSpace.scale;
+    const concatenatedMatrix = $getConcatenatedMatrix();
+    const scaleX = Math.hypot(concatenatedMatrix[0], concatenatedMatrix[1]);
+    const scaleY = Math.hypot(concatenatedMatrix[2], concatenatedMatrix[3]);
     const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
@@ -94,14 +102,21 @@ export const execute = (scale_x: number): void =>
             );
 
             const canvas = node.querySelector("canvas");
-            node.style.width  = `${character.width * scale}px`;
-            node.style.height = `${character.height * scale}px`;
+            const matrixBounds = $getMatrixBounds(
+                0, 0,
+                character.width,
+                character.height,
+                concatenatedMatrix
+            );
+
+            node.style.width  = `${Math.abs(matrixBounds.xMax - matrixBounds.xMin)}px`;
+            node.style.height = `${Math.abs(matrixBounds.yMax - matrixBounds.yMin)}px`;
             const container = node.querySelector(".canvas-container") as HTMLDivElement;
             if (container) {
                 const bounds = character.getRawBounds();
                 if (canvas && bounds) {
-                    container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin) * Math.abs(character.scaleX) * scale)}px`;
-                    container.style.height = canvas.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin) * Math.abs(character.scaleY) * scale)}px`;
+                    container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * character.scaleX * scaleX))}px`;
+                    container.style.height = canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * character.scaleY * scaleY))}px`;
                 }
                 container.style.transform = $createTransformElementStyle(character);
             }
