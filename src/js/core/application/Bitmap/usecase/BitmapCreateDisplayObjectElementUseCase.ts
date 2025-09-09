@@ -75,9 +75,11 @@ export const execute = async (
         const concatMatrix = $getConcatenatedMatrix();
         const width  = Math.abs(bounds.xMax - bounds.xMin);
         const height = Math.abs(bounds.yMax - bounds.yMin);
+        const scaleX = Math.hypot(concatMatrix[0], concatMatrix[1]);
+        const scaleY = Math.hypot(concatMatrix[2], concatMatrix[3]);
 
-        canvas.style.width  = `${Math.ceil(width  * character.scaleX * characterCalcGetScaleXService(concatMatrix))}px`;
-        canvas.style.height = `${Math.ceil(height * character.scaleY * characterCalcGetScaleYService(concatMatrix))}px`;
+        canvas.style.width  = `${Math.ceil(Math.abs(width  * character.scaleX * scaleX))}px`;
+        canvas.style.height = `${Math.ceil(Math.abs(height * character.scaleY * scaleY))}px`;
     }
 
     // マスクのスタイルを更新

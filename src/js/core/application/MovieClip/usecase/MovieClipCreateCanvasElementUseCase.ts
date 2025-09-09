@@ -95,8 +95,9 @@ export const execute = async (
     const rectangle = movieClip.getBounds();
     const canvas = await next2d.captureToCanvas(container, {
         "matrix": new Matrix(
-            tMatrix[0], tMatrix[1], tMatrix[2], tMatrix[3],
-            -rectangle.x * scaleX, -rectangle.y * scaleY
+            scaleX, 0, 0, scaleY,
+            -rectangle.x * scaleX,
+            -rectangle.y * scaleY
         ),
         "canvas": $getCanvas(),
         "videoSync": true
