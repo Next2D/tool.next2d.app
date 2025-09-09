@@ -20,10 +20,10 @@ import { execute as screenAreaIsCharacterSelectedService } from "@/screen/applic
  * @description y座標を更新した際のViewエリアの表示要素を更新
  *              Update the display elements in the View area when the y coordinate is updated
  *
- * @param {WorkSpace} work_space
- * @param {MovieClip} movie_clip
- * @param {Layer} layer
- * @param {Character} character
+ * @param  {WorkSpace} work_space
+ * @param  {MovieClip} movie_clip
+ * @param  {Layer} layer
+ * @param  {Character} character
  * @return {Promise<void>}
  * @method
  * @public
@@ -78,13 +78,14 @@ export const execute = async (
 
             const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
             if (!node) {
-                return ;
+                return;
             }
 
             await screenDisplayObjectUpdateMaskInCanvasStyleService(
                 node, layer, character.x, character.y, $getMaskMatrix(character)
             );
         }
+
     }
 
     // 先祖のキャッシュを削除する

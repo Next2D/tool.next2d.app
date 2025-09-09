@@ -9,6 +9,7 @@ import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controll
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import {
     $FOLDER_TYPE,
+    $MOVIE_CLIP_TYPE,
     $SOUND_TYPE
 } from "@/config/InstanceConfig";
 
@@ -108,15 +109,25 @@ export const execute = async (
         // fixed logic
         character.loadExternalItem(item);
 
+        // 中心点を中央に設定（初期値）
+        // fixed logic
+        let rx = character.width  / 2;
+        let ry = character.height / 2;
+        if (item.type === $MOVIE_CLIP_TYPE) {
+            const bounds = character.getBounds();
+            if (bounds) {
+                rx += bounds.xMin;
+                ry += bounds.yMin;
+            }
+        }
+
         // 配置位置を設定
         // fixed logic
         character.x = dx;
         character.y = dy;
 
-        // 中心点を中央に設定（初期値）
-        // fixed logic
-        character.referencePosition.x = character.width  / 2;
-        character.referencePosition.y = character.height / 2;
+        character.referencePosition.x = rx;
+        character.referencePosition.y = ry;
 
         // 空のキーフレームがあれば記録に残す
         let emptyCharacterIndex = -1;

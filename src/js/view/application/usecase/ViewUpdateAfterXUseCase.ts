@@ -20,10 +20,10 @@ import { execute as screenAreaIsCharacterSelectedService } from "@/screen/applic
  * @description x座標を更新した際のViewエリアの表示要素を更新
  *              Update the display elements in the View area when the x coordinate is updated
  *
- * @param {WorkSpace} work_space
- * @param {MovieClip} movie_clip
- * @param {Layer} layer
- * @param {Character} character
+ * @param  {WorkSpace} work_space
+ * @param  {MovieClip} movie_clip
+ * @param  {Layer} layer
+ * @param  {Character} character
  * @return {Promise<void>}
  * @method
  * @public
@@ -69,7 +69,6 @@ export const execute = async (
 
         // マスクのstyleを更新
         if (layer.mode === $MASK_IN_MODE) {
-
             const element: HTMLElement | null = document
                 .getElementById($SCREEN_STAGE_AREA_ID);
 
@@ -79,7 +78,7 @@ export const execute = async (
 
             const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
             if (!node) {
-                return ;
+                return;
             }
 
             await screenDisplayObjectUpdateMaskInCanvasStyleService(
