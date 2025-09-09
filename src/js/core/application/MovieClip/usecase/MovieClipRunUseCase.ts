@@ -16,6 +16,7 @@ import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/applic
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenParentStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
  * @description MovieClipの起動処理
@@ -81,4 +82,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
 
     // スクリーンエリアを再描画
     await screenAreaRedrawUseCase(movie_clip);
+
+    // fixed logic 描画後に実行する。選択されているDisplayObjectをアクティブ表示にする
+    screenDisplayObjectAllSelectedActiveUseCase();
 };
