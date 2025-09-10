@@ -3,6 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenDisplayObjectInactvieElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectInactvieElementService";
 
 /**
@@ -41,6 +42,9 @@ export const execute = async (
 
         // MovieClipの基準点の表示を更新
         screenStandardPointDeployElementUseCase();
+
+        // 変形の中心点の表示を更新
+        screenReferencePointDeployElementUseCase();
 
         // プロパティエリアの表示を更新
         await propertyAreaChangeDisplayUseCase();
