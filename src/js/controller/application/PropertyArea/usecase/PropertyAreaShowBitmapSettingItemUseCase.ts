@@ -3,8 +3,6 @@ import { execute as propertyAreaBlockHideService } from "../service/PropertyArea
 import { $STAGE_SETTING_ID } from "@/config/StageSettingConfig";
 import { $SOUND_SETTING_ID } from "@/config/SoundSettingConfig";
 import { $OBJECT_SETTING_ID } from "@/config/ObjectSettingConfig";
-import { $getActiveTool } from "@/tool/application/ToolUtil";
-import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
 import { $PROPERTY_OBJECT_AREA_ID } from "@/config/PropertyConfig";
 import { $EASE_SETTING_ID } from "@/config/EaseSettingConfig";
 import { $VIDEO_SETTING_ID } from "@/config/VideoSettingConfig";
@@ -49,15 +47,9 @@ export const execute = (): void =>
         $COLOR_SETTING_ID,
         $ALIGN_SETTING_ID,
         $BLEND_SETTING_ID,
-        $FILTER_SETTING_ID
+        $FILTER_SETTING_ID,
+        $REFERENCE_SETTING_ID
     ];
-
-    const tool = $getActiveTool();
-    if (tool.name === $TOOL_ARROW_NAME) {
-        hideArray.push($REFERENCE_SETTING_ID);
-    } else {
-        showArray.push($REFERENCE_SETTING_ID);
-    }
 
     // 非表示項目を更新
     propertyAreaBlockHideService(hideArray);
