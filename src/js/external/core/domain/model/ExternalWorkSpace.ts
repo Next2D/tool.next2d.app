@@ -5,6 +5,7 @@ import { execute as externalWorkSpaceUpdateNameUseCase } from "@/external/core/a
 import { ExternalSoundArea } from "@/external/controller/domain/model/ExternalSoundArea";
 import { ExternalStage } from "./ExternalStage";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
+import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 
 /**
  * @description WorkSpaceの外部APIクラス
@@ -112,6 +113,22 @@ export class ExternalWorkSpace
     getLibrary (): ExternalLibrary
     {
         return new ExternalLibrary(this._$workSpace);
+    }
+
+    /**
+     * @description 変形の中心点エリアAPIオブジェクトを返却
+     *              Return the transformation center point area API object
+     *
+     * @return {ExternalReference}
+     * @method
+     * @public
+     */
+    getReference (): ExternalReference
+    {
+        return new ExternalReference(
+            this._$workSpace,
+            this._$workSpace.scene
+        );
     }
 
     /**

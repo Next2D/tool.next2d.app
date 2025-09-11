@@ -9,6 +9,7 @@ import { objectSetting } from "../domain/model/ObjectSetting";
 import { propertyArea } from "../domain/model/PropertyArea";
 import { historyArea } from "../domain/model/HistoryArea";
 import { scriptArea } from "../domain/model/ScriptArea";
+import { referenceSetting } from "../domain/model/ReferenceSetting";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -25,7 +26,8 @@ const settings: any[] = [
     soundArea,
     objectSetting,
     historyArea,
-    scriptArea
+    scriptArea,
+    referenceSetting
 ];
 
 /**

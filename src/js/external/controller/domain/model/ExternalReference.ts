@@ -1,0 +1,57 @@
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { IPivotType } from "@/interface/IPivotType";
+import { execute as externalReferenceSetPivotUseCase } from "@/external/controller/application/ExternalReference/usecase/ExternalReferenceSetPivotUseCase";
+
+/**
+ * @description 変形の中心点エリアの外部APIクラス
+ *              External API class for the center point area of transformation
+ *
+ * @class
+ */
+export class ExternalReference
+{
+    private readonly _$workSpace: WorkSpace;
+    private readonly _$movieClip: MovieClip;
+
+    /**
+     * @param {WorkSpace} work_space
+     * @param {MovieClip} movie_clip
+     * @constructor
+     * @public
+     */
+    constructor (
+        work_space: WorkSpace,
+        movie_clip: MovieClip
+    ) {
+        /**
+         * @type {WorkSpace}
+         * @private
+         */
+        this._$workSpace = work_space;
+
+        /**
+         * @type {MovieClip}
+         * @private
+         */
+        this._$movieClip = movie_clip;
+    }
+
+    /**
+     * @description 変形の中心点を設定
+     *              Set the center point of transformation
+     *
+     * @param  {IPivotType} pivot
+     * @return {void}
+     * @method
+     * @public
+     */
+    setPivot (pivot: IPivotType): void
+    {
+        externalReferenceSetPivotUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            pivot
+        );
+    }
+}

@@ -1,3 +1,5 @@
+import { execute as referenceSettingInitializeRegisterEventUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase";
+
 /**
  * @description 中心点の管理クラス
  *              Management class for the center point
@@ -59,7 +61,7 @@ class ReferenceSetting
      */
     initialize (): void
     {
-        // TODO 初期化処理
+        referenceSettingInitializeRegisterEventUseCase();
     }
 }
 

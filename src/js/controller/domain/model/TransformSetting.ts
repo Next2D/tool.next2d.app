@@ -203,6 +203,14 @@ class TransformSetting
         transformSettingInitializeRegisterEventUseCase();
     }
 
+    /**
+     * @description 変形設定をクリア
+     *              Clear transformation settings
+     *
+     * @return {void}
+     * @method
+     * @public
+     */
     clear (): void
     {
         this.x = 0;
