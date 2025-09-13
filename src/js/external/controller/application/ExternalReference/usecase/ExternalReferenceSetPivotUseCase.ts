@@ -5,7 +5,6 @@ import { execute as externalReferencePivotValidation } from "../service/External
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description 変形の中心座標を指定ポイントに設定
@@ -63,75 +62,7 @@ export const execute = (
             return ;
         }
 
-        const rawBounds = character.getRawBounds();
-        if (!rawBounds) {
-            return ;
-        }
-
-        let x = 0;
-        let y = 0;
-        const width = Math.abs(rawBounds.xMax - rawBounds.xMin);
-        const height = Math.abs(rawBounds.yMax - rawBounds.yMin);
-        switch (pivot) {
-
-            case "top-left":
-                x = 0;
-                y = 0;
-                break;
-
-            case "top-center":
-                x = width / 2;
-                y = 0;
-                break;
-
-            case "top-right":
-                x = width;
-                y = 0;
-                break;
-
-            case "middle-left":
-                x = 0;
-                y = height / 2;
-                break;
-
-            case "middle-center":
-                x = width / 2;
-                y = height / 2;
-                break;
-
-            case "middle-right":
-                x = width;
-                y = height / 2;
-                break;
-
-            case "bottom-left":
-                x = 0;
-                y = height;
-                break;
-
-            case "bottom-center":
-                x = width / 2;
-                y = height;
-                break;
-
-            case "bottom-right":
-                x = width;
-                y = height;
-                break;
-
-            default:
-                break;
-
-        }
-
-        const instance = work_space.getLibrary(character.libraryId);
-        if (instance && instance.type === $MOVIE_CLIP_TYPE) {
-            x += rawBounds.xMin;
-            y += rawBounds.yMin;
-        }
-
-        character.referencePosition.x = x;
-        character.referencePosition.y = y;
+        character.referencePosition.pivot = pivot;
     }
 
     referenceSetting.pivot = pivot;

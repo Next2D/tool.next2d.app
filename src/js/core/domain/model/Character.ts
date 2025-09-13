@@ -3,7 +3,6 @@ import type { IExternalItem } from "@/interface/IExternalItem";
 import type { IBlendMode } from "@/interface/IBlendMode";
 import type { Layer } from "./Layer";
 import type { IBounds } from "@/interface/IBounds";
-import type { IPosition } from "@/interface/IPosition";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as characterCreateElementUseCase } from "@/core/application/Character/usecase/CharacterCreateElementUseCase";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
@@ -23,6 +22,7 @@ import {
     $getCurrentWorkSpace,
     $getMatrixBounds
 } from "@/core/application/CoreUtil";
+import { ReferencePosition } from "./ReferencePosition";
 
 /**
  * @description DisplayObjectのユニークID
@@ -114,7 +114,7 @@ export class Character
      * @member {IPosition}
      * @public
      */
-    public referencePosition: IPosition;
+    public referencePosition: ReferencePosition;
 
     /**
      * @description フィルターの配列を返却
@@ -161,10 +161,7 @@ export class Character
         this.endFrame       = 0;
 
         this.filters = [];
-        this.referencePosition = {
-            "x": 0,
-            "y": 0
-        };
+        this.referencePosition = new ReferencePosition(this);
     }
 
     /**
@@ -513,9 +510,16 @@ export class Character
         }
 
         // 中心点を上書き
-        if (save_object.referencePosition) {
-            this.referencePosition.x = save_object.referencePosition.x;
-            this.referencePosition.y = save_object.referencePosition.y;
+        if (save_object.referencePosition) { // 旧バージョンではreferencePositionが存在しないのでチェック
+            // pivotが存在する場合はpivotを優先
+            if (save_object.referencePosition.pivot) {
+                this.referencePosition.pivot = save_object.referencePosition.pivot;
+            } else {
+                // pivotが存在しない場合はx,yをセット
+                this.referencePosition.pivot = "";
+                this.referencePosition.x = save_object.referencePosition.x;
+                this.referencePosition.y = save_object.referencePosition.y;
+            }
         }
     }
 
@@ -624,7 +628,7 @@ export class Character
             "startFrame": this.startFrame,
             "endFrame": this.endFrame,
             "name": this.name,
-            "referencePosition": this.referencePosition
+            "referencePosition": this.referencePosition.toObject()
         };
     }
 }

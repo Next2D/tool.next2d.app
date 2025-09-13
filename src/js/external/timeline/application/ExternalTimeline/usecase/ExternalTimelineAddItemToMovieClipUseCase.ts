@@ -109,25 +109,10 @@ export const execute = async (
         // fixed logic
         character.loadExternalItem(item);
 
-        // 中心点を中央に設定（初期値）
-        // fixed logic
-        let rx = character.width  / 2;
-        let ry = character.height / 2;
-        if (item.type === $MOVIE_CLIP_TYPE) {
-            const rawBounds = character.getRawBounds();
-            if (rawBounds) {
-                rx += rawBounds.xMin;
-                ry += rawBounds.yMin;
-            }
-        }
-
         // 配置位置を設定
         // fixed logic
         character.x = dx;
         character.y = dy;
-
-        character.referencePosition.x = rx;
-        character.referencePosition.y = ry;
 
         // 空のキーフレームがあれば記録に残す
         let emptyCharacterIndex = -1;
