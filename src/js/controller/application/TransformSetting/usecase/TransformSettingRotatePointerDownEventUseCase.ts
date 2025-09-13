@@ -95,12 +95,8 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        referenceSetting.x = character.referencePosition.x;
-        referenceSetting.y = character.referencePosition.y;
         transformSetting.rotation = transformSetting.beforeRotation = character.rotation;
     } else {
-        referenceSetting.x = width / 2;
-        referenceSetting.y = height / 2;
         transformSetting.rotation = transformSetting.beforeRotation = 0;
     }
 

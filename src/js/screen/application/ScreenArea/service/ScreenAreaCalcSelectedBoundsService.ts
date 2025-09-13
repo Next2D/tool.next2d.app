@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { $calcBoundingBox } from "@/core/application/CoreUtil";
 import type { IBounds } from "@/interface/IBounds";
+import { $calcBoundingBox } from "@/core/application/CoreUtil";
 
 /**
  * @description 選択中のbounding boxを計算

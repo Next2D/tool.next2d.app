@@ -1,5 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
@@ -55,6 +56,7 @@ export const execute = (
         screenStandardPointDeployElementUseCase();
 
         // 変形の基準点を表示
+        referenceSetting.clear();
         screenReferencePointDeployElementUseCase();
     }
 };

@@ -4,7 +4,6 @@ import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/applica
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
@@ -97,13 +96,9 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
-        referenceSetting.x = character.referencePosition.x;
-        referenceSetting.y = character.referencePosition.y;
         transformSetting.scaleX = transformSetting.beforeScaleX = character.scaleX;
         transformSetting.scaleY = transformSetting.beforeScaleY = character.scaleY;
     } else {
-        referenceSetting.x = width / 2;
-        referenceSetting.y = height / 2;
         transformSetting.scaleX = transformSetting.beforeScaleX = 1;
         transformSetting.scaleY = transformSetting.beforeScaleY = 1;
     }

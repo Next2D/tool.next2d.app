@@ -114,10 +114,10 @@ export const execute = async (
         let rx = character.width  / 2;
         let ry = character.height / 2;
         if (item.type === $MOVIE_CLIP_TYPE) {
-            const bounds = character.getBounds();
-            if (bounds) {
-                rx += bounds.xMin;
-                ry += bounds.yMin;
+            const rawBounds = character.getRawBounds();
+            if (rawBounds) {
+                rx += rawBounds.xMin;
+                ry += rawBounds.yMin;
             }
         }
 
