@@ -9,7 +9,6 @@ import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controll
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import {
     $FOLDER_TYPE,
-    $MOVIE_CLIP_TYPE,
     $SOUND_TYPE
 } from "@/config/InstanceConfig";
 
