@@ -4,7 +4,6 @@ import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/applica
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
