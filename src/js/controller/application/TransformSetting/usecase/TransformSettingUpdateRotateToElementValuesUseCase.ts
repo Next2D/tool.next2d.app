@@ -7,14 +7,20 @@ import { execute as transformSettingUpdateWidthElementService } from "@/controll
 import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
-import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
-import { $createTransformElementStyle, $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { execute as referencePositionGetGlobalPositionUseCase } from "@/core/application/ReferencePosition/usecase/ReferencePositionGetGlobalPositionUseCase";
+import { Matrix } from "@next2d/geom";
+import {
+    $getCurrentWorkSpace,
+    $getMatrixBounds
+} from "@/core/application/CoreUtil";
+import {
+    $createTransformElementStyle,
+    $getConcatenatedMatrix
+} from "@/controller/application/TransformSetting/TransformSettingUtil";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
-import { Matrix } from "@next2d/geom";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -46,10 +52,16 @@ export const execute = (rotation: number): void =>
         return ;
     }
 
+    // 中心点のグルーバル座標を取得
+    const position = referencePositionGetGlobalPositionUseCase(movieClip);
+    if (!position) {
+        return ;
+    }
+
     const radian = rotation * Math.PI / 180;
     const cos = Math.cos(radian);
     const sin = Math.sin(radian);
-    const matrix = new Float32Array([cos, sin, -sin, cos, 0, 0]);
+    const baseMatrix = new Float32Array([cos, sin, -sin, cos, 0, 0]);
 
     // 選択中のElementを移動
     const concatenatedMatrix = $getConcatenatedMatrix();
@@ -83,11 +95,22 @@ export const execute = (rotation: number): void =>
                 continue ;
             }
 
-            const prevX = character.matrix[0] * referenceSetting.x + character.matrix[2] * referenceSetting.y + character.matrix[4];
-            const prevY = character.matrix[1] * referenceSetting.x + character.matrix[3] * referenceSetting.y + character.matrix[5];
+            const transformedMatrix = Matrix.multiply(
+                concatenatedMatrix,
+                character.matrix
+            );
+
+            const matrix = new Matrix(...transformedMatrix);
+            matrix.invert();
+
+            const localX = position.x * matrix.a + position.y * matrix.c + matrix.tx;
+            const localY = position.x * matrix.b + position.y * matrix.d + matrix.ty;
+
+            const prevX = character.matrix[0] * localX + character.matrix[2] * localY + character.matrix[4];
+            const prevY = character.matrix[1] * localX + character.matrix[3] * localY + character.matrix[5];
 
             const multiMatrix = Matrix.multiply(
-                matrix, character.matrix
+                baseMatrix, character.matrix
             );
 
             const radian = Math.atan2(multiMatrix[1], multiMatrix[0]);
@@ -98,8 +121,8 @@ export const execute = (rotation: number): void =>
 
             character.rotation = rotation;
 
-            const nextX = character.matrix[0] * referenceSetting.x + character.matrix[2] * referenceSetting.y;
-            const nextY = character.matrix[1] * referenceSetting.x + character.matrix[3] * referenceSetting.y;
+            const nextX = character.matrix[0] * localX + character.matrix[2] * localY;
+            const nextY = character.matrix[1] * localX + character.matrix[3] * localY;
             character.x = prevX - nextX;
             character.y = prevY - nextY;
 

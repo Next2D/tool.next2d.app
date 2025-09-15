@@ -3,6 +3,7 @@ import type { IPosition } from "@/interface/IPosition";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getCurrentWorkSpace } from "../../CoreUtil";
 
 /**
  * @description 選択中のDisplayObjectの変形の中心点のグローバル座標を取得
@@ -48,8 +49,8 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
 
         let x = 0;
         let y = 0;
-        const width  = bounds.xMax - bounds.xMin;
-        const height = bounds.yMax - bounds.yMin;
+        const width  = Math.abs(bounds.xMax - bounds.xMin);
+        const height = Math.abs(bounds.yMax - bounds.yMin);
         switch (referenceSetting.pivot) {
 
             case "top-left":
@@ -104,12 +105,13 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
 
         }
 
-        const matrix = $getConcatenatedMatrix();
-        position.x = x * matrix[0] + y * matrix[2] + matrix[4];
-        position.y = y * matrix[1] + y * matrix[3] + matrix[5];
+        const concatenatedMatrix = $getConcatenatedMatrix();
+        position.x = x * concatenatedMatrix[0] + y * concatenatedMatrix[2] + concatenatedMatrix[4];
+        position.y = y * concatenatedMatrix[1] + y * concatenatedMatrix[3] + concatenatedMatrix[5];
 
-        position.x += bounds.xMin;
-        position.y += bounds.yMin;
+        const workSpace = $getCurrentWorkSpace();
+        position.x += bounds.xMin * workSpace.scale;
+        position.y += bounds.yMin * workSpace.scale;
     }
 
     return position;

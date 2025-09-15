@@ -19,8 +19,15 @@ import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
  */
 export const execute = (pivot: IPivotType, x: number, y: number, character: Character): IPosition =>
 {
+    const rawBounds = character.getRawBounds();
+    if (!rawBounds) {
+        return { "x": 0, "y": 0 };
+    }
+
     let dx = x;
     let dy = y;
+    const width  = Math.abs(rawBounds.xMax - rawBounds.xMin);
+    const height = Math.abs(rawBounds.yMax - rawBounds.yMin);
     switch (pivot)
     {
         case "top-left":
@@ -29,43 +36,43 @@ export const execute = (pivot: IPivotType, x: number, y: number, character: Char
             break;
 
         case "top-center":
-            dx = character.width / 2;
+            dx = width / 2;
             dy = 0;
             break;
 
         case "top-right":
-            dx = character.width;
+            dx = width;
             dy = 0;
             break;
 
         case "middle-left":
             dx = 0;
-            dy = character.height / 2;
+            dy = height / 2;
             break;
 
         case "middle-center":
-            dx = character.width / 2;
-            dy = character.height / 2;
+            dx = width / 2;
+            dy = height / 2;
             break;
 
         case "middle-right":
-            dx = character.width;
-            dy = character.height / 2;
+            dx = width;
+            dy = height / 2;
             break;
 
         case "bottom-left":
             dx = 0;
-            dy = character.height;
+            dy = height;
             break;
 
         case "bottom-center":
-            dx = character.width / 2;
-            dy = character.height;
+            dx = width / 2;
+            dy = height;
             break;
 
         case "bottom-right":
-            dx = character.width;
-            dy = character.height;
+            dx = width;
+            dy = height;
             break;
 
         default:
@@ -80,11 +87,8 @@ export const execute = (pivot: IPivotType, x: number, y: number, character: Char
     const workSpace = $getCurrentWorkSpace();
     const instance = workSpace.getLibrary(character.libraryId);
     if (instance && instance.type === $MOVIE_CLIP_TYPE) {
-        const rawBounds = character.getRawBounds();
-        if (rawBounds) {
-            dx += rawBounds.xMin;
-            dy += rawBounds.yMin;
-        }
+        dx += rawBounds.xMin;
+        dy += rawBounds.yMin;
     }
 
     return {

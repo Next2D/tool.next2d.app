@@ -8,6 +8,7 @@ import { execute as transformSettingUpdateHeightElementService } from "@/control
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
+import { execute as referencePositionGetGlobalPositionUseCase } from "@/core/application/ReferencePosition/usecase/ReferencePositionGetGlobalPositionUseCase";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
@@ -51,13 +52,11 @@ export const execute = (scale_y: number): void =>
         return ;
     }
 
-    const parentMatrix = Matrix.multiply(
-        new Float32Array([1, 0, 0, 1, referenceSetting.x, referenceSetting.y]),
-        Matrix.multiply(
-            new Float32Array([1, 0, 0, scale_y, 0, 0]),
-            new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
-        )
-    );
+    // 中心点のグルーバル座標を取得
+    const position = referencePositionGetGlobalPositionUseCase(movieClip);
+    if (!position) {
+        return ;
+    }
 
     // 選択中のElementを移動
     const concatenatedMatrix = $getConcatenatedMatrix();
@@ -90,6 +89,25 @@ export const execute = (scale_y: number): void =>
             if (!instance) {
                 continue ;
             }
+
+            const transformedMatrix = Matrix.multiply(
+                concatenatedMatrix,
+                character.matrix
+            );
+
+            const matrix = new Matrix(...transformedMatrix);
+            matrix.invert();
+
+            const localX = position.x * matrix.a + position.y * matrix.c + matrix.tx;
+            const localY = position.x * matrix.b + position.y * matrix.d + matrix.ty;
+
+            const parentMatrix = Matrix.multiply(
+                new Float32Array([1, 0, 0, 1, localX, localY]),
+                Matrix.multiply(
+                    new Float32Array([1, 0, 0, scale_y, 0, 0]),
+                    new Float32Array([1, 0, 0, 1, -localX, -localY])
+                )
+            );
 
             // matrix情報を更新
             character.matrix.set(

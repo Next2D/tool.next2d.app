@@ -8,7 +8,7 @@ import { execute as transformSettingUpdateRotationElementService } from "@/contr
 import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
+import { execute as referencePositionGetGlobalPositionUseCase } from "@/core/application/ReferencePosition/usecase/ReferencePositionGetGlobalPositionUseCase";
 import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { Matrix } from "@next2d/geom";
@@ -51,13 +51,11 @@ export const execute = (scale_x: number): void =>
         return ;
     }
 
-    const parentMatrix = Matrix.multiply(
-        new Float32Array([1, 0, 0, 1, referenceSetting.x, referenceSetting.y]),
-        Matrix.multiply(
-            new Float32Array([scale_x, 0, 0, 1, 0, 0]),
-            new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
-        )
-    );
+    // 中心点のグルーバル座標を取得
+    const position = referencePositionGetGlobalPositionUseCase(movieClip);
+    if (!position) {
+        return ;
+    }
 
     // 選択中のElementを移動
     const concatenatedMatrix = $getConcatenatedMatrix();
@@ -90,6 +88,25 @@ export const execute = (scale_x: number): void =>
             if (!instance) {
                 continue ;
             }
+
+            const transformedMatrix = Matrix.multiply(
+                concatenatedMatrix,
+                character.matrix
+            );
+
+            const matrix = new Matrix(...transformedMatrix);
+            matrix.invert();
+
+            const localX = position.x * matrix.a + position.y * matrix.c + matrix.tx;
+            const localY = position.x * matrix.b + position.y * matrix.d + matrix.ty;
+
+            const parentMatrix = Matrix.multiply(
+                new Float32Array([1, 0, 0, 1, localX, localY]),
+                Matrix.multiply(
+                    new Float32Array([scale_x, 0, 0, 1, 0, 0]),
+                    new Float32Array([1, 0, 0, 1, -localX, -localY])
+                )
+            );
 
             character.matrix.set(
                 Matrix.multiply(character.matrix, parentMatrix)

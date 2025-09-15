@@ -6,10 +6,13 @@ import { execute as transformSettingUpdateXElementService } from "@/controller/a
 import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
-import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
+import { execute as referencePositionGetGlobalPositionUseCase } from "@/core/application/ReferencePosition/usecase/ReferencePositionGetGlobalPositionUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { Matrix } from "@next2d/geom";
+import {
+    $getCurrentWorkSpace,
+    $getMatrixBounds
+} from "@/core/application/CoreUtil";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
@@ -49,6 +52,12 @@ export const execute = (scale_x: number): void =>
         return ;
     }
 
+    // 中心点のグルーバル座標を取得
+    const position = referencePositionGetGlobalPositionUseCase(movieClip);
+    if (!position) {
+        return ;
+    }
+
     // 選択中のElementを移動
     const concatenatedMatrix = $getConcatenatedMatrix();
     const scaleX = Math.hypot(concatenatedMatrix[0], concatenatedMatrix[1]);
@@ -81,16 +90,27 @@ export const execute = (scale_x: number): void =>
                 continue ;
             }
 
+            const transformedMatrix = Matrix.multiply(
+                concatenatedMatrix,
+                character.matrix
+            );
+
+            const matrix = new Matrix(...transformedMatrix);
+            matrix.invert();
+
+            const localX = position.x * matrix.a + position.y * matrix.c + matrix.tx;
+            const localY = position.x * matrix.b + position.y * matrix.d + matrix.ty;
+
             const rad = character.rotation * Math.PI / 180;
             const parentMatrix = Matrix.multiply(
-                new Float32Array([1, 0, 0, 1, referenceSetting.x, referenceSetting.y]),
+                new Float32Array([1, 0, 0, 1, localX, localY]),
                 Matrix.multiply(
                     new Float32Array([Math.cos(-rad), Math.sin(-rad), -Math.sin(-rad), Math.cos(-rad), 0, 0]),
                     Matrix.multiply(
                         new Float32Array([scale_x, 0, 0, 1, 0, 0]),
                         Matrix.multiply(
                             new Float32Array([Math.cos(rad), Math.sin(rad), -Math.sin(rad), Math.cos(rad), 0, 0]),
-                            new Float32Array([1, 0, 0, 1, -referenceSetting.x, -referenceSetting.y])
+                            new Float32Array([1, 0, 0, 1, -localX, -localY])
                         )
                     )
                 )
