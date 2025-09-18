@@ -7,10 +7,8 @@ import { execute as transformSettingUpdateWidthElementService } from "@/controll
 import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
-import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { Matrix } from "@next2d/geom";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $getCurrentWorkSpace,
     $getMatrixBounds
