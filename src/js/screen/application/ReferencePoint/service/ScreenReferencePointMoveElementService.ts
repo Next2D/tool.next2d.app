@@ -1,5 +1,6 @@
 import { $SCREEN_REFERENCE_POINT_ID } from "@/config/ScreenConfig";
 import { $getReferencePointState } from "../ReferencePointUtil";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description MovieClipの基準点のElementを移動する
@@ -27,9 +28,11 @@ export const execute = (movement_x: number = 0, movement_y: number = 0): void =>
     }
 
     if (movement_x) {
+        referenceSetting.x += movement_x;
         element.style.left = `${element.offsetLeft + movement_x}px`;
     }
     if (movement_y) {
+        referenceSetting.y += movement_y;
         element.style.top = `${element.offsetTop + movement_y}px`;
     }
 };

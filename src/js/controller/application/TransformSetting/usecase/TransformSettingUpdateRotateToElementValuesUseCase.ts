@@ -7,8 +7,10 @@ import { execute as transformSettingUpdateWidthElementService } from "@/controll
 import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
-import { execute as referencePositionGetGlobalPositionUseCase } from "@/core/application/ReferencePosition/usecase/ReferencePositionGetGlobalPositionUseCase";
+import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { Matrix } from "@next2d/geom";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import {
     $getCurrentWorkSpace,
     $getMatrixBounds
@@ -49,12 +51,6 @@ export const execute = (rotation: number): void =>
         .getElementById($SCREEN_STAGE_AREA_ID);
 
     if (!element) {
-        return ;
-    }
-
-    // 中心点のグルーバル座標を取得
-    const position = referencePositionGetGlobalPositionUseCase(movieClip);
-    if (!position) {
         return ;
     }
 
@@ -103,8 +99,8 @@ export const execute = (rotation: number): void =>
             const matrix = new Matrix(...transformedMatrix);
             matrix.invert();
 
-            const localX = position.x * matrix.a + position.y * matrix.c + matrix.tx;
-            const localY = position.x * matrix.b + position.y * matrix.d + matrix.ty;
+            const localX = referenceSetting.x * matrix.a + referenceSetting.y * matrix.c + matrix.tx;
+            const localY = referenceSetting.x * matrix.b + referenceSetting.y * matrix.d + matrix.ty;
 
             const prevX = character.matrix[0] * localX + character.matrix[2] * localY + character.matrix[4];
             const prevY = character.matrix[1] * localX + character.matrix[3] * localY + character.matrix[5];
@@ -165,13 +161,15 @@ export const execute = (rotation: number): void =>
         }
     }
 
-    // 変形エリアのx座標を更新
-    // TODO
+    // 変形エリアの情報を更新
     if (!movieClip.isSingleSelectedOfDisplayObject()) {
         const bounds = screenAreaCalcSelectedBoundsService(movieClip);
         if (bounds) {
             transformSettingUpdateWidthElementService(
                 Math.round(Math.abs(bounds.xMax - bounds.xMin) * 100) / 100
+            );
+            transformSettingUpdateHeightElementService(
+                Math.round(Math.abs(bounds.yMax - bounds.yMin) * 100) / 100
             );
             transformSettingUpdateXElementService(bounds.xMin);
             transformSettingUpdateYElementService(bounds.yMin);

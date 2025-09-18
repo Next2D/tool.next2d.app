@@ -55,7 +55,7 @@ export const execute = (
         // MovieClipなら基準点を配置
         screenStandardPointDeployElementUseCase();
 
-        // 変形の基準点を表示
+        // 変形の中心点点を表示
         referenceSetting.clear();
         screenReferencePointDeployElementUseCase();
     }

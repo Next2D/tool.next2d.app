@@ -17,6 +17,7 @@ import { execute as screenStandardPointDeployElementUseCase } from "@/screen/app
 import { execute as screenParentStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description MovieClipの起動処理
@@ -71,6 +72,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     targetRectUpdateElementUseCase();
 
     // 変形の基準点の表示を更新
+    referenceSetting.clear();
     screenReferencePointDeployElementUseCase();
 
     if (movie_clip.selectedDepths.size) {

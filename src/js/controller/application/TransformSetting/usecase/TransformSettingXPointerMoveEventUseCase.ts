@@ -57,7 +57,7 @@ export const execute = (event: PointerEvent): void =>
         // MovieClipの基準点のElementを移動
         screenStandardPointMoveElementService(movementX);
 
-        // 変形の基準点を移動
+        // 変形の中心点を移動
         screenReferencePointMoveElementService(movementX);
     });
 };

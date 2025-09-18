@@ -3,6 +3,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenReferencePointShowService } from "../service/ScreenReferencePointShowService";
 import { execute as screenReferencePointHideService } from "../service/ScreenReferencePointHideService";
 import { execute as referencePositionGetGlobalPositionUseCase } from "@/core/application/ReferencePosition/usecase/ReferencePositionGetGlobalPositionUseCase";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
@@ -30,6 +31,13 @@ export const execute = (): void =>
 
     // 後続で表示処理を行うので、基準点のElement状態を非表示に更新
     $setReferencePointState("hide");
+
+    // 中心点が固定されてなければセット
+    if (!referenceSetting.active) {
+        referenceSetting.active = true;
+        referenceSetting.x = position.x;
+        referenceSetting.y = position.y;
+    }
 
     // 中心点のElementの表示処理
     screenReferencePointShowService(

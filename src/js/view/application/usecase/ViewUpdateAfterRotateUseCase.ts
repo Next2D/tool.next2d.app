@@ -7,6 +7,7 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $removeLibraryCache } from "@/cache/CacheUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
@@ -21,6 +22,7 @@ import { execute as transformSettingUpdateRotationElementService } from "@/contr
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { ref } from "process";
 
 /**
  * @description 回転を更新した際のViewエリアの表示要素を更新
@@ -47,6 +49,9 @@ export const execute = async (
         if (movie_clip.selectedDepths.size > 0) {
 
             // 変形の中心点のElementを再配置
+            const pivot = referenceSetting.pivot;
+            referenceSetting.clear();
+            referenceSetting.pivot = pivot;
             screenReferencePointDeployElementUseCase();
 
             if (movie_clip.isSingleSelectedOfDisplayObject()) {
@@ -84,13 +89,7 @@ export const execute = async (
                     );
                 }
 
-                transformSettingUpdateRotationElementService(character.rotation);
-                transformSettingUpdateScaleXElementService(
-                    Math.round(transformSetting.scaleX * 10000) / 100
-                );
-                transformSettingUpdateScaleYElementService(
-                    Math.round(transformSetting.scaleY * 10000) / 100
-                );
+                transformSettingUpdateRotationElementService(0);
             }
         }
 

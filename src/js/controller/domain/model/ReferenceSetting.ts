@@ -51,15 +51,26 @@ class ReferenceSetting
     public state: "hide" | "show";
 
     /**
+     * @description 中心点の有効・無効状態を返却
+     *              Returns whether the center point is enabled or disabled
+     *
+     * @member {boolean}
+     * @default false
+     * @public
+     */
+    public active: boolean = false;
+
+    /**
      * @constructor
      * @public
      */
     constructor ()
     {
-        this.x     = 0;
-        this.y     = 0;
-        this.state = "hide";
-        this.pivot = "middle-center";
+        this.x      = 0;
+        this.y      = 0;
+        this.state  = "hide";
+        this.pivot  = "middle-center";
+        this.active = false;
     }
 
     /**
@@ -85,10 +96,11 @@ class ReferenceSetting
      */
     clear (): void
     {
-        this.x     = 0;
-        this.y     = 0;
-        this.state = "hide";
-        this.pivot = "middle-center";
+        this.x      = 0;
+        this.y      = 0;
+        this.state  = "hide";
+        this.pivot  = "middle-center";
+        this.active = false;
     }
 }
 

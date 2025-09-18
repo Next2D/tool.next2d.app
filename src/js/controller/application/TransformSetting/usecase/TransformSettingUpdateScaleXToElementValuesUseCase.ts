@@ -8,9 +8,8 @@ import { execute as transformSettingUpdateRotationElementService } from "@/contr
 import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 import { execute as transformSettingUpdateHeightElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
-import { execute as referencePositionGetGlobalPositionUseCase } from "@/core/application/ReferencePosition/usecase/ReferencePositionGetGlobalPositionUseCase";
-import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { Matrix } from "@next2d/geom";
 import {
     $createTransformElementStyle,
@@ -20,6 +19,10 @@ import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
+import {
+    $getCurrentWorkSpace,
+    $getMatrixBounds
+} from "@/core/application/CoreUtil";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -48,12 +51,6 @@ export const execute = (scale_x: number): void =>
         .getElementById($SCREEN_STAGE_AREA_ID);
 
     if (!element) {
-        return ;
-    }
-
-    // 中心点のグルーバル座標を取得
-    const position = referencePositionGetGlobalPositionUseCase(movieClip);
-    if (!position) {
         return ;
     }
 
@@ -97,8 +94,8 @@ export const execute = (scale_x: number): void =>
             const matrix = new Matrix(...transformedMatrix);
             matrix.invert();
 
-            const localX = position.x * matrix.a + position.y * matrix.c + matrix.tx;
-            const localY = position.x * matrix.b + position.y * matrix.d + matrix.ty;
+            const localX = referenceSetting.x * matrix.a + referenceSetting.y * matrix.c + matrix.tx;
+            const localY = referenceSetting.x * matrix.b + referenceSetting.y * matrix.d + matrix.ty;
 
             const parentMatrix = Matrix.multiply(
                 new Float32Array([1, 0, 0, 1, localX, localY]),

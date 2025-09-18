@@ -65,6 +65,7 @@ export const execute = (
         character.referencePosition.pivot = pivot;
     }
 
+    referenceSetting.clear();
     referenceSetting.pivot = pivot;
 
     // 中心点のElementを再配置

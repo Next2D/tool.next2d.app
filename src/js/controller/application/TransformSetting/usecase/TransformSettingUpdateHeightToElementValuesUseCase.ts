@@ -9,6 +9,7 @@ import { execute as transformSettingUpdateScaleXElementService } from "@/control
 import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { execute as referencePositionGetGlobalPositionUseCase } from "@/core/application/ReferencePosition/usecase/ReferencePositionGetGlobalPositionUseCase";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { Matrix } from "@next2d/geom";
 import {
     $createTransformElementStyle,
@@ -53,12 +54,6 @@ export const execute = (scale_y: number): void =>
         return ;
     }
 
-    // 中心点のグルーバル座標を取得
-    const position = referencePositionGetGlobalPositionUseCase(movieClip);
-    if (!position) {
-        return ;
-    }
-
     // 選択中のElementを移動
     const concatenatedMatrix = $getConcatenatedMatrix();
     const scaleX = Math.hypot(concatenatedMatrix[0], concatenatedMatrix[1]);
@@ -99,8 +94,8 @@ export const execute = (scale_y: number): void =>
             const matrix = new Matrix(...transformedMatrix);
             matrix.invert();
 
-            const localX = position.x * matrix.a + position.y * matrix.c + matrix.tx;
-            const localY = position.x * matrix.b + position.y * matrix.d + matrix.ty;
+            const localX = referenceSetting.x * matrix.a + referenceSetting.y * matrix.c + matrix.tx;
+            const localY = referenceSetting.x * matrix.b + referenceSetting.y * matrix.d + matrix.ty;
 
             const rad = character.rotation * Math.PI / 180;
             const parentMatrix = Matrix.multiply(
