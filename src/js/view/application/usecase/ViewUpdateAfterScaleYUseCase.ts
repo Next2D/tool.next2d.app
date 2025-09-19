@@ -6,7 +6,6 @@ import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $removeLibraryCache } from "@/cache/CacheUtil";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
@@ -16,6 +15,7 @@ import { execute as timelineSceneListCacheRemoveService } from "@/timeline/appli
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description yスケールを更新した際のViewエリアの表示要素を更新
@@ -40,7 +40,9 @@ export const execute = async (
     if (work_space.active && movie_clip.active) {
 
         if (movie_clip.selectedDepths.size > 0) {
+
             // 変形の中心点のElementを再配置
+            referenceSetting.active = false;
             screenReferencePointDeployElementUseCase();
 
             if (movie_clip.isSingleSelectedOfDisplayObject()) {
@@ -60,9 +62,7 @@ export const execute = async (
                 targetRectUpdateElementUseCase();
 
                 // 選択範囲のバウンディングボックスを取得
-                transformSettingUpdateScaleYElementService(
-                    Math.round(transformSetting.scaleY * 10000) / 100
-                );
+                transformSettingUpdateScaleYElementService(100);
             }
         }
 

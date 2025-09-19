@@ -21,6 +21,7 @@ import { execute as transformSettingUpdateRotationElementService } from "@/contr
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description 行列を更新した際のViewエリアの表示要素を更新
@@ -47,6 +48,7 @@ export const execute = async (
         if (movie_clip.selectedDepths.size > 0) {
 
             // 変形の中心点のElementを再配置
+            referenceSetting.active = false;
             screenReferencePointDeployElementUseCase();
 
             if (movie_clip.isSingleSelectedOfDisplayObject()) {
@@ -84,13 +86,9 @@ export const execute = async (
                     );
                 }
 
-                transformSettingUpdateRotationElementService(character.rotation);
-                transformSettingUpdateScaleXElementService(
-                    Math.round(transformSetting.scaleX * 10000) / 100
-                );
-                transformSettingUpdateScaleYElementService(
-                    Math.round(transformSetting.scaleY * 10000) / 100
-                );
+                transformSettingUpdateRotationElementService(0);
+                transformSettingUpdateScaleXElementService(100);
+                transformSettingUpdateScaleYElementService(100);
             }
         }
 

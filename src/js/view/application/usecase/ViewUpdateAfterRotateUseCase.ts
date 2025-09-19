@@ -47,9 +47,7 @@ export const execute = async (
         if (movie_clip.selectedDepths.size > 0) {
 
             // 変形の中心点のElementを再配置
-            const pivot = referenceSetting.pivot;
-            referenceSetting.clear();
-            referenceSetting.pivot = pivot;
+            referenceSetting.active = false;
             screenReferencePointDeployElementUseCase();
 
             if (movie_clip.isSingleSelectedOfDisplayObject()) {

@@ -6,6 +6,7 @@ import { execute as screenStandardPointHideElementService } from "@/screen/appli
 import { execute as screenReferencePointHideService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointHideService";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description スクリーン選択時のイベント処理関数
@@ -42,6 +43,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     screenStandardPointHideElementService();
 
     // 基準点を非表示にする
+    referenceSetting.clear();
     screenReferencePointHideService();
 
     // プロパティーエリアを初期表示に切り替える
