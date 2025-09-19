@@ -41,7 +41,7 @@ export const execute = (): void =>
 
     // 中心点のElementの表示処理
     screenReferencePointShowService(
-        $getScreenOffsetLeft() + position.x,
-        $getScreenOffsetTop() + position.y
+        $getScreenOffsetLeft() + Math.ceil(position.x),
+        $getScreenOffsetTop() + Math.ceil(position.y)
     );
 };

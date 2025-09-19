@@ -68,7 +68,7 @@ export const execute = (): void =>
     // 先祖からのmatrixを加算
     const matrix = Matrix.multiply($getConcatenatedMatrix(), character.matrix);
     screenStandardPointShowElementService(
-        $getScreenOffsetLeft() + matrix[4],
-        $getScreenOffsetTop() + matrix[5]
+        $getScreenOffsetLeft() + Math.ceil(matrix[4]),
+        $getScreenOffsetTop() + Math.ceil(matrix[5])
     );
 };

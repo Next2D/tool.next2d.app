@@ -49,14 +49,15 @@ export const execute = (
         // 表示範囲を更新
         targetRectUpdateElementUseCase();
 
-        // プロパティエリアの表示を更新
-        propertyAreaChangeDisplayUseCase();
-
         // MovieClipなら基準点を配置
         screenStandardPointDeployElementUseCase();
 
         // 変形の中心点点を表示
         referenceSetting.clear();
         screenReferencePointDeployElementUseCase();
+
+        // プロパティエリアの表示を更新
+        // fixed logic プロパティエリアの表示は最後に実行する
+        propertyAreaChangeDisplayUseCase();
     }
 };

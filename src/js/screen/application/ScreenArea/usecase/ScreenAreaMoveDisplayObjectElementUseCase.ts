@@ -23,6 +23,6 @@ export const execute = (layer: Layer, character: Character): void =>
         return ;
     }
 
-    element.style.left = `${$getScreenOffsetLeft() + character.globalMinX}px`;
-    element.style.top  = `${$getScreenOffsetTop()  + character.globalMinY}px`;
+    element.style.left = `${$getScreenOffsetLeft() + Math.ceil(character.globalMinX)}px`;
+    element.style.top  = `${$getScreenOffsetTop()  + Math.ceil(character.globalMinY)}px`;
 };

@@ -4,6 +4,7 @@ import { execute as objectSettingUpdateNameService } from "@/controller/applicat
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 import { execute as objectSettingHideSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingHideSymbolService";
 import { execute as transformSettingUpdateElementUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateElementUseCase";
+import { execute as referenceSettingUpdateCellValueService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService";
 
 /**
  * @description Shape選択時のプロパティエリアの設定項目を表示
@@ -36,6 +37,9 @@ export const execute = (character: Character): void =>
         character.scaleY,
         character.rotation
     );
+
+    // 中心点の値を更新
+    referenceSettingUpdateCellValueService(character.referencePosition.pivot);
 
     // カラーの値を更新
 

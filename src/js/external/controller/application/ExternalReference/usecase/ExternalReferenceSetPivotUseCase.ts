@@ -2,8 +2,9 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IPivotType } from "@/interface/IPivotType";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalReferencePivotValidation } from "../service/ExternalReferencePivotValidation";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { execute as referenceSettingUpdateCellValueService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService";
+import { execute as viewUpdateAfterReferencePointUseCase } from "@/view/application/usecase/ViewUpdateAfterReferencePointUseCase";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
@@ -23,11 +24,6 @@ export const execute = (
     pivot: IPivotType
 ): void => {
 
-    // ワークスペースまたはMovieClipがアクティブでない場合は処理しない
-    if (!work_space.active || !movie_clip.active) {
-        return ;
-    }
-
     // 選択中のDisplayObjectが無い場合は処理しない
     if (!movie_clip.selectedDepths.size) {
         return ;
@@ -35,11 +31,6 @@ export const execute = (
 
     // pivot位置が不正な場合は処理しない
     if (!externalReferencePivotValidation(pivot)) {
-        return ;
-    }
-
-    const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
-    if (!bounds) {
         return ;
     }
 
@@ -65,9 +56,8 @@ export const execute = (
         character.referencePosition.pivot = pivot;
     }
 
-    referenceSetting.clear();
-    referenceSetting.pivot = pivot;
+    // TODO: 履歴機能
 
-    // 中心点のElementを再配置
-    screenReferencePointDeployElementUseCase();
+    // 表示を更新
+    viewUpdateAfterReferencePointUseCase(work_space, movie_clip, pivot);
 };
