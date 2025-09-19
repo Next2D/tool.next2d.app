@@ -1,5 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as referenceSettingBoxPointerDownUseCase } from "./ReferenceSettingBoxPointerDownUseCase";
+import { execute as referenceSettingPointerOverEventService } from "../service/ReferenceSettingPointerOverEventService";
+import { execute as referenceSettingPointerOutEventService } from "../service/ReferenceSettingPointerOutEventService";
 import {
     $REFERENCE_SETTING_BOX_ID,
     $TRANSFORM_REFERENCE_X_ID,
@@ -29,21 +31,23 @@ export const execute = (): void =>
     const transformReferenceX = document
         .getElementById($TRANSFORM_REFERENCE_X_ID);
     if (transformReferenceX) {
-        transformReferenceX.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent) =>
-        {
-            // イベント処理
-            event.stopPropagation();
-        });
+        transformReferenceX.addEventListener(EventType.POINTER_OVER,
+            referenceSettingPointerOverEventService
+        );
+        transformReferenceX.addEventListener(EventType.POINTER_OUT,
+            referenceSettingPointerOutEventService
+        );
     }
 
     // 中心点Y座標入力エリアのイベント登録
     const transformReferenceY = document
         .getElementById($TRANSFORM_REFERENCE_Y_ID);
     if (transformReferenceY) {
-        transformReferenceY.addEventListener(EventType.POINTER_DOWN, (event: PointerEvent) =>
-        {
-            // イベント処理
-            event.stopPropagation();
-        });
+        transformReferenceY.addEventListener(EventType.POINTER_OVER,
+            referenceSettingPointerOverEventService
+        );
+        transformReferenceY.addEventListener(EventType.POINTER_OUT,
+            referenceSettingPointerOutEventService
+        );
     }
 };

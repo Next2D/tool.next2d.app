@@ -7,28 +7,6 @@
  */
 class TextRect
 {
-    private _$x: number;
-    private _$y: number;
-
-    /**
-     * @constructor
-     * @public
-     */
-    constructor ()
-    {
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$x = 0;
-
-        /**
-         * @type {number}
-         * @private
-         */
-        this._$y = 0;
-    }
-
     /**
      * @description x座標
      *              x coordinate
@@ -36,14 +14,7 @@ class TextRect
      * @type {number}
      * @public
      */
-    get x (): number
-    {
-        return this._$x;
-    }
-    set x (x: number)
-    {
-        this._$x = x;
-    }
+    public x: number;
 
     /**
      * @description y座標
@@ -52,13 +23,16 @@ class TextRect
      * @type {number}
      * @public
      */
-    get y (): number
+    public y: number;
+
+    /**
+     * @constructor
+     * @public
+     */
+    constructor ()
     {
-        return this._$y;
-    }
-    set y (y: number)
-    {
-        this._$y = y;
+        this.x = 0;
+        this.y = 0;
     }
 }
 
