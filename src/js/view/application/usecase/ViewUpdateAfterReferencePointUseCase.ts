@@ -3,6 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { IPivotType } from "@/interface/IPivotType";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as referenceSettingUpdateElementUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateElementUseCase";
+import { execute as referenceSettingGetMultiRawPositionUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingGetMultiRawPositionUseCase";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
@@ -53,7 +54,12 @@ export const execute = (
         const localPosition  = character.referencePosition.getLocalPosition();
         referenceSettingUpdateElementUseCase(pivot, localPosition.x, localPosition.y);
     } else {
-        // todo
+        const position = referenceSettingGetMultiRawPositionUseCase(movie_clip);
+        if (!position) {
+            return ;
+        }
+
+        referenceSettingUpdateElementUseCase(pivot, position.x, position.y);
     }
 
     // 中心点のElementを再配置

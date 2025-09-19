@@ -2,9 +2,9 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { IPosition } from "@/interface/IPosition";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
-import { execute as referencePositionGetRawPositionService } from "@/core/application/ReferencePosition/service/ReferencePositionGetRawPositionService";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
+import { $getPivotPosition } from "@/controller/application/ReferenceSetting/ReferenceSettingUtil";
 
 /**
  * @description 選択中のDisplayObjectの変形の中心点のグローバル座標を取得
@@ -48,67 +48,13 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
             return null;
         }
 
-        let x = 0;
-        let y = 0;
         const width  = Math.abs(bounds.xMax - bounds.xMin);
         const height = Math.abs(bounds.yMax - bounds.yMin);
-        switch (referenceSetting.pivot) {
-
-            case "top-left":
-                x = 0;
-                y = 0;
-                break;
-
-            case "top-center":
-                x = width / 2;
-                y = 0;
-                break;
-
-            case "top-right":
-                x = width;
-                y = 0;
-                break;
-
-            case "middle-left":
-                x = 0;
-                y = height / 2;
-                break;
-
-            case "middle-center":
-                x = width / 2;
-                y = height / 2;
-                break;
-
-            case "middle-right":
-                x = width;
-                y = height / 2;
-                break;
-
-            case "bottom-left":
-                x = 0;
-                y = height;
-                break;
-
-            case "bottom-center":
-                x = width / 2;
-                y = height;
-                break;
-
-            case "bottom-right":
-                x = width;
-                y = height;
-                break;
-
-            default:
-                x = width / 2;
-                y = height / 2;
-                break;
-
-        }
+        const pivotPosition = $getPivotPosition(referenceSetting.pivot, width, height);
 
         const concatenatedMatrix = $getConcatenatedMatrix();
-        position.x = x * concatenatedMatrix[0] + y * concatenatedMatrix[2] + concatenatedMatrix[4];
-        position.y = y * concatenatedMatrix[1] + y * concatenatedMatrix[3] + concatenatedMatrix[5];
+        position.x = pivotPosition.x * concatenatedMatrix[0] + pivotPosition.y * concatenatedMatrix[2] + concatenatedMatrix[4];
+        position.y = pivotPosition.y * concatenatedMatrix[1] + pivotPosition.y * concatenatedMatrix[3] + concatenatedMatrix[5];
 
         const workSpace = $getCurrentWorkSpace();
         position.x += bounds.xMin * workSpace.scale;

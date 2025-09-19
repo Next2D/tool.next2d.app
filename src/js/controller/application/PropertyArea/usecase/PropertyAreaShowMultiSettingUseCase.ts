@@ -20,6 +20,9 @@ import { $BLEND_SETTING_ID } from "@/config/BlendSettingConfig";
 import { $FILTER_SETTING_ID } from "@/config/FilterSettingConfig";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { $TOOL_FREE_TRANSFORM_NAME } from "@/config/ToolConfig";
+import { execute as referenceSettingGetMultiRawPositionUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingGetMultiRawPositionUseCase";
+import { execute as referenceSettingUpdateElementUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateElementUseCase";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description プロパティエリアの表示項目を変更
@@ -57,6 +60,13 @@ export const execute = (): void =>
     const tool = $getActiveTool();
     if (tool.name === $TOOL_FREE_TRANSFORM_NAME) {
         showArray.push($REFERENCE_SETTING_ID);
+    }
+
+    // 中心点を取得してReferenceSettingに設定
+    const workSpace = $getCurrentWorkSpace();
+    const position = referenceSettingGetMultiRawPositionUseCase(workSpace.scene);
+    if (position) {
+        referenceSettingUpdateElementUseCase("middle-center", position.x, position.y);
     }
 
     // 表示項目を更新

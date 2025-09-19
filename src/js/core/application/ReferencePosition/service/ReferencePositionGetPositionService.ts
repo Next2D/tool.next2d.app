@@ -5,6 +5,7 @@ import { $getConcatenatedMatrix } from "@/controller/application/TransformSettin
 import { Matrix } from "@next2d/geom";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
+import { $getPivotPosition } from "@/controller/application/ReferenceSetting/ReferenceSettingUtil";
 
 /**
  * @description 指定された座標をCharacterのmatrixを考慮した座標に変換して返却
@@ -19,77 +20,34 @@ import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
  */
 export const execute = (pivot: IPivotType, x: number, y: number, character: Character): IPosition =>
 {
-    const rawBounds = character.getRawBounds();
-    if (!rawBounds) {
-        return { "x": 0, "y": 0 };
-    }
-
     let dx = x;
     let dy = y;
-    const width  = Math.abs(rawBounds.xMax - rawBounds.xMin);
-    const height = Math.abs(rawBounds.yMax - rawBounds.yMin);
-    switch (pivot)
-    {
-        case "top-left":
-            dx = 0;
-            dy = 0;
-            break;
 
-        case "top-center":
-            dx = width / 2;
-            dy = 0;
-            break;
+    if (pivot) {
+        const rawBounds = character.getRawBounds();
+        if (!rawBounds) {
+            return { "x": 0, "y": 0 };
+        }
 
-        case "top-right":
-            dx = width;
-            dy = 0;
-            break;
+        const width  = Math.abs(rawBounds.xMax - rawBounds.xMin);
+        const height = Math.abs(rawBounds.yMax - rawBounds.yMin);
 
-        case "middle-left":
-            dx = 0;
-            dy = height / 2;
-            break;
+        const position = $getPivotPosition(pivot, width, height);
+        dx = position.x;
+        dy = position.y;
 
-        case "middle-center":
-            dx = width / 2;
-            dy = height / 2;
-            break;
-
-        case "middle-right":
-            dx = width;
-            dy = height / 2;
-            break;
-
-        case "bottom-left":
-            dx = 0;
-            dy = height;
-            break;
-
-        case "bottom-center":
-            dx = width / 2;
-            dy = height;
-            break;
-
-        case "bottom-right":
-            dx = width;
-            dy = height;
-            break;
-
-        default:
-            break;
+        const workSpace = $getCurrentWorkSpace();
+        const instance = workSpace.getLibrary(character.libraryId);
+        if (instance && instance.type === $MOVIE_CLIP_TYPE) {
+            dx += rawBounds.xMin;
+            dy += rawBounds.yMin;
+        }
     }
 
     const matrix = Matrix.multiply(
         $getConcatenatedMatrix(),
         character.matrix
     );
-
-    const workSpace = $getCurrentWorkSpace();
-    const instance = workSpace.getLibrary(character.libraryId);
-    if (instance && instance.type === $MOVIE_CLIP_TYPE) {
-        dx += rawBounds.xMin;
-        dy += rawBounds.yMin;
-    }
 
     return {
         "x": dx * matrix[0] + dy * matrix[2] + matrix[4],
