@@ -2,10 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IPivotType } from "@/interface/IPivotType";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalReferencePivotValidation } from "../service/ExternalReferencePivotValidation";
-import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
-import { execute as referenceSettingUpdateCellValueService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService";
 import { execute as viewUpdateAfterReferencePointUseCase } from "@/view/application/usecase/ViewUpdateAfterReferencePointUseCase";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description 変形の中心座標を指定ポイントに設定

@@ -3,7 +3,6 @@ import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { execute as screenDisplayObjectSelectedMoveElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectSelectedMoveElementUseCase";
 import { execute as targetRectMoveElementService } from "@/screen/application/TargetRect/service/TargetRectMoveElementService";
 import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
-import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenReferencePointMoveElementService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService";
 import { $globalToLocal } from "@/screen/application/DisplayObject/DisplayObjectUtil";
 
