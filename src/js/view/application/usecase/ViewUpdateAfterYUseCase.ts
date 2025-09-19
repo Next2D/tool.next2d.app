@@ -5,6 +5,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { execute as screenAreaMoveDisplayObjectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveDisplayObjectElementUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
@@ -43,6 +44,7 @@ export const execute = async (
 
         if (movie_clip.selectedDepths.size > 0) {
             // 変形の中心点のElementを再配置
+            referenceSetting.clear();
             screenReferencePointDeployElementUseCase();
 
             if (movie_clip.isSingleSelectedOfDisplayObject()) {

@@ -18,7 +18,7 @@ export const execute = async (): Promise<void> =>
     // 現在のフレームをセット
     const frame = movieClip.currentFrame;
 
-    const x = transformSetting.x;
+    const x = transformSetting.x ;
     const y = transformSetting.y;
 
     // 選択中のDisplayObjectの座標を更新

@@ -14,7 +14,7 @@ import { execute as screenDisplayObjectActvieElementService } from "@/screen/app
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {number} layer_index
- * @param  {array} depths
+ * @param  {number[]} depths
  * @return {void}
  * @method
  * @public

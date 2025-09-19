@@ -7,6 +7,7 @@ import { execute as screenStandardPointHideElementService } from "../service/Scr
 import { $setStandardPointState } from "../StandardPointUtil";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { Matrix } from "@next2d/geom";
 
 /**
  * @description MovieClipの基準点Elementを配置
@@ -65,11 +66,9 @@ export const execute = (): void =>
     $setStandardPointState("hide");
 
     // 先祖からのmatrixを加算
-    const matrix = $getConcatenatedMatrix();
-
-    // 基準点のElementの表示処理
+    const matrix = Matrix.multiply($getConcatenatedMatrix(), character.matrix);
     screenStandardPointShowElementService(
-        $getScreenOffsetLeft() + character.x * workSpace.scale + matrix[4],
-        $getScreenOffsetTop() + character.y * workSpace.scale + matrix[5]
+        $getScreenOffsetLeft() + matrix[4],
+        $getScreenOffsetTop() + matrix[5]
     );
 };

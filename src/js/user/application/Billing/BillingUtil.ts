@@ -51,9 +51,12 @@ export const $setExpireDate = (ymd: string): void =>
  */
 export const $canAllFunction = (): boolean =>
 {
-    if (!$expireDate) {
-        return false;
-    }
+    // todo: 後で削除する
+    return true;
 
-    return new Date($expireDate).getTime() > new Date().getTime();
+    // if (!$expireDate) {
+    //     return false;
+    // }
+
+    // return new Date($expireDate).getTime() > new Date().getTime();
 };

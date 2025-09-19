@@ -8,6 +8,7 @@ import { execute as transformSettingUpdateHeightElementService } from "@/control
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
+import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { Matrix } from "@next2d/geom";
@@ -142,6 +143,9 @@ export const execute = (scale_y: number): void =>
                 transformSettingUpdateScaleXElementService(
                     Math.round(character.scaleX * 10000) / 100
                 );
+
+                // MovieClipの基準点を再配置
+                screenStandardPointDeployElementUseCase();
             }
         }
     }
