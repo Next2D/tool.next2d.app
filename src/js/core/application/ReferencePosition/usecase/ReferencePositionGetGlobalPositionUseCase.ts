@@ -2,6 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { IPosition } from "@/interface/IPosition";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { execute as referencePositionGetRawPositionService } from "@/core/application/ReferencePosition/service/ReferencePositionGetRawPositionService";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCurrentWorkSpace } from "../../CoreUtil";
 

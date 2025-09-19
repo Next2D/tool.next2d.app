@@ -2,7 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { IPivotType } from "@/interface/IPivotType";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
-import { execute as referenceSettingUpdateCellValueService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService";
+import { execute as referenceSettingUpdateElementUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateElementUseCase";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
@@ -27,11 +27,34 @@ export const execute = (
         return ;
     }
 
+    // セルの表示を更新
+    if (!movie_clip.selectedDepths.size) {
+        return ;
+    }
+
     referenceSetting.clear();
     referenceSetting.pivot = pivot;
 
-    // セルの表示を更新
-    referenceSettingUpdateCellValueService(pivot);
+    if (movie_clip.isSingleSelectedOfDisplayObject()) {
+        const layer = movie_clip.getLayer(
+            movie_clip.selectedDepths.keys().next().value as number
+        );
+        if (!layer) {
+            return ;
+        }
+
+        const values = movie_clip.selectedDepths.values().next().value as number[];
+        const character = layer.getCharacter(movie_clip.currentFrame, values[0]);
+        if (!character) {
+            return ;
+        }
+
+        // ローカル座標を取得してReferenceSettingに設定
+        const localPosition  = character.referencePosition.getLocalPosition();
+        referenceSettingUpdateElementUseCase(pivot, localPosition.x, localPosition.y);
+    } else {
+        // todo
+    }
 
     // 中心点のElementを再配置
     screenReferencePointDeployElementUseCase();

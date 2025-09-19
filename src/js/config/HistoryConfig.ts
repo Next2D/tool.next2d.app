@@ -618,3 +618,12 @@ export const $CHARACTER_UPDATE_ROTATE_COMMAND: number = 62;
  * @constant
  */
 export const $CHARACTER_UPDATE_MATRIX_COMMAND: number = 63;
+
+/**
+ * @description DisplayObjectの参照ピボット更新の識別コマンド名
+ *              Identification command name for updating the reference pivot of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $REFERENCE_UPDATE_PIVOT_COMMAND: number = 64;

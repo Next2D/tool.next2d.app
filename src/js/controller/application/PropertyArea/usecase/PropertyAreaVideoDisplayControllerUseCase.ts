@@ -4,7 +4,7 @@ import { execute as objectSettingUpdateNameService } from "@/controller/applicat
 import { execute as objectSettingUpdateSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService";
 import { execute as objectSettingHideSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingHideSymbolService";
 import { execute as transformSettingUpdateElementUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateElementUseCase";
-import { execute as referenceSettingUpdateCellValueService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService";
+import { execute as referenceSettingUpdateElementUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateElementUseCase";
 
 /**
  * @description Video選択時のプロパティエリアの設定項目を表示
@@ -39,7 +39,11 @@ export const execute = (character: Character): void =>
     );
 
     // 中心点の値を更新
-    referenceSettingUpdateCellValueService(character.referencePosition.pivot);
+    const localPosition = character.referencePosition.getLocalPosition();
+    referenceSettingUpdateElementUseCase(
+        character.referencePosition.pivot,
+        localPosition.x, localPosition.y
+    );
 
     // カラーの値を更新
 

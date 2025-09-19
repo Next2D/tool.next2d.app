@@ -2,6 +2,8 @@ import type { IPivotType } from "@/interface/IPivotType";
 import type { IReferencePositionSaveObject } from "@/interface/IReferencePositionSaveObject";
 import type { Character } from "./Character";
 import { execute as referencePositionGetPositionService } from "@/core/application/ReferencePosition/service/ReferencePositionGetPositionService";
+import { execute as referencePositionGetRawPositionService } from "@/core/application/ReferencePosition/service/ReferencePositionGetRawPositionService";
+import { IPosition } from "@/interface/IPosition";
 
 /**
  * @description 中心点の位置情報クラス
@@ -95,6 +97,21 @@ export class ReferencePosition
     set y (y: number)
     {
         this._$y = y;
+    }
+
+    /**
+     * @description ローカル座標を返却
+     *              Returns local coordinates
+     *
+     * @returns {IPosition}
+     * @method
+     * @public
+     */
+    getLocalPosition (): IPosition
+    {
+        return referencePositionGetRawPositionService(
+            this.pivot, this._$x, this._$y, this._$character
+        );
     }
 
     /**
