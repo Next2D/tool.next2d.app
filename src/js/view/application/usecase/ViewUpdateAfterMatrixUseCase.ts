@@ -6,7 +6,6 @@ import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $removeLibraryCache } from "@/cache/CacheUtil";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
