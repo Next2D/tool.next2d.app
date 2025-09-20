@@ -1,7 +1,6 @@
 import type { Character } from "@/core/domain/model/Character";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
-import { $getMatrixBounds } from "../../CoreUtil";
 import {
     $createTransformElementStyle,
     $getConcatenatedMatrix
