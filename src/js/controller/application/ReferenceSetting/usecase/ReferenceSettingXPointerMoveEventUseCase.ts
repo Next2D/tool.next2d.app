@@ -68,14 +68,14 @@ export const execute = (event: PointerEvent): void =>
 
             character.referencePosition.x = x;
         } else {
-            if (referenceSetting.pivot) {
+            if (referenceSetting.pivot !== "none") {
                 referenceSetting.pivot = "none";
                 referenceSettingUpdateCellValueService("none");
             }
         }
 
         // elementの位置を更新
-        referenceSetting.x = x;
+        referenceSetting.localX = x;
         referenceSetting.active = false;
         screenReferencePointDeployElementUseCase();
     });

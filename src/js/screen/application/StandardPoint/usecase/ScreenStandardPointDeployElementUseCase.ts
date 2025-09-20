@@ -6,7 +6,6 @@ import { execute as screenStandardPointShowElementService } from "../service/Scr
 import { execute as screenStandardPointHideElementService } from "../service/ScreenStandardPointHideElementService";
 import { $setStandardPointState } from "../StandardPointUtil";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { Matrix } from "@next2d/geom";
 
 /**
@@ -54,12 +53,6 @@ export const execute = (): void =>
     if (!instance || instance.type !== $MOVIE_CLIP_TYPE) {
         screenStandardPointHideElementService();
         return ;
-    }
-
-    const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (!bounds) {
-        screenStandardPointHideElementService();
-        return;
     }
 
     // 後続で表示処理を行うので、基準点のElement状態を非表示に更新

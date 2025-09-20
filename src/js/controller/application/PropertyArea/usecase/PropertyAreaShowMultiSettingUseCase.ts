@@ -64,7 +64,7 @@ export const execute = (): void =>
 
     // 中心点を取得してReferenceSettingに設定
     const workSpace = $getCurrentWorkSpace();
-    const position = referenceSettingGetMultiRawPositionUseCase(workSpace.scene);
+    const position  = referenceSettingGetMultiRawPositionUseCase(workSpace.scene);
     if (position) {
         referenceSettingUpdateElementUseCase("middle-center", position.x, position.y);
     }

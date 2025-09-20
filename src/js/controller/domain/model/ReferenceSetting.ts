@@ -31,6 +31,26 @@ class ReferenceSetting
     public y: number;
 
     /**
+     * @description 中心点のローカルx座標を返却
+     *              Return the local x coordinate of the center point
+     *
+     * @member {number}
+     * @default 0
+     * @public
+     */
+    public localX: number = 0;
+
+    /**
+     * @description 中心点のローカルy座標を返却
+     *             Return the local y coordinate of the center point
+     *
+     * @member {number}
+     * @default 0
+     * @public
+     */
+    public localY: number = 0;
+
+    /**
      * @description 中心点の位置を返却
      *              Return the position of the center point
      *
@@ -93,6 +113,8 @@ class ReferenceSetting
         this.active  = false;
         this.beforeX = 0;
         this.beforeY = 0;
+        this.localX  = 0;
+        this.localY  = 0;
     }
 
     /**
@@ -125,6 +147,8 @@ class ReferenceSetting
         this.active  = false;
         this.beforeX = 0;
         this.beforeY = 0;
+        this.localX  = 0;
+        this.localY  = 0;
     }
 }
 

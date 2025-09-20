@@ -461,11 +461,13 @@ export class Character
         // 中心点を上書き
         if (save_object.referencePosition) { // 旧バージョンではreferencePositionが存在しないのでチェック
             // pivotが存在する場合はpivotを優先
-            if (save_object.referencePosition.pivot) {
+            if (save_object.referencePosition.pivot
+                && save_object.referencePosition.pivot !== "none"
+            ) {
                 this.referencePosition.pivot = save_object.referencePosition.pivot;
             } else {
                 // pivotが存在しない場合はx,yをセット
-                this.referencePosition.pivot = "";
+                this.referencePosition.pivot = "none";
                 this.referencePosition.x = save_object.referencePosition.x;
                 this.referencePosition.y = save_object.referencePosition.y;
             }

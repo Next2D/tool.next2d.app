@@ -7,6 +7,7 @@ import { execute as stageRectHideService } from "@/screen/application/StageRect/
 import { execute as arrowToolCreateAxesService } from "../service/ArrowToolCreateAxesService";
 import { execute as arrowToolProjectOntoAxisService } from "../service/ArrowToolProjectOntoAxisService";
 import { Matrix } from "@next2d/geom";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import {
     $SCREEN_STAGE_AREA_ID,
     $SCREEN_STAGE_RECT_ID
@@ -15,7 +16,6 @@ import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description 範囲選択のマウスアップイベントの実行関数
@@ -60,16 +60,15 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     const workSpace = $getCurrentWorkSpace();
-    const scale = workSpace.scale;
-    const width  = rectElement.clientWidth / scale;
-    const height = rectElement.clientHeight / scale;
+    const width  = rectElement.clientWidth;
+    const height = rectElement.clientHeight;
     if (!width && !height) {
         stageRectHideService();
         return ;
     }
 
-    const left   = (rectElement.offsetLeft - $getScreenOffsetLeft()) / scale;
-    const top    = (rectElement.offsetTop - $getScreenOffsetTop()) / scale;
+    const left   = rectElement.offsetLeft - $getScreenOffsetLeft();
+    const top    = rectElement.offsetTop - $getScreenOffsetTop();
     const right  = left + width;
     const bottom = top  + height;
     const rect = [
