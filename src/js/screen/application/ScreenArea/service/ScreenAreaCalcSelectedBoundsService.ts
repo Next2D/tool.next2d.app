@@ -7,12 +7,16 @@ import { $calcBoundingBox } from "@/core/application/CoreUtil";
  *              Calculate the selected bounding box
  *
  * @param  {MovieClip} movie_clip
+ * @param  {boolean} use_parent_matrix
  * @return {object}
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): IBounds | null =>
-{
+export const execute = (
+    movie_clip: MovieClip,
+    use_parent_matrix: boolean = false
+): IBounds | null => {
+
     if (!movie_clip.selectedDepths.size) {
         return null;
     }
@@ -35,7 +39,7 @@ export const execute = (movie_clip: MovieClip): IBounds | null =>
                 continue ;
             }
 
-            const bounds = character.getBounds(frame);
+            const bounds = character.getBounds(frame, use_parent_matrix);
             if (!bounds) {
                 continue ;
             }

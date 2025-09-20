@@ -13,6 +13,8 @@ import { execute as characterCalcSetRotationService } from "@/core/application/C
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $clamp } from "@/global/GlobalUtil";
+import { ReferencePosition } from "./ReferencePosition";
+import { Matrix } from "@next2d/geom";
 import {
     $BITMAP_TYPE,
     $MOVIE_CLIP_TYPE,
@@ -22,7 +24,6 @@ import {
     $getCurrentWorkSpace,
     $getMatrixBounds
 } from "@/core/application/CoreUtil";
-import { ReferencePosition } from "./ReferencePosition";
 
 /**
  * @description DisplayObjectのユニークID
@@ -557,11 +558,12 @@ export class Character
      *              Get the bounding box
      *
      * @param  {number} [frame=1]
+     * @param  {boolean} [use_parent_matrix=false]
      * @return {object}
      * @method
      * @public
      */
-    getBounds (frame: number = 1): IBounds | null
+    getBounds (frame: number = 1, use_parent_matrix: boolean = false): IBounds | null
     {
         const bounds = this.getRawBounds(frame);
         return bounds ? $getMatrixBounds(
@@ -569,7 +571,7 @@ export class Character
             bounds.yMin,
             bounds.xMax,
             bounds.yMax,
-            this.matrix
+            use_parent_matrix ? Matrix.multiply($getConcatenatedMatrix(), this.matrix) : this.matrix
         ) : null;
     }
 

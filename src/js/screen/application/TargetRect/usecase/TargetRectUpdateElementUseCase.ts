@@ -3,8 +3,7 @@ import { execute as targetRectShowElementService } from "@/screen/application/Ta
 import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { $TOOL_ARROW_NAME } from "@/config/ToolConfig";
-import { $getCurrentWorkSpace, $getMatrixBounds } from "@/core/application/CoreUtil";
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 選択範囲のElementを選択中のDisplayObjectの座標を基準に表示
@@ -23,20 +22,12 @@ export const execute = (): void =>
         return ;
     }
 
-    const calcBounds = screenAreaCalcSelectedBoundsService(movieClip);
-    if (!calcBounds) {
+    const bounds = screenAreaCalcSelectedBoundsService(movieClip, true);
+    if (!bounds) {
         // 表示範囲のelementを非表示
         targetRectHideElementService();
         return ;
     }
-
-    const bounds = $getMatrixBounds(
-        calcBounds.xMin,
-        calcBounds.yMin,
-        calcBounds.xMax,
-        calcBounds.yMax,
-        $getConcatenatedMatrix()
-    );
 
     const tool = $getActiveTool();
 

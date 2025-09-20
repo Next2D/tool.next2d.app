@@ -2,6 +2,7 @@ import { EventType } from "@/tool/domain/event/EventType";
 import { execute as referenceSettingBoxPointerDownUseCase } from "./ReferenceSettingBoxPointerDownUseCase";
 import { execute as referenceSettingPointerOverEventService } from "../service/ReferenceSettingPointerOverEventService";
 import { execute as referenceSettingPointerOutEventService } from "../service/ReferenceSettingPointerOutEventService";
+import { execute as referenceSettingXPointerDownUseCase } from "./ReferenceSettingXPointerDownUseCase";
 import {
     $REFERENCE_SETTING_BOX_ID,
     $TRANSFORM_REFERENCE_X_ID,
@@ -36,6 +37,10 @@ export const execute = (): void =>
         );
         transformReferenceX.addEventListener(EventType.POINTER_OUT,
             referenceSettingPointerOutEventService
+        );
+        transformReferenceX.addEventListener(EventType.POINTER_DOWN,
+            referenceSettingXPointerDownUseCase,
+            { "passive": false }
         );
     }
 

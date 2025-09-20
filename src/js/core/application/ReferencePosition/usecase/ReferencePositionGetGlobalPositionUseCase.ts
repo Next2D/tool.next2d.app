@@ -43,18 +43,25 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
         position.x = character.referencePosition.x;
         position.y = character.referencePosition.y;
     } else {
-        const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
+        const bounds = screenAreaCalcSelectedBoundsService(movie_clip, true);
         if (!bounds) {
             return null;
         }
 
-        const width  = Math.abs(bounds.xMax - bounds.xMin);
-        const height = Math.abs(bounds.yMax - bounds.yMin);
-        const pivotPosition = $getPivotPosition(referenceSetting.pivot, width, height);
+        if (referenceSetting.pivot) {
+            const width  = Math.abs(bounds.xMax - bounds.xMin);
+            const height = Math.abs(bounds.yMax - bounds.yMin);
 
-        const concatenatedMatrix = $getConcatenatedMatrix();
-        position.x = pivotPosition.x * concatenatedMatrix[0] + pivotPosition.y * concatenatedMatrix[2] + concatenatedMatrix[4];
-        position.y = pivotPosition.y * concatenatedMatrix[1] + pivotPosition.y * concatenatedMatrix[3] + concatenatedMatrix[5];
+            const pivotPosition = $getPivotPosition(referenceSetting.pivot, width, height);
+
+            const concatenatedMatrix = $getConcatenatedMatrix();
+            position.x = pivotPosition.x * concatenatedMatrix[0] + pivotPosition.y * concatenatedMatrix[2] + concatenatedMatrix[4];
+            position.y = pivotPosition.y * concatenatedMatrix[1] + pivotPosition.y * concatenatedMatrix[3] + concatenatedMatrix[5];
+
+        } else {
+            position.x = referenceSetting.x;
+            position.y = referenceSetting.y;
+        }
 
         const workSpace = $getCurrentWorkSpace();
         position.x += bounds.xMin * workSpace.scale;

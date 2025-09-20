@@ -6,6 +6,7 @@ import { execute as arrowToolStageRectPointerMoveEventUseCase } from "./ArrowToo
 import { execute as stageRectHideService } from "@/screen/application/StageRect/service/StageRectHideService";
 import { execute as arrowToolCreateAxesService } from "../service/ArrowToolCreateAxesService";
 import { execute as arrowToolProjectOntoAxisService } from "../service/ArrowToolProjectOntoAxisService";
+import { Matrix } from "@next2d/geom";
 import {
     $SCREEN_STAGE_AREA_ID,
     $SCREEN_STAGE_RECT_ID
@@ -14,6 +15,7 @@ import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description 範囲選択のマウスアップイベントの実行関数
@@ -95,6 +97,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const movieClip = workSpace.scene;
     const externalScreen = new ExternalScreen(workSpace, movieClip);
 
+    const concatenatedMatrix = $getConcatenatedMatrix();
     const frame = movieClip.currentFrame;
     for (let idx = 0; movieClip.layers.length > idx; ++idx) {
 
@@ -121,7 +124,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
                 continue;
             }
 
-            const matrix = character.matrix;
+            const matrix = Matrix.multiply(concatenatedMatrix, character.matrix);
             const characterRect = [
                 {
                     "x": rawBounds.xMin * matrix[0] + rawBounds.yMin * matrix[2] + matrix[4],

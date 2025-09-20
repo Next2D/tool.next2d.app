@@ -61,16 +61,38 @@ class ReferenceSetting
     public active: boolean = false;
 
     /**
+     * @description 直前のx座標を返却
+     *              Return the previous x coordinate
+     *
+     * @member {number}
+     * @default 0
+     * @public
+     */
+    public beforeX: number = 0;
+
+    /**
+     * @description 直前のy座標を返却
+     *              Return the previous y coordinate
+     *
+     * @member {number}
+     * @default 0
+     * @public
+     */
+    public beforeY: number = 0;
+
+    /**
      * @constructor
      * @public
      */
     constructor ()
     {
-        this.x      = 0;
-        this.y      = 0;
-        this.state  = "hide";
-        this.pivot  = "middle-center";
-        this.active = false;
+        this.x       = 0;
+        this.y       = 0;
+        this.state   = "hide";
+        this.pivot   = "middle-center";
+        this.active  = false;
+        this.beforeX = 0;
+        this.beforeY = 0;
     }
 
     /**
@@ -96,11 +118,13 @@ class ReferenceSetting
      */
     clear (): void
     {
-        this.x      = 0;
-        this.y      = 0;
-        this.state  = "hide";
-        this.pivot  = "middle-center";
-        this.active = false;
+        this.x       = 0;
+        this.y       = 0;
+        this.state   = "hide";
+        this.pivot   = "middle-center";
+        this.active  = false;
+        this.beforeX = 0;
+        this.beforeY = 0;
     }
 }
 

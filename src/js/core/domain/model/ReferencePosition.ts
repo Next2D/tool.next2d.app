@@ -56,9 +56,9 @@ export class ReferencePosition
     constructor (character: Character)
     {
         this._$character = character;
-        this._$x       = 0;
-        this._$y       = 0;
-        this.pivot     = "middle-center";
+        this._$x         = 0;
+        this._$y         = 0;
+        this.pivot       = "middle-center";
     }
 
     /**
@@ -125,8 +125,8 @@ export class ReferencePosition
     toObject (): IReferencePositionSaveObject
     {
         return {
-            "x": this.pivot ? this._$x : 0,
-            "y": this.pivot ? this._$y : 0,
+            "x": this.pivot ? 0 : this._$x,
+            "y": this.pivot ? 0 : this._$y,
             "pivot": this.pivot
         };
     }
