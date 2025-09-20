@@ -23,7 +23,7 @@ export const execute = (pivot: IPivotType, x: number, y: number, character: Char
     let dx = x;
     let dy = y;
 
-    if (pivot) {
+    if (pivot && pivot !== "none") {
         const rawBounds = character.getRawBounds();
         if (!rawBounds) {
             return { "x": 0, "y": 0 };

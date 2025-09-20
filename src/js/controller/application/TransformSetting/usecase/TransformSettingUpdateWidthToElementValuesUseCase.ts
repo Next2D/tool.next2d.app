@@ -10,10 +10,7 @@ import { execute as screenStandardPointDeployElementUseCase } from "@/screen/app
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { Matrix } from "@next2d/geom";
-import {
-    $getCurrentWorkSpace,
-    $getMatrixBounds
-} from "@/core/application/CoreUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
@@ -116,28 +113,24 @@ export const execute = (scale_x: number): void =>
                 Matrix.multiply(character.matrix, parentMatrix)
             );
 
-            const canvas = node.querySelector("canvas");
-            const matrixBounds = $getMatrixBounds(
-                0, 0,
-                character.width,
-                character.height,
-                concatenatedMatrix
-            );
+            const bounds = character.getBounds(frame, true);
+            if (bounds) {
+                node.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin))}px`;
+                node.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin))}px`;
+                node.style.left   = `${$getScreenOffsetLeft() + bounds.xMin}px`;
+                node.style.top    = `${$getScreenOffsetTop()  + bounds.yMin}px`;
+            }
 
-            node.style.width  = `${Math.abs(matrixBounds.xMax - matrixBounds.xMin)}px`;
-            node.style.height = `${Math.abs(matrixBounds.yMax - matrixBounds.yMin)}px`;
             const container = node.querySelector(".canvas-container") as HTMLDivElement;
             if (container) {
-                const bounds = character.getRawBounds();
-                if (canvas && bounds) {
-                    container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * character.scaleX * scaleX))}px`;
-                    container.style.height = canvas.style.height = `${Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * character.scaleY * scaleY))}px`;
+                const canvas = node.querySelector("canvas");
+                const rawBounds = character.getRawBounds();
+                if (canvas && rawBounds) {
+                    container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX))}px`;
+                    container.style.height = canvas.style.height = `${Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY))}px`;
                 }
                 container.style.transform = $createTransformElementStyle(character);
             }
-
-            node.style.left = `${$getScreenOffsetLeft() + character.globalMinX}px`;
-            node.style.top  = `${$getScreenOffsetTop()  + character.globalMinY}px`;
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateXElementService(character.x);

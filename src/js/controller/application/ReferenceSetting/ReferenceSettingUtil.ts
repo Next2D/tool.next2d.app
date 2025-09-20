@@ -15,7 +15,9 @@ import type { IPosition } from "@/interface/IPosition";
 export const $getPivotPosition = (
     pivot: IPivotType,
     width: number,
-    height: number
+    height: number,
+    x: number = 0,
+    y: number = 0
 ): IPosition => {
 
     switch (pivot) {
@@ -48,7 +50,7 @@ export const $getPivotPosition = (
             return { "x": width, "y": height };
 
         default:
-            return { "x": width / 2, "y": height / 2 };
+            return { "x": x, "y": y };
 
     }
 };

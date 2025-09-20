@@ -40,10 +40,12 @@
         position        : absolute;
         align-items     : center;
         justify-content : center;
+        pointer-events  : none;
 
         .canvas-container
         {
-            display : flex;
+            display        : flex;
+            pointer-events : auto;
 
             canvas
             {

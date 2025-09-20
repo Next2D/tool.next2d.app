@@ -55,20 +55,22 @@ export const execute = (event: PointerEvent): void =>
                 return ;
             }
 
-            if (character.referencePosition.pivot) {
+            if (!character.referencePosition.pivot
+                || character.referencePosition.pivot !== "none"
+            ) {
                 const localPosition = character.referencePosition.getLocalPosition();
                 character.referencePosition.y = localPosition.y;
 
                 // fixed logic 最後に固定値を外す
-                character.referencePosition.pivot = "";
-                referenceSettingUpdateCellValueService("");
+                character.referencePosition.pivot = "none";
+                referenceSettingUpdateCellValueService("none");
             }
 
             character.referencePosition.x = x;
         } else {
             if (referenceSetting.pivot) {
-                referenceSetting.pivot = "";
-                referenceSettingUpdateCellValueService("");
+                referenceSetting.pivot = "none";
+                referenceSettingUpdateCellValueService("none");
             }
         }
 

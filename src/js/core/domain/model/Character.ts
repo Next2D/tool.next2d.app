@@ -282,58 +282,6 @@ export class Character
     }
 
     /**
-     * @description ローカル座標からグローバルのx座標を返却
-     *              Return global x coordinate from local coordinates
-     *
-     * @member {number}
-     * @readonly
-     * @public
-     */
-    get globalMinX (): number
-    {
-        const calcBounds = this.getBounds();
-        if (!calcBounds) {
-            return 0;
-        }
-
-        const bounds = $getMatrixBounds(
-            calcBounds.xMin,
-            calcBounds.yMin,
-            calcBounds.xMax,
-            calcBounds.yMax,
-            $getConcatenatedMatrix()
-        );
-
-        return bounds.xMin;
-    }
-
-    /**
-     * @description ローカル座標からグローバルのy座標を返却
-     *              Return global y coordinate from local coordinates
-     *
-     * @member {number}
-     * @readonly
-     * @public
-     */
-    get globalMinY (): number
-    {
-        const calcBounds = this.getBounds();
-        if (!calcBounds) {
-            return 0;
-        }
-
-        const bounds = $getMatrixBounds(
-            calcBounds.xMin,
-            calcBounds.yMin,
-            calcBounds.xMax,
-            calcBounds.yMax,
-            $getConcatenatedMatrix()
-        );
-
-        return bounds.yMin;
-    }
-
-    /**
      * @description elemnt表示位置のx座標を返却
      *              Return x coordinate of elemnt display position
      *

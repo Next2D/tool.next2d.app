@@ -76,7 +76,7 @@ export const execute = (pivot: IPivotType): void =>
             break;
 
         default:
-            break;
+            return ;
 
     }
 

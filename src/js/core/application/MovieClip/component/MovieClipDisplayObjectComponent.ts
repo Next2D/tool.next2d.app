@@ -3,7 +3,7 @@ import { $createTransformElementStyle } from "@/controller/application/Transform
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
-import { $getMatrixBounds } from "../../CoreUtil";
+import { $getCurrentWorkSpace } from "../../CoreUtil";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
@@ -24,28 +24,28 @@ export const execute = (
     layer_id: number
 ): string => {
 
-    const bounds = character.getRawBounds();
+    const rawBounds = character.getRawBounds();
+    if (!rawBounds) {
+        return "";
+    }
+
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
+
+    const bounds = character.getBounds(movieClip.currentFrame, true);
     if (!bounds) {
         return "";
     }
 
+    const x = $getScreenOffsetLeft() + Math.ceil(bounds.xMin);
+    const y = $getScreenOffsetTop()  + Math.ceil(bounds.yMin);
+
     const concatMatrix = $getConcatenatedMatrix();
-
-    const x = $getScreenOffsetLeft() + character.globalMinX;
-    const y = $getScreenOffsetTop()  + character.globalMinY;
-
     const scaleX = characterCalcGetScaleXService(concatMatrix);
     const scaleY = characterCalcGetScaleYService(concatMatrix);
 
-    const width  = Math.ceil(Math.abs((bounds.xMax - bounds.xMin) * character.scaleX * scaleX));
-    const height = Math.ceil(Math.abs((bounds.yMax - bounds.yMin) * character.scaleY * scaleY));
+    const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
+    const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));
 
-    const matrixBounds = $getMatrixBounds(
-        0, 0,
-        character.width,
-        character.height,
-        concatMatrix
-    );
-
-    return `<div class="display-object layer-id-${layer_id}" data-depth="${character.depth}" data-layer-id="${layer_id}" style="left: ${x}px; top: ${y}px; width: ${Math.abs(matrixBounds.xMax - matrixBounds.xMin)}px; height: ${Math.abs(matrixBounds.yMax - matrixBounds.yMin)}px; opacity: ${character.alpha};"><div class="canvas-container container-layer-id-${layer_id}" style="width: ${width}px; height: ${height}px; transform: ${$createTransformElementStyle(character)};"></div></div>`;
+    return `<div class="display-object layer-id-${layer_id}" data-depth="${character.depth}" data-layer-id="${layer_id}" style="left: ${x}px; top: ${y}px; width: ${Math.ceil(Math.abs(bounds.xMax - bounds.xMin))}px; height: ${Math.ceil(Math.abs(bounds.yMax - bounds.yMin))}px; opacity: ${character.alpha};"><div class="canvas-container container-layer-id-${layer_id}" style="width: ${width}px; height: ${height}px; transform: ${$createTransformElementStyle(character)};"></div></div>`;
 };

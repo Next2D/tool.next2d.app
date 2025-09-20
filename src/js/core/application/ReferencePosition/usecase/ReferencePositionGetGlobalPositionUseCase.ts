@@ -2,8 +2,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { IPosition } from "@/interface/IPosition";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
-import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { $getCurrentWorkSpace } from "../../CoreUtil";
 import { $getPivotPosition } from "@/controller/application/ReferenceSetting/ReferenceSettingUtil";
 
 /**
@@ -48,24 +46,20 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
             return null;
         }
 
-        if (referenceSetting.pivot) {
+        if (referenceSetting.pivot !== "none") {
             const width  = Math.abs(bounds.xMax - bounds.xMin);
             const height = Math.abs(bounds.yMax - bounds.yMin);
 
-            const pivotPosition = $getPivotPosition(referenceSetting.pivot, width, height);
-
-            const concatenatedMatrix = $getConcatenatedMatrix();
-            position.x = pivotPosition.x * concatenatedMatrix[0] + pivotPosition.y * concatenatedMatrix[2] + concatenatedMatrix[4];
-            position.y = pivotPosition.y * concatenatedMatrix[1] + pivotPosition.y * concatenatedMatrix[3] + concatenatedMatrix[5];
-
-        } else {
-            position.x = referenceSetting.x;
-            position.y = referenceSetting.y;
+            const pivotPosition = $getPivotPosition(
+                referenceSetting.pivot, width, height,
+                referenceSetting.x, referenceSetting.y
+            );
+            position.x = pivotPosition.x;
+            position.y = pivotPosition.y;
         }
 
-        const workSpace = $getCurrentWorkSpace();
-        position.x += bounds.xMin * workSpace.scale;
-        position.y += bounds.yMin * workSpace.scale;
+        position.x += bounds.xMin;
+        position.y += bounds.yMin;
     }
 
     return position;

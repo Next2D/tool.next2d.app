@@ -5,6 +5,7 @@ import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 指定レイヤーの指定DisplayObjectのElementの座標を内部データに合わせる
@@ -23,6 +24,14 @@ export const execute = (layer: Layer, character: Character): void =>
         return ;
     }
 
-    element.style.left = `${$getScreenOffsetLeft() + Math.ceil(character.globalMinX)}px`;
-    element.style.top  = `${$getScreenOffsetTop()  + Math.ceil(character.globalMinY)}px`;
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
+
+    const bounds = character.getBounds(movieClip.currentFrame, true);
+    if (!bounds) {
+        return ;
+    }
+
+    element.style.left = `${$getScreenOffsetLeft() + Math.ceil(bounds.xMin)}px`;
+    element.style.top  = `${$getScreenOffsetTop()  + Math.ceil(bounds.yMin)}px`;
 };
