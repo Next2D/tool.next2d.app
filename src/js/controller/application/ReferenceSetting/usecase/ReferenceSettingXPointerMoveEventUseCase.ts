@@ -77,7 +77,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // elementの位置を更新
-        referenceSetting.x += x - value;
+        referenceSetting.movementX += x - value;
         referenceSetting.active = false;
         screenReferencePointDeployElementUseCase();
     });

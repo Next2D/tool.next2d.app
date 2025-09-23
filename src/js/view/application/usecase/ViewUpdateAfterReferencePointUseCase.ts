@@ -59,6 +59,7 @@ export const execute = (
             return ;
         }
 
+        referenceSetting.multiPivot = pivot;
         referenceSettingUpdateElementUseCase(pivot, position.x, position.y);
     }
 

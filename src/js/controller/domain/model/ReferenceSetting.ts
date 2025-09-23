@@ -81,18 +81,51 @@ class ReferenceSetting
     public beforeY: number = 0;
 
     /**
+     * @description ポインタームーブイベントでの移動量を返却
+     *              Returns the amount of movement in the pointer move event
+     *
+     * @member {number}
+     * @default 0
+     * @public
+     */
+    public movementX: number = 0;
+
+    /**
+     * @description ポインタームーブイベントでの移動量を返却
+     *              Returns the amount of movement in the pointer move event
+     *
+     * @member {number}
+     * @default 0
+     * @public
+     */
+    public movementY: number = 0;
+
+    /**
+     * @description 複数選択時の基準点の位置を返却
+     *              Returns the position of the reference point when multiple selections are made
+     *
+     * @member {IPivotType}
+     * @default "middle-center"
+     * @public
+     */
+    public multiPivot: IPivotType = "middle-center";
+
+    /**
      * @constructor
      * @public
      */
     constructor ()
     {
-        this.x       = 0;
-        this.y       = 0;
-        this.state   = "hide";
-        this.pivot   = "middle-center";
-        this.active  = false;
-        this.beforeX = 0;
-        this.beforeY = 0;
+        this.x          = 0;
+        this.y          = 0;
+        this.state      = "hide";
+        this.pivot      = "middle-center";
+        this.multiPivot = "middle-center";
+        this.active     = false;
+        this.beforeX    = 0;
+        this.beforeY    = 0;
+        this.movementX  = 0;
+        this.movementY  = 0;
     }
 
     /**
@@ -118,13 +151,16 @@ class ReferenceSetting
      */
     clear (): void
     {
-        this.x       = 0;
-        this.y       = 0;
-        this.state   = "hide";
-        this.pivot   = "middle-center";
-        this.active  = false;
-        this.beforeX = 0;
-        this.beforeY = 0;
+        this.x          = 0;
+        this.y          = 0;
+        this.state      = "hide";
+        this.pivot      = "middle-center";
+        this.multiPivot = "middle-center";
+        this.active     = false;
+        this.beforeX    = 0;
+        this.beforeY    = 0;
+        this.movementX  = 0;
+        this.movementY  = 0;
     }
 }
 

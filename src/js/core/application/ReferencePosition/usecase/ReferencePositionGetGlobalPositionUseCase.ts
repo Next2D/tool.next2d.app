@@ -42,27 +42,25 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
         position.y = character.referencePosition.y;
     } else {
 
-        if (referenceSetting.pivot !== "none") {
-            const bounds = screenAreaCalcSelectedBoundsService(movie_clip, true);
-            if (!bounds) {
-                return null;
-            }
-
-            const width  = Math.abs(bounds.xMax - bounds.xMin);
-            const height = Math.abs(bounds.yMax - bounds.yMin);
-
-            const pivotPosition = $getPivotPosition(
-                referenceSetting.pivot, width, height
-            );
-            position.x = pivotPosition.x;
-            position.y = pivotPosition.y;
-
-            position.x += bounds.xMin;
-            position.y += bounds.yMin;
-        } else {
-            position.x = referenceSetting.x;
-            position.y = referenceSetting.y;
+        const bounds = screenAreaCalcSelectedBoundsService(movie_clip, true);
+        if (!bounds) {
+            return null;
         }
+
+        const width  = Math.abs(bounds.xMax - bounds.xMin);
+        const height = Math.abs(bounds.yMax - bounds.yMin);
+
+        const pivotPosition = $getPivotPosition(
+            referenceSetting.multiPivot, width, height
+        );
+        position.x = pivotPosition.x;
+        position.y = pivotPosition.y;
+
+        position.x += bounds.xMin;
+        position.y += bounds.yMin;
+
+        position.x += referenceSetting.movementX;
+        position.y += referenceSetting.movementY;
     }
 
     return position;
