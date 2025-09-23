@@ -41,12 +41,13 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
         position.x = character.referencePosition.x;
         position.y = character.referencePosition.y;
     } else {
-        const bounds = screenAreaCalcSelectedBoundsService(movie_clip, true);
-        if (!bounds) {
-            return null;
-        }
 
         if (referenceSetting.pivot !== "none") {
+            const bounds = screenAreaCalcSelectedBoundsService(movie_clip, true);
+            if (!bounds) {
+                return null;
+            }
+
             const width  = Math.abs(bounds.xMax - bounds.xMin);
             const height = Math.abs(bounds.yMax - bounds.yMin);
 
@@ -55,13 +56,13 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
             );
             position.x = pivotPosition.x;
             position.y = pivotPosition.y;
-        } else {
-            position.x = referenceSetting.localX;
-            position.y = referenceSetting.localY;
-        }
 
-        position.x += bounds.xMin;
-        position.y += bounds.yMin;
+            position.x += bounds.xMin;
+            position.y += bounds.yMin;
+        } else {
+            position.x = referenceSetting.x;
+            position.y = referenceSetting.y;
+        }
     }
 
     return position;

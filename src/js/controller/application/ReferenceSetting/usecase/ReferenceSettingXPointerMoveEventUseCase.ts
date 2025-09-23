@@ -34,12 +34,14 @@ export const execute = (event: PointerEvent): void =>
             return ;
         }
 
+        const workSpace = $getCurrentWorkSpace();
+
         // 表示を更新
-        const x = Math.ceil(parseFloat(element.value) + event.movementX);
+        const value = parseFloat(element.value);
+        const x = Math.ceil(value + event.movementX / workSpace.scale);
         element.value = `${x}`;
 
         // 中心点を更新
-        const workSpace = $getCurrentWorkSpace();
         const movieClip = workSpace.scene;
         if (movieClip.isSingleSelectedOfDisplayObject()) {
             const layer = movieClip.getLayer(
@@ -75,7 +77,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // elementの位置を更新
-        referenceSetting.localX = x;
+        referenceSetting.x += x - value;
         referenceSetting.active = false;
         screenReferencePointDeployElementUseCase();
     });

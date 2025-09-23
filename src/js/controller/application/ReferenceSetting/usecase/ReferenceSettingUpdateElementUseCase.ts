@@ -2,7 +2,6 @@ import type { IPivotType } from "@/interface/IPivotType";
 import { execute as referenceSettingUpdateCellValueService } from "../service/ReferenceSettingUpdateCellValueService";
 import { execute as referenceSettingUpdateXService } from "../service/ReferenceSettingUpdateXService";
 import { execute as referenceSettingUpdateYService } from "../service/ReferenceSettingUpdateYService";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description ReferenceSettingの要素を更新するユースケース
@@ -22,7 +21,4 @@ export const execute = (pivot: IPivotType, x: number, y: number): void =>
     // X座標、Y座標を更新
     referenceSettingUpdateXService(x);
     referenceSettingUpdateYService(y);
-
-    referenceSetting.localX = x;
-    referenceSetting.localY = y;
 };
