@@ -42,13 +42,13 @@ export class ExternalReference
      *              Set the center point of transformation
      *
      * @param  {IPivotType} pivot
-     * @return {void}
+     * @return {Promise<void>}
      * @method
      * @public
      */
-    setPivot (pivot: IPivotType): void
+    async setPivot (pivot: IPivotType): Promise<void>
     {
-        externalReferenceSetPivotUseCase(
+        await externalReferenceSetPivotUseCase(
             this._$workSpace,
             this._$movieClip,
             pivot

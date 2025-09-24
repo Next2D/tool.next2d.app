@@ -8,11 +8,11 @@ import { $activeTouchPointers } from "@/global/GlobalUtil";
  *              Reference Point Area Pointer Down Event Execution Use Case
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1
@@ -30,5 +30,5 @@ export const execute = (event: PointerEvent): void =>
 
     const workSpace = $getCurrentWorkSpace();
     const externalReference = new ExternalReference(workSpace, workSpace.scene);
-    externalReference.setPivot(element.dataset.position as IPivotType);
+    await externalReference.setPivot(element.dataset.position as IPivotType);
 };

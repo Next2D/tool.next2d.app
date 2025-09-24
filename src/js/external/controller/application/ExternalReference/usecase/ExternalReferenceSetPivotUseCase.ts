@@ -11,15 +11,15 @@ import { execute as viewUpdateAfterReferencePointUseCase } from "@/view/applicat
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {IPivotType} pivot
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     pivot: IPivotType
-): void => {
+): Promise<void> => {
 
     // 選択中のDisplayObjectが無い場合は処理しない
     if (!movie_clip.selectedDepths.size) {
