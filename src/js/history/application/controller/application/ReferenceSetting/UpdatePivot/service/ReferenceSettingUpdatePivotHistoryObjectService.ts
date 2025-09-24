@@ -33,6 +33,9 @@ export const execute = (
         "messages": [
             work_space_id,
             movie_clip.id,
+            movie_clip.layers.indexOf(layer),
+            character.startFrame,
+            character.depth,
             Array.from(movie_clip.selectedDepths),
             before_pivot,
             after_pivot

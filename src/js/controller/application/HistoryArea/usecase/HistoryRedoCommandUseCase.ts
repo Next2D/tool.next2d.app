@@ -8,6 +8,7 @@ import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import type { ISoundObject } from "@/interface/ISoundObject";
 import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import type { IBounds } from "@/interface/IBounds";
+import type { IPivotType } from "@/interface/IPivotType";
 import { execute as screenTabNameAddHistoryRedoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryRedoUseCase";
@@ -65,6 +66,7 @@ import { execute as characterUpdateScaleXHistoryRedoUseCase } from "@/history/ap
 import { execute as characterUpdateScaleYHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateScaleY/usecase/CharacterUpdateScaleYHistoryRedoUseCase";
 import { execute as characterUpdateRotateHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateRotate/usecase/CharacterUpdateRotateHistoryRedoUseCase";
 import { execute as characterUpdateMatrixHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryRedoUseCase";
+import { execute as referenceSettingUpdatePivotHistoryRedoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdatePivot/usecase/ReferenceSettingUpdatePivotHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -122,7 +124,8 @@ import {
     $CHARACTER_UPDATE_SCALE_X_COMMAND,
     $CHARACTER_UPDATE_SCALE_Y_COMMAND,
     $CHARACTER_UPDATE_ROTATE_COMMAND,
-    $CHARACTER_UPDATE_MATRIX_COMMAND
+    $CHARACTER_UPDATE_MATRIX_COMMAND,
+    $REFERENCE_UPDATE_PIVOT_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -709,6 +712,18 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[6] as number[] // After Matrix
+            );
+            break;
+
+        case $REFERENCE_UPDATE_PIVOT_COMMAND:
+            await referenceSettingUpdatePivotHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as Array<[number, number[]]>, // Depth
+                messages[7] as IPivotType // After Matrix
             );
             break;
 
