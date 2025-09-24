@@ -1,7 +1,9 @@
 import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { IPivotType } from "@/interface/IPivotType";
+import type { Layer } from "@/core/domain/model/Layer";
+import type { Character } from "@/core/domain/model/Character";
 import { $REFERENCE_UPDATE_PIVOT_COMMAND } from "@/config/HistoryConfig";
-import { IPivotType } from "@/interface/IPivotType";
 
 /**
  * @description ReferenceSettingのpivot更新の履歴オブジェクトを生成する
@@ -9,6 +11,8 @@ import { IPivotType } from "@/interface/IPivotType";
  *
  * @param  {number} work_space_id
  * @param  {MovieClip} movie_clip
+ * @param  {Layer} layer
+ * @param  {Character} character
  * @param  {IPivotType} before_pivot
  * @param  {IPivotType} after_pivot
  * @return {object}
@@ -18,6 +22,8 @@ import { IPivotType } from "@/interface/IPivotType";
 export const execute = (
     work_space_id: number,
     movie_clip: MovieClip,
+    layer: Layer,
+    character: Character,
     before_pivot: IPivotType,
     after_pivot: IPivotType
 ): IHistoryObject => {
@@ -27,10 +33,15 @@ export const execute = (
         "messages": [
             work_space_id,
             movie_clip.id,
+            Array.from(movie_clip.selectedDepths),
             before_pivot,
             after_pivot
         ],
         "args": [
+            movie_clip.name,
+            layer.name,
+            character.startFrame,
+            character.depth,
             before_pivot,
             after_pivot
         ]

@@ -3,6 +3,8 @@ import type { IPivotType } from "@/interface/IPivotType";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalReferencePivotValidation } from "../service/ExternalReferencePivotValidation";
 import { execute as viewUpdateAfterReferencePointUseCase } from "@/view/application/usecase/ViewUpdateAfterReferencePointUseCase";
+import { execute as updatePivotUpdatePivotHistoryUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdatePivot/usecase/UpdatePivotUpdatePivotHistoryUseCase";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description 変形の中心座標を指定ポイントに設定
@@ -50,10 +52,15 @@ export const execute = async (
             return ;
         }
 
+        // 履歴を登録
+        // fixed logic: 更新前に履歴に残す
+        await updatePivotUpdatePivotHistoryUseCase(
+            work_space, movie_clip, layer, character,
+            referenceSetting.pivot, pivot
+        );
+
         character.referencePosition.pivot = pivot;
     }
-
-    // TODO: 履歴機能
 
     // 表示を更新
     viewUpdateAfterReferencePointUseCase(work_space, movie_clip, pivot);
