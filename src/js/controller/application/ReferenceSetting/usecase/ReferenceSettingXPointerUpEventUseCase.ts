@@ -1,6 +1,8 @@
 import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as referenceSettingXPointerMoveEventUseCase } from "./ReferenceSettingXPointerMoveEventUseCase";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 
 /**
  * @description 中心点エリアのx座標の値操作のポインタアップイベント
@@ -32,6 +34,10 @@ export const execute = (event: PointerEvent): void =>
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
+
+    const workSpace = $getCurrentWorkSpace();
+    const externalReference = new ExternalReference(workSpace, workSpace.scene);
+    await externalReference.setPivot(element.dataset.position as IPivotType);
 
     // input要素のフォーカス
     element.focus();

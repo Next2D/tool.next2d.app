@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { IPivotType } from "@/interface/IPivotType";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewUpdateAfterReferencePointUseCase } from "@/view/application/usecase/ViewUpdateAfterReferencePointUseCase";
+import { execute as viewUpdateAfterReferencePivotUseCase } from "@/view/application/usecase/ViewUpdateAfterReferencePivotUseCase";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 
@@ -63,5 +63,5 @@ export const execute = async (
     character.referencePosition.pivot = before_pivot;
 
     // 表示を更新
-    viewUpdateAfterReferencePointUseCase(workSpace, movieClip, before_pivot);
+    viewUpdateAfterReferencePivotUseCase(workSpace, movieClip, before_pivot);
 };

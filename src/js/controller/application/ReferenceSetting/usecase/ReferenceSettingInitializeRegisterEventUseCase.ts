@@ -3,6 +3,9 @@ import { execute as referenceSettingBoxPointerDownUseCase } from "./ReferenceSet
 import { execute as referenceSettingPointerOverEventService } from "../service/ReferenceSettingPointerOverEventService";
 import { execute as referenceSettingPointerOutEventService } from "../service/ReferenceSettingPointerOutEventService";
 import { execute as referenceSettingXPointerDownUseCase } from "./ReferenceSettingXPointerDownUseCase";
+import { execute as referenceSettingInputKeyPressEventService } from "../service/ReferenceSettingInputKeyPressEventService";
+import { execute as referenceSettingXFocusInEventService } from "../service/ReferenceSettingXFocusInEventService";
+import { execute as referenceSettingXFocusOutEventUseCase } from "./ReferenceSettingXFocusOutEventUseCase";
 import {
     $REFERENCE_SETTING_BOX_ID,
     $TRANSFORM_REFERENCE_X_ID,
@@ -41,6 +44,15 @@ export const execute = (): void =>
         transformReferenceX.addEventListener(EventType.POINTER_DOWN,
             referenceSettingXPointerDownUseCase,
             { "passive": false }
+        );
+        transformReferenceX.addEventListener("focusin",
+            referenceSettingXFocusInEventService
+        );
+        transformReferenceX.addEventListener("focusout",
+            referenceSettingXFocusOutEventUseCase
+        );
+        transformReferenceX.addEventListener("keypress",
+            referenceSettingInputKeyPressEventService
         );
     }
 

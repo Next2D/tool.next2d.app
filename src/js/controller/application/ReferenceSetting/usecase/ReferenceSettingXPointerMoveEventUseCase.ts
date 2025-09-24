@@ -1,5 +1,5 @@
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
-import { $setCursor } from "@/global/GlobalUtil";
+import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as referenceSettingUpdateCellValueService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService";
@@ -38,7 +38,10 @@ export const execute = (event: PointerEvent): void =>
 
         // 表示を更新
         const value = parseFloat(element.value);
-        const x = Math.ceil(value + event.movementX / workSpace.scale);
+        const x = $clamp(
+            Math.ceil(value + event.movementX / workSpace.scale),
+            -Number.MAX_VALUE, Number.MAX_VALUE
+        );
         element.value = `${x}`;
 
         // 中心点を更新

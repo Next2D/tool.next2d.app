@@ -2,7 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IPivotType } from "@/interface/IPivotType";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as externalReferencePivotValidation } from "../service/ExternalReferencePivotValidation";
-import { execute as viewUpdateAfterReferencePointUseCase } from "@/view/application/usecase/ViewUpdateAfterReferencePointUseCase";
+import { execute as viewUpdateAfterReferencePivotUseCase } from "@/view/application/usecase/ViewUpdateAfterReferencePivotUseCase";
 import { execute as referenceSettingUpdatePivotHistoryUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdatePivot/usecase/ReferenceSettingUpdatePivotHistoryUseCase";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
@@ -63,5 +63,5 @@ export const execute = async (
     }
 
     // 表示を更新
-    viewUpdateAfterReferencePointUseCase(work_space, movie_clip, pivot);
+    viewUpdateAfterReferencePivotUseCase(work_space, movie_clip, pivot);
 };
