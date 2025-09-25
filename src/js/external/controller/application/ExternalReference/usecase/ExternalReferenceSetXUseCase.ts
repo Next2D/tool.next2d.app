@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as externalReferenceSetXUseCase } from "@/external/controller/application/ExternalReference/usecase/ExternalReferenceSetXUseCase";
+import { execute as referenceSettingUpdateXHistoryUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateX/usecase/ReferenceSettingUpdateXHistoryUseCase";
 
 /**
  * @description 中心点のx座標を設定するユースケース
@@ -45,9 +45,12 @@ export const execute = async (
 
         // 履歴を登録
         // fixed logic: 更新前に履歴に残す
-        externalReferenceSetXUseCase(
+        await referenceSettingUpdateXHistoryUseCase(
             work_space,
             movie_clip,
+            layer,
+            character,
+            character.referencePosition.x,
             x
         );
 

@@ -62,6 +62,10 @@ export const execute = async (
         character.referencePosition.pivot = pivot;
     }
 
+    // 表示の更新
+    referenceSetting.clear();
+    referenceSetting.pivot = pivot;
+
     // 表示を更新
     viewReferenceSettingUpdatePivotUseCase(work_space, movie_clip, pivot);
 };

@@ -7,8 +7,8 @@ import { execute as referenceSettingGetMultiRawPositionUseCase } from "@/control
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
- * @description 変形の中心座標を指定ポイントに設定
- *              Set the transformation center point to the specified coordinates
+ * @description 変形のx座標を指定ポイントに設定
+ *              Set the transformation x-coordinate to the specified coordinates
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
@@ -20,7 +20,7 @@ import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 export const execute = (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    pivot: IPivotType
+    x: number
 ): void => {
 
     // ワークスペースとムービークリップがアクティブな場合は表示を更新
@@ -32,6 +32,9 @@ export const execute = (
     if (!movie_clip.selectedDepths.size) {
         return ;
     }
+
+    // referenceSetting.clear();
+    // referenceSetting.x = pivot;
 
     if (movie_clip.isSingleSelectedOfDisplayObject()) {
         const layer = movie_clip.getLayer(
@@ -48,7 +51,7 @@ export const execute = (
         }
 
         // ローカル座標を取得してReferenceSettingに設定
-        const localPosition = character.referencePosition.getLocalPosition();
+        const localPosition  = character.referencePosition.getLocalPosition();
         referenceSettingUpdateElementUseCase(pivot, localPosition.x, localPosition.y);
     } else {
         const position = referenceSettingGetMultiRawPositionUseCase(movie_clip);
