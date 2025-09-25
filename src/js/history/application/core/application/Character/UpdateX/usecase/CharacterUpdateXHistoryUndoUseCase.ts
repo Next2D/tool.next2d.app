@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewUpdateAfterXUseCase } from "@/view/application/usecase/ViewUpdateAfterXUseCase";
+import { execute as viewTransformSettingUpdateXUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateXUseCase";
 
 /**
  * @description DisplayObjectのx座標を変更前に戻す
@@ -49,7 +49,7 @@ export const execute = async (
     character.x = before_x;
 
     // viewエリアの表示を更新
-    await viewUpdateAfterXUseCase(
+    await viewTransformSettingUpdateXUseCase(
         workSpace,
         movieClip,
         layer,

@@ -57,7 +57,9 @@ import {
     $CHARACTER_UPDATE_SCALE_Y_COMMAND,
     $CHARACTER_UPDATE_ROTATE_COMMAND,
     $CHARACTER_UPDATE_MATRIX_COMMAND,
-    $REFERENCE_UPDATE_PIVOT_COMMAND
+    $REFERENCE_UPDATE_PIVOT_COMMAND,
+    $REFERENCE_UPDATE_X_COMMAND,
+    $REFERENCE_UPDATE_Y_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -244,6 +246,12 @@ export const execute = (command: number): string =>
 
         case $REFERENCE_UPDATE_PIVOT_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の中心点を「%s5」から「%s6」に変更";
+
+        case $REFERENCE_UPDATE_X_COMMAND:
+            return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の中心点のx座標を%s5から%s6に変更";
+
+        case $REFERENCE_UPDATE_Y_COMMAND:
+            return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の中心点のy座標を%s5から%s6に変更";
 
         default:
             break;

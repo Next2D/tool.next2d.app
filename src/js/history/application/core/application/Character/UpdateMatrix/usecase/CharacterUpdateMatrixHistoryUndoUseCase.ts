@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewUpdateAfterMatrixUseCase } from "@/view/application/usecase/ViewUpdateAfterMatrixUseCase";
+import { execute as viewTransformSettingUpdateMatrixUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateMatrixUseCase";
 
 /**
  * @description DisplayObjectの行列を変更前に戻す
@@ -49,7 +49,7 @@ export const execute = async (
     character.matrix.set(before_matrix);
 
     // アクティブなら表示を更新
-    await viewUpdateAfterMatrixUseCase(
+    await viewTransformSettingUpdateMatrixUseCase(
         workSpace,
         movieClip,
         layer,

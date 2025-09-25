@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateNameHistoryUseCase } from "@/history/application/core/application/Character/UpdateName/usecase/CharacterUpdateNameHistoryUseCase";
-import { execute as viewUpdateAfterNameUseCase } from "@/view/application/usecase/ViewUpdateAfterNameUseCase";
+import { execute as viewObjectSettingUpdateNameUseCase } from "@/view/application/usecase/ViewObjectSettingUpdateNameUseCase";
 
 /**
  * @description DisplayObjectの名前を更新
@@ -47,7 +47,7 @@ export const execute = async (
     );
 
     // プロジェクトがアクティブなら表示を更新
-    viewUpdateAfterNameUseCase(
+    viewObjectSettingUpdateNameUseCase(
         work_space,
         movie_clip,
         layer,

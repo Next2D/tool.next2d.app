@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewUpdateAfterScaleYUseCase } from "@/view/application/usecase/ViewUpdateAfterScaleYUseCase";
+import { execute as viewTransformSettingUpdateScaleYUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateScaleYUseCase";
 
 /**
  * @description DisplayObjectのyスケールを変更前に戻す
@@ -49,7 +49,7 @@ export const execute = async (
     character.scaleY = before_scale_y / 100;
 
     // アクティブなら表示を更新
-    await viewUpdateAfterScaleYUseCase(
+    await viewTransformSettingUpdateScaleYUseCase(
         workSpace,
         movieClip,
         layer,

@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewUpdateAfterScaleXUseCase } from "@/view/application/usecase/ViewUpdateAfterScaleXUseCase";
+import { execute as viewTransformSettingUpdateScaleXUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateScaleXUseCase";
 
 /**
  * @description DisplayObjectのx座標を変更後に戻す
@@ -49,7 +49,7 @@ export const execute = async (
     character.scaleX = after_scale_x / 100;
 
     // アクティブなら表示を更新
-    await viewUpdateAfterScaleXUseCase(
+    await viewTransformSettingUpdateScaleXUseCase(
         workSpace,
         movieClip,
         layer,

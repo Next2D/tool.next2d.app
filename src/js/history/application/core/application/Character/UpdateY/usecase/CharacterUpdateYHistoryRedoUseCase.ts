@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewUpdateAfterYUseCase } from "@/view/application/usecase/ViewUpdateAfterYUseCase";
+import { execute as viewTransformSettingUpdateYUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateYUseCase";
 
 /**
  * @description DisplayObjectのy座標を変更後に戻す
@@ -49,7 +49,7 @@ export const execute = async (
     character.y = after_y;
 
     // アクティブなら表示を更新
-    await viewUpdateAfterYUseCase(
+    await viewTransformSettingUpdateYUseCase(
         workSpace,
         movieClip,
         layer,

@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateScaleYHistoryUseCase } from "@/history/application/core/application/Character/UpdateScaleY/usecase/CharacterUpdateScaleYHistoryUseCase";
-import { execute as viewUpdateAfterScaleYUseCase } from "@/view/application/usecase/ViewUpdateAfterScaleYUseCase";
+import { execute as viewTransformSettingUpdateScaleYUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateScaleYUseCase";
 
 /**
  * @description DisplayObjectのyスケールを更新
@@ -50,7 +50,7 @@ export const execute = async (
     );
 
     // アクティブなら表示を更新
-    await viewUpdateAfterScaleYUseCase(
+    await viewTransformSettingUpdateScaleYUseCase(
         work_space,
         movie_clip,
         layer,

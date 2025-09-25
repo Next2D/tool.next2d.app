@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateRotateHistoryUseCase } from "@/history/application/core/application/Character/UpdateRotate/usecase/CharacterUpdateRotateHistoryUseCase";
-import { execute as viewUpdateAfterRotateUseCase } from "@/view/application/usecase/ViewUpdateAfterRotateUseCase";
+import { execute as viewTransformSettingUpdateRotateUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateRotateUseCase";
 
 /**
  * @description DisplayObjectのxスケールを更新
@@ -50,7 +50,7 @@ export const execute = async (
     );
 
     // アクティブなら表示を更新
-    await viewUpdateAfterRotateUseCase(
+    await viewTransformSettingUpdateRotateUseCase(
         work_space,
         movie_clip,
         layer,

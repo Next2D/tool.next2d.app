@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewUpdateAfterRotateUseCase } from "@/view/application/usecase/ViewUpdateAfterRotateUseCase";
+import { execute as viewTransformSettingUpdateRotateUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateRotateUseCase";
 
 /**
  * @description DisplayObjectの回転値を変更前に戻す
@@ -49,7 +49,7 @@ export const execute = async (
     character.rotation = before_rotation;
 
     // アクティブなら表示を更新
-    await viewUpdateAfterRotateUseCase(
+    await viewTransformSettingUpdateRotateUseCase(
         workSpace,
         movieClip,
         layer,

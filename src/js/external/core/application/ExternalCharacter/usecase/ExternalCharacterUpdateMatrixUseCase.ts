@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateMatrixHistoryUseCase } from "@/history/application/core/application/Character/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryUseCase";
-import { execute as viewUpdateAfterMatrixUseCase } from "@/view/application/usecase/ViewUpdateAfterMatrixUseCase";
+import { execute as viewTransformSettingUpdateMatrixUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateMatrixUseCase";
 
 /**
  * @description DisplayObjectの変形行列を更新する
@@ -44,7 +44,7 @@ export const execute = async (
     );
 
     // 表示を更新
-    viewUpdateAfterMatrixUseCase(
+    viewTransformSettingUpdateMatrixUseCase(
         work_space,
         movie_clip,
         layer,

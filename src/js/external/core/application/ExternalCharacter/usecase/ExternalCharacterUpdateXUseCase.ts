@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateXHistoryUseCase } from "@/history/application/core/application/Character/UpdateX/usecase/CharacterUpdateXHistoryUseCase";
-import { execute as viewUpdateAfterXUseCase } from "@/view/application/usecase/ViewUpdateAfterXUseCase";
+import { execute as viewTransformSettingUpdateXUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateXUseCase";
 
 /**
  * @description DisplayObjectのx座標を更新
@@ -50,7 +50,7 @@ export const execute = async (
     );
 
     // viewエリアの表示を更新
-    await viewUpdateAfterXUseCase(
+    await viewTransformSettingUpdateXUseCase(
         work_space,
         movie_clip,
         layer,

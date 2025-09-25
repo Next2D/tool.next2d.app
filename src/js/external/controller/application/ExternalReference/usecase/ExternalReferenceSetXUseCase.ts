@@ -1,6 +1,18 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import { execute as externalReferenceSetXUseCase } from "@/external/controller/application/ExternalReference/usecase/ExternalReferenceSetXUseCase";
 
+/**
+ * @description 中心点のx座標を設定するユースケース
+ *              Use case for setting the x-coordinate of the center point
+ *
+ * @param  {WorkSpace} work_space
+ * @param  {MovieClip} movie_clip
+ * @param  {number} x
+ * @return {Promise<void>}
+ * @method
+ * @public
+ */
 export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
@@ -33,6 +45,11 @@ export const execute = async (
 
         // 履歴を登録
         // fixed logic: 更新前に履歴に残す
+        externalReferenceSetXUseCase(
+            work_space,
+            movie_clip,
+            x
+        );
 
         character.referencePosition.x = x;
     }

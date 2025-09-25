@@ -620,10 +620,28 @@ export const $CHARACTER_UPDATE_ROTATE_COMMAND: number = 62;
 export const $CHARACTER_UPDATE_MATRIX_COMMAND: number = 63;
 
 /**
- * @description DisplayObjectの参照ピボット更新の識別コマンド名
+ * @description 中心点のピボット更新の識別コマンド名
  *              Identification command name for updating the reference pivot of the DisplayObject
  *
  * @type {number}
  * @constant
  */
 export const $REFERENCE_UPDATE_PIVOT_COMMAND: number = 64;
+
+/**
+ * @description 中心点のx座標更新の識別コマンド名
+ *              Identification command name for updating the x-coordinate of the reference point
+ *
+ * @type {number}
+ * @constant
+ */
+export const $REFERENCE_UPDATE_X_COMMAND: number = 65;
+
+/**
+ * @description 中心点のy座標更新の識別コマンド名
+ *              Identification command name for updating the y-coordinate of the reference point
+ *
+ * @type {number}
+ * @constant
+ */
+export const $REFERENCE_UPDATE_Y_COMMAND: number = 66;
