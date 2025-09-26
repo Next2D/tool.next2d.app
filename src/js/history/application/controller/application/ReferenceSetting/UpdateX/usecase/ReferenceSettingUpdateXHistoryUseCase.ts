@@ -10,6 +10,7 @@ import { execute as historyRemoveElementService } from "@/controller/application
 import { execute as referenceSettingUpdateXHistoryObjectService } from "../service/ReferenceSettingUpdateXHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
+import { IPivotType } from "@/interface/IPivotType";
 
 /**
  * @description 中心点のx座標の更新履歴を登録
@@ -31,7 +32,6 @@ export const execute = async (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    before_x: number,
     after_x: number,
     receiver: boolean = false
 ): Promise<void> => {
@@ -43,7 +43,7 @@ export const execute = async (
     // fileIdは不要なので空文字をセット
     // fixed logic
     const historyObject = referenceSettingUpdateXHistoryObjectService(
-        work_space.id, movie_clip, layer, character, before_x, after_x
+        work_space.id, movie_clip, layer, character, after_x
     );
 
     // 作業履歴にElementを追加

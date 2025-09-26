@@ -48,7 +48,7 @@ export const execute = (event: PointerEvent): void =>
     element.style.cursor = "ew-resize";
 
     // 移動前の値を保存
-    referenceSetting.beforeX = referenceSetting.x;
+    referenceSetting.beforeX = parseFloat(element.value);
 
     // 移動のイベントを登録
     element.setPointerCapture(event.pointerId);

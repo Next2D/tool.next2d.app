@@ -68,6 +68,7 @@ import { execute as characterUpdateScaleYHistoryUndoUseCase } from "@/history/ap
 import { execute as characterUpdateRotateHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateRotate/usecase/CharacterUpdateRotateHistoryUndoUseCase";
 import { execute as characterUpdateMatrixHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryUndoUseCase";
 import { execute as referenceSettingUpdatePivotHistoryUndoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdatePivot/usecase/ReferenceSettingUpdatePivotHistoryUndoUseCase";
+import { execute as referenceSettingUpdateXHistoryUndoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateX/usecase/ReferenceSettingUpdateXHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -126,7 +127,9 @@ import {
     $CHARACTER_UPDATE_SCALE_Y_COMMAND,
     $CHARACTER_UPDATE_ROTATE_COMMAND,
     $CHARACTER_UPDATE_MATRIX_COMMAND,
-    $REFERENCE_UPDATE_PIVOT_COMMAND
+    $REFERENCE_UPDATE_PIVOT_COMMAND,
+    $REFERENCE_UPDATE_X_COMMAND,
+    $REFERENCE_UPDATE_Y_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -719,6 +722,20 @@ export const execute = async (
                 messages[4] as number, // Depth
                 messages[5] as Array<[number, number[]]>, // Depth
                 messages[6] as IPivotType // Before Matrix
+            );
+            break;
+
+        case $REFERENCE_UPDATE_X_COMMAND:
+            await referenceSettingUpdateXHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as Array<[number, number[]]>, // Depth
+                messages[6] as number, // Before X
+                messages[9] as number, // Before Y
+                messages[8] as IPivotType // Before Pivot
             );
             break;
 

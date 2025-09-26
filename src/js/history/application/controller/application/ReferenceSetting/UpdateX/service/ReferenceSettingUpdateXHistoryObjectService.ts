@@ -2,6 +2,7 @@ import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
+import type { IPivotType } from "@/interface/IPivotType";
 import { $REFERENCE_UPDATE_X_COMMAND } from "@/config/HistoryConfig";
 
 /**
@@ -12,7 +13,6 @@ import { $REFERENCE_UPDATE_X_COMMAND } from "@/config/HistoryConfig";
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {Character} character
- * @param  {number} before_x
  * @param  {number} after_x
  * @return {object}
  * @method
@@ -23,9 +23,10 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    before_x: number,
     after_x: number
 ): IHistoryObject => {
+
+    const localPosition = character.referencePosition.getLocalPosition();
 
     return {
         "command": $REFERENCE_UPDATE_X_COMMAND,
@@ -36,15 +37,17 @@ export const execute = (
             character.startFrame,
             character.depth,
             Array.from(movie_clip.selectedDepths),
-            before_x,
-            after_x
+            localPosition.x, // before_x,
+            after_x,
+            character.referencePosition.pivot, // before_pivot
+            localPosition.y // before_y
         ],
         "args": [
             movie_clip.name,
             layer.name,
             character.startFrame,
             character.depth,
-            before_x,
+            localPosition.x, // before_x,
             after_x
         ]
     };

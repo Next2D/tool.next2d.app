@@ -1,12 +1,13 @@
 import { execute } from "./PropertyAreaChageStyleToActiveService";
-import { $createWorkSpace } from "../../../../core/application/CoreUtil";
+import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import { describe, expect, it } from "vitest";
+import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 
 describe("PropertyAreaChageStyleToActiveServiceTest", () =>
 {
     it("execute test", () =>
     {
-        const workSpace = $createWorkSpace();
+        const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
 
         const mockElement = {
             "style": {

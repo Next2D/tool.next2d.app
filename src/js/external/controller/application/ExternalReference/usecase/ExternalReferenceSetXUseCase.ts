@@ -49,7 +49,6 @@ export const execute = async (
             movie_clip,
             layer,
             character,
-            character.referencePosition.x,
             x,
             receiver
         );
@@ -135,7 +134,6 @@ export const execute = async (
                 movie_clip,
                 layer,
                 character,
-                character.referencePosition.x,
                 x,
                 receiver
             );
