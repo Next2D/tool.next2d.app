@@ -3,24 +3,24 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
 import { $useSocket } from "@/share/ShareUtil";
-import { $REFERENCE_UPDATE_X_COMMAND } from "@/config/HistoryConfig";
+import { $REFERENCE_UPDATE_Y_COMMAND } from "@/config/HistoryConfig";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
-import { execute as referenceSettingUpdateXHistoryObjectService } from "../service/ReferenceSettingUpdateXHistoryObjectService";
+import { execute as referenceSettingUpdateYHistoryObjectService } from "../service/ReferenceSettingUpdateYHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
 
 /**
- * @description 中心点のx座標の更新履歴を登録
-  *             Register the update history of the x-coordinate of the pivot point
+ * @description 中心点のy座標の更新履歴を登録
+ *             Register the update history of the y-coordinate of the pivot point
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {Character} character
- * @param  {number} before_x
- * @param  {number} after_x
+ * @param  {number} before_y
+ * @param  {number} after_y
  * @param  {boolean} [receiver=false]
  * @return {Promise<void>}
  * @method
@@ -31,8 +31,8 @@ export const execute = async (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    before_x: number,
-    after_x: number,
+    before_y: number,
+    after_y: number,
     receiver: boolean = false
 ): Promise<void> => {
 
@@ -42,8 +42,8 @@ export const execute = async (
 
     // fileIdは不要なので空文字をセット
     // fixed logic
-    const historyObject = referenceSettingUpdateXHistoryObjectService(
-        work_space.id, movie_clip, layer, character, before_x, after_x
+    const historyObject = referenceSettingUpdateYHistoryObjectService(
+        work_space.id, movie_clip, layer, character, before_y, after_y
     );
 
     // 作業履歴にElementを追加
@@ -52,7 +52,7 @@ export const execute = async (
         historyAddElementUseCase(
             movie_clip.id,
             work_space.historyIndex,
-            historyGetTextService($REFERENCE_UPDATE_X_COMMAND),
+            historyGetTextService($REFERENCE_UPDATE_Y_COMMAND),
             "",
             ...historyObject.args
         );

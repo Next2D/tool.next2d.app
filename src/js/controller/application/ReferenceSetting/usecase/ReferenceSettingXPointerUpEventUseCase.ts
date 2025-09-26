@@ -6,6 +6,9 @@ import {
     $clamp,
     $setCursor
 } from "@/global/GlobalUtil";
+import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description 中心点エリアのx座標の値操作のポインタアップイベント
@@ -45,10 +48,35 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     element.value = `${x}`;
 
+    // 移動した量をセット
+    referenceSetting.movementX += referenceSetting.beforeX - x;
+    referenceSetting.active = false;
+
     // x座標を更新
-    // const workSpace = $getCurrentWorkSpace();
-    // const externalReference = new ExternalReference(workSpace, workSpace.scene);
-    // await externalReference.setX(x);
+    const workSpace = $getCurrentWorkSpace();
+    const movieClip = workSpace.scene;
+    if (movieClip.isSingleSelectedOfDisplayObject()) {
+
+        const layer = movieClip.getLayer(
+            movieClip.selectedDepths.keys().next().value as number
+        );
+        if (!layer) {
+            return ;
+        }
+
+        const values = movieClip.selectedDepths.values().next().value as number[];
+        const character = layer.getCharacter(movieClip.currentFrame, values[0]);
+        if (!character) {
+            return ;
+        }
+
+        // 変更前に戻す
+        character.referencePosition.x = referenceSetting.beforeX;
+
+        // 最終値で更新
+        const externalReference = new ExternalReference(workSpace, workSpace.scene);
+        await externalReference.setX(x);
+    }
 
     // input要素のフォーカス
     element.focus();

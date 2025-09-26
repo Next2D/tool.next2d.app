@@ -51,7 +51,9 @@ export class ReferencePosition
     public readonly _$character: Character;
 
     /**
+     * @param  {Character} character
      * @constructor
+     * @public
      */
     constructor (character: Character)
     {
@@ -125,8 +127,8 @@ export class ReferencePosition
     toObject (): IReferencePositionSaveObject
     {
         return {
-            "x": this.pivot ? 0 : this._$x,
-            "y": this.pivot ? 0 : this._$y,
+            "x": this.pivot === "none" ? this._$x : 0,
+            "y": this.pivot === "none" ? this._$y : 0,
             "pivot": this.pivot
         };
     }

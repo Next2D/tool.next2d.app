@@ -2,7 +2,8 @@ import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
-import { execute as referenceSettingUpdateCellValueService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService";
+import { execute as referenceSettingUpdateCellValueService } from "../service/ReferenceSettingUpdateCellValueService";
+import { execute as referenceSettingUpdateXUseCase } from "./ReferenceSettingUpdateXUseCase";
 
 /**
  * @description 中心点エリアのx座標のポインタームーブイベント
@@ -45,39 +46,7 @@ export const execute = (event: PointerEvent): void =>
         element.value = `${x}`;
 
         // 中心点を更新
-        const movieClip = workSpace.scene;
-        if (movieClip.isSingleSelectedOfDisplayObject()) {
-            const layer = movieClip.getLayer(
-                movieClip.selectedDepths.keys().next().value as number
-            );
-            if (!layer) {
-                return ;
-            }
-
-            const values = movieClip.selectedDepths.values().next().value as number[];
-            const character = layer.getCharacter(movieClip.currentFrame, values[0]);
-            if (!character) {
-                return ;
-            }
-
-            if (!character.referencePosition.pivot
-                || character.referencePosition.pivot !== "none"
-            ) {
-                const localPosition = character.referencePosition.getLocalPosition();
-                character.referencePosition.y = localPosition.y;
-
-                // fixed logic 最後に固定値を外す
-                character.referencePosition.pivot = "none";
-                referenceSettingUpdateCellValueService("none");
-            }
-
-            character.referencePosition.x = x;
-        } else {
-            if (referenceSetting.pivot !== "none") {
-                referenceSetting.pivot = "none";
-                referenceSettingUpdateCellValueService("none");
-            }
-        }
+        referenceSettingUpdateXUseCase(workSpace.scene, x);
 
         // elementの位置を更新
         referenceSetting.movementX += x - value;
