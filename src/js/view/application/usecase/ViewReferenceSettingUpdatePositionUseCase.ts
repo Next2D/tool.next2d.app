@@ -45,7 +45,9 @@ export const execute = (
 
         // ローカル座標を取得してReferenceSettingに設定
         const localPosition = character.referencePosition.getLocalPosition();
-        referenceSettingUpdateElementUseCase("none", localPosition.x, localPosition.y);
+        referenceSettingUpdateElementUseCase(
+            character.referencePosition.pivot, localPosition.x, localPosition.y
+        );
     } else {
         const position = referenceSettingGetMultiRawPositionUseCase(movie_clip);
         if (!position) {

@@ -46,6 +46,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         -Number.MAX_VALUE, Number.MAX_VALUE
     );
 
+    if (referenceSetting.beforeX === x) {
+        element.focus();
+        return ;
+    }
+
     element.value = `${x}`;
 
     // 移動した量をセット
@@ -56,7 +61,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
     if (movieClip.isSingleSelectedOfDisplayObject()) {
-
         const layer = movieClip.getLayer(
             movieClip.selectedDepths.keys().next().value as number
         );

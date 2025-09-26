@@ -4,7 +4,6 @@ import { execute as viewReferenceSettingUpdatePositionUseCase } from "@/view/app
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
-import { IPivotType } from "@/interface/IPivotType";
 
 /**
  * @description 中心点のx座標の変更前に戻す

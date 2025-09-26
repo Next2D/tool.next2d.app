@@ -34,6 +34,10 @@ export const execute = async (
         return ;
     }
 
+    if (referenceSetting.x === x) {
+        return ;
+    }
+
     if (layer && character) {
 
         const cloneSelectedDepths = Array.from(movie_clip.selectedDepths);
@@ -105,7 +109,9 @@ export const execute = async (
 
             // 表示の更新
             referenceSetting.clear();
-            referenceSetting.x = x;
+            referenceSetting.pivot = "none";
+            referenceSetting.x = character.referencePosition.x;
+            referenceSetting.y = character.referencePosition.y;
         }
     } else {
         if (movie_clip.isSingleSelectedOfDisplayObject()) {
@@ -143,6 +149,12 @@ export const execute = async (
             character.referencePosition.x = x;
             character.referencePosition.y = localPosition.y;
             character.referencePosition.pivot = "none";
+
+            // 表示の更新
+            referenceSetting.clear();
+            referenceSetting.pivot = "none";
+            referenceSetting.x = character.referencePosition.x;
+            referenceSetting.y = character.referencePosition.y;
         }
 
         // 内部情報を更新
