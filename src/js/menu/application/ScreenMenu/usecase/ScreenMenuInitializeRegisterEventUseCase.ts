@@ -27,18 +27,19 @@ export const execute = (): void =>
     // タッチデバイスのタッチイベント
     element.addEventListener(
         EventType.POINTER_DOWN,
-        screenMenuTouchPointerDownUseCase,
-        { "passive": false }
+        screenMenuTouchPointerDownUseCase
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        screenMenuTouchPointerUpService,
-        { "passive": false }
+        screenMenuTouchPointerUpService
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        screenMenuTouchPointerUpService,
-        { "passive": false }
+        screenMenuTouchPointerUpService
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        screenMenuTouchPointerUpService
     );
 
     // マウスオーバーイベントを登録

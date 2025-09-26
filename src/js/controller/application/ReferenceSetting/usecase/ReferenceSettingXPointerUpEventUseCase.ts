@@ -1,7 +1,7 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as referenceSettingXPointerMoveEventUseCase } from "./ReferenceSettingXPointerMoveEventUseCase";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
+// import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+// import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 import {
     $clamp,
     $setCursor
@@ -46,9 +46,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.value = `${x}`;
 
     // x座標を更新
-    const workSpace = $getCurrentWorkSpace();
-    const externalReference = new ExternalReference(workSpace, workSpace.scene);
-    await externalReference.setX(x);
+    // const workSpace = $getCurrentWorkSpace();
+    // const externalReference = new ExternalReference(workSpace, workSpace.scene);
+    // await externalReference.setX(x);
 
     // input要素のフォーカス
     element.focus();

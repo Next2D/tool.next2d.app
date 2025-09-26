@@ -1,7 +1,7 @@
 import type { IPivotType } from "@/interface/IPivotType";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 
 /**
  * @description 中心点エリアのポインターダウンイベント実行ユースケース
@@ -28,6 +28,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
+    // DisplayObjectの変形の中心点を変更
     const workSpace = $getCurrentWorkSpace();
     const externalReference = new ExternalReference(workSpace, workSpace.scene);
     await externalReference.setPivot(element.dataset.position as IPivotType);

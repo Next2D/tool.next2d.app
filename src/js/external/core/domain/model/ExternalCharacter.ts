@@ -2,6 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { IPivotType } from "@/interface/IPivotType";
 import { execute as externalCharacterUpdateXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateXUseCase";
 import { execute as externalCharacterUpdateYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateYUseCase";
 import { execute as externalCharacterUpdateScaleXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateScaleXUseCase";
@@ -11,6 +12,7 @@ import { execute as externalCharacterUpdateNameUseCase } from "@/external/core/a
 import { execute as externalCharacterUpdateMatrixUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateMatrixUseCase";
 import { execute as externalCharacterUpdateWidthUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateWidthUseCase";
 import { execute as externalCharacterUpdateHeightUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateHeightUseCase";
+import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 
 /**
  * @description DisplayObjectの管理クラス
@@ -353,5 +355,23 @@ export class ExternalCharacter
             this._$character,
             name
         );
+    }
+
+    /**
+     * @description DisplayObjectの変形の中心点を返却
+     *              Returns the transformation center point of DisplayObject
+     *
+     * @param  {IPivotType} pivot
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setPivlot (pivot: IPivotType): Promise<void>
+    {
+        const externalReference = new ExternalReference(
+            this._$workSpace,
+            this._$movieClip
+        );
+        await externalReference.setPivot(pivot);
     }
 }
