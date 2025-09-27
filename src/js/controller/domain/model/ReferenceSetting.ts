@@ -11,8 +11,8 @@ import type { IPivotType } from "@/interface/IPivotType";
 class ReferenceSetting
 {
     /**
-     * @description 中心点のx座標を返却
-     *              Return the x coordinate of the center point
+     * @description 中心点のグローバルx座標を返却
+     *              Return the global x coordinate of the center point
      *
      * @member {number}
      * @default 0
@@ -21,8 +21,8 @@ class ReferenceSetting
     public x: number;
 
     /**
-     * @description 中心点のy座標を返却
-     *              Return the y coordinate of the center point
+     * @description 中心点のグローバルy座標を返却
+     *              Return the global y coordinate of the center point
      *
      * @member {number}
      * @default 0
@@ -51,16 +51,6 @@ class ReferenceSetting
     public state: "hide" | "show";
 
     /**
-     * @description 中心点の有効・無効状態を返却
-     *              Returns whether the center point is enabled or disabled
-     *
-     * @member {boolean}
-     * @default false
-     * @public
-     */
-    public active: boolean = false;
-
-    /**
      * @description 直前のx座標を返却
      *              Return the previous x coordinate
      *
@@ -79,6 +69,26 @@ class ReferenceSetting
      * @public
      */
     public beforeY: number = 0;
+
+    /**
+     * @description pivot位置のx座標を返却
+     *              Returns the x coordinate of the pivot position
+     *
+     * @member {number}
+     * @default 0
+     * @public
+     */
+    public pivotX: number = 0;
+
+    /**
+     * @description pivot位置のy座標を返却
+     *              Returns the y coordinate of the pivot position
+     *
+     * @member {number}
+     * @default 0
+     * @public
+     */
+    public pivotY: number = 0;
 
     /**
      * @description ポインタームーブイベントでの移動量を返却
@@ -101,16 +111,6 @@ class ReferenceSetting
     public movementY: number = 0;
 
     /**
-     * @description 複数選択時の基準点の位置を返却
-     *              Returns the position of the reference point when multiple selections are made
-     *
-     * @member {IPivotType}
-     * @default "middle-center"
-     * @public
-     */
-    public multiPivot: IPivotType = "middle-center";
-
-    /**
      * @constructor
      * @public
      */
@@ -120,12 +120,12 @@ class ReferenceSetting
         this.y          = 0;
         this.state      = "hide";
         this.pivot      = "middle-center";
-        this.multiPivot = "middle-center";
-        this.active     = false;
         this.beforeX    = 0;
         this.beforeY    = 0;
         this.movementX  = 0;
         this.movementY  = 0;
+        this.pivotX     = 0;
+        this.pivotY     = 0;
     }
 
     /**
@@ -155,12 +155,12 @@ class ReferenceSetting
         this.y          = 0;
         this.state      = "hide";
         this.pivot      = "middle-center";
-        this.multiPivot = "middle-center";
-        this.active     = false;
         this.beforeX    = 0;
         this.beforeY    = 0;
         this.movementX  = 0;
         this.movementY  = 0;
+        this.pivotX     = 0;
+        this.pivotY     = 0;
     }
 }
 

@@ -155,11 +155,10 @@ export const execute = async (
             referenceSetting.pivot = "none";
             referenceSetting.x = character.referencePosition.x;
             referenceSetting.y = character.referencePosition.y;
+        } else {
+            // 内部情報を更新
+            referenceSetting.movementX = x - referenceSetting.beforeX;
         }
-
-        // 内部情報を更新
-        referenceSetting.multiPivot = "none";
-        referenceSetting.x = x;
     }
 
     // 表示の更新

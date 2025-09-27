@@ -137,11 +137,10 @@ export const execute = async (
             );
 
             character.referencePosition.pivot = pivot;
+        } else {
+            referenceSetting.clear();
+            referenceSetting.pivot = pivot;
         }
-
-        // 表示の更新
-        referenceSetting.clear();
-        referenceSetting.pivot = pivot;
     }
 
     // 表示を更新

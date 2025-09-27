@@ -51,7 +51,7 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
         const height = Math.abs(bounds.yMax - bounds.yMin);
 
         const pivotPosition = $getPivotPosition(
-            referenceSetting.multiPivot, width, height
+            referenceSetting.pivot, width, height
         );
         position.x = pivotPosition.x;
         position.y = pivotPosition.y;

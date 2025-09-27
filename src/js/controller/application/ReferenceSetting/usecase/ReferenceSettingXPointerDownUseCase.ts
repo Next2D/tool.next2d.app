@@ -3,11 +3,11 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as referenceSettingXPointerMoveEventUseCase } from "./ReferenceSettingXPointerMoveEventUseCase";
 import { execute as referenceSettingXPointerUpEventUseCase } from "./ReferenceSettingXPointerUpEventUseCase";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description 中心点エリアのx座標のポインターダウンイベント
@@ -47,7 +47,8 @@ export const execute = (event: PointerEvent): void =>
     }
     element.style.cursor = "ew-resize";
 
-    // 移動前の値を保存
+    // 現在の値を保存
+    referenceSetting.movementX = 0;
     referenceSetting.beforeX = parseFloat(element.value);
 
     // 移動のイベントを登録
@@ -57,7 +58,6 @@ export const execute = (event: PointerEvent): void =>
         referenceSettingXPointerMoveEventUseCase,
         { "passive": false }
     );
-
     element.addEventListener(
         EventType.POINTER_UP,
         referenceSettingXPointerUpEventUseCase

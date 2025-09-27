@@ -48,9 +48,9 @@ export const execute = (
 
         character.referencePosition.x = x;
     } else {
-        if (referenceSetting.pivot !== "none") {
-            referenceSetting.pivot = "none";
-            referenceSettingUpdateCellValueService("none");
-        }
+        // if (referenceSetting.pivot !== "none") {
+            // referenceSetting.pivot = "none";
+            // referenceSettingUpdateCellValueService("none");
+        // }
     }
 };

@@ -33,11 +33,8 @@ export const execute = (): void =>
     $setReferencePointState("hide");
 
     // 中心点が固定されてなければセット
-    if (!referenceSetting.active) {
-        referenceSetting.active = true;
-        referenceSetting.x = position.x;
-        referenceSetting.y = position.y;
-    }
+    referenceSetting.x = position.x;
+    referenceSetting.y = position.y;
 
     // 中心点のElementの表示処理
     screenReferencePointShowService(

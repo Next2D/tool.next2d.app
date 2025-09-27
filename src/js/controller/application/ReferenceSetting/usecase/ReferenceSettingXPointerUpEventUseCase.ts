@@ -54,8 +54,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.value = `${x}`;
 
     // 移動した量をセット
-    referenceSetting.movementX += referenceSetting.beforeX - x;
-    referenceSetting.active = false;
+    referenceSetting.movementX = x - referenceSetting.beforeX;
 
     // x座標を更新
     const workSpace = $getCurrentWorkSpace();

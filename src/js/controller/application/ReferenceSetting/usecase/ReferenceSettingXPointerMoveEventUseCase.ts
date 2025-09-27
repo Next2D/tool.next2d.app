@@ -40,7 +40,7 @@ export const execute = (event: PointerEvent): void =>
         // 表示を更新
         const value = parseFloat(element.value);
         const x = $clamp(
-            Math.ceil(value + event.movementX / workSpace.scale),
+            Math.ceil(value + event.movementX * workSpace.scale),
             -Number.MAX_VALUE, Number.MAX_VALUE
         );
         element.value = `${x}`;
@@ -49,8 +49,7 @@ export const execute = (event: PointerEvent): void =>
         referenceSettingUpdateXUseCase(workSpace.scene, x);
 
         // elementの位置を更新
-        referenceSetting.movementX += x - value;
-        referenceSetting.active = false;
+        referenceSetting.movementX = x - referenceSetting.pivotX;
         screenReferencePointDeployElementUseCase();
     });
 };

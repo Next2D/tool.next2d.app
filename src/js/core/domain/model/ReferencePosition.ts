@@ -64,8 +64,8 @@ export class ReferencePosition
     }
 
     /**
-     * @description 中心点のx座標を返却
-     *              Returns the x coordinate of the center point
+     * @description 中心点のグローバルx座標を返却
+     *              Returns the global x coordinate of the center point
      *
      * @returns {number}
      * @method
@@ -77,14 +77,23 @@ export class ReferencePosition
             this.pivot, this._$x, this._$y, this._$character
         ).x;
     }
+
+    /**
+     * @description 中心点のローカルx座標をセット
+     *              Sets the local x coordinate of the center point
+     *
+     * @param {number} x
+     * @method
+     * @public
+     */
     set x (x: number)
     {
         this._$x = x;
     }
 
     /**
-     * @description 中心点のy座標を返却
-     *              Returns the y coordinate of the center point
+     * @description 中心点のグローバルy座標を返却
+     *              Returns the global y coordinate of the center point
      *
      * @returns {number}
      * @method
@@ -96,6 +105,15 @@ export class ReferencePosition
             this.pivot, this._$x, this._$y, this._$character
         ).y;
     }
+
+    /**
+     * @description 中心点のローカルy座標をセット
+     *              Sets the local y coordinate of the center point
+     *
+     * @param {number} y
+     * @method
+     * @public
+     */
     set y (y: number)
     {
         this._$y = y;

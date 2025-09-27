@@ -24,7 +24,6 @@ export const execute = (): void =>
     }
 
     // 中心点のelementを表示
-    element.style.display   = "none";
-    referenceSetting.state  = "hide";
-    referenceSetting.active = false;
+    element.style.display = "none";
+    referenceSetting.clear();
 };
