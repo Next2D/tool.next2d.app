@@ -4,7 +4,6 @@ import type { IPivotType } from "@/interface/IPivotType";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as referenceSettingUpdateElementUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateElementUseCase";
 import { execute as referenceSettingGetMultiRawPositionUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingGetMultiRawPositionUseCase";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description 変形の中心座標を指定ポイントに設定

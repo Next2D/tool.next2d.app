@@ -15,7 +15,6 @@ import { execute as timelineSceneListCacheRemoveService } from "@/timeline/appli
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description xスケールを更新した際のViewエリアの表示要素を更新

@@ -20,7 +20,6 @@ import { execute as transformSettingUpdateRotationElementService } from "@/contr
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
-import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 
 /**
  * @description 行列を更新した際のViewエリアの表示要素を更新
