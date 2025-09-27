@@ -1,5 +1,5 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as referenceSettingXPointerMoveEventUseCase } from "./ReferenceSettingXPointerMoveEventUseCase";
+import { execute as referenceSettingYPointerMoveEventUseCase } from "./ReferenceSettingYPointerMoveEventUseCase";
 import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
@@ -9,8 +9,8 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
- * @description 中心点エリアのx座標の値操作のポインタアップイベント
- *              Pointer up event for value operation of x-coordinate of center point area
+ * @description 中心点エリアのy座標の値操作のポインタアップイベント
+ *              Pointer up event for value operation of y-coordinate of center point area
  *
  * @param  {PointerEvent} event
  * @return {Promise<void>}
@@ -33,28 +33,28 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // イベントを削除
     element.releasePointerCapture(event.pointerId);
     element.removeEventListener(EventType.POINTER_MOVE,
-        referenceSettingXPointerMoveEventUseCase
+        referenceSettingYPointerMoveEventUseCase
     );
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
 
     const value = parseFloat(element.value);
-    const x = $clamp(Math.ceil(value),
+    const y = $clamp(Math.ceil(value),
         -Number.MAX_VALUE, Number.MAX_VALUE
     );
 
-    if (referenceSetting.beforeX === x) {
+    if (referenceSetting.beforeY === y) {
         element.focus();
         return ;
     }
 
-    element.value = `${x}`;
+    element.value = `${y}`;
 
     // 移動した量をセット
-    referenceSetting.movementX = x - referenceSetting.pivotX;
+    referenceSetting.movementY = y - referenceSetting.pivotY;
 
-    // x座標を更新
+    // y座標を更新
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
     if (movieClip.isSingleSelectedOfDisplayObject()) {
@@ -73,11 +73,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
         // 変更前に戻す
         character.referencePosition.pivot = referenceSetting.pivot;
-        character.referencePosition.x = referenceSetting.beforeX;
+        character.referencePosition.y = referenceSetting.beforeY;
 
         // 最終値で更新
         const externalReference = new ExternalReference(workSpace, workSpace.scene);
-        await externalReference.setX(x);
+        await externalReference.setY(y);
     }
 
     // input要素のフォーカス

@@ -10,7 +10,6 @@ import { execute as historyRemoveElementService } from "@/controller/application
 import { execute as referenceSettingUpdateXHistoryObjectService } from "../service/ReferenceSettingUpdateXHistoryObjectService";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
-import { IPivotType } from "@/interface/IPivotType";
 
 /**
  * @description 中心点のx座標の更新履歴を登録

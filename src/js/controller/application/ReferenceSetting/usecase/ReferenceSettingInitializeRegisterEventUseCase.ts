@@ -3,9 +3,12 @@ import { execute as referenceSettingBoxPointerDownUseCase } from "./ReferenceSet
 import { execute as referenceSettingPointerOverEventService } from "../service/ReferenceSettingPointerOverEventService";
 import { execute as referenceSettingPointerOutEventService } from "../service/ReferenceSettingPointerOutEventService";
 import { execute as referenceSettingXPointerDownUseCase } from "./ReferenceSettingXPointerDownUseCase";
+import { execute as referenceSettingYPointerDownUseCase } from "./ReferenceSettingYPointerDownUseCase";
 import { execute as referenceSettingInputKeyPressEventService } from "../service/ReferenceSettingInputKeyPressEventService";
 import { execute as referenceSettingXFocusInEventService } from "../service/ReferenceSettingXFocusInEventService";
+import { execute as referenceSettingYFocusInEventService } from "../service/ReferenceSettingYFocusInEventService";
 import { execute as referenceSettingXFocusOutEventUseCase } from "./ReferenceSettingXFocusOutEventUseCase";
+import { execute as referenceSettingYFocusOutEventUseCase } from "./ReferenceSettingYFocusOutEventUseCase";
 import {
     $REFERENCE_SETTING_BOX_ID,
     $TRANSFORM_REFERENCE_X_ID,
@@ -65,6 +68,19 @@ export const execute = (): void =>
         );
         transformReferenceY.addEventListener(EventType.POINTER_OUT,
             referenceSettingPointerOutEventService
+        );
+        transformReferenceY.addEventListener(EventType.POINTER_DOWN,
+            referenceSettingYPointerDownUseCase,
+            { "passive": false }
+        );
+        transformReferenceY.addEventListener("focusin",
+            referenceSettingYFocusInEventService
+        );
+        transformReferenceY.addEventListener("focusout",
+            referenceSettingYFocusOutEventUseCase
+        );
+        transformReferenceY.addEventListener("keypress",
+            referenceSettingInputKeyPressEventService
         );
     }
 };

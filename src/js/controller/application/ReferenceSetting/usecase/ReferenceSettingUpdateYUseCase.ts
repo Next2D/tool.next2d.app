@@ -2,18 +2,18 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as referenceSettingUpdateCellValueService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService";
 
 /**
- * @description 選択中のDisplayObjectの中心点のx座標を更新する
- *              Update the x coordinate of the center point of the selected DisplayObject
+ * @description 選択中のDisplayObjectの中心点のy座標を更新する
+ *              Update the y coordinate of the center point of the selected DisplayObject
  *
  * @param  {MovieClip} movie_clip
- * @param  {number} x
+ * @param  {number} y
  * @return {void}
  * @method
  * @public
  */
 export const execute = (
     movie_clip: MovieClip,
-    x: number
+    y: number
 ): void => {
 
     if (!movie_clip.selectedDepths.size) {
@@ -38,13 +38,13 @@ export const execute = (
             || character.referencePosition.pivot !== "none"
         ) {
             const localPosition = character.referencePosition.getLocalPosition();
-            character.referencePosition.y = localPosition.y;
+            character.referencePosition.x = localPosition.x;
 
             // fixed logic 最後に固定値を外す
             character.referencePosition.pivot = "none";
             referenceSettingUpdateCellValueService("none");
         }
 
-        character.referencePosition.x = x;
+        character.referencePosition.y = y;
     }
 };

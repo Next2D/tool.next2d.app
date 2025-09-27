@@ -2,11 +2,11 @@ import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $clamp, $setCursor } from "@/global/GlobalUtil";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
-import { execute as referenceSettingUpdateXUseCase } from "./ReferenceSettingUpdateXUseCase";
+import { execute as referenceSettingUpdateYUseCase } from "./ReferenceSettingUpdateYUseCase";
 
 /**
- * @description 中心点エリアのx座標のポインタームーブイベント
- *              Pointer move event for x-coordinate of center point area
+ * @description 中心点エリアのy座標のポインタームーブイベント
+ *              Pointer move event for y-coordinate of center point area
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -38,17 +38,17 @@ export const execute = (event: PointerEvent): void =>
 
         // 表示を更新
         const value = parseFloat(element.value);
-        const x = $clamp(
+        const y = $clamp(
             Math.ceil(value + event.movementX * workSpace.scale),
             -Number.MAX_VALUE, Number.MAX_VALUE
         );
-        element.value = `${x}`;
+        element.value = `${y}`;
 
         // 中心点を更新
-        referenceSettingUpdateXUseCase(workSpace.scene, x);
+        referenceSettingUpdateYUseCase(workSpace.scene, y);
 
         // elementの移動量を更新
-        referenceSetting.movementX = x - referenceSetting.pivotX;
+        referenceSetting.movementY = y - referenceSetting.pivotY;
         screenReferencePointDeployElementUseCase();
     });
 };
