@@ -37,6 +37,6 @@ export const execute = (event: FocusEvent): void =>
     }
 
     // 変更前の値を保持
-    referenceSetting.beforeX   = parseFloat(element.value);
+    referenceSetting.beforeX = parseFloat(element.value);
     referenceSetting.movementX = 0;
 };

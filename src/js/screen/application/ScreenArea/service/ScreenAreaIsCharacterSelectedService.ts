@@ -21,13 +21,16 @@ export const execute = (
     for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
         const selectedLayer = movie_clip.getLayer(layerIndex);
-        if (!selectedLayer) {
+        if (!selectedLayer || selectedLayer.id !== layer.id) {
             continue;
         }
 
-        if (selectedLayer.id === layer.id
-            && depths[0] === character.depth
-        ) {
+        for (let idx = 0; idx < depths.length; idx++) {
+            const depth = depths[idx];
+            if (depth !== character.depth) {
+                continue;
+            }
+
             return true;
         }
     }

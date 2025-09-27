@@ -1,4 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IPosition } from "@/interface/IPosition";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
@@ -13,8 +14,10 @@ import { $getPivotPosition } from "@/controller/application/ReferenceSetting/Ref
  * @method
  * @public
  */
-export const execute = (movie_clip: MovieClip): IPosition | null =>
-{
+export const execute = (
+    work_space: WorkSpace,
+    movie_clip: MovieClip
+): IPosition | null => {
     if (!movie_clip.selectedDepths.size) {
         return null;
     }
@@ -59,8 +62,8 @@ export const execute = (movie_clip: MovieClip): IPosition | null =>
         position.x += bounds.xMin;
         position.y += bounds.yMin;
 
-        position.x += referenceSetting.movementX;
-        position.y += referenceSetting.movementY;
+        position.x += referenceSetting.movementX * work_space.scale;
+        position.y += referenceSetting.movementY * work_space.scale;
     }
 
     return position;

@@ -3,7 +3,7 @@ import { $clamp } from "@/global/GlobalUtil";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
-import { execute as viewReferenceSettingUpdatePositionUseCase } from "@/view/application/usecase/ViewReferenceSettingUpdatePositionUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 
 /**
  * @description 中心点のx座標の入力完了処理
@@ -36,13 +36,14 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         return ;
     }
 
+    // 入力値をセット
     element.value = `${x}`;
 
     // 移動した量をセット
-    referenceSetting.movementX = x - referenceSetting.beforeX;
+    const workSpace = $getCurrentWorkSpace();
+    referenceSetting.movementX = x - referenceSetting.pivotX;
 
     // x座標を更新
-    const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
     if (movieClip.isSingleSelectedOfDisplayObject()) {
         const layer = movieClip.getLayer(
@@ -62,7 +63,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         const externalReference = new ExternalReference(workSpace, workSpace.scene);
         await externalReference.setX(x);
     } else {
-        referenceSetting.x = x;
-        viewReferenceSettingUpdatePositionUseCase(workSpace, workSpace.scene);
+        screenReferencePointDeployElementUseCase();
     }
 };

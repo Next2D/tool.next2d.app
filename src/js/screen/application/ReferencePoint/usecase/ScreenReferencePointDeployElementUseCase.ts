@@ -23,7 +23,7 @@ export const execute = (): void =>
     const movieClip = workSpace.scene;
 
     // 座標が取得できない場合は非表示にして終了
-    const position = referencePositionGetGlobalPositionUseCase(movieClip);
+    const position = referencePositionGetGlobalPositionUseCase(workSpace, movieClip);
     if (!position) {
         screenReferencePointHideService();
         return ;

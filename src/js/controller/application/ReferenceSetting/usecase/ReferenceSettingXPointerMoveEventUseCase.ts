@@ -48,7 +48,7 @@ export const execute = (event: PointerEvent): void =>
         // 中心点を更新
         referenceSettingUpdateXUseCase(workSpace.scene, x);
 
-        // elementの位置を更新
+        // elementの移動量を更新
         referenceSetting.movementX = x - referenceSetting.pivotX;
         screenReferencePointDeployElementUseCase();
     });
