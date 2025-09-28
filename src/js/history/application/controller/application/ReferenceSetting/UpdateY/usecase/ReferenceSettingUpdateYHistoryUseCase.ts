@@ -13,13 +13,12 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
 
 /**
  * @description 中心点のy座標の更新履歴を登録
- *             Register the update history of the y-coordinate of the pivot point
+  *             Register the update history of the y-coordinate of the pivot point
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {Character} character
- * @param  {number} before_y
  * @param  {number} after_y
  * @param  {boolean} [receiver=false]
  * @return {Promise<void>}
@@ -31,7 +30,6 @@ export const execute = async (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    before_y: number,
     after_y: number,
     receiver: boolean = false
 ): Promise<void> => {
@@ -43,7 +41,7 @@ export const execute = async (
     // fileIdは不要なので空文字をセット
     // fixed logic
     const historyObject = referenceSettingUpdateYHistoryObjectService(
-        work_space.id, movie_clip, layer, character, before_y, after_y
+        work_space.id, movie_clip, layer, character, after_y
     );
 
     // 作業履歴にElementを追加

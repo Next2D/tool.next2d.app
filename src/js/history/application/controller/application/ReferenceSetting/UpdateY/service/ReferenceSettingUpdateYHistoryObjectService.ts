@@ -12,7 +12,6 @@ import { $REFERENCE_UPDATE_Y_COMMAND } from "@/config/HistoryConfig";
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {Character} character
- * @param  {number} before_y
  * @param  {number} after_y
  * @return {object}
  * @method
@@ -23,9 +22,10 @@ export const execute = (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    before_y: number,
     after_y: number
 ): IHistoryObject => {
+
+    const localPosition = character.referencePosition.getLocalPosition();
 
     return {
         "command": $REFERENCE_UPDATE_Y_COMMAND,
@@ -36,15 +36,17 @@ export const execute = (
             character.startFrame,
             character.depth,
             Array.from(movie_clip.selectedDepths),
-            before_y,
-            after_y
+            localPosition.y, // before_y,
+            after_y,
+            character.referencePosition.pivot, // before_pivot
+            localPosition.x // before_x
         ],
         "args": [
             movie_clip.name,
             layer.name,
             character.startFrame,
             character.depth,
-            before_y,
+            localPosition.y, // before_y
             after_y
         ]
     };

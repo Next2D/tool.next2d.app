@@ -68,6 +68,7 @@ import { execute as characterUpdateRotateHistoryRedoUseCase } from "@/history/ap
 import { execute as characterUpdateMatrixHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryRedoUseCase";
 import { execute as referenceSettingUpdatePivotHistoryRedoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdatePivot/usecase/ReferenceSettingUpdatePivotHistoryRedoUseCase";
 import { execute as referenceSettingUpdateXHistoryRedoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateX/usecase/ReferenceSettingUpdateXHistoryRedoUseCase";
+import { execute as referenceSettingUpdateYHistoryRedoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateY/usecase/ReferenceSettingUpdateYHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -740,6 +741,19 @@ export const execute = async (
                 messages[5] as Array<[number, number[]]>, // Depth
                 messages[7] as number, // After X
                 messages[9] as number // Before Y
+            );
+            break;
+
+        case $REFERENCE_UPDATE_Y_COMMAND:
+            await referenceSettingUpdateYHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as Array<[number, number[]]>, // Depth
+                messages[7] as number, // After Y
+                messages[9] as number // Before X
             );
             break;
 

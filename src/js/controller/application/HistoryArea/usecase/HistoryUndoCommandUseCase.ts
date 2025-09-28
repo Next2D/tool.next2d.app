@@ -69,6 +69,7 @@ import { execute as characterUpdateRotateHistoryUndoUseCase } from "@/history/ap
 import { execute as characterUpdateMatrixHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryUndoUseCase";
 import { execute as referenceSettingUpdatePivotHistoryUndoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdatePivot/usecase/ReferenceSettingUpdatePivotHistoryUndoUseCase";
 import { execute as referenceSettingUpdateXHistoryUndoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateX/usecase/ReferenceSettingUpdateXHistoryUndoUseCase";
+import { execute as referenceSettingUpdateYHistoryUndoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateY/usecase/ReferenceSettingUpdateYHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -735,6 +736,20 @@ export const execute = async (
                 messages[5] as Array<[number, number[]]>, // Depth
                 messages[6] as number, // Before X
                 messages[9] as number, // Before Y
+                messages[8] as IPivotType // Before Pivot
+            );
+            break;
+
+        case $REFERENCE_UPDATE_Y_COMMAND:
+            await referenceSettingUpdateYHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as Array<[number, number[]]>, // Depth
+                messages[6] as number, // Before Y
+                messages[9] as number, // Before X
                 messages[8] as IPivotType // Before Pivot
             );
             break;

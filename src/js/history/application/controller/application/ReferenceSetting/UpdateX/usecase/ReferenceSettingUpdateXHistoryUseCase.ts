@@ -19,7 +19,6 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {Character} character
- * @param  {number} before_x
  * @param  {number} after_x
  * @param  {boolean} [receiver=false]
  * @return {Promise<void>}
