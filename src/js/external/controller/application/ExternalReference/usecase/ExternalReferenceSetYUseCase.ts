@@ -29,15 +29,7 @@ export const execute = async (
     receiver: boolean = false
 ): Promise<void> => {
 
-    // 選択中のDisplayObjectが無い場合は処理しない
-    if (!movie_clip.selectedDepths.size) {
-        return ;
-    }
-
-    if (referenceSetting.y === y) {
-        return ;
-    }
-
+    // layerとcharacterが指定されている場合は、そのDisplayObjectの座標を更新
     if (layer && character) {
 
         const cloneSelectedDepths = Array.from(movie_clip.selectedDepths);
@@ -114,6 +106,17 @@ export const execute = async (
             referenceSetting.y = character.referencePosition.y;
         }
     } else {
+
+        // 選択中のDisplayObjectが無い場合は処理しない
+        if (!movie_clip.selectedDepths.size) {
+            return ;
+        }
+
+        // 変更がなければ終了
+        if (referenceSetting.y === y) {
+            return ;
+        }
+
         if (movie_clip.isSingleSelectedOfDisplayObject()) {
             const layer = movie_clip.getLayer(
                 movie_clip.selectedDepths.keys().next().value as number

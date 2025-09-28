@@ -63,6 +63,8 @@ import { execute as characterUpdateScaleYReceiveUseCase } from "@/share/receive/
 import { execute as characterUpdateRotateReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateRotateReceiveUseCase";
 import { execute as characterUpdateMatrixReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateMatrixReceiveUseCase";
 import { execute as referenceSettingUpdatePivotUseCase } from "@/share/receive/application/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdatePivotUseCase";
+import { execute as referenceSettingUpdateXUseCase } from "@/share/receive/application/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateXUseCase";
+import { execute as referenceSettingUpdateYUseCase } from "@/share/receive/application/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateYUseCase";
 import {
     $HISTORY_REDO_COMMAND,
     $HISTORY_UNDO_COMMAND,
@@ -127,7 +129,9 @@ import {
     $CHARACTER_UPDATE_SCALE_Y_COMMAND,
     $CHARACTER_UPDATE_ROTATE_COMMAND,
     $CHARACTER_UPDATE_MATRIX_COMMAND,
-    $REFERENCE_UPDATE_PIVOT_COMMAND
+    $REFERENCE_UPDATE_PIVOT_COMMAND,
+    $REFERENCE_UPDATE_X_COMMAND,
+    $REFERENCE_UPDATE_Y_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -466,6 +470,14 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
 
         case $REFERENCE_UPDATE_PIVOT_COMMAND:
             await referenceSettingUpdatePivotUseCase(message);
+            break;
+
+        case $REFERENCE_UPDATE_X_COMMAND:
+            await referenceSettingUpdateXUseCase(message);
+            break;
+
+        case $REFERENCE_UPDATE_Y_COMMAND:
+            await referenceSettingUpdateYUseCase(message);
             break;
 
         default:

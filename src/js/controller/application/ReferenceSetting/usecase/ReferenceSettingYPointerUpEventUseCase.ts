@@ -72,7 +72,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         }
 
         // 変更前に戻す
-        character.referencePosition.pivot = referenceSetting.pivot;
         character.referencePosition.y = referenceSetting.beforeY;
 
         // 最終値で更新
