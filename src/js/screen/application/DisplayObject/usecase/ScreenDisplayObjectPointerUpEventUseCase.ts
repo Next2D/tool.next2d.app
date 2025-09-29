@@ -14,13 +14,13 @@ import { $setPointerId } from "../DisplayObjectUtil";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    // 親のイベントをキャンセル
-    event.stopPropagation();
-
     const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }
+
+    // 親のイベントをキャンセル
+    event.stopPropagation();
 
     // 移動状態を解除
     $setPointerId(-1);

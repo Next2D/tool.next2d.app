@@ -29,6 +29,8 @@ export const execute = async (
     receiver: boolean = false
 ): Promise<void> => {
 
+    x = Math.ceil(x);
+
     // layerとcharacterが指定されている場合は、そのDisplayObjectの座標を更新
     if (layer && character) {
 

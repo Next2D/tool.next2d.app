@@ -3,11 +3,12 @@ import { execute as transformSettingUpdateYElementService } from "@/controller/a
 import { execute as screenDisplayObjectSelectedMoveElementUseCase } from "./ScreenDisplayObjectSelectedMoveElementUseCase";
 import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
 import { execute as screenReferencePointMoveElementService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService";
-import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { $allHideMenu } from "@/menu/application/MenuUtil";
-import { $setEditingElement } from "@/global/GlobalUtil";
 import { execute as targetRectMoveElementService } from "@/screen/application/TargetRect/service/TargetRectMoveElementService";
-import { $getPointerId, $globalToLocal } from "../DisplayObjectUtil";
+import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import {
+    $getPointerId,
+    $globalToLocal
+} from "../DisplayObjectUtil";
 
 /**
  * @description DisplayObjectの移動処理関数
@@ -20,11 +21,10 @@ import { $getPointerId, $globalToLocal } from "../DisplayObjectUtil";
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // メニューを非表示
-    $allHideMenu();
-
-    // 編集中のElementを初期化
-    $setEditingElement(null);
+    // 移動する量がない場合は終了
+    if (!event.movementX && !event.movementY) {
+        return ;
+    }
 
     // 親のイベントをキャンセル
     event.stopPropagation();

@@ -43,7 +43,7 @@ export const execute = (pivot: IPivotType, x: number, y: number, character: Char
     }
 
     return {
-        "x": dx,
-        "y": dy
+        "x": Math.round(dx * 100) / 100,
+        "y": Math.round(dy * 100) / 100
     };
 };

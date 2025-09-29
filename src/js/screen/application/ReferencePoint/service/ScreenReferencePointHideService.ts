@@ -1,4 +1,4 @@
-import { $SCREEN_REFERENCE_POINT_ID } from "@/config/ScreenConfig";
+import { $REFERENCE_POINT_ID } from "@/config/ReferenceSettingConfig";
 import {
     $getReferencePointState,
     $setReferencePointState
@@ -19,7 +19,7 @@ export const execute = (): void =>
     }
 
     const element: HTMLElement | null = document
-        .getElementById($SCREEN_REFERENCE_POINT_ID);
+        .getElementById($REFERENCE_POINT_ID);
 
     if (!element) {
         return ;

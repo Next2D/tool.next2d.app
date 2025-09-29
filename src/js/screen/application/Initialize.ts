@@ -1,6 +1,7 @@
 import { execute as screenTabRegisterAddEventUseCase } from "../application/ScreenTab/usecase/ScreenTabRegisterAddEventUseCase";
 import { execute as screenAreaInitializeRegisterEventUseCase } from "./ScreenArea/usecase/ScreenAreaInitializeRegisterEventUseCase";
 import { execute as screenScrollInitializeRegisterEventUseCase } from "./ScreenScroll/usecase/ScreenScrollInitializeRegisterEventUseCase";
+import { execute as screenReferencePointInitializeRegisterEventUseCase } from "./ReferencePoint/usecase/ScreenReferencePointInitializeRegisterEventUseCase";
 
 /**
  * @description スクリーンエリアの初期起動関数
@@ -20,4 +21,7 @@ export const execute = async (): Promise<void> =>
 
     // スクリーンエリアのスクロールバーのイベントを登録
     screenScrollInitializeRegisterEventUseCase();
+
+    // 中心点のイベントを登録
+    screenReferencePointInitializeRegisterEventUseCase();
 };

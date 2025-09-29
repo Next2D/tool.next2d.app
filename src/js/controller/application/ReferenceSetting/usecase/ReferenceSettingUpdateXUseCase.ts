@@ -20,31 +20,33 @@ export const execute = (
         return ;
     }
 
-    if (movie_clip.isSingleSelectedOfDisplayObject()) {
-        const layer = movie_clip.getLayer(
-            movie_clip.selectedDepths.keys().next().value as number
-        );
-        if (!layer) {
-            return ;
-        }
-
-        const values = movie_clip.selectedDepths.values().next().value as number[];
-        const character = layer.getCharacter(movie_clip.currentFrame, values[0]);
-        if (!character) {
-            return ;
-        }
-
-        if (!character.referencePosition.pivot
-            || character.referencePosition.pivot !== "none"
-        ) {
-            const localPosition = character.referencePosition.getLocalPosition();
-            character.referencePosition.y = localPosition.y;
-
-            // fixed logic 最後に固定値を外す
-            character.referencePosition.pivot = "none";
-            referenceSettingUpdateCellValueService("none");
-        }
-
-        character.referencePosition.x = x;
+    if (!movie_clip.isSingleSelectedOfDisplayObject()) {
+        return ;
     }
+
+    const layer = movie_clip.getLayer(
+        movie_clip.selectedDepths.keys().next().value as number
+    );
+    if (!layer) {
+        return ;
+    }
+
+    const values = movie_clip.selectedDepths.values().next().value as number[];
+    const character = layer.getCharacter(movie_clip.currentFrame, values[0]);
+    if (!character) {
+        return ;
+    }
+
+    if (!character.referencePosition.pivot
+        || character.referencePosition.pivot !== "none"
+    ) {
+        const localPosition = character.referencePosition.getLocalPosition();
+        character.referencePosition.y = localPosition.y;
+
+        // fixed logic 最後に固定値を外す
+        character.referencePosition.pivot = "none";
+        referenceSettingUpdateCellValueService("none");
+    }
+
+    character.referencePosition.x = x;
 };

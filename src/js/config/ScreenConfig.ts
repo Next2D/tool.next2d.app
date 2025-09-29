@@ -123,12 +123,3 @@ export const $SCREEN_STANDARD_POINT_ID: string = "standard-point";
  * @constant
  */
 export const $SCREEN_PARENT_STANDARD_POINT_ID: string = "parent-standard-point";
-
-/**
- * @description 変形の基準点のElementのID
- *              ID of the reference point for transformation
- *
- * @type {string}
- * @constant
- */
-export const $SCREEN_REFERENCE_POINT_ID: string = "reference-point";
