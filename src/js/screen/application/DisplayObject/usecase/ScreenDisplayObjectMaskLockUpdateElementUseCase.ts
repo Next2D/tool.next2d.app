@@ -60,7 +60,10 @@ export const execute = async (layer: Layer): Promise<void> =>
                 continue ;
             }
 
-            node.style.display = layer.lock ? "none" : "";
+            if (!layer.lock) {
+                continue ;
+            }
+            node.remove();
         }
     }
 };

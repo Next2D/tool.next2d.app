@@ -29,7 +29,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 親のイベントを中止
     event.stopPropagation();
-    event.preventDefault();
 
     // メニュー表示があれば全て非表示にする
     $allHideMenu();

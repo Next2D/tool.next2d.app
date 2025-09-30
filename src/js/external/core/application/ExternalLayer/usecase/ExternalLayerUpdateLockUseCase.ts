@@ -12,6 +12,7 @@ import { execute as screenStandardPointDeployElementUseCase } from "@/screen/app
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 import { execute as screenDisplayObjectMaskLockUpdateElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMaskLockUpdateElementUseCase";
 import { execute as screenDisplayObjectUpdateLayerMaskElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskElementUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 
 /**
  * @description レイヤーのロック情報を更新
@@ -53,6 +54,7 @@ export const execute = async (
 
     // 表示中ならレイヤーの表示を更新
     if (work_space.active && movie_clip.active) {
+
         // Layerオブジェクトのロックアイコンの表示を更新
         timelineLayerControllerUpdateLockIconStyleService(layer);
 
@@ -65,14 +67,17 @@ export const execute = async (
         // MovieClipの基準点の表示を更新
         screenStandardPointDeployElementUseCase();
 
-        // プロパティエリアの表示を更新
-        await propertyAreaChangeDisplayUseCase();
+        // 変形の中心点の表示を更新
+        screenReferencePointDeployElementUseCase();
 
         // マスクレイヤーなら、子レイヤーの表示を更新
         await screenDisplayObjectMaskLockUpdateElementUseCase(layer);
 
         // マスクインのレイヤーのDisplayObjectのElemnet表示を更新
         await screenDisplayObjectUpdateLayerMaskElementUseCase(layer);
+
+        // プロパティエリアの表示を更新
+        await propertyAreaChangeDisplayUseCase();
     }
 
     // 受け取り処理ではなく、画面共有していれば共有者に送信

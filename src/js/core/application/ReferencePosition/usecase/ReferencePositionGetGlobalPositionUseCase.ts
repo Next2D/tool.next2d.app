@@ -31,7 +31,7 @@ export const execute = (
         const layer = movie_clip.getLayer(
             movie_clip.selectedDepths.keys().next().value as number
         );
-        if (!layer) {
+        if (!layer || layer.disable) {
             return null;
         }
 

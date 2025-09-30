@@ -9,6 +9,7 @@ import { execute as timelineLayerControllerUpdateDisableIconElementService } fro
 import { execute as screenDisplayObjectUpdateDisabledElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateDisabledElementUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 import { execute as screenDisplayObjectUpdateLayerMaskInElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateLayerMaskInElementUseCase";
 
@@ -52,6 +53,7 @@ export const execute = async (
 
     // 表示中ならレイヤーの表示を更新
     if (work_space.active && movie_clip.active) {
+
         // レイヤーの表示Elementを更新
         timelineLayerControllerUpdateDisableIconElementService(layer);
 
@@ -60,6 +62,9 @@ export const execute = async (
 
         // MovieClipの基準点の表示を更新
         screenStandardPointDeployElementUseCase();
+
+        // 変形の中心点の表示を更新
+        screenReferencePointDeployElementUseCase();
 
         // プロパティエリアの表示を更新
         await propertyAreaChangeDisplayUseCase();

@@ -83,8 +83,7 @@ export const execute = (element: HTMLElement): void =>
 
         // マウスダウンのイベントを登録
         disableIconElement.addEventListener(EventType.POINTER_DOWN,
-            timelineLayerControllerDisableIconPointerDownEventUseCase,
-            { "passive": false }
+            timelineLayerControllerDisableIconPointerDownEventUseCase
         );
 
         // マウスオーバーのイベントを登録
