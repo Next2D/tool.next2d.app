@@ -36,6 +36,12 @@ export const execute = async (layer: Layer): Promise<void> =>
 
     const length = elements.length;
     if (!length) {
+
+        // ロック中なら何もしない
+        if (layer.lock) {
+            return ;
+        }
+
         const workSpace = $getCurrentWorkSpace();
         const movieClip = workSpace.scene;
 
@@ -56,11 +62,7 @@ export const execute = async (layer: Layer): Promise<void> =>
     } else {
         for (let idx = 0; idx < length; ++idx) {
             const node = elements[idx] as HTMLElement;
-            if (!node) {
-                continue ;
-            }
-
-            if (!layer.lock) {
+            if (!node || !layer.lock) {
                 continue ;
             }
             node.remove();

@@ -3,6 +3,7 @@ import { $setAllLockMode } from "@/timeline/application/TimelineUtil";
 import { execute as timelineToolLockAllGetCurrentModeService } from "../service/TimelineToolLockAllGetCurrentModeService";
 import type { Layer } from "@/core/domain/model/Layer";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
  * @description タイムライン全体のロックツールのイベント登録
@@ -15,13 +16,14 @@ import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    if (event.button !== 0) {
+    if (event.button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return;
     }
 
     // 親のイベントを中止する
     event.stopPropagation();
-    event.preventDefault();
 
     // レイヤーの状態からモードを取得する
     const mode = timelineToolLockAllGetCurrentModeService();
@@ -31,7 +33,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 全てのレイヤーのモードを切り替える
     const layers = scene.layers;
-    for (let idx: number = 0; idx < layers.length; ++idx) {
+    for (let idx = 0; idx < layers.length; ++idx) {
 
         const layer: Layer | undefined = layers[idx];
         if (!layer) {
