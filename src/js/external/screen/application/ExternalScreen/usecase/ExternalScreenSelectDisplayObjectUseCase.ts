@@ -6,6 +6,8 @@ import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/applic
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenDisplayObjectActvieElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectActvieElementService";
+import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
+import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
 /**
  * @description DisplayObjectを選択状態に更新
@@ -42,6 +44,10 @@ export const execute = (
 
     // 表示がアクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
+        // 再生中なら停止
+        if (!timelineHeader.stopFlag) {
+            timelineToolPlayStopUseCase();
+        }
 
         // 選択状態のDisplayObjectをアクティブにする
         screenDisplayObjectActvieElementService(layer, depths);

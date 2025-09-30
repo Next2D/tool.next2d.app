@@ -4,13 +4,15 @@ import { execute as timelineLayerAltSelectedUseCase } from "@/timeline/applicati
 import { execute as timelineLayerShiftSelectedUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerShiftSelectedUseCase";
 import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { execute as timelineLayerControllerRegisterPointerEventUseCase } from "./TimelineLayerControllerRegisterPointerEventUseCase";
 import { execute as timelineLayerControllerActiveExitIconElementService } from "../service/TimelineLayerControllerActiveExitIconElementService";
 import { timelineLayer } from "@/timeline/domain/model/TimelineLayer";
 import { execute as timelineLayerFrameSelectedAllClearUseCase } from "@/timeline/application/TimelineLayerFrame/usecase/TimelineLayerFrameSelectedAllClearUseCase";
 import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
+import { EventType } from "@/tool/domain/event/EventType";
+import { execute as timelineLayerControllerPointerMoveUseCase } from "./TimelineLayerControllerPointerMoveUseCase";
+import { execute as timelineLayerControllerPointerUpUseCase } from "./TimelineLayerControllerPointerUpUseCase";
 
 /**
  * @description レイヤーのコントローラーエリアのマウスダウン処理関数
@@ -94,6 +96,23 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // レイヤーの移動モードを設定
     $setMoveLayerMode(true);
 
-    // レイヤーの移動イベントを登録
-    timelineLayerControllerRegisterPointerEventUseCase(event);
+    // ポインターイベントを登録
+    element.setPointerCapture(event.pointerId);
+    element.addEventListener(
+        EventType.POINTER_MOVE,
+        timelineLayerControllerPointerMoveUseCase,
+        { "passive": false }
+    );
+    element.addEventListener(
+        EventType.POINTER_UP,
+        timelineLayerControllerPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_CANCEL,
+        timelineLayerControllerPointerUpUseCase
+    );
+    element.addEventListener(
+        EventType.POINTER_LEAVE,
+        timelineLayerControllerPointerUpUseCase
+    );
 };
