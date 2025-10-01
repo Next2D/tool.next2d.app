@@ -9,6 +9,7 @@ import { execute as screenAreaReadOnlyElementService } from "@/screen/applicatio
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
+import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import {
     $getCacheCanvas,
     $setCacheCanvas
@@ -17,10 +18,6 @@ import {
     $getDeactivated,
     $getReDrawState
 } from "@/screen/application/ScreenArea/ScreenAreaUtil";
-import {
-    $getConcatenatedMatrix,
-    $getMaskMatrix
-} from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description Shapeをcanvasに描画して返却する
@@ -88,10 +85,7 @@ export const execute = async (
 
     // マスクのスタイルを更新
     if (layer.mode === $MASK_IN_MODE) {
-        await screenDisplayObjectUpdateMaskInCanvasStyleService(
-            div, layer, character.x, character.y,
-            $getMaskMatrix(character)
-        );
+        await screenDisplayObjectUpdateMaskInCanvasStyleService(div, layer, character);
     }
 
     // 追加するDisplayObjectのレイヤーの階層を調整

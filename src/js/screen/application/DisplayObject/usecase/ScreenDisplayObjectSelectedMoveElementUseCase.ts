@@ -3,7 +3,6 @@ import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 
 /**
  * @description スクリーンで選択中のElementを移動する
@@ -74,12 +73,7 @@ export const execute = async (
             }
 
             // マスクのstyleを更新
-            await screenDisplayObjectUpdateMaskInCanvasStyleService(
-                node, layer,
-                character.x + dx,
-                character.y + dy,
-                $getMaskMatrix(character)
-            );
+            await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);
         }
     }
 };

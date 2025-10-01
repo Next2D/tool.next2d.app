@@ -45,6 +45,28 @@ export const $getConcatenatedMatrix = (): Float32Array =>
 };
 
 /**
+ * @description Characterの行列と親のMovieClipとスクリーンの拡大率の行列を返却
+ *              Returns the matrix of the Character and the parent MovieClip and the screen magnification
+ *
+ * @param  {Character} character
+ * @return {Float32Array}
+ * @method
+ * @public
+ */
+export const $createTransformMatrix = (character: Character): Float32Array =>
+{
+    const concatenatedMatrix = $getConcatenatedMatrix();
+    const matrix = Matrix.multiply(concatenatedMatrix, character.matrix);
+    const radianX = Math.atan2(matrix[1], matrix[0]);
+    const radianY = Math.atan2(matrix[2], matrix[3]);
+    return new Float32Array([
+        Math.cos(radianX), Math.sin(radianX),
+        Math.sin(radianY), Math.cos(radianY),
+        0, 0
+    ]);
+};
+
+/**
  * @description TransformStyleを生成
  *              Generate TransformStyle
  *
@@ -55,11 +77,8 @@ export const $getConcatenatedMatrix = (): Float32Array =>
  */
 export const $createTransformElementStyle = (character: Character): string =>
 {
-    const concatenatedMatrix = $getConcatenatedMatrix();
-    const matrix = Matrix.multiply(concatenatedMatrix, character.matrix);
-    const radianX = Math.atan2(matrix[1], matrix[0]);
-    const radianY = Math.atan2(matrix[2], matrix[3]);
-    return `matrix(${Math.cos(radianX)}, ${Math.sin(radianX)}, ${Math.sin(radianY)}, ${Math.cos(radianY)}, 0, 0)`;
+    const matrix = $createTransformMatrix(character);
+    return `matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, 0, 0)`;
 };
 
 /**

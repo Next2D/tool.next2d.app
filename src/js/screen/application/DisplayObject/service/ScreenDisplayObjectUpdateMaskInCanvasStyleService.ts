@@ -1,6 +1,9 @@
+import type { Layer } from "@/core/domain/model/Layer";
+import type { Character } from "@/core/domain/model/Character";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import type { Layer } from "@/core/domain/model/Layer";
+import { $createTransformMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { execute as screenDisplayObjectSvgTagComponent } from "../component/ScreenDisplayObjectSvgTagComponent";
 
 /**
  * @description マスクインのスタイルを適用
@@ -8,19 +11,15 @@ import type { Layer } from "@/core/domain/model/Layer";
  *
  * @param  {HTMLElement} element
  * @param  {Layer} layer
- * @param  {number} x
- * @param  {number} y
- * @param  {array} [matrix=[]]
- * @return {Promise}
+ * @param  {Character} character
+ * @return {Promise<void>}
  * @method
  * @public
  */
 export const execute = async (
     element: HTMLElement,
     layer: Layer,
-    x: number,
-    y: number,
-    matrix: Float32Array
+    character: Character
 ): Promise<void> => {
 
     if (layer.mode !== $MASK_IN_MODE) {
@@ -45,6 +44,16 @@ export const execute = async (
         return ;
     }
 
+    const maskBounds = maskCharacter.getBounds(movieClip.currentFrame, true);
+    if (!maskBounds) {
+        return ;
+    }
+
+    const bounds = character.getBounds(movieClip.currentFrame, true);
+    if (!bounds) {
+        return ;
+    }
+
     const div = document.createElement("div");
     await maskCharacter.createElement(div, maskLayer);
     const canvas = div.getElementsByTagName("canvas")[0] as HTMLCanvasElement;
@@ -57,18 +66,11 @@ export const execute = async (
         canvas.dataset.base64 = canvas.toDataURL();
     }
 
-    // 拡大・縮小に合わせてマスク位置を計算
-    const devicePixelRatio = window.devicePixelRatio;
-    const scale = workSpace.scale;
-
-    const width  = canvas.width  / devicePixelRatio / matrix[0];
-    const height = canvas.height / devicePixelRatio / matrix[3];
-    const dx = (maskCharacter.x - x) * scale / matrix[0];
-    const dy = (maskCharacter.y - y) * scale / matrix[3];
-
     const style = element.style;
-    style.mask = style.webkitMask = `url(${canvas.dataset.base64}), none`;
-    style.maskSize = style.webkitMaskSize = `${width}px ${height}px`;
-    style.maskRepeat = style.webkitMaskRepeat = "no-repeat";
-    style.maskPosition = style.webkitMaskPosition = `${-matrix[4] + dx}px ${-matrix[5] + dy}px`;
+    const matrix = $createTransformMatrix(maskCharacter);
+
+    style.maskImage    = style.webkitMaskImage    = `url('data:image/svg+xml;utf8,${screenDisplayObjectSvgTagComponent(canvas.dataset.base64, matrix)}'), none`;
+    style.maskSize     = style.webkitMaskSize     = `${Math.ceil(Math.abs(maskBounds.xMax - maskBounds.xMin))}px ${Math.ceil(Math.abs(maskBounds.yMax - maskBounds.yMin))}px`;
+    style.maskRepeat   = style.webkitMaskRepeat   = "no-repeat";
+    style.maskPosition = style.webkitMaskPosition = `${maskBounds.xMin - bounds.xMin}px ${maskBounds.yMin - bounds.yMin}px`;
 };

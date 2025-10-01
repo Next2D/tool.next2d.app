@@ -82,9 +82,8 @@ export const execute = async (
                 return;
             }
 
-            await screenDisplayObjectUpdateMaskInCanvasStyleService(
-                node, layer, character.x, character.y, $getMaskMatrix(character)
-            );
+            // マスクのstyleを更新
+            await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);
         }
 
     }

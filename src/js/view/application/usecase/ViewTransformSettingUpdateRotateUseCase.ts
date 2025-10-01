@@ -4,7 +4,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
-import { $getMaskMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $removeLibraryCache } from "@/cache/CacheUtil";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
@@ -107,9 +106,8 @@ export const execute = async (
                 return ;
             }
 
-            await screenDisplayObjectUpdateMaskInCanvasStyleService(
-                node, layer, character.x, character.y, $getMaskMatrix(character)
-            );
+            // マスクのstyleを更新
+            await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);
         }
     }
 
