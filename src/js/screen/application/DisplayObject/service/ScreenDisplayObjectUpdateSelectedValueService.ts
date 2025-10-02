@@ -18,7 +18,7 @@ export const execute = async (): Promise<void> =>
     // 現在のフレームをセット
     const frame = movieClip.currentFrame;
 
-    const x = transformSetting.x ;
+    const x = transformSetting.x;
     const y = transformSetting.y;
 
     // 選択中のDisplayObjectの座標を更新
@@ -36,6 +36,10 @@ export const execute = async (): Promise<void> =>
             if (!character) {
                 continue ;
             }
+
+            // 移動前の座標に戻す
+            character.x = transformSetting.beforeX;
+            character.y = transformSetting.beforeY;
 
             // 外部APIを起動
             const externalCharacter = new ExternalCharacter(

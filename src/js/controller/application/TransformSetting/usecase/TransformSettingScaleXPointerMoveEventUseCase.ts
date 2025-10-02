@@ -30,7 +30,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame((): void =>
+    requestAnimationFrame(async (): Promise<void> =>
     {
         const element = event.target as HTMLInputElement;
         if (!element) {
@@ -49,10 +49,10 @@ export const execute = (event: PointerEvent): void =>
 
         // 変形に合わせて表示を更新
         const scale = scaleX / 100 / transformSetting.scaleX;
-        transformSettingUpdateScaleXToElementValuesUseCase(scale);
+        await transformSettingUpdateScaleXToElementValuesUseCase(scale);
 
         if (transformSetting.scaleLocked) {
-            transformSettingUpdateScaleYToElementValuesUseCase(scale);
+            await transformSettingUpdateScaleYToElementValuesUseCase(scale);
         }
 
         // 選択中の表示領域を更新

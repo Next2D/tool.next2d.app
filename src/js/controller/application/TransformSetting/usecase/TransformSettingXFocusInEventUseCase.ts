@@ -3,6 +3,7 @@ import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
 import { $setEditingElement } from "@/global/GlobalUtil";
+import { $TRANSFORM_OBJECT_Y_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアのx座標のフォーカスイベント処理
@@ -20,6 +21,12 @@ export const execute = (event: FocusEvent): void =>
     if (!element) {
         return ;
     }
+    const yInputElement: HTMLInputElement | null = document
+        .getElementById($TRANSFORM_OBJECT_Y_ID) as HTMLInputElement;
+    if (!yInputElement) {
+        return ;
+    }
+
     element.style.cursor = "";
 
     // イベントの伝播を止める
@@ -42,6 +49,7 @@ export const execute = (event: FocusEvent): void =>
 
     // 変更前の値を保持
     transformSetting.beforeX = parseFloat(element.value);
+    transformSetting.beforeY = parseFloat(yInputElement.value);
 
     // 変更前のmatrixを格納
     transformSettingCacheBeforeMatrixService();

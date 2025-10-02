@@ -36,8 +36,6 @@ export const execute = async (
 
     // 選択中のElementを移動
     const frame = movieClip.currentFrame;
-    const dx = transformSetting.x;
-    const dy = transformSetting.y;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
         const layer = movieClip.getLayer(layerIndex);
@@ -71,6 +69,10 @@ export const execute = async (
             if (!character) {
                 continue ;
             }
+
+            // 移動した座標に一時的に移動、更新前には移動前の状態に戻す
+            character.x = transformSetting.beforeX + transformSetting.x;
+            character.y = transformSetting.beforeY + transformSetting.y;
 
             // マスクのstyleを更新
             await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);

@@ -1,6 +1,6 @@
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as screenDisplayObjectWindowMouseMoveEventUseCase } from "./ScreenDisplayObjectPointerMoveEventUseCase";
-import { execute as screenDisplayObjectWindowMouseUpEventUseCase } from "./ScreenDisplayObjectPointerUpEventUseCase";
+import { execute as screenDisplayObjectPointerMoveEventUseCase } from "./ScreenDisplayObjectPointerMoveEventUseCase";
+import { execute as screenDisplayObjectPointerUpEventUseCase } from "./ScreenDisplayObjectPointerUpEventUseCase";
 
 /**
  * @description DisplayObjectの移動用のwindowイベントを登録
@@ -21,19 +21,19 @@ export const execute = (event: PointerEvent): void =>
     element.setPointerCapture(event.pointerId);
     element.addEventListener(
         EventType.POINTER_MOVE,
-        screenDisplayObjectWindowMouseMoveEventUseCase,
+        screenDisplayObjectPointerMoveEventUseCase,
         { "passive": false }
     );
     element.addEventListener(
         EventType.POINTER_UP,
-        screenDisplayObjectWindowMouseUpEventUseCase
+        screenDisplayObjectPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_CANCEL,
-        screenDisplayObjectWindowMouseUpEventUseCase
+        screenDisplayObjectPointerUpEventUseCase
     );
     element.addEventListener(
         EventType.POINTER_LEAVE,
-        screenDisplayObjectWindowMouseUpEventUseCase
+        screenDisplayObjectPointerUpEventUseCase
     );
 };

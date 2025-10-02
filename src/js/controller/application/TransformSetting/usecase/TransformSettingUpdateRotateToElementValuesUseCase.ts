@@ -8,6 +8,7 @@ import { execute as transformSettingUpdateHeightElementService } from "@/control
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
+import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import { Matrix } from "@next2d/geom";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -25,11 +26,11 @@ import {
  *              Transform the selected Element on the screen according to the matrix
  *
  * @param  {number} rotation
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (rotation: number): void =>
+export const execute = async (rotation: number): Promise<void> =>
 {
     if (!rotation) {
         return ;
@@ -136,6 +137,8 @@ export const execute = (rotation: number): void =>
                 }
                 container.style.transform = $createTransformElementStyle(character);
             }
+
+            await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);
 
             if (movieClip.isSingleSelectedOfDisplayObject()) {
                 transformSettingUpdateXElementService(character.x);

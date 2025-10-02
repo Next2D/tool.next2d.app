@@ -39,7 +39,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     element.value = `${rotation}`;
 
     const rotate = rotation - transformSetting.rotation;
-    transformSettingUpdateRotateToElementValuesUseCase(rotate);
+    await transformSettingUpdateRotateToElementValuesUseCase(rotate);
     transformSetting.rotation = rotation;
 
     // 変形に合わせて表示を更新

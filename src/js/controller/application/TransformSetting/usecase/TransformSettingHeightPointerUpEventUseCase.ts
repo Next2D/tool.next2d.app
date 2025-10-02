@@ -44,10 +44,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     );
 
     const scale = height / transformSetting.h;
-    transformSettingUpdateHeightToElementValuesUseCase(scale);
+    await transformSettingUpdateHeightToElementValuesUseCase(scale);
 
     if (transformSetting.sizeLocked) {
-        transformSettingUpdateWidthToElementValuesUseCase(scale);
+        await transformSettingUpdateWidthToElementValuesUseCase(scale);
     }
 
     // 変更後のmatrixで表示を更新

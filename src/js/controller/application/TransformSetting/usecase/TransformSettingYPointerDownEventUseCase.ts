@@ -8,6 +8,7 @@ import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
+import { $TRANSFORM_OBJECT_X_ID } from "@/config/TransformSettingConfig";
 
 /**
  * @description 変形エリアのy座標のマウスダウンイベント
@@ -45,12 +46,19 @@ export const execute = (event: PointerEvent): void =>
     if (!element) {
         return ;
     }
+    const xInputElement: HTMLInputElement | null = document
+        .getElementById($TRANSFORM_OBJECT_X_ID) as HTMLInputElement;
+    if (!xInputElement) {
+        return ;
+    }
+
     element.style.cursor = "ew-resize";
 
     // マウスで移動した量を更新
     transformSetting.clear();
     transformSetting.x = 0;
     transformSetting.y = 0;
+    transformSetting.beforeX = parseFloat(xInputElement.value);
     transformSetting.beforeY = parseFloat(element.value);
 
     // windowのイベントを登録

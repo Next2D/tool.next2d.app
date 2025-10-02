@@ -66,11 +66,14 @@ export const execute = async (
         canvas.dataset.base64 = canvas.toDataURL();
     }
 
-    const style = element.style;
+    const scale  = window.devicePixelRatio;
     const matrix = $createTransformMatrix(maskCharacter);
+    const width  = Math.ceil(Math.abs(maskBounds.xMax - maskBounds.xMin));
+    const height = Math.ceil(Math.abs(maskBounds.yMax - maskBounds.yMin));
 
-    style.maskImage    = style.webkitMaskImage    = `url('data:image/svg+xml;utf8,${screenDisplayObjectSvgTagComponent(canvas.dataset.base64, matrix)}'), none`;
-    style.maskSize     = style.webkitMaskSize     = `${Math.ceil(Math.abs(maskBounds.xMax - maskBounds.xMin))}px ${Math.ceil(Math.abs(maskBounds.yMax - maskBounds.yMin))}px`;
+    const style = element.style;
+    style.mask         = style.webkitMask         = `url('data:image/svg+xml;utf8,${screenDisplayObjectSvgTagComponent(canvas.dataset.base64, width, height, parseFloat(canvas.style.width), parseFloat(canvas.style.height), matrix)}'), none`;
+    style.maskSize     = style.webkitMaskSize     = `${width}px ${height}px`;
     style.maskRepeat   = style.webkitMaskRepeat   = "no-repeat";
     style.maskPosition = style.webkitMaskPosition = `${maskBounds.xMin - bounds.xMin}px ${maskBounds.yMin - bounds.yMin}px`;
 };

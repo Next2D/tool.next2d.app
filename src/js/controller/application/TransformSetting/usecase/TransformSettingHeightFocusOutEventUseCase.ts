@@ -39,13 +39,13 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     // 変形に合わせて表示を更新
     const scale = height / transformSetting.beforeHeight;
-    transformSettingUpdateHeightToElementValuesUseCase(scale);
+    await transformSettingUpdateHeightToElementValuesUseCase(scale);
 
     if (transformSetting.sizeLocked
         && transformSetting.beforeWidth
     ) {
         // 変形に合わせて表示を更新
-        transformSettingUpdateScaleXToElementValuesUseCase(scale);
+        await transformSettingUpdateScaleXToElementValuesUseCase(scale);
     }
 
     // 変更後のmatrixで表示を更新

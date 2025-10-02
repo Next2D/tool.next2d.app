@@ -26,7 +26,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame((): void =>
+    requestAnimationFrame(async (): Promise<void> =>
     {
         const element = event.target as HTMLInputElement;
         if (!element) {
@@ -42,7 +42,7 @@ export const execute = (event: PointerEvent): void =>
         element.value = `${rotation}`;
 
         const rotate = rotation - transformSetting.rotation;
-        transformSettingUpdateRotateToElementValuesUseCase(rotate);
+        await transformSettingUpdateRotateToElementValuesUseCase(rotate);
         transformSetting.rotation = rotation;
 
         // 選択中の表示領域を更新
