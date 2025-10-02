@@ -19,9 +19,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "baseUrl": "./src/js",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["./src/js/*"]
     },
     "outDir": "./dist",
 
