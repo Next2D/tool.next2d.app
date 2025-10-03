@@ -71,3 +71,40 @@ export const $createTransformElementStyle = (character: Character): string =>
     const matrix = $createTransformMatrix(character);
     return `matrix(${matrix[0]}, ${matrix[1]}, ${matrix[2]}, ${matrix[3]}, 0, 0)`;
 };
+
+/**
+ * @description 変形エリアのポインターの状態
+ *              Pointer state of the transformation area
+ *
+ * @type {"up" | "down"}
+ * @default "up"
+ * @private
+ */
+let state: "up" | "down" = "up";
+
+/**
+ * @description 変形エリアのポインターの状態を取得
+ *              Get the pointer state of the transformation area
+ *
+ * @return {"up" | "down"}
+ * @method
+ * @public
+ */
+export const $getTransformSettingState = (): "up" | "down" =>
+{
+    return state;
+};
+
+/**
+ * @description 変形エリアのポインターの状態を設定
+ *              Set the pointer state of the transformation area
+ *
+ * @param value "up" | "down"
+ * @return {void}
+ * @method
+ * @public
+ */
+export const $setTransformSettingState = (value: "up" | "down"): void =>
+{
+    state = value;
+};

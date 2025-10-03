@@ -1,9 +1,14 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
+import { Matrix } from "@next2d/geom";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { $createTransformMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $createTransformMatrix, $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { execute as screenDisplayObjectSvgTagComponent } from "../component/ScreenDisplayObjectSvgTagComponent";
+import {
+    $BITMAP_TYPE,
+    $VIDEO_TYPE
+} from "@/config/InstanceConfig";
 
 /**
  * @description マスクインのスタイルを適用
@@ -54,6 +59,11 @@ export const execute = async (
         return ;
     }
 
+    const instance = workSpace.getLibrary(maskCharacter.libraryId);
+    if (!instance) {
+        return ;
+    }
+
     const div = document.createElement("div");
     await maskCharacter.createElement(div, maskLayer);
     const canvas = div.getElementsByTagName("canvas")[0] as HTMLCanvasElement;
@@ -66,13 +76,30 @@ export const execute = async (
         canvas.dataset.base64 = canvas.toDataURL();
     }
 
-    const scale  = window.devicePixelRatio;
-    const matrix = $createTransformMatrix(maskCharacter);
+    let matrix: Float32Array;
+    let canvasWidth  = canvas.width;
+    let canvasHeight = canvas.height;
+    switch (instance.type) {
+
+        case $BITMAP_TYPE:
+        case $VIDEO_TYPE:
+            matrix = Matrix.multiply($getConcatenatedMatrix(), maskCharacter.matrix);
+            break;
+
+        default:
+            matrix = $createTransformMatrix(maskCharacter);
+            canvasWidth /= window.devicePixelRatio;
+            canvasHeight /= window.devicePixelRatio;
+            break;
+
+    }
+
+    // canvasのサイズをマスクのサイズに合わせる
     const width  = Math.ceil(Math.abs(maskBounds.xMax - maskBounds.xMin));
     const height = Math.ceil(Math.abs(maskBounds.yMax - maskBounds.yMin));
 
     const style = element.style;
-    style.mask         = style.webkitMask         = `url('data:image/svg+xml;utf8,${screenDisplayObjectSvgTagComponent(canvas.dataset.base64, width, height, parseFloat(canvas.style.width), parseFloat(canvas.style.height), matrix)}'), none`;
+    style.mask         = style.webkitMask         = `url('data:image/svg+xml;utf8,${screenDisplayObjectSvgTagComponent(canvas.dataset.base64, width, height, canvasWidth, canvasHeight, matrix)}'), none`;
     style.maskSize     = style.webkitMaskSize     = `${width}px ${height}px`;
     style.maskRepeat   = style.webkitMaskRepeat   = "no-repeat";
     style.maskPosition = style.webkitMaskPosition = `${maskBounds.xMin - bounds.xMin}px ${maskBounds.yMin - bounds.yMin}px`;

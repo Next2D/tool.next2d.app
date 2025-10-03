@@ -2,6 +2,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingRotatePointerMoveEventUseCase } from "./TransformSettingRotatePointerMoveEventUseCase";
 import { execute as transformSettingUpdateRotateToRedrawCanvasUseCase } from "./TransformSettingUpdateRotateToRedrawCanvasUseCase";
+import { $setTransformSettingState } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアの回転の値操作のマウスアップイベント
@@ -14,6 +15,9 @@ import { execute as transformSettingUpdateRotateToRedrawCanvasUseCase } from "./
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
+    // 変形の状態を変更
+    $setTransformSettingState("up");
+
     // カーソルを変更
     $setCursor("auto");
 

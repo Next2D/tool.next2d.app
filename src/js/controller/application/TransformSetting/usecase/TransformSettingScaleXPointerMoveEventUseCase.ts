@@ -6,6 +6,7 @@ import {
     $clamp,
     $setCursor
 } from "@/global/GlobalUtil";
+import { $getTransformSettingState } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアのxスケールの値操作の処理関数
@@ -32,6 +33,10 @@ export const execute = (event: PointerEvent): void =>
 
     requestAnimationFrame(async (): Promise<void> =>
     {
+        if ($getTransformSettingState() === "up") {
+            return ;
+        }
+
         const element = event.target as HTMLInputElement;
         if (!element) {
             return ;

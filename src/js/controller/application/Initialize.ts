@@ -10,6 +10,7 @@ import { propertyArea } from "../domain/model/PropertyArea";
 import { historyArea } from "../domain/model/HistoryArea";
 import { scriptArea } from "../domain/model/ScriptArea";
 import { referenceSetting } from "../domain/model/ReferenceSetting";
+import { colorSetting } from "../domain/model/ColorSetting";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -27,7 +28,8 @@ const settings: any[] = [
     objectSetting,
     historyArea,
     scriptArea,
-    referenceSetting
+    referenceSetting,
+    colorSetting
 ];
 
 /**

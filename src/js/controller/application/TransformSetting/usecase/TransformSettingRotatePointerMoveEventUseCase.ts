@@ -2,6 +2,7 @@ import { execute as transformSettingUpdateRotateToElementValuesUseCase } from ".
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { $setCursor } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
+import { $getTransformSettingState } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアの回転の値操作の処理関数
@@ -28,6 +29,10 @@ export const execute = (event: PointerEvent): void =>
 
     requestAnimationFrame(async (): Promise<void> =>
     {
+        if ($getTransformSettingState() === "up") {
+            return ;
+        }
+
         const element = event.target as HTMLInputElement;
         if (!element) {
             return ;

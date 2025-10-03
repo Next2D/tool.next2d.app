@@ -5,6 +5,7 @@ import { execute as transformSettingScaleXPointerMoveEventUseCase } from "./Tran
 import { execute as transformSettingUpdateScaleToRedrawCanvasUseCase } from "./TransformSettingUpdateScaleToRedrawCanvasUseCase";
 import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
 import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from "./TransformSettingUpdateScaleYToElementValuesUseCase";
+import { $setTransformSettingState } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアのxスケールの値操作のマウスアップイベント
@@ -17,6 +18,9 @@ import { execute as transformSettingUpdateScaleYToElementValuesUseCase } from ".
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
+    // 変形の状態を変更
+    $setTransformSettingState("up");
+
     // カーソルを変更
     $setCursor("auto");
 

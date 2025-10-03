@@ -5,6 +5,7 @@ import { execute as transformSettingWidthPointerMoveEventUseCase } from "./Trans
 import { execute as transformSettingUpdateWidthToElementValuesUseCase } from "./TransformSettingUpdateWidthToElementValuesUseCase";
 import { execute as transformSettingUpdateHeightToElementValuesUseCase } from "./TransformSettingUpdateHeightToElementValuesUseCase";
 import { execute as transformSettingUpdateSizeToRedrawCanvasUseCase } from "./TransformSettingUpdateSizeToRedrawCanvasUseCase";
+import { $setTransformSettingState } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアの幅の値操作のマウスアップイベント
@@ -17,6 +18,9 @@ import { execute as transformSettingUpdateSizeToRedrawCanvasUseCase } from "./Tr
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
+    // 変形の状態を変更
+    $setTransformSettingState("up");
+
     // カーソルを変更
     $setCursor("auto");
 

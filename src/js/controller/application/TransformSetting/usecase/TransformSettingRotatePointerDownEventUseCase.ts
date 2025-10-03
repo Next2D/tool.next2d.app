@@ -11,6 +11,7 @@ import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
+import { $setTransformSettingState } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアの回転の変更のポインターダウンイベント
@@ -117,4 +118,7 @@ export const execute = (event: PointerEvent): void =>
         EventType.POINTER_LEAVE,
         transformSettingRotatePointerUpEventUseCase
     );
+
+    // 変形の状態を変更
+    $setTransformSettingState("down");
 };

@@ -5,6 +5,7 @@ import { execute as targetRectMoveElementService } from "@/screen/application/Ta
 import { execute as screenStandardPointMoveElementService } from "@/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService";
 import { execute as screenReferencePointMoveElementService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService";
 import { $globalToLocal } from "@/screen/application/DisplayObject/DisplayObjectUtil";
+import { $getTransformSettingState } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアのy座標の値操作のマウスムーブイベント
@@ -31,6 +32,10 @@ export const execute = (event: PointerEvent): void =>
 
     requestAnimationFrame(async (): Promise<void> =>
     {
+        if ($getTransformSettingState() === "up") {
+            return ;
+        }
+
         const element = event.target as HTMLInputElement;
         if (!element) {
             return ;

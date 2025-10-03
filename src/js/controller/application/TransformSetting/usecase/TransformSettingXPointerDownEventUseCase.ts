@@ -9,6 +9,7 @@ import {
     $setEditingElement
 } from "@/global/GlobalUtil";
 import { $TRANSFORM_OBJECT_Y_ID } from "@/config/TransformSettingConfig";
+import { $setTransformSettingState } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアのx座標のマウスダウンイベント
@@ -81,4 +82,7 @@ export const execute = (event: PointerEvent): void =>
         EventType.POINTER_CANCEL,
         transformSettingXPointerUpEventUseCase
     );
+
+    // 変形の状態を変更
+    $setTransformSettingState("down");
 };
