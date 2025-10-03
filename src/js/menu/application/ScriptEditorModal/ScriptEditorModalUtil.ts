@@ -46,11 +46,11 @@ export const $getTargetMovieClip = (): MovieClip | null =>
  * @description 編集対象のMovieClipをセット
  *              Set the MovieClip to be edited
  *
- * @param {MovieClip} movie_clip
+ * @param {MovieClip | null} movie_clip
  * @method
  * @public
  */
-export const $setTargetMovieClip = (movie_clip: MovieClip) =>
+export const $setTargetMovieClip = (movie_clip: MovieClip | null) =>
 {
     $movieClip = movie_clip;
 };

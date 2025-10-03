@@ -69,6 +69,9 @@ export const execute = async (
     if (!container) {
         throw new Error("Canvas container not found in the display object element.");
     }
+
+    // alpha値を反映
+    canvas.style.opacity = `${character.alpha}`;
     container.appendChild(canvas);
 
     const bounds = character.getRawBounds();

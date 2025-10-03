@@ -103,6 +103,9 @@ export const execute = async (
         "videoSync": true
     });
 
+    // alphaを設定
+    canvas.style.opacity = `${character ? character.alpha : 1}`;
+
     // 実際のサイズを設定
     container.matrix = matrix;
     canvas.style.width  = `${container.width}px`;
