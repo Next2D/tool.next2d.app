@@ -1,9 +1,11 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as screenDisplayObjectUpdateSelectedValueService } from "../service/ScreenDisplayObjectUpdateSelectedValueService";
-import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
-import { execute as screenReferencePointMoveElementService } from "@/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService";
 import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
+import {
+    $TRANSFORM_OBJECT_X_ID,
+    $TRANSFORM_OBJECT_Y_ID
+} from "@/config/TransformSettingConfig";
 
 /**
  * @description DisplayObjectのキーボードイベント、左方向に移動
@@ -23,6 +25,17 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
         return ;
     }
 
+    const transformObjectXElement = document
+        .getElementById($TRANSFORM_OBJECT_X_ID) as HTMLInputElement | null;
+    if (!transformObjectXElement) {
+        return;
+    }
+    const transformObjectYElement = document
+        .getElementById($TRANSFORM_OBJECT_Y_ID) as HTMLInputElement | null;
+    if (!transformObjectYElement) {
+        return;
+    }
+
     // 選択範囲のxy座標を取得
     const position = screenAreaCalcSelectedCharacterPositionService(movieClip);
     if (!position) {
@@ -31,7 +44,9 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
 
     // イベントの伝播を止める
     event.stopPropagation();
-    event.preventDefault();
+
+    transformSetting.beforeX = parseFloat(transformObjectXElement.value);
+    transformSetting.beforeY = parseFloat(transformObjectYElement.value);
 
     // 移動量を設定
     const x = event.shiftKey ? 10 : 1;
@@ -39,12 +54,6 @@ export const execute = async (event: KeyboardEvent): Promise<void> =>
     // モデルの情報を初期化
     transformSetting.x = -x * workSpace.scale;
     transformSetting.y = 0;
-
-    // プロパティーエリアの値を更新
-    transformSettingUpdateXElementService(position.x - x);
-
-    // 基準点のElementを移動
-    screenReferencePointMoveElementService(-x);
 
     // 内部情報を更新
     await screenDisplayObjectUpdateSelectedValueService();
