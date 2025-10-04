@@ -1,4 +1,3 @@
-import { colorSetting } from "@/controller/domain/model/ColorSetting";
 import { $getColorSettingState } from "../ColorSettingUtil";
 import { execute as colorSettingAlphaMultiplierUpdateElementUseCase } from "./ColorSettingAlphaMultiplierUpdateElementUseCase";
 import {
@@ -44,7 +43,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         const value = $clamp(parseFloat(element.value) + event.movementX, 0, 100);
 
         element.value = `${value}`;
-        colorSetting.value = colorSetting.beforeValue - value;
 
         // カラー設定を更新
         colorSettingAlphaMultiplierUpdateElementUseCase(value);

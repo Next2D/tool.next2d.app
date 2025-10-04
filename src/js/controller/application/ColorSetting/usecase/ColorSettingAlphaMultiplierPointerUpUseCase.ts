@@ -2,6 +2,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $setColorSettingState } from "../ColorSettingUtil";
 import { execute as colorSettingAlphaMultiplierPointerMoveUseCase } from "./ColorSettingAlphaMultiplierPointerMoveUseCase";
+import { execute as colorSettingAlphaMultiplierUpdateValueUseCase } from "./ColorSettingAlphaMultiplierUpdateValueUseCase";
 
 /**
  * @description カラー設定エリアのアルファマルチプライヤー変更のポインターアップイベント
@@ -36,6 +37,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.removeEventListener(EventType.POINTER_UP, execute);
     element.removeEventListener(EventType.POINTER_CANCEL, execute);
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
+
+    // 値を更新
+    colorSettingAlphaMultiplierUpdateValueUseCase(parseFloat(element.value) | 0);
 
     // input要素のフォーカス
     element.focus();

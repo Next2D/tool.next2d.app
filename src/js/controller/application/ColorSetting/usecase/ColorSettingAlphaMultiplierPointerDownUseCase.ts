@@ -2,14 +2,14 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { EventType } from "@/tool/domain/event/EventType";
+import { $setColorSettingState } from "../ColorSettingUtil";
+import { colorSetting } from "@/controller/domain/model/ColorSetting";
 import { execute as colorSettingAlphaMultiplierPointerMoveUseCase } from "./ColorSettingAlphaMultiplierPointerMoveUseCase";
 import { execute as colorSettingAlphaMultiplierPointerUpUseCase } from "./ColorSettingAlphaMultiplierPointerUpUseCase";
-import { $setColorSettingState } from "../ColorSettingUtil";
 import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
-import { colorSetting } from "@/controller/domain/model/ColorSetting";
 
 /**
  * @description カラー設定エリアのアルファマルチプライヤー変更のポインターダウンイベント
@@ -57,7 +57,6 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 変更前の値を保存
     colorSetting.beforeValue = parseFloat(element.value);
-    colorSetting.value = 0;
 
     element.setPointerCapture(event.pointerId);
     element.addEventListener(

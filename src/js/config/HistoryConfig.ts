@@ -645,3 +645,12 @@ export const $REFERENCE_UPDATE_X_COMMAND: number = 65;
  * @constant
  */
 export const $REFERENCE_UPDATE_Y_COMMAND: number = 66;
+
+/**
+ * @description 透明度の更新の識別コマンド名
+ *              Identification command name for updating the alpha multiplier of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND: number = 67;

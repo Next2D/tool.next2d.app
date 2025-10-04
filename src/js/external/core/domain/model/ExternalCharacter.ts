@@ -12,6 +12,7 @@ import { execute as externalCharacterUpdateNameUseCase } from "@/external/core/a
 import { execute as externalCharacterUpdateMatrixUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateMatrixUseCase";
 import { execute as externalCharacterUpdateWidthUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateWidthUseCase";
 import { execute as externalCharacterUpdateHeightUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateHeightUseCase";
+import { execute as externalCharacterUpdateAlphaMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateAlphaMultiplierUseCase";
 import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 
 /**
@@ -373,5 +374,38 @@ export class ExternalCharacter
             this._$movieClip
         );
         await externalReference.setPivot(pivot);
+    }
+
+    /**
+     * @description DisplayObjectのアルファ値を取得
+     *              Get the alpha value of DisplayObject
+     *
+     * @return {number} 0 ~ 100
+     * @method
+     * @public
+     */
+    getAlphaMultiplier (): number
+    {
+        return this._$character.colorTransform[3] * 100;
+    }
+
+    /**
+     * @description DisplayObjectのアルファ値を設定
+     *              Set the alpha value of DisplayObject
+     *
+     * @param  {number} alpha 0 ~ 100
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setAlphaMultiplier (alpha: number): Promise<void>
+    {
+        await externalCharacterUpdateAlphaMultiplierUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            alpha
+        );
     }
 }
