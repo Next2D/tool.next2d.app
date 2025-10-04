@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 
 // モック関数の定義
 const mock$getColorSettingState = vi.fn();
+const mock$getCurrentWorkSpace = vi.fn();
 const mockColorSettingAlphaMultiplierUpdateElementUseCase = vi.fn();
 const mock$clamp = vi.fn();
 const mock$setCursor = vi.fn();
@@ -11,8 +12,12 @@ vi.mock("../ColorSettingUtil", () => ({
     $getColorSettingState: () => mock$getColorSettingState()
 }));
 
+vi.mock("@/core/application/CoreUtil", () => ({
+    $getCurrentWorkSpace: () => mock$getCurrentWorkSpace()
+}));
+
 vi.mock("./ColorSettingAlphaMultiplierUpdateElementUseCase", () => ({
-    execute: (value: number) => mockColorSettingAlphaMultiplierUpdateElementUseCase(value)
+    execute: (movieClip: any, value: number) => mockColorSettingAlphaMultiplierUpdateElementUseCase(movieClip, value)
 }));
 
 vi.mock("@/global/GlobalUtil", () => ({
@@ -26,6 +31,8 @@ const { execute } = await import("./ColorSettingAlphaMultiplierPointerMoveUseCas
 describe("ColorSettingAlphaMultiplierPointerMoveUseCase", () => {
     let mockElement: HTMLInputElement;
     let rafCallback: (() => void) | null = null;
+    let mockMovieClip: any;
+    let mockWorkSpace: any;
 
     const createMockEvent = (
         movementX: number = 5,
@@ -47,8 +54,19 @@ describe("ColorSettingAlphaMultiplierPointerMoveUseCase", () => {
         mockElement.type = "range";
         mockElement.value = "50";
 
+        // モックMovieClipとWorkSpaceを作成
+        mockMovieClip = {
+            selectedDepths: new Map([[0, [1]]])
+        };
+        mockWorkSpace = {
+            scene: mockMovieClip
+        };
+
         // デフォルトでは"down"状態
         mock$getColorSettingState.mockReturnValue("down");
+
+        // $getCurrentWorkSpaceのモック
+        mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
 
         // $clampのデフォルト実装
         mock$clamp.mockImplementation((value: number, min: number, max: number) => {
@@ -112,7 +130,7 @@ describe("ColorSettingAlphaMultiplierPointerMoveUseCase", () => {
             await execute(mockEvent);
             if (rafCallback) await rafCallback();
 
-            expect(mockColorSettingAlphaMultiplierUpdateElementUseCase).toHaveBeenCalledWith(60);
+            expect(mockColorSettingAlphaMultiplierUpdateElementUseCase).toHaveBeenCalledWith(mockMovieClip, 60);
         });
     });
 
@@ -423,7 +441,7 @@ describe("ColorSettingAlphaMultiplierPointerMoveUseCase", () => {
             expect(mockElement.value).toBe("60");
 
             // 7. updateElementUseCase呼び出し
-            expect(mockColorSettingAlphaMultiplierUpdateElementUseCase).toHaveBeenCalledWith(60);
+            expect(mockColorSettingAlphaMultiplierUpdateElementUseCase).toHaveBeenCalledWith(mockMovieClip, 60);
         });
 
         it("エラーケース: movementX = 0で早期リターン", async () => {

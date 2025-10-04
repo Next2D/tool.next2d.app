@@ -2,8 +2,8 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as colorSettingAlphaMultiplierUpdateElementUseCase } from "@/controller/application/ColorSetting/usecase/ColorSettingAlphaMultiplierUpdateElementUseCase";
 import { execute as characterUpdateAlphaMultiplierHistoryUseCase } from "@/history/application/core/application/Character/UpdateAlphaMultiplier/usecase/CharacterUpdateAlphaMultiplierHistoryUseCase";
+import { execute as viewColorSettingAlphaMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingAlphaMultiplierUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
@@ -56,9 +56,6 @@ export const execute = async (
     // alphaを更新前の値に戻す
     character.colorTransform[3] = alpha / 100;
 
-    if (!work_space.active || !movie_clip.active) {
-        return ;
-    }
-
-    colorSettingAlphaMultiplierUpdateElementUseCase(alpha);
+    // Elementの更新
+    viewColorSettingAlphaMultiplierUseCase(work_space, movie_clip, alpha);
 };

@@ -1,3 +1,4 @@
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getColorSettingState } from "../ColorSettingUtil";
 import { execute as colorSettingAlphaMultiplierUpdateElementUseCase } from "./ColorSettingAlphaMultiplierUpdateElementUseCase";
 import {
@@ -10,11 +11,11 @@ import {
  *              Pointer move event for value operation of alpha multiplier of deformation area
  *
  * @param  {PointerEvent} event
- * @return {Promise<void>}
+ * @return {void}
  * @method
  * @public
  */
-export const execute = async (event: PointerEvent): Promise<void> =>
+export const execute = (event: PointerEvent): void =>
 {
     // カーソルを変更
     $setCursor("ew-resize");
@@ -28,7 +29,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame(async (): Promise<void> =>
+    requestAnimationFrame((): void =>
     {
         if ($getColorSettingState() === "up") {
             return ;
@@ -45,6 +46,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         element.value = `${value}`;
 
         // カラー設定を更新
-        colorSettingAlphaMultiplierUpdateElementUseCase(value);
+        const workSpace = $getCurrentWorkSpace();
+        colorSettingAlphaMultiplierUpdateElementUseCase(
+            workSpace.scene,
+            value
+        );
     });
 };

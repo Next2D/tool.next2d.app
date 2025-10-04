@@ -3,15 +3,15 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as viewTransformSettingUpdateMatrixUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateMatrixUseCase";
 
 /**
- * @description DisplayObjectの行列を変更前に戻す
- *              Reset the matrix of the DisplayObject
+ * @description DisplayObjectの透明度を変更前に戻す
+ *              Reset the alpha of the DisplayObject
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
  * @param  {number} keyframe
  * @param  {number} depth
- * @param  {number[]} before_matrix
+ * @param  {number} before_alpha
  * @return {Promise<void>}
  * @method
  * @public
@@ -22,7 +22,7 @@ export const execute = async (
     index: number,
     keyframe: number,
     depth: number,
-    before_matrix: number[]
+    before_alpha: number
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -46,7 +46,7 @@ export const execute = async (
     }
 
     // データを更新
-    character.matrix.set(before_matrix);
+    character.colorTransform[3] = before_alpha;
 
     // アクティブなら表示を更新
     await viewTransformSettingUpdateMatrixUseCase(

@@ -21,7 +21,7 @@ vi.mock("./ColorSettingAlphaMultiplierPointerMoveUseCase", () => ({
 }));
 
 vi.mock("./ColorSettingAlphaMultiplierUpdateValueUseCase", () => ({
-    execute: (value: number) => mockColorSettingAlphaMultiplierUpdateValueUseCase(value)
+    execute: async (value: number) => mockColorSettingAlphaMultiplierUpdateValueUseCase(value)
 }));
 
 // 動的インポート

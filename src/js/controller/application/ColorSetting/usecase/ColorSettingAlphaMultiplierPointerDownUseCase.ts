@@ -16,11 +16,11 @@ import {
  *              Pointer down event for changing the alpha multiplier of the color setting area
  *
  * @param  {PointerEvent} event
- * @return {Promise<void>}
+ * @return {void}
  * @method
  * @public
  */
-export const execute = async (event: PointerEvent): Promise<void> =>
+export const execute = (event: PointerEvent): void =>
 {
     if (event.button !== 0
         || $activeTouchPointers.size > 1

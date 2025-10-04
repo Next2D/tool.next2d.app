@@ -39,7 +39,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 値を更新
-    colorSettingAlphaMultiplierUpdateValueUseCase(parseFloat(element.value) | 0);
+    await colorSettingAlphaMultiplierUpdateValueUseCase(parseFloat(element.value) | 0);
 
     // input要素のフォーカス
     element.focus();

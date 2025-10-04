@@ -1,29 +1,30 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 
 /**
  * @description スクリーンで選択中のElementのalphaを更新する
  *              Update the alpha of the selected Element on the screen
  *
+ * @param  {MovieClip} movie_clip
  * @param  {number} alpha
- * @return {Promise<void>}
+ * @return {void}
  * @method
  * @public
  */
-export const execute = async (alpha: number): Promise<void> =>
-{
-    const workSpace = $getCurrentWorkSpace();
-    const movieClip = workSpace.scene;
+export const execute = (
+    movie_clip: MovieClip,
+    alpha: number
+): void => {
 
     // 選択中のelementがない場合は何もしない
-    if (!movieClip.selectedDepths.size) {
+    if (!movie_clip.selectedDepths.size) {
         return ;
     }
 
-    const frame = movieClip.currentFrame;
-    for (const [layerIndex, depths] of movieClip.selectedDepths) {
+    const frame = movie_clip.currentFrame;
+    for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
-        const layer = movieClip.getLayer(layerIndex);
+        const layer = movie_clip.getLayer(layerIndex);
         if (!layer) {
             continue ;
         }
