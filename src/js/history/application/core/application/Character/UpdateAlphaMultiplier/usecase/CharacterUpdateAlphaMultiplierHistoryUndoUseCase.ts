@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewTransformSettingUpdateMatrixUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateMatrixUseCase";
+import { execute as viewColorSettingAlphaMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingAlphaMultiplierUseCase";
 
 /**
  * @description DisplayObjectの透明度を変更前に戻す
@@ -46,13 +46,14 @@ export const execute = async (
     }
 
     // データを更新
-    character.colorTransform[3] = before_alpha;
+    character.colorTransform[3] = Math.floor(before_alpha) / 100;
 
     // アクティブなら表示を更新
-    await viewTransformSettingUpdateMatrixUseCase(
+    viewColorSettingAlphaMultiplierUseCase(
         workSpace,
         movieClip,
         layer,
-        character
+        character,
+        before_alpha
     );
 };

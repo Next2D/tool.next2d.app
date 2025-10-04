@@ -33,16 +33,16 @@ export const execute = (
             movie_clip.layers.indexOf(layer),
             character.startFrame,
             character.depth,
-            character.colorTransform[3] * 100,
-            after_alpha
+            Math.floor(character.colorTransform[3] * 100),
+            Math.floor(after_alpha)
         ],
         "args": [
             movie_clip.name,
             layer.name,
             character.startFrame,
             character.depth,
-            character.colorTransform[3] * 100,
-            after_alpha
+            Math.floor(character.colorTransform[3] * 100),
+            Math.floor(after_alpha)
         ]
     };
 };

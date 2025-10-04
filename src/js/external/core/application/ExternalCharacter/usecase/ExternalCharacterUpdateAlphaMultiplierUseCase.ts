@@ -57,5 +57,11 @@ export const execute = async (
     character.colorTransform[3] = alpha / 100;
 
     // Elementの更新
-    viewColorSettingAlphaMultiplierUseCase(work_space, movie_clip, alpha);
+    viewColorSettingAlphaMultiplierUseCase(
+        work_space,
+        movie_clip,
+        layer,
+        character,
+        alpha
+    );
 };

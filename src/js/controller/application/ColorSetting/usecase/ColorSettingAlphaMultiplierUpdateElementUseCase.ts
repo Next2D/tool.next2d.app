@@ -44,7 +44,7 @@ export const execute = (
             }
 
             // alphaを更新
-            character.colorTransform[3] = alpha / 100;
+            character.colorTransform[3] = Math.floor(alpha) / 100;
 
             const canvas = node.querySelector("canvas");
             if (canvas) {

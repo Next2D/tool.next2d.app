@@ -5,6 +5,7 @@ import { execute as objectSettingUpdateSymbolService } from "@/controller/applic
 import { execute as objectSettingHideSymbolService } from "@/controller/application/ObjectSetting/service/ObjectSettingHideSymbolService";
 import { execute as transformSettingUpdateElementUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateElementUseCase";
 import { execute as referenceSettingUpdateElementUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateElementUseCase";
+import { execute as colorSetteingSetElementValueUseCase } from "@/controller/application/ColorSetting/usecase/ColorSetteingSetElementValueUseCase";
 
 /**
  * @description Bitmap選択時のプロパティエリアの設定項目を表示
@@ -46,6 +47,16 @@ export const execute = (character: Character): void =>
     );
 
     // カラーの値を更新
+    colorSetteingSetElementValueUseCase(
+        character.colorTransform[0] * 100,
+        character.colorTransform[1] * 100,
+        character.colorTransform[2] * 100,
+        character.colorTransform[3] * 100,
+        character.colorTransform[4],
+        character.colorTransform[5],
+        character.colorTransform[6],
+        character.colorTransform[7]
+    );
 
     // ブレンドの値を更新
 

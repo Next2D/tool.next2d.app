@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewTransformSettingUpdateMatrixUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateMatrixUseCase";
+import { execute as viewColorSettingAlphaMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingAlphaMultiplierUseCase";
 
 /**
  * @description DisplayObjectの行列を変更後に戻す
@@ -11,7 +11,7 @@ import { execute as viewTransformSettingUpdateMatrixUseCase } from "@/view/appli
  * @param  {number} index
  * @param  {number} keyframe
  * @param  {number} depth
- * @param  {number} after_matrix
+ * @param  {number} after_alpha
  * @return {Promise<void>}
  * @method
  * @public
@@ -22,7 +22,7 @@ export const execute = async (
     index: number,
     keyframe: number,
     depth: number,
-    after_matrix: number[]
+    after_alpha: number
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -46,13 +46,14 @@ export const execute = async (
     }
 
     // データを更新
-    character.matrix.set(after_matrix);
+    character.colorTransform[3] = Math.floor(after_alpha) / 100;
 
     // アクティブなら表示を更新
-    await viewTransformSettingUpdateMatrixUseCase(
+    viewColorSettingAlphaMultiplierUseCase(
         workSpace,
         movieClip,
         layer,
-        character
+        character,
+        after_alpha
     );
 };
