@@ -60,7 +60,8 @@ import {
     $REFERENCE_UPDATE_PIVOT_COMMAND,
     $REFERENCE_UPDATE_X_COMMAND,
     $REFERENCE_UPDATE_Y_COMMAND,
-    $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND
+    $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND,
+    $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -256,6 +257,9 @@ export const execute = (command: number): string =>
 
         case $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND:
             return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の透明度を%s5%から%s6%に変更";
+
+        case $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND:
+            return "「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の透明度オフセットを%s5から%s6に変更";
 
         default:
             break;

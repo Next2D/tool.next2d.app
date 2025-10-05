@@ -13,6 +13,7 @@ import { execute as externalCharacterUpdateMatrixUseCase } from "@/external/core
 import { execute as externalCharacterUpdateWidthUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateWidthUseCase";
 import { execute as externalCharacterUpdateHeightUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateHeightUseCase";
 import { execute as externalCharacterUpdateAlphaMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateAlphaMultiplierUseCase";
+import { execute as externalCharacterUpdateAlphaOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateAlphaOffsetUseCase";
 import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 
 /**
@@ -401,6 +402,39 @@ export class ExternalCharacter
     async setAlphaMultiplier (alpha: number): Promise<void>
     {
         await externalCharacterUpdateAlphaMultiplierUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            alpha
+        );
+    }
+
+    /**
+     * @description DisplayObjectのアルファオフセット値を取得
+     *              Get the alpha offset value of DisplayObject
+     *
+     * @return {number} 0 ~ 100
+     * @method
+     * @public
+     */
+    getAlphaOffset (): number
+    {
+        return this._$character.colorTransform[7];
+    }
+
+    /**
+     * @description DisplayObjectのアルファ値を設定
+     *              Set the alpha value of DisplayObject
+     *
+     * @param  {number} alpha -255 ~ 255
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setAlphaOffset (alpha: number): Promise<void>
+    {
+        await externalCharacterUpdateAlphaOffsetUseCase(
             this._$workSpace,
             this._$movieClip,
             this._$layer,

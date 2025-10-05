@@ -1,4 +1,3 @@
-import { $COLOR_ALPHA_MULTIPLIER_ID } from "@/config/ColorSettingConfig";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as colorSettingInputPointerOverEventService } from "../service/ColorSettingInputPointerOverEventService";
 import { execute as colorSettingInputPointerOutEventService } from "../service/ColorSettingInputPointerOutEventService";
@@ -6,6 +5,11 @@ import { execute as colorSettingAlphaMultiplierPointerDownUseCase } from "./Colo
 import { execute as colorSettingAlphaMultiplierFocusInEventService } from "../service/ColorSettingAlphaMultiplierFocusInEventService";
 import { execute as colorSettingAlphaMultiplierFocusOutEventUseCase } from "./ColorSettingAlphaMultiplierFocusOutEventUseCase";
 import { execute as colorSettingInputKeyPressEventService } from "../service/ColorSettingInputKeyPressEventService";
+import { execute as colorSettingAlphaOffsetPointerDownUseCase } from "./ColorSettingAlphaOffsetPointerDownUseCase";
+import {
+    $COLOR_ALPHA_MULTIPLIER_ID,
+    $COLOR_ALPHA_OFFSET_ID
+} from "@/config/ColorSettingConfig";
 
 /**
  * @description カラー設定の初期化イベント登録ユースケース
@@ -38,6 +42,24 @@ export const execute = (): void =>
             colorSettingAlphaMultiplierFocusOutEventUseCase
         );
         alphaMultiplierElement.addEventListener("keypress",
+            colorSettingInputKeyPressEventService
+        );
+    }
+    const alphaOffsetElement: HTMLInputElement | null = document
+        .getElementById($COLOR_ALPHA_OFFSET_ID) as HTMLInputElement;
+
+    if (alphaOffsetElement) {
+        alphaOffsetElement.addEventListener(EventType.POINTER_OVER,
+            colorSettingInputPointerOverEventService
+        );
+        alphaOffsetElement.addEventListener(EventType.POINTER_OUT,
+            colorSettingInputPointerOutEventService
+        );
+        alphaOffsetElement.addEventListener(EventType.POINTER_DOWN,
+            colorSettingAlphaOffsetPointerDownUseCase,
+            { "passive": false }
+        );
+        alphaOffsetElement.addEventListener("keypress",
             colorSettingInputKeyPressEventService
         );
     }

@@ -654,3 +654,12 @@ export const $REFERENCE_UPDATE_Y_COMMAND: number = 66;
  * @constant
  */
 export const $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND: number = 67;
+
+/**
+ * @description 透明度のオフセット値の更新の識別コマンド名
+ *              Identification command name for updating the alpha offset of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND: number = 68;

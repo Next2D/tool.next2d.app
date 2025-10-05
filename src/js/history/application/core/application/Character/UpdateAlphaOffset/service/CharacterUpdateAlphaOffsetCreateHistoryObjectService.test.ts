@@ -1,10 +1,10 @@
-import { execute } from "./CharacterUpdateAlphaMultiplierCreateHistoryObjectService";
-import { $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { execute } from "./CharacterUpdateAlphaOffsetCreateHistoryObjectService";
+import { $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import { Character } from "../../../../../../../core/domain/model/Character";
 import { describe, expect, it } from "vitest";
 
-describe("CharacterUpdateAlphaMultiplierCreateHistoryObjectService Test", () =>
+describe("CharacterUpdateAlphaOffsetCreateHistoryObjectService Test", () =>
 {
     it("execute test", () =>
     {
@@ -20,7 +20,7 @@ describe("CharacterUpdateAlphaMultiplierCreateHistoryObjectService Test", () =>
         layer.name = "test_layer";
 
         const object = execute(1, movieClip, layer, character, 50);
-        expect(object.command).toBe($CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND);
+        expect(object.command).toBe($CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.messages.length).toBe(7);

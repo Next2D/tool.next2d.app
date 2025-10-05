@@ -15,3 +15,12 @@ export const $COLOR_SETTING_ID: string = "color-setting";
  * @constant
  */
 export const $COLOR_ALPHA_MULTIPLIER_ID: string = "color-alpha-multiplier";
+
+/**
+ * @description 透明オフセットのElementのID
+ *              ID of the alpha offset element
+ *
+ * @type {string}
+ * @constant
+ */
+export const $COLOR_ALPHA_OFFSET_ID: string = "color-alpha-offset";
