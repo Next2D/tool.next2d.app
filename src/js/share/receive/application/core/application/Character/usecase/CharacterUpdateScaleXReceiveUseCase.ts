@@ -42,7 +42,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         return ;
     }
 
-    // x座標を更新
+    // スケールxを更新
     await externalCharacterUpdateScaleXUseCase(
         workSpace,
         movieClip,

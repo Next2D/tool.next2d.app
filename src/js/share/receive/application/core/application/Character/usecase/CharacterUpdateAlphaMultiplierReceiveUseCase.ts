@@ -1,7 +1,7 @@
 import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as externalCharacterUpdateScaleYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateScaleYUseCase";
+import { execute as externalCharacterUpdateAlphaMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateAlphaMultiplierUseCase";
 
 /**
  * @description socketで受け取った情報の受け取り処理関数
@@ -42,13 +42,13 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         return ;
     }
 
-    // スケールyを更新
-    await externalCharacterUpdateScaleYUseCase(
+    // alphaMultiplierを更新
+    await externalCharacterUpdateAlphaMultiplierUseCase(
         workSpace,
         movieClip,
         layer,
         character,
-        message.data[6] as NonNullable<number> / 100,
+        message.data[6] as NonNullable<number>,
         true
     );
 };

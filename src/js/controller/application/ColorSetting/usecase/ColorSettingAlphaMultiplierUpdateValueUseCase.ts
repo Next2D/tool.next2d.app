@@ -22,39 +22,35 @@ export const execute = async (alpha: number): Promise<void> =>
         return ;
     }
 
-    const frame = movieClip.currentFrame;
-    for (const [layerIndex, depths] of movieClip.selectedDepths) {
-
-        const layer = movieClip.getLayer(layerIndex);
-        if (!layer) {
-            continue ;
-        }
-
-        for (let idx = 0; idx < depths.length; ++idx) {
-
-            const depth = depths[idx];
-
-            const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
-            if (!node) {
-                continue ;
-            }
-
-            const character = layer.getCharacter(frame, depth);
-            if (!character) {
-                continue ;
-            }
-
-            // alphaを更新前の値に戻す
-            character.colorTransform[3] = colorSetting.beforeValue / 100;
-
-            // alphaを更新
-            const externalCharacter = new ExternalCharacter(
-                workSpace,
-                movieClip,
-                layer,
-                character
-            );
-            await externalCharacter.setAlphaMultiplier(alpha);
-        }
+    const layer = movieClip.getLayer(
+        movieClip.selectedDepths.keys().next().value as number
+    );
+    if (!layer) {
+        return ;
     }
+
+    const values = movieClip.selectedDepths.values().next().value as number[];
+
+    const depth = values[0];
+    const character = layer.getCharacter(movieClip.currentFrame, depth);
+    if (!character) {
+        return ;
+    }
+
+    const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
+    if (!node) {
+        return ;
+    }
+
+    // alphaを更新前の値に戻す
+    character.colorTransform[3] = colorSetting.beforeValue / 100;
+
+    // alphaを更新
+    const externalCharacter = new ExternalCharacter(
+        workSpace,
+        movieClip,
+        layer,
+        character
+    );
+    await externalCharacter.setAlphaMultiplier(alpha);
 };

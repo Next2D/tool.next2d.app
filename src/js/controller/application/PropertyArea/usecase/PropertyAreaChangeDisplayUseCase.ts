@@ -75,6 +75,9 @@ export const execute = async (): Promise<void> =>
                 propertyAreaVideoDisplayControllerUseCase(character);
                 break;
 
+            default:
+                break;
+
         }
     } else {
         // 複数選択時の表示に切り替える

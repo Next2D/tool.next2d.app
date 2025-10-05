@@ -48,10 +48,10 @@ export const execute = (character: Character): void =>
 
     // カラーの値を更新
     colorSetteingSetElementValueUseCase(
-        character.colorTransform[0] * 100,
-        character.colorTransform[1] * 100,
-        character.colorTransform[2] * 100,
-        character.colorTransform[3] * 100,
+        Math.round(character.colorTransform[0] * 100),
+        Math.round(character.colorTransform[1] * 100),
+        Math.round(character.colorTransform[2] * 100),
+        Math.round(character.colorTransform[3] * 100),
         character.colorTransform[4],
         character.colorTransform[5],
         character.colorTransform[6],

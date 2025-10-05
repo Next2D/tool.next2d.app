@@ -29,16 +29,9 @@ export const execute = async (
     receiver: boolean = false
 ): Promise<void> => {
 
-    if (!movie_clip.selectedDepths.size) {
-        return ;
-    }
-
-    if (!movie_clip.isSingleSelectedOfDisplayObject()) {
-        return ;
-    }
-
     alpha = $clamp(alpha | 0, 0, 100);
-    if (character.colorTransform[3] === alpha / 100) {
+    const floatValue = new Float32Array([alpha / 100]);
+    if (character.colorTransform[3] === floatValue[0]) {
         return ;
     }
 
