@@ -45,7 +45,7 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
         // モックMovieClip
         mockMovieClip = {
             currentFrame: 1,
-            selectedDepths: new Map(),
+            selectedDepths: new Map([[0, [1]]]), // デフォルトで単一選択
             getLayer: vi.fn().mockReturnValue(mockLayer)
         };
 
@@ -75,44 +75,50 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
             expect(mockMovieClip.getLayer).not.toHaveBeenCalled();
         });
 
-        it("alphaが正しく更新される(100の場合)", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("alphaが正しく更新される(255の場合)", () => {
+            execute(mockMovieClip, 255);
 
+            // Math.floor(255) = 255
+            expect(mockCharacter.colorTransform[7]).toBe(255);
+        });
+
+        it("alphaが正しく更新される(100の場合)", () => {
             execute(mockMovieClip, 100);
 
             // Math.floor(100) = 100
             expect(mockCharacter.colorTransform[7]).toBe(100);
         });
 
-        it("alphaが正しく更新される(50の場合)", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-
-            execute(mockMovieClip, 50);
-
-            // Math.floor(50) = 50
-            expect(mockCharacter.colorTransform[7]).toBe(50);
-        });
-
         it("alphaが正しく更新される(0の場合)", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-
             execute(mockMovieClip, 0);
 
             // Math.floor(0) = 0
             expect(mockCharacter.colorTransform[7]).toBe(0);
         });
 
+        it("alphaが正しく更新される(-100の場合)", () => {
+            execute(mockMovieClip, -100);
+
+            // Math.floor(-100) = -100
+            expect(mockCharacter.colorTransform[7]).toBe(-100);
+        });
+
+        it("alphaが正しく更新される(-255の場合)", () => {
+            execute(mockMovieClip, -255);
+
+            // Math.floor(-255) = -255
+            expect(mockCharacter.colorTransform[7]).toBe(-255);
+        });
+
         it("canvas要素のopacityが更新される", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
             mockCharacter.alpha = 0.8;
 
-            execute(mockMovieClip, 80);
+            execute(mockMovieClip, 128);
 
             expect(mockCanvas.style.opacity).toBe("0.8");
         });
 
         it("canvas要素が存在しない場合でもエラーにならない", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
             mockNode.querySelector.mockReturnValue(null);
 
             execute(mockMovieClip, 50);
@@ -122,24 +128,86 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
         });
     });
 
-    describe("colorTransformの配列インデックス", () => {
-        it("colorTransform[7]がアルファ値として更新される", () => {
+    describe("単一選択のみ処理", () => {
+        it("単一選択の場合のみ処理される", () => {
             mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+
+            execute(mockMovieClip, 60);
+
+            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 1);
+            expect(mockCharacter.colorTransform[7]).toBe(60);
+        });
+
+        it("複数選択の場合は何もしない(2レイヤー)", () => {
+            mockMovieClip.selectedDepths = new Map([
+                [0, [1]],
+                [1, [2]]
+            ]);
+
+            execute(mockMovieClip, 60);
+
+            // size > 1なので早期リターン
+            expect(mockMovieClip.getLayer).not.toHaveBeenCalled();
+            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).not.toHaveBeenCalled();
+        });
+
+        it("複数選択の場合は何もしない(3レイヤー)", () => {
+            mockMovieClip.selectedDepths = new Map([
+                [0, [1]],
+                [1, [2]],
+                [2, [3]]
+            ]);
+
+            execute(mockMovieClip, 70);
+
+            expect(mockMovieClip.getLayer).not.toHaveBeenCalled();
+        });
+
+        it("1つのレイヤーに複数depthsがある場合、最初のdepthのみ処理", () => {
+            mockMovieClip.selectedDepths = new Map([[0, [1, 2, 3]]]);
+
+            execute(mockMovieClip, 40);
+
+            // 最初のdepth(1)のみ処理される
+            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 1);
+            expect(mockLayer.getCharacter).toHaveBeenCalledTimes(1);
+        });
+
+        it("keys().next().valueで最初のlayerIndexを取得", () => {
+            mockMovieClip.selectedDepths = new Map([[5, [10]]]);
+
+            execute(mockMovieClip, 50);
+
+            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(5);
+        });
+
+        it("values().next().value[0]で最初のdepthを取得", () => {
+            mockMovieClip.selectedDepths = new Map([[0, [7, 8, 9]]]);
+
+            execute(mockMovieClip, 50);
+
+            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 7);
+            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 7);
+        });
+    });
+
+    describe("colorTransformの配列インデックス", () => {
+        it("colorTransform[7]がアルファオフセット値として更新される", () => {
             mockCharacter.colorTransform = [1, 0, 1, 0, 1, 0, 1, 0];
 
-            execute(mockMovieClip, 75);
+            execute(mockMovieClip, 128);
 
             // インデックス7が更新される
-            expect(mockCharacter.colorTransform[7]).toBe(75);
+            expect(mockCharacter.colorTransform[7]).toBe(128);
             // 他のインデックスは変更されない
             expect(mockCharacter.colorTransform[0]).toBe(1);
             expect(mockCharacter.colorTransform[1]).toBe(0);
             expect(mockCharacter.colorTransform[2]).toBe(1);
-            expect(mockCharacter.colorTransform[4]).toBe(1);
+            expect(mockCharacter.colorTransform[3]).toBe(0);
+            expect(mockCharacter.colorTransform[6]).toBe(1);
         });
 
         it("colorTransformの他の要素に影響しない", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
             mockCharacter.colorTransform = [0.5, 100, 0.8, 0.6, 0.9, 50, 1, 0];
 
             execute(mockMovieClip, 30);
@@ -153,127 +221,85 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
             expect(mockCharacter.colorTransform[6]).toBe(1);
             expect(mockCharacter.colorTransform[7]).toBe(30); // 更新される
         });
+
+        it("負の値も正しく設定される", () => {
+            mockCharacter.colorTransform = [1, 0, 1, 0, 1, 0, 1, 0];
+
+            execute(mockMovieClip, -128);
+
+            expect(mockCharacter.colorTransform[7]).toBe(-128);
+        });
     });
 
-    describe("複数の選択", () => {
-        it("単一レイヤー、単一depth", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [5]]]);
+    describe("Math.floorの適用", () => {
+        it("Math.floorが適用される: 75.9 -> 75", () => {
+            execute(mockMovieClip, 75.9);
 
-            execute(mockMovieClip, 60);
-
-            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(0);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 5);
-            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 5);
-            expect(mockCharacter.colorTransform[7]).toBe(60);
+            // Math.floor(75.9) = 75
+            expect(mockCharacter.colorTransform[7]).toBe(75);
         });
 
-        it("単一レイヤー、複数depths", () => {
-            const mockCharacter2 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 1
-            };
-            const mockCharacter3 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 1
-            };
+        it("Math.floorが適用される: 50.1 -> 50", () => {
+            execute(mockMovieClip, 50.1);
 
-            let callCount = 0;
-            mockLayer.getCharacter.mockImplementation(() => {
-                callCount++;
-                if (callCount === 1) return mockCharacter;
-                if (callCount === 2) return mockCharacter2;
-                return mockCharacter3;
-            });
-
-            mockMovieClip.selectedDepths = new Map([[0, [1, 2, 3]]]);
-
-            execute(mockMovieClip, 40);
-
-            expect(mockLayer.getCharacter).toHaveBeenCalledTimes(3);
-            expect(mockCharacter.colorTransform[7]).toBe(40);
-            expect(mockCharacter2.colorTransform[7]).toBe(40);
-            expect(mockCharacter3.colorTransform[7]).toBe(40);
+            // Math.floor(50.1) = 50
+            expect(mockCharacter.colorTransform[7]).toBe(50);
         });
 
-        it("複数レイヤー、各レイヤーに単一depth", () => {
-            const mockLayer2 = {
-                id: "layer-2",
-                getCharacter: vi.fn().mockReturnValue({
-                    colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                    alpha: 1
-                })
-            };
+        it("Math.floorが適用される: 255.99 -> 255", () => {
+            execute(mockMovieClip, 255.99);
 
-            let layerCallCount = 0;
-            mockMovieClip.getLayer.mockImplementation(() => {
-                layerCallCount++;
-                if (layerCallCount === 1) return mockLayer;
-                return mockLayer2;
-            });
-
-            mockMovieClip.selectedDepths = new Map([
-                [0, [1]],
-                [1, [2]]
-            ]);
-
-            execute(mockMovieClip, 70);
-
-            expect(mockMovieClip.getLayer).toHaveBeenCalledTimes(2);
-            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(0);
-            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(1);
+            // Math.floor(255.99) = 255
+            expect(mockCharacter.colorTransform[7]).toBe(255);
         });
 
-        it("複数レイヤー、複数depths", () => {
-            mockMovieClip.selectedDepths = new Map([
-                [0, [1, 2]],
-                [1, [3, 4]]
-            ]);
+        it("Math.floorが適用される: 33.33 -> 33", () => {
+            execute(mockMovieClip, 33.33);
 
-            execute(mockMovieClip, 85);
+            // Math.floor(33.33) = 33
+            expect(mockCharacter.colorTransform[7]).toBe(33);
+        });
 
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledTimes(4);
+        it("Math.floorが適用される: 0.99 -> 0", () => {
+            execute(mockMovieClip, 0.99);
+
+            // Math.floor(0.99) = 0
+            expect(mockCharacter.colorTransform[7]).toBe(0);
+        });
+
+        it("Math.floorが適用される: -50.1 -> -51", () => {
+            execute(mockMovieClip, -50.1);
+
+            // Math.floor(-50.1) = -51
+            expect(mockCharacter.colorTransform[7]).toBe(-51);
+        });
+
+        it("Math.floorが適用される: -100.9 -> -101", () => {
+            execute(mockMovieClip, -100.9);
+
+            // Math.floor(-100.9) = -101
+            expect(mockCharacter.colorTransform[7]).toBe(-101);
         });
     });
 
     describe("エラーケース", () => {
-        it("layerがnullの場合はスキップされる", () => {
+        it("layerがnullの場合は早期リターン", () => {
             mockMovieClip.getLayer.mockReturnValue(null);
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
 
             execute(mockMovieClip, 50);
 
             expect(mockScreenAreaGetElementFromLayerIdAndDepthService).not.toHaveBeenCalled();
         });
 
-        it("layerがundefinedの場合はスキップされる", () => {
+        it("layerがundefinedの場合は早期リターン", () => {
             mockMovieClip.getLayer.mockReturnValue(undefined);
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
 
             execute(mockMovieClip, 50);
 
             expect(mockScreenAreaGetElementFromLayerIdAndDepthService).not.toHaveBeenCalled();
         });
 
-        it("nodeがnullの場合はスキップされる", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-            mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(null);
-
-            execute(mockMovieClip, 50);
-
-            expect(mockLayer.getCharacter).not.toHaveBeenCalled();
-        });
-
-        it("nodeがundefinedの場合はスキップされる", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-            mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(undefined);
-
-            execute(mockMovieClip, 50);
-
-            expect(mockLayer.getCharacter).not.toHaveBeenCalled();
-        });
-
-        it("characterがnullの場合はスキップされる", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("characterがnullの場合は早期リターン", () => {
             mockLayer.getCharacter.mockReturnValue(null);
 
             execute(mockMovieClip, 50);
@@ -282,8 +308,7 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
             expect(mockNode.querySelector).not.toHaveBeenCalled();
         });
 
-        it("characterがundefinedの場合はスキップされる", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("characterがundefinedの場合は早期リターン", () => {
             mockLayer.getCharacter.mockReturnValue(undefined);
 
             execute(mockMovieClip, 50);
@@ -291,117 +316,95 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
             expect(mockNode.querySelector).not.toHaveBeenCalled();
         });
 
-        it("複数エラーが混在する場合、有効なものだけ更新される", () => {
-            const mockCharacter2 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 1
-            };
-
-            let callCount = 0;
-            mockLayer.getCharacter.mockImplementation(() => {
-                callCount++;
-                if (callCount === 1) return null; // 1つ目はnull
-                return mockCharacter2; // 2つ目は有効
-            });
-
-            mockMovieClip.selectedDepths = new Map([[0, [1, 2]]]);
+        it("nodeがnullの場合は早期リターン", () => {
+            mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(null);
 
             execute(mockMovieClip, 50);
 
-            // 2つ目だけ更新される
-            expect(mockCharacter2.colorTransform[7]).toBe(50);
+            // layerとcharacterは取得されるが、更新は行われない
+            expect(mockMovieClip.getLayer).toHaveBeenCalled();
+            expect(mockLayer.getCharacter).toHaveBeenCalled();
+        });
+
+        it("nodeがundefinedの場合は早期リターン", () => {
+            mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(undefined);
+
+            execute(mockMovieClip, 50);
+
+            expect(mockMovieClip.getLayer).toHaveBeenCalled();
+            expect(mockLayer.getCharacter).toHaveBeenCalled();
         });
     });
 
     describe("alphaの値の範囲", () => {
         it("alpha = 0の場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-
             execute(mockMovieClip, 0);
 
             expect(mockCharacter.colorTransform[7]).toBe(0);
         });
 
         it("alpha = 1の場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-
             execute(mockMovieClip, 1);
 
             expect(mockCharacter.colorTransform[7]).toBe(1);
         });
 
-        it("alpha = 25の場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("alpha = 128の場合", () => {
+            execute(mockMovieClip, 128);
 
-            execute(mockMovieClip, 25);
-
-            expect(mockCharacter.colorTransform[7]).toBe(25);
+            expect(mockCharacter.colorTransform[7]).toBe(128);
         });
 
-        it("alpha = 50の場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("alpha = 255の場合", () => {
+            execute(mockMovieClip, 255);
 
-            execute(mockMovieClip, 50);
-
-            expect(mockCharacter.colorTransform[7]).toBe(50);
+            expect(mockCharacter.colorTransform[7]).toBe(255);
         });
 
-        it("alpha = 75の場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("alpha = -1の場合", () => {
+            execute(mockMovieClip, -1);
 
-            execute(mockMovieClip, 75);
-
-            expect(mockCharacter.colorTransform[7]).toBe(75);
+            expect(mockCharacter.colorTransform[7]).toBe(-1);
         });
 
-        it("alpha = 99の場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("alpha = -128の場合", () => {
+            execute(mockMovieClip, -128);
 
-            execute(mockMovieClip, 99);
-
-            expect(mockCharacter.colorTransform[7]).toBe(99);
+            expect(mockCharacter.colorTransform[7]).toBe(-128);
         });
 
-        it("alpha = 100の場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("alpha = -255の場合", () => {
+            execute(mockMovieClip, -255);
 
-            execute(mockMovieClip, 100);
-
-            expect(mockCharacter.colorTransform[7]).toBe(100);
+            expect(mockCharacter.colorTransform[7]).toBe(-255);
         });
 
-        it("alpha > 100の場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("alpha > 255の場合", () => {
+            execute(mockMovieClip, 300);
 
-            execute(mockMovieClip, 150);
-
-            // Math.floor(150) = 150 (制約なし)
-            expect(mockCharacter.colorTransform[7]).toBe(150);
+            // Math.floor(300) = 300 (制約なし)
+            expect(mockCharacter.colorTransform[7]).toBe(300);
         });
 
-        it("alpha < 0の場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
+        it("alpha < -255の場合", () => {
+            execute(mockMovieClip, -300);
 
-            execute(mockMovieClip, -50);
-
-            // Math.floor(-50) = -50 (制約なし)
-            expect(mockCharacter.colorTransform[7]).toBe(-50);
+            // Math.floor(-300) = -300 (制約なし)
+            expect(mockCharacter.colorTransform[7]).toBe(-300);
         });
     });
 
     describe("canvasのquerySelector", () => {
         it("canvas要素が見つかる場合、opacityが設定される", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
             mockCharacter.alpha = 0.75;
 
-            execute(mockMovieClip, 75);
+            execute(mockMovieClip, 128);
 
             expect(mockNode.querySelector).toHaveBeenCalledWith("canvas");
             expect(mockCanvas.style.opacity).toBe("0.75");
         });
 
         it("canvas要素が見つからない場合でもエラーにならない", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
             mockNode.querySelector.mockReturnValue(null);
 
             execute(mockMovieClip, 50);
@@ -411,16 +414,7 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
             // エラーは発生しない
         });
 
-        it("querySelectorが複数回呼ばれる(複数depth)", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1, 2, 3]]]);
-
-            execute(mockMovieClip, 50);
-
-            expect(mockNode.querySelector).toHaveBeenCalledTimes(3);
-        });
-
         it("character.alphaが正しく参照される", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
             mockCharacter.alpha = 0.333;
 
             execute(mockMovieClip, 50);
@@ -464,152 +458,50 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
             mockMovieClip.selectedDepths = new Map([[2, [10]]]);
             mockCharacter.alpha = 0.8;
 
-            execute(mockMovieClip, 80);
+            execute(mockMovieClip, 128);
 
-            // レイヤーの取得
+            // 1. レイヤーの取得
             expect(mockMovieClip.getLayer).toHaveBeenCalledWith(2);
 
-            // 3. ノードの取得
+            // 2. ノードの取得
             expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 10);
 
-            // 4. キャラクターの取得
+            // 3. キャラクターの取得
             expect(mockLayer.getCharacter).toHaveBeenCalledWith(5, 10);
 
-            // 5. colorTransformの更新
-            expect(mockCharacter.colorTransform[7]).toBe(80);
+            // 4. colorTransformの更新
+            expect(mockCharacter.colorTransform[7]).toBe(128);
 
-            // 6. canvas opacityの更新
+            // 5. canvas opacityの更新
             expect(mockCanvas.style.opacity).toBe("0.8");
         });
 
-        it("完全な更新フロー: 複数選択", () => {
-            const mockCharacter2 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 0.5
-            };
-            const mockCharacter3 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 0.6
-            };
+        it("境界値: alpha = -255とalpha = 255を連続して更新", () => {
+            // 最初は-255
+            execute(mockMovieClip, -255);
+            expect(mockCharacter.colorTransform[7]).toBe(-255);
 
-            let charCallCount = 0;
-            mockLayer.getCharacter.mockImplementation(() => {
-                charCallCount++;
-                if (charCallCount === 1) return mockCharacter;
-                if (charCallCount === 2) return mockCharacter2;
-                return mockCharacter3;
-            });
-
-            mockMovieClip.selectedDepths = new Map([
-                [0, [1, 2]],
-                [1, [3]]
-            ]);
-
-            execute(mockMovieClip, 60);
-
-            // 全てのキャラクターが更新される
-            expect(mockCharacter.colorTransform[7]).toBe(60);
-            expect(mockCharacter2.colorTransform[7]).toBe(60);
-            expect(mockCharacter3.colorTransform[7]).toBe(60);
+            // 次は255
+            execute(mockMovieClip, 255);
+            expect(mockCharacter.colorTransform[7]).toBe(255);
         });
 
-        it("部分的なエラーケース: 一部のlayerがnull", () => {
-            const mockLayer2 = {
-                id: "layer-2",
-                getCharacter: vi.fn().mockReturnValue({
-                    colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                    alpha: 1
-                })
-            };
-
-            let layerCallCount = 0;
-            mockMovieClip.getLayer.mockImplementation(() => {
-                layerCallCount++;
-                if (layerCallCount === 1) return null; // 1つ目はnull
-                return mockLayer2; // 2つ目は有効
-            });
-
-            mockMovieClip.selectedDepths = new Map([
-                [0, [1]],
-                [1, [2]]
-            ]);
-
-            execute(mockMovieClip, 50);
-
-            // 2つ目のレイヤーだけ処理される
-            expect(mockLayer2.getCharacter).toHaveBeenCalled();
-        });
-
-        it("境界値: alpha = 0とalpha = 100を連続して更新", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-
-            // 最初は0
+        it("境界値: alpha = 0から負の値、正の値へ", () => {
+            // 0
             execute(mockMovieClip, 0);
             expect(mockCharacter.colorTransform[7]).toBe(0);
 
-            // 次は100
+            // 負の値
+            execute(mockMovieClip, -100);
+            expect(mockCharacter.colorTransform[7]).toBe(-100);
+
+            // 正の値
             execute(mockMovieClip, 100);
             expect(mockCharacter.colorTransform[7]).toBe(100);
         });
     });
 
-    describe("Map.entriesの反復処理", () => {
-        it("Map.entriesが正しく反復される", () => {
-            mockMovieClip.selectedDepths = new Map([
-                [0, [1]],
-                [2, [3]],
-                [5, [7]]
-            ]);
-
-            execute(mockMovieClip, 50);
-
-            expect(mockMovieClip.getLayer).toHaveBeenCalledTimes(3);
-            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(0);
-            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(2);
-            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(5);
-        });
-
-        it("depths配列が正しく反復される", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [10, 20, 30, 40]]]);
-
-            execute(mockMovieClip, 50);
-
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledTimes(4);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 10);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 20);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 30);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 40);
-        });
-    });
-
     describe("エッジケース", () => {
-        it("selectedDepthsに空の配列が含まれる場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, []]]);
-
-            execute(mockMovieClip, 50);
-
-            // 空配列なので何も処理されない
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).not.toHaveBeenCalled();
-        });
-
-        it("alpha値が小数点を含む場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-
-            execute(mockMovieClip, 33.33);
-
-            // Math.floor(33.33) = 33
-            expect(mockCharacter.colorTransform[7]).toBe(33);
-        });
-
-        it("alpha値が非常に小さい場合", () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-
-            execute(mockMovieClip, 0.01);
-
-            // Math.floor(0.01) = 0
-            expect(mockCharacter.colorTransform[7]).toBe(0);
-        });
-
         it("layerIndex = 0の場合", () => {
             mockMovieClip.selectedDepths = new Map([[0, [1]]]);
 
@@ -625,6 +517,36 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
 
             expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 0);
             expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 0);
+        });
+
+        it("大きなlayerIndex", () => {
+            mockMovieClip.selectedDepths = new Map([[999, [100]]]);
+
+            execute(mockMovieClip, 50);
+
+            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(999);
+        });
+
+        it("大きなdepth値", () => {
+            mockMovieClip.selectedDepths = new Map([[0, [9999]]]);
+
+            execute(mockMovieClip, 50);
+
+            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 9999);
+        });
+
+        it("小数点以下が0.5のケース", () => {
+            execute(mockMovieClip, 127.5);
+
+            // Math.floor(127.5) = 127
+            expect(mockCharacter.colorTransform[7]).toBe(127);
+        });
+
+        it("負の小数点以下が0.5のケース", () => {
+            execute(mockMovieClip, -127.5);
+
+            // Math.floor(-127.5) = -128
+            expect(mockCharacter.colorTransform[7]).toBe(-128);
         });
     });
 });

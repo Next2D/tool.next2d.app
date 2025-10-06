@@ -1,4 +1,5 @@
 import { execute as colorSettingUpdateAlphaMultiplierElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateAlphaMultiplierElementValueService";
+import { execute as colorSettingUpdateAlphaOffsetElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateAlphaOffsetElementValueService";
 
 /**
  * @description カラーマルチプライヤー・オフセット値を設定する
@@ -26,5 +27,9 @@ export const execute = (
     blue_offset: number,
     alpha_offset: number
 ): void => {
+
+    // カラーマルチプライヤーの値を更新
+
     colorSettingUpdateAlphaMultiplierElementValueService(alpha_multiplier | 0);
+    colorSettingUpdateAlphaOffsetElementValueService(alpha_offset | 0);
 };

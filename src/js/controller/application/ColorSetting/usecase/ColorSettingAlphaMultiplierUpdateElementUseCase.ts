@@ -16,40 +16,36 @@ export const execute = (
     alpha: number
 ): void => {
 
-    // 選択中のelementがない場合は何もしない
-    if (!movie_clip.selectedDepths.size) {
+    // 選択中のelementがない場合、複数選択時は何もしない
+    if (!movie_clip.selectedDepths.size || movie_clip.selectedDepths.size > 1) {
         return ;
     }
 
-    const frame = movie_clip.currentFrame;
-    for (const [layerIndex, depths] of movie_clip.selectedDepths) {
+    const layer = movie_clip.getLayer(
+        movie_clip.selectedDepths.keys().next().value as number
+    );
+    if (!layer) {
+        return ;
+    }
 
-        const layer = movie_clip.getLayer(layerIndex);
-        if (!layer) {
-            continue ;
-        }
+    const values = movie_clip.selectedDepths.values().next().value as number[];
 
-        for (let idx = 0; idx < depths.length; ++idx) {
+    const depth = values[0];
+    const character = layer.getCharacter(movie_clip.currentFrame, depth);
+    if (!character) {
+        return ;
+    }
 
-            const depth = depths[idx];
+    const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
+    if (!node) {
+        return ;
+    }
 
-            const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
-            if (!node) {
-                continue ;
-            }
+    // alphaを更新
+    character.colorTransform[3] = Math.floor(alpha) / 100;
 
-            const character = layer.getCharacter(frame, depth);
-            if (!character) {
-                continue ;
-            }
-
-            // alphaを更新
-            character.colorTransform[3] = Math.floor(alpha) / 100;
-
-            const canvas = node.querySelector("canvas");
-            if (canvas) {
-                canvas.style.opacity = `${character.alpha}`;
-            }
-        }
+    const canvas = node.querySelector("canvas");
+    if (canvas) {
+        canvas.style.opacity = `${character.alpha}`;
     }
 };

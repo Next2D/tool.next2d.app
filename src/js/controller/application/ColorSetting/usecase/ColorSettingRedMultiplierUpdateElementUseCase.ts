@@ -7,16 +7,16 @@ import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/scr
  *
  * @param  {MovieClip} movie_clip
  * @param  {number} alpha
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     movie_clip: MovieClip,
     alpha: number
-): void => {
+): Promise<void> => {
 
-    // 選択中のelementがない場合は何もしない
+    // 選択中のelementがない場合、複数選択時は何もしない
     if (!movie_clip.selectedDepths.size || movie_clip.selectedDepths.size > 1) {
         return ;
     }
@@ -41,11 +41,6 @@ export const execute = (
         return ;
     }
 
-    // alphaを更新
-    character.colorTransform[7] = Math.floor(alpha);
-
-    const canvas = node.querySelector("canvas");
-    if (canvas) {
-        canvas.style.opacity = `${character.alpha}`;
-    }
+    // redを更新
+    character.colorTransform[0] = Math.floor(alpha) / 100;
 };

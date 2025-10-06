@@ -24,3 +24,12 @@ export const $COLOR_ALPHA_MULTIPLIER_ID: string = "color-alpha-multiplier";
  * @constant
  */
 export const $COLOR_ALPHA_OFFSET_ID: string = "color-alpha-offset";
+
+/**
+ * @description 赤のElementのID
+ *              ID of the red element
+ *
+ * @type {string}
+ * @constant
+ */
+export const $COLOR_RED_MULTIPLIER_ID: string = "color-red-multiplier";
