@@ -70,6 +70,7 @@ import { execute as referenceSettingUpdatePivotHistoryRedoUseCase } from "@/hist
 import { execute as referenceSettingUpdateXHistoryRedoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateX/usecase/ReferenceSettingUpdateXHistoryRedoUseCase";
 import { execute as referenceSettingUpdateYHistoryRedoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateY/usecase/ReferenceSettingUpdateYHistoryRedoUseCase";
 import { execute as characterUpdateAlphaMultiplierHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateAlphaMultiplier/usecase/CharacterUpdateAlphaMultiplierHistoryRedoUseCase";
+import { execute as characterUpdateAlphaOffsetHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateAlphaOffset/usecase/CharacterUpdateAlphaOffsetHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -131,7 +132,8 @@ import {
     $REFERENCE_UPDATE_PIVOT_COMMAND,
     $REFERENCE_UPDATE_X_COMMAND,
     $REFERENCE_UPDATE_Y_COMMAND,
-    $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND
+    $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND,
+    $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -767,6 +769,17 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[6] as number  // After Alpha Multiplier
+            );
+            break;
+
+        case $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND:
+            await characterUpdateAlphaOffsetHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[6] as number  // After Alpha Offset
             );
             break;
 

@@ -66,6 +66,7 @@ import { execute as referenceSettingUpdatePivotUseCase } from "@/share/receive/a
 import { execute as referenceSettingUpdateXUseCase } from "@/share/receive/application/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateXUseCase";
 import { execute as referenceSettingUpdateYUseCase } from "@/share/receive/application/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateYUseCase";
 import { execute as characterUpdateAlphaMultiplierReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateAlphaMultiplierReceiveUseCase";
+import { execute as characterUpdateAlphaOffsetReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateAlphaOffsetReceiveUseCase";
 import {
     $HISTORY_REDO_COMMAND,
     $HISTORY_UNDO_COMMAND,
@@ -133,7 +134,8 @@ import {
     $REFERENCE_UPDATE_PIVOT_COMMAND,
     $REFERENCE_UPDATE_X_COMMAND,
     $REFERENCE_UPDATE_Y_COMMAND,
-    $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND
+    $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND,
+    $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -490,6 +492,11 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         // alphaMultiplierを更新
         case $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND:
             await characterUpdateAlphaMultiplierReceiveUseCase(message);
+            break;
+
+        // alphaOffsetを更新
+        case $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND:
+            await characterUpdateAlphaOffsetReceiveUseCase(message);
             break;
 
         default:

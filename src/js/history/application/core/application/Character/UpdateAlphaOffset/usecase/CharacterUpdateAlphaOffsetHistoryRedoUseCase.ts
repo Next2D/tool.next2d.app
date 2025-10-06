@@ -46,7 +46,7 @@ export const execute = async (
     }
 
     // データを更新
-    character.colorTransform[3] = Math.floor(after_alpha) / 100;
+    character.colorTransform[7] = Math.floor(after_alpha);
 
     // アクティブなら表示を更新
     viewColorSettingAlphaOffsetUseCase(
