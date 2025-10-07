@@ -192,28 +192,6 @@ export class Character
     {
         let cacheKey = `${this.id}@`;
 
-        // colorTransformがデフォルト値以外の場合はキャッシュキーに追加
-        switch (true) {
-
-            case this.colorTransform[0] !== 1:
-            case this.colorTransform[1] !== 1:
-            case this.colorTransform[2] !== 1:
-            case this.colorTransform[4] !== 0:
-            case this.colorTransform[5] !== 0:
-            case this.colorTransform[6] !== 0:
-                {
-                    const r = Math.max(0, Math.min(255 * this.colorTransform[0] + this.colorTransform[4], 255));
-                    const g = Math.max(0, Math.min(255 * this.colorTransform[1] + this.colorTransform[5], 255));
-                    const b = Math.max(0, Math.min(255 * this.colorTransform[2] + this.colorTransform[6], 255));
-                    cacheKey += `_${r}_${g}_${b}`;
-                }
-                break;
-
-            default:
-                break;
-
-        }
-
         const workSpace = $getCurrentWorkSpace();
         const instance = workSpace.getLibrary(this.libraryId);
         if (!instance) {

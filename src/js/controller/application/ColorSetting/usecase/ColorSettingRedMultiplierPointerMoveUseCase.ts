@@ -29,7 +29,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame(async (): Promise<void> =>
+    requestAnimationFrame((): void =>
     {
         if ($getColorSettingState() === "up") {
             return ;
@@ -47,7 +47,7 @@ export const execute = (event: PointerEvent): void =>
 
         // カラー設定を更新
         const workSpace = $getCurrentWorkSpace();
-        await colorSettingRedMultiplierUpdateElementUseCase(
+        colorSettingRedMultiplierUpdateElementUseCase(
             workSpace.scene,
             value
         );

@@ -24,7 +24,7 @@ export const execute = (event: PointerEvent): void =>
     // 編集中のElementを初期化
     $setEditingElement(null);
 
-    requestAnimationFrame(() =>
+    requestAnimationFrame((): void =>
     {
         const screenElement = document.getElementById($SCREEN_ID);
         if (!screenElement) {

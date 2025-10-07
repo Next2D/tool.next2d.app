@@ -44,6 +44,10 @@ export const execute = (
     // alphaを更新
     character.colorTransform[7] = Math.floor(alpha);
 
+    // nodeのスタイルを更新
+    node.style.setProperty("--alpha", `${character.alpha}`);
+
+    // canvasのopacityも更新
     const canvas = node.querySelector("canvas");
     if (canvas) {
         canvas.style.opacity = `${character.alpha}`;

@@ -21,7 +21,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame(() =>
+    requestAnimationFrame((): void =>
     {
         const element = event.target as HTMLElement;
         if (!element) {

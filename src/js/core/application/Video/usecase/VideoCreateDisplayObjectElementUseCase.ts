@@ -70,8 +70,24 @@ export const execute = async (
         throw new Error("Canvas container not found in the display object element.");
     }
 
+    // マスクを反映
+    if (!canvas.dataset.base64) {
+        canvas.dataset.base64 = canvas.toDataURL();
+    }
+    container.style.setProperty("--mask", `url("${canvas.dataset.base64}")`);
+
     // alpha値を反映
+    container.style.setProperty("--alpha", `${character.alpha}`);
     canvas.style.opacity = `${character.alpha}`;
+
+    // カラー設定を反映
+    const colorTransform = character.colorTransform;
+    const r = Math.max(0, Math.min(255 * colorTransform[0] + colorTransform[4], 255));
+    const g = Math.max(0, Math.min(255 * colorTransform[1] + colorTransform[5], 255));
+    const b = Math.max(0, Math.min(255 * colorTransform[2] + colorTransform[6], 255));
+    container.style.setProperty("--color-transform", `${r} ${g} ${b}`);
+
+    // canvasを追加
     container.appendChild(canvas);
 
     const bounds = character.getRawBounds();

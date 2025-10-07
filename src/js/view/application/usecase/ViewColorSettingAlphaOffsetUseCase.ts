@@ -34,6 +34,13 @@ export const execute = (
     // Elementの更新
     const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
     if (element) {
+        // alphaを更新
+        const container = element.querySelector(".canvas-container") as HTMLDivElement;
+        if (container) {
+            container.style.setProperty("--alpha", `${character.alpha}`);
+        }
+
+        // canvasのopacityも更新
         const canvas = element.querySelector("canvas");
         if (canvas) {
             canvas.style.opacity = `${character.alpha}`;
@@ -41,7 +48,9 @@ export const execute = (
     }
 
     // 選択中のElementがない場合は何もしない
-    if (!movie_clip.selectedDepths.size || movie_clip.selectedDepths.size > 1) {
+    if (!movie_clip.selectedDepths.size
+        || movie_clip.selectedDepths.size > 1
+    ) {
         return ;
     }
 

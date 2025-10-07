@@ -1,6 +1,5 @@
 import { colorSetting } from "@/controller/domain/model/ColorSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 
 /**
@@ -34,11 +33,6 @@ export const execute = async (alpha: number): Promise<void> =>
     const depth = values[0];
     const character = layer.getCharacter(movieClip.currentFrame, depth);
     if (!character) {
-        return ;
-    }
-
-    const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
-    if (!node) {
         return ;
     }
 

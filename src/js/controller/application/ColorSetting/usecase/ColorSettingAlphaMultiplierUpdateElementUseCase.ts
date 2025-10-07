@@ -41,9 +41,18 @@ export const execute = (
         return ;
     }
 
+    const container = node.querySelector(".canvas-container") as HTMLDivElement;
+    if (!container) {
+        return ;
+    }
+
     // alphaを更新
     character.colorTransform[3] = Math.floor(alpha) / 100;
 
+    // nodeのスタイルを更新
+    container.style.setProperty("--alpha", `${character.alpha}`);
+
+    // canvasのopacityも更新
     const canvas = node.querySelector("canvas");
     if (canvas) {
         canvas.style.opacity = `${character.alpha}`;

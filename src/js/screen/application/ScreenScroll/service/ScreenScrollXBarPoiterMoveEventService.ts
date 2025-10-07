@@ -24,7 +24,7 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
     event.preventDefault();
 
-    requestAnimationFrame(() =>
+    requestAnimationFrame((): void =>
     {
         const screenElement = document.getElementById($SCREEN_ID);
         if (!screenElement) {
