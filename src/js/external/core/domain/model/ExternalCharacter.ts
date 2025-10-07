@@ -3,6 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IPivotType } from "@/interface/IPivotType";
+import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
 import { execute as externalCharacterUpdateXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateXUseCase";
 import { execute as externalCharacterUpdateYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateYUseCase";
 import { execute as externalCharacterUpdateScaleXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateScaleXUseCase";
@@ -14,8 +15,7 @@ import { execute as externalCharacterUpdateWidthUseCase } from "@/external/core/
 import { execute as externalCharacterUpdateHeightUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateHeightUseCase";
 import { execute as externalCharacterUpdateAlphaMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateAlphaMultiplierUseCase";
 import { execute as externalCharacterUpdateAlphaOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateAlphaOffsetUseCase";
-import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
-
+import { execute as externalCharacterUpdateRedMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateRedMultiplierUseCase";
 /**
  * @description DisplayObjectの管理クラス
  *              Management class of DisplayObject
@@ -440,6 +440,39 @@ export class ExternalCharacter
             this._$layer,
             this._$character,
             alpha
+        );
+    }
+
+    /**
+     * @description DisplayObjectのred値を取得
+     *              Get the red value of DisplayObject
+     *
+     * @return {number} 0 ~ 100
+     * @method
+     * @public
+     */
+    getRedMultiplier (): number
+    {
+        return this._$character.colorTransform[0] * 100;
+    }
+
+    /**
+     * @description DisplayObjectのred値を設定
+     *              Set the red value of DisplayObject
+     *
+     * @param  {number} red 0 ~ 100
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setRedMultiplier (red: number): Promise<void>
+    {
+        await externalCharacterUpdateRedMultiplierUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            red
         );
     }
 }

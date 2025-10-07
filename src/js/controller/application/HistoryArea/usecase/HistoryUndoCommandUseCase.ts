@@ -72,6 +72,7 @@ import { execute as referenceSettingUpdateXHistoryUndoUseCase } from "@/history/
 import { execute as referenceSettingUpdateYHistoryUndoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateY/usecase/ReferenceSettingUpdateYHistoryUndoUseCase";
 import { execute as characterUpdateAlphaMultiplierHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateAlphaMultiplier/usecase/CharacterUpdateAlphaMultiplierHistoryUndoUseCase";
 import { execute as characterUpdateAlphaOffsetHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateAlphaOffset/usecase/CharacterUpdateAlphaOffsetHistoryUndoUseCase";
+import { execute as characterUpdateRedMultiplierHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateRedMultiplier/usecase/CharacterUpdateRedMultiplierHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -134,7 +135,8 @@ import {
     $REFERENCE_UPDATE_X_COMMAND,
     $REFERENCE_UPDATE_Y_COMMAND,
     $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND,
-    $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND
+    $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND,
+    $CHARACTER_UPDATE_RED_MULTIPLIER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -777,6 +779,17 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[5] as number  // Before Alpha Offset
+            );
+            break;
+
+        case $CHARACTER_UPDATE_RED_MULTIPLIER_COMMAND:
+            await characterUpdateRedMultiplierHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as number  // Before Red Multiplier
             );
             break;
 

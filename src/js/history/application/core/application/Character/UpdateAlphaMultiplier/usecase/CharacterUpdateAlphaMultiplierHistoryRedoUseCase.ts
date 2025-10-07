@@ -3,8 +3,8 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as viewColorSettingAlphaMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingAlphaMultiplierUseCase";
 
 /**
- * @description DisplayObjectの行列を変更後に戻す
- *              Reset the matrix of the DisplayObject
+ * @description DisplayObjectの透明度を変更後に戻す
+ *              Reset the alpha of the DisplayObject
  *
  * @param  {number} work_space_id
  * @param  {number} library_id

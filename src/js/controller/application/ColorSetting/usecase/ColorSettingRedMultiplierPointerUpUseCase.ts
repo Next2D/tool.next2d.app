@@ -2,7 +2,7 @@ import { $setCursor } from "@/global/GlobalUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $setColorSettingState } from "../ColorSettingUtil";
 import { execute as colorSettingRedMultiplierPointerMoveUseCase } from "./ColorSettingRedMultiplierPointerMoveUseCase";
-// import { execute as colorSettingAlphaMultiplierUpdateValueUseCase } from "./ColorSettingAlphaMultiplierUpdateValueUseCase";
+import { execute as colorSettingRedMultiplierUpdateValueUseCase } from "./ColorSettingRedMultiplierUpdateValueUseCase";
 
 /**
  * @description カラー設定エリアの赤色マルチプライヤー変更のポインターアップイベント
@@ -39,7 +39,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     element.removeEventListener(EventType.POINTER_LEAVE, execute);
 
     // 値を更新
-    // await colorSettingAlphaMultiplierUpdateValueUseCase(parseFloat(element.value) | 0);
+    await colorSettingRedMultiplierUpdateValueUseCase(parseFloat(element.value) | 0);
 
     // input要素のフォーカス
     element.focus();

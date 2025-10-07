@@ -1,17 +1,17 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewColorSettingAlphaOffsetUseCase } from "@/view/application/usecase/ViewColorSettingAlphaOffsetUseCase";
+import { execute as viewColorSettingRedMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingRedMultiplierUseCase";
 
 /**
- * @description DisplayObjectの透明度を変更後に戻す
- *              Reset the alpha of the DisplayObject
+ * @description DisplayObjectの赤色値を変更後に戻す
+ *              Reset the red value of the DisplayObject
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
  * @param  {number} keyframe
  * @param  {number} depth
- * @param  {number} after_alpha
+ * @param  {number} after_red
  * @return {Promise<void>}
  * @method
  * @public
@@ -22,7 +22,7 @@ export const execute = async (
     index: number,
     keyframe: number,
     depth: number,
-    after_alpha: number
+    after_red: number
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -46,14 +46,14 @@ export const execute = async (
     }
 
     // データを更新
-    character.colorTransform[7] = Math.floor(after_alpha);
+    character.colorTransform[0] = Math.floor(after_red) / 100;
 
     // アクティブなら表示を更新
-    viewColorSettingAlphaOffsetUseCase(
+    viewColorSettingRedMultiplierUseCase(
         workSpace,
         movieClip,
         layer,
         character,
-        after_alpha
+        after_red
     );
 };

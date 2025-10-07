@@ -663,3 +663,12 @@ export const $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND: number = 67;
  * @constant
  */
 export const $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND: number = 68;
+
+/**
+ * @description 赤の更新の識別コマンド名
+ *              Identification command name for updating the red multiplier of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_RED_MULTIPLIER_COMMAND: number = 69;
