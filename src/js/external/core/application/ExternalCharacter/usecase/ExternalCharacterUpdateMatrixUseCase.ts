@@ -34,7 +34,7 @@ export const execute = async (
     character.matrix.set(matrix);
 
     // 履歴を登録
-    characterUpdateMatrixHistoryUseCase(
+    await characterUpdateMatrixHistoryUseCase(
         work_space,
         movie_clip,
         layer,

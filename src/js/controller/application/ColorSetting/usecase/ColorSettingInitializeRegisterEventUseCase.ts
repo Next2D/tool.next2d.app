@@ -8,10 +8,14 @@ import { execute as colorSettingAlphaOffsetFocusOutEventUseCase } from "./ColorS
 import { execute as colorSettingInputKeyPressEventService } from "../service/ColorSettingInputKeyPressEventService";
 import { execute as colorSettingAlphaOffsetPointerDownUseCase } from "./ColorSettingAlphaOffsetPointerDownUseCase";
 import { execute as colorSettingRedMultiplierPointerDownUseCase } from "./ColorSettingRedMultiplierPointerDownUseCase";
+import { execute as colorSettingRedMultiplierFocusOutEventUseCase } from "./ColorSettingRedMultiplierFocusOutEventUseCase";
+import { execute as colorSettingRedOffsetPointerDownUseCase } from "./ColorSettingRedOffsetPointerDownUseCase";
+import { execute as colorSettingRedOffsetFocusOutEventUseCase } from "./ColorSettingRedOffsetFocusOutEventUseCase";
 import {
     $COLOR_ALPHA_MULTIPLIER_ID,
     $COLOR_ALPHA_OFFSET_ID,
-    $COLOR_RED_MULTIPLIER_ID
+    $COLOR_RED_MULTIPLIER_ID,
+    $COLOR_RED_OFFSET_ID
 } from "@/config/ColorSettingConfig";
 
 /**
@@ -24,8 +28,34 @@ import {
  */
 export const execute = (): void =>
 {
+    const redOffsetElement: HTMLInputElement | null = document
+        .getElementById($COLOR_RED_OFFSET_ID) as HTMLInputElement;
+
+    if (redOffsetElement) {
+        redOffsetElement.addEventListener(EventType.POINTER_OVER,
+            colorSettingInputPointerOverEventService
+        );
+        redOffsetElement.addEventListener(EventType.POINTER_OUT,
+            colorSettingInputPointerOutEventService
+        );
+        redOffsetElement.addEventListener(EventType.POINTER_DOWN,
+            colorSettingRedOffsetPointerDownUseCase,
+            { "passive": false }
+        );
+        redOffsetElement.addEventListener("focusin",
+            colorSettingInputFocusInEventService
+        );
+        redOffsetElement.addEventListener("focusout",
+            colorSettingRedOffsetFocusOutEventUseCase
+        );
+        redOffsetElement.addEventListener("keypress",
+            colorSettingInputKeyPressEventService
+        );
+    }
+
     const redMultiplierElement: HTMLInputElement | null = document
         .getElementById($COLOR_RED_MULTIPLIER_ID) as HTMLInputElement;
+
     if (redMultiplierElement) {
         redMultiplierElement.addEventListener(EventType.POINTER_OVER,
             colorSettingInputPointerOverEventService
@@ -39,6 +69,9 @@ export const execute = (): void =>
         );
         redMultiplierElement.addEventListener("focusin",
             colorSettingInputFocusInEventService
+        );
+        redMultiplierElement.addEventListener("focusout",
+            colorSettingRedMultiplierFocusOutEventUseCase
         );
         redMultiplierElement.addEventListener("keypress",
             colorSettingInputKeyPressEventService
@@ -69,6 +102,7 @@ export const execute = (): void =>
             colorSettingInputKeyPressEventService
         );
     }
+
     const alphaOffsetElement: HTMLInputElement | null = document
         .getElementById($COLOR_ALPHA_OFFSET_ID) as HTMLInputElement;
 

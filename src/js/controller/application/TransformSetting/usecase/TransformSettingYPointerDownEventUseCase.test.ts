@@ -1,5 +1,5 @@
 import { execute } from "./TransformSettingYPointerDownEventUseCase";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { $useKeyboard, $updateKeyLock } from "../../../../shortcut/ShortcutUtil";
@@ -7,9 +7,26 @@ import { transformSetting } from "../../../../controller/domain/model/TransformS
 import { EventType } from "../../../../tool/domain/event/EventType";
 import { Character } from "../../../../core/domain/model/Character";
 import { Bitmap } from "../../../../core/domain/model/Bitmap";
+import { $TRANSFORM_OBJECT_X_ID } from "../../../../config/TransformSettingConfig";
 
 describe("TransformSettingYPointerDownEventUseCase Test", () =>
 {
+    let xInputElement: HTMLInputElement;
+
+    beforeEach(() => {
+        // X座標入力要素を作成してDOMに追加
+        xInputElement = document.createElement("input");
+        xInputElement.id = $TRANSFORM_OBJECT_X_ID;
+        xInputElement.value = "300";
+        document.body.appendChild(xInputElement);
+    });
+
+    afterEach(() => {
+        // クリーンアップ
+        if (xInputElement && xInputElement.parentNode) {
+            xInputElement.parentNode.removeChild(xInputElement);
+        }
+    });
     it("execute test case1", () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();

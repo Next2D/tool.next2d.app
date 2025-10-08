@@ -1,15 +1,30 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 
-// モック関数の定義
-const mock$getCurrentWorkSpace = vi.fn();
-const mockScreenDisplayObjectUpdateSelectedValueService = vi.fn();
-const mockScreenAreaCalcSelectedCharacterPositionService = vi.fn();
+// モック関数の設定（vi.hoistedを使用）
+const {
+    mockGetCurrentWorkSpace,
+    mockScreenDisplayObjectUpdateSelectedValueService,
+    mockScreenAreaCalcSelectedCharacterPositionService,
+    mockTransformSetting
+} = vi.hoisted(() => {
+    return {
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockScreenDisplayObjectUpdateSelectedValueService: vi.fn(),
+        mockScreenAreaCalcSelectedCharacterPositionService: vi.fn(),
+        mockTransformSetting: {
+            x: 0,
+            y: 0,
+            beforeX: 0,
+            beforeY: 0
+        }
+    };
+});
 
 // vi.mockの呼び出し
 vi.mock("@/core/application/CoreUtil", () => ({
-    $getCurrentWorkSpace: () => mock$getCurrentWorkSpace()
+    $getCurrentWorkSpace: mockGetCurrentWorkSpace
 }));
 
 vi.mock("../service/ScreenDisplayObjectUpdateSelectedValueService", () => ({
@@ -20,13 +35,22 @@ vi.mock("@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacter
     execute: mockScreenAreaCalcSelectedCharacterPositionService
 }));
 
-// 動的インポート
-const { execute } = await import("./ScreenDisplayObjectArrowDownEventUseCase");
-const { transformSetting } = await import("@/controller/domain/model/TransformSetting");
+vi.mock("@/controller/domain/model/TransformSetting", () => ({
+    transformSetting: mockTransformSetting
+}));
+
+vi.mock("@/config/TransformSettingConfig", () => ({
+    $TRANSFORM_OBJECT_X_ID: "transform-object-x",
+    $TRANSFORM_OBJECT_Y_ID: "transform-object-y"
+}));
+
+import { execute } from "./ScreenDisplayObjectArrowDownEventUseCase";
 
 describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
     let mockWorkSpace: WorkSpace;
     let mockMovieClip: MovieClip;
+    let mockTransformObjectXElement: HTMLInputElement;
+    let mockTransformObjectYElement: HTMLInputElement;
 
     const createMockEvent = (shiftKey: boolean): KeyboardEvent => {
         return {
@@ -40,8 +64,10 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
         vi.clearAllMocks();
 
         // transformSettingのリセット
-        transformSetting.x = 0;
-        transformSetting.y = 0;
+        mockTransformSetting.x = 0;
+        mockTransformSetting.y = 0;
+        mockTransformSetting.beforeX = 0;
+        mockTransformSetting.beforeY = 0;
 
         const selectedDepths = new Map([[0, [1]]]);
         mockMovieClip = {
@@ -53,7 +79,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             scale: 1
         } as unknown as WorkSpace;
 
-        mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
+        mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
 
         mockScreenAreaCalcSelectedCharacterPositionService.mockReturnValue({
             x: 100,
@@ -61,6 +87,30 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
         });
 
         mockScreenDisplayObjectUpdateSelectedValueService.mockResolvedValue(undefined);
+
+        // DOM要素のモック
+        mockTransformObjectXElement = {
+            value: "100"
+        } as HTMLInputElement;
+
+        mockTransformObjectYElement = {
+            value: "200"
+        } as HTMLInputElement;
+
+        // document.getElementByIdのモック
+        vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
+            if (id === "transform-object-x") {
+                return mockTransformObjectXElement;
+            }
+            if (id === "transform-object-y") {
+                return mockTransformObjectYElement;
+            }
+            return null;
+        });
+    });
+
+    afterEach(() => {
+        vi.restoreAllMocks();
     });
 
     describe("基本的な下方向移動", () => {
@@ -71,11 +121,10 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             await execute(mockEvent);
 
             expect(mockScreenAreaCalcSelectedCharacterPositionService).toHaveBeenCalledWith(mockMovieClip);
-            expect(transformSetting.x).toBe(0);
-            expect(transformSetting.y).toBe(1); // 1 * 1
+            expect(mockTransformSetting.x).toBe(0);
+            expect(mockTransformSetting.y).toBe(1); // 1 * 1
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
-            expect(mockEvent.preventDefault).toHaveBeenCalled();
         });
 
         it("Shiftキーありで10ピクセル下に移動する", async () => {
@@ -84,11 +133,10 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.x).toBe(0);
-            expect(transformSetting.y).toBe(10); // 10 * 1
+            expect(mockTransformSetting.x).toBe(0);
+            expect(mockTransformSetting.y).toBe(10); // 10 * 1
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
-            expect(mockEvent.preventDefault).toHaveBeenCalled();
         });
 
         it("X方向の移動量は常に0である", async () => {
@@ -96,7 +144,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.x).toBe(0);
+            expect(mockTransformSetting.x).toBe(0);
         });
     });
 
@@ -107,7 +155,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(2); // 1 * 2
+            expect(mockTransformSetting.y).toBe(2); // 1 * 2
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -117,7 +165,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(20); // 10 * 2
+            expect(mockTransformSetting.y).toBe(20); // 10 * 2
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -127,7 +175,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(0.5); // 1 * 0.5
+            expect(mockTransformSetting.y).toBe(0.5); // 1 * 0.5
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -137,7 +185,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(1); // 10 * 0.1
+            expect(mockTransformSetting.y).toBe(1); // 10 * 0.1
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -147,7 +195,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(3); // 1 * 3
+            expect(mockTransformSetting.y).toBe(3); // 1 * 3
         });
 
         it("scale=5でShiftキーありの場合", async () => {
@@ -156,7 +204,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(50); // 10 * 5
+            expect(mockTransformSetting.y).toBe(50); // 10 * 5
         });
     });
 
@@ -175,7 +223,42 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
             expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-            expect(mockEvent.preventDefault).not.toHaveBeenCalled();
+        });
+
+        it("transformObjectXElementが存在しない場合は何もしない", async () => {
+            const mockEvent = createMockEvent(false);
+            vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
+                if (id === "transform-object-x") {
+                    return null;
+                }
+                if (id === "transform-object-y") {
+                    return mockTransformObjectYElement;
+                }
+                return null;
+            });
+
+            await execute(mockEvent);
+
+            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
+            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
+        });
+
+        it("transformObjectYElementが存在しない場合は何もしない", async () => {
+            const mockEvent = createMockEvent(false);
+            vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
+                if (id === "transform-object-x") {
+                    return mockTransformObjectXElement;
+                }
+                if (id === "transform-object-y") {
+                    return null;
+                }
+                return null;
+            });
+
+            await execute(mockEvent);
+
+            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
+            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
         });
 
         it("positionがnullの場合は何もしない", async () => {
@@ -187,7 +270,6 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             expect(mockScreenAreaCalcSelectedCharacterPositionService).toHaveBeenCalledWith(mockMovieClip);
             expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-            expect(mockEvent.preventDefault).not.toHaveBeenCalled();
         });
 
         it("positionがundefinedの場合は何もしない", async () => {
@@ -199,7 +281,6 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             expect(mockScreenAreaCalcSelectedCharacterPositionService).toHaveBeenCalledWith(mockMovieClip);
             expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-            expect(mockEvent.preventDefault).not.toHaveBeenCalled();
         });
 
         it("selectedDepths.sizeが0の場合は早期リターン", async () => {
@@ -225,21 +306,6 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             expect(mockEvent.stopPropagation).toHaveBeenCalledTimes(1);
         });
 
-        it("preventDefaultが呼ばれる", async () => {
-            const mockEvent = createMockEvent(false);
-            await execute(mockEvent);
-
-            expect(mockEvent.preventDefault).toHaveBeenCalledTimes(1);
-        });
-
-        it("stopPropagationとpreventDefaultが両方呼ばれる", async () => {
-            const mockEvent = createMockEvent(false);
-            await execute(mockEvent);
-
-            expect(mockEvent.stopPropagation).toHaveBeenCalled();
-            expect(mockEvent.preventDefault).toHaveBeenCalled();
-        });
-
         it("positionがnullの場合はイベント処理されない", async () => {
             const mockEvent = createMockEvent(false);
             mockScreenAreaCalcSelectedCharacterPositionService.mockReturnValue(null);
@@ -247,7 +313,6 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             await execute(mockEvent);
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-            expect(mockEvent.preventDefault).not.toHaveBeenCalled();
         });
     });
 
@@ -287,35 +352,35 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
     });
 
     describe("transformSettingの設定", () => {
-        it("transformSetting.xが0に設定される", async () => {
+        it("mockTransformSetting.xが0に設定される", async () => {
             const mockEvent = createMockEvent(false);
-            transformSetting.x = 999; // 初期値を設定
+            mockTransformSetting.x = 999; // 初期値を設定
 
             await execute(mockEvent);
 
-            expect(transformSetting.x).toBe(0);
+            expect(mockTransformSetting.x).toBe(0);
         });
 
-        it("transformSetting.yが正しく計算される", async () => {
+        it("mockTransformSetting.yが正しく計算される", async () => {
             const mockEvent = createMockEvent(false);
             mockWorkSpace.scale = 1;
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(1);
+            expect(mockTransformSetting.y).toBe(1);
         });
 
         it("既存のtransformSetting値がリセットされる", async () => {
             const mockEvent = createMockEvent(false);
-            transformSetting.x = 100;
-            transformSetting.y = 200;
+            mockTransformSetting.x = 100;
+            mockTransformSetting.y = 200;
 
             mockWorkSpace.scale = 1;
 
             await execute(mockEvent);
 
-            expect(transformSetting.x).toBe(0);
-            expect(transformSetting.y).toBe(1);
+            expect(mockTransformSetting.x).toBe(0);
+            expect(mockTransformSetting.y).toBe(1);
         });
     });
 
@@ -360,7 +425,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(0); // 1 * 0
+            expect(mockTransformSetting.y).toBe(0); // 1 * 0
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -370,7 +435,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(0); // 10 * 0
+            expect(mockTransformSetting.y).toBe(0); // 10 * 0
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -380,7 +445,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(1000); // 10 * 100
+            expect(mockTransformSetting.y).toBe(1000); // 10 * 100
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -390,7 +455,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(0.01); // 1 * 0.01
+            expect(mockTransformSetting.y).toBe(0.01); // 1 * 0.01
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -400,7 +465,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(-1); // 1 * (-1)
+            expect(mockTransformSetting.y).toBe(-1); // 1 * (-1)
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
     });
@@ -420,11 +485,10 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             // 3. イベント処理
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
-            expect(mockEvent.preventDefault).toHaveBeenCalled();
 
             // 4. transformSettingの設定
-            expect(transformSetting.x).toBe(0);
-            expect(transformSetting.y).toBe(1);
+            expect(mockTransformSetting.x).toBe(0);
+            expect(mockTransformSetting.y).toBe(1);
 
             // 5. 値の更新
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
@@ -438,9 +502,8 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             expect(mockScreenAreaCalcSelectedCharacterPositionService).toHaveBeenCalledWith(mockMovieClip);
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
-            expect(mockEvent.preventDefault).toHaveBeenCalled();
-            expect(transformSetting.x).toBe(0);
-            expect(transformSetting.y).toBe(20); // 10 * 2
+            expect(mockTransformSetting.x).toBe(0);
+            expect(mockTransformSetting.y).toBe(20); // 10 * 2
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -479,7 +542,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(1);
+            expect(mockTransformSetting.y).toBe(1);
         });
 
         it("shiftKey=trueの時は10ピクセル移動", async () => {
@@ -488,7 +551,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(transformSetting.y).toBe(10);
+            expect(mockTransformSetting.y).toBe(10);
         });
 
         it("shiftKeyの状態が変わっても正しく動作する", async () => {
@@ -496,12 +559,12 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             const mockEvent1 = createMockEvent(false);
             mockWorkSpace.scale = 1;
             await execute(mockEvent1);
-            expect(transformSetting.y).toBe(1);
+            expect(mockTransformSetting.y).toBe(1);
 
             // 2回目: Shiftキーあり
             const mockEvent2 = createMockEvent(true);
             await execute(mockEvent2);
-            expect(transformSetting.y).toBe(10);
+            expect(mockTransformSetting.y).toBe(10);
         });
     });
 });

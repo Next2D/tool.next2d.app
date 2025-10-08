@@ -1,6 +1,6 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { $clamp } from "@/global/GlobalUtil";
-import { execute as colorSettingAlphaOffsetUpdateValueUseCase } from "./ColorSettingAlphaOffsetUpdateValueUseCase";
+import { execute as colorSettingRedMultiplierUpdateValueUseCase } from "./ColorSettingRedMultiplierUpdateValueUseCase";
 
 /**
  * @description 入力完了処理
@@ -25,7 +25,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     $updateKeyLock(false);
 
     // 値を更新
-    await colorSettingAlphaOffsetUpdateValueUseCase(
-        $clamp(parseFloat(element.value), -255, 255)
+    await colorSettingRedMultiplierUpdateValueUseCase(
+        $clamp(parseFloat(element.value), 0, 100)
     );
 };

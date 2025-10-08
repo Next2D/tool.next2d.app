@@ -1,30 +1,49 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ReferenceSettingYPointerMoveEventUseCase";
 
-// モックの設定
+// モックの設定（vi.hoistedを使用してhoistingの問題を解決）
+const { 
+    mockSetCursor, 
+    mockClamp, 
+    mockGetCurrentWorkSpace, 
+    mockScreenReferencePointDeployElementUseCase,
+    mockReferenceSettingUpdateYUseCase,
+    mockReferenceSetting
+} = vi.hoisted(() => {
+    return {
+        mockSetCursor: vi.fn(),
+        mockClamp: vi.fn((value: number, min: number, max: number) => Math.max(min, Math.min(max, value))),
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockScreenReferencePointDeployElementUseCase: vi.fn(),
+        mockReferenceSettingUpdateYUseCase: vi.fn(),
+        mockReferenceSetting: {
+            pivotY: 0,
+            movementY: 0
+        }
+    };
+});
+
 vi.mock("@/controller/domain/model/ReferenceSetting", () => ({
-    referenceSetting: {
-        pivotY: 0,
-        movementY: 0
-    }
+    referenceSetting: mockReferenceSetting
 }));
 
 vi.mock("@/global/GlobalUtil", () => ({
-    $clamp: vi.fn((value, min, max) => Math.max(min, Math.min(max, value))),
-    $setCursor: vi.fn()
+    $clamp: mockClamp,
+    $setCursor: mockSetCursor
 }));
 
 vi.mock("@/core/application/CoreUtil", () => ({
-    $getCurrentWorkSpace: vi.fn()
+    $getCurrentWorkSpace: mockGetCurrentWorkSpace
 }));
 
 vi.mock("@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase", () => ({
-    execute: vi.fn()
+    execute: mockScreenReferencePointDeployElementUseCase
 }));
 
 vi.mock("./ReferenceSettingUpdateYUseCase", () => ({
-    execute: vi.fn()
+    execute: mockReferenceSettingUpdateYUseCase
 }));
+
+import { execute } from "./ReferenceSettingYPointerMoveEventUseCase";
 
 describe("ReferenceSettingYPointerMoveEventUseCase", () => {
 
@@ -32,48 +51,15 @@ describe("ReferenceSettingYPointerMoveEventUseCase", () => {
     let mockElement: any;
     let mockWorkSpace: any;
     let mockMovieClip: any;
-    let mockSetCursor: any;
-    let mockClamp: any;
-    let mockGetCurrentWorkSpace: any;
-    let mockScreenReferencePointDeployElementUseCase: any;
-    let mockReferenceSettingUpdateYUseCase: any;
-    let mockReferenceSetting: any;
     let originalRequestAnimationFrame: any;
 
     beforeEach(() => {
-        // モック関数を設定
-        mockSetCursor = vi.fn();
-        mockClamp = vi.fn((value, min, max) => Math.max(min, Math.min(max, value)));
-        mockGetCurrentWorkSpace = vi.fn();
-        mockScreenReferencePointDeployElementUseCase = vi.fn();
-        mockReferenceSettingUpdateYUseCase = vi.fn();
+        // モックをリセット
+        vi.clearAllMocks();
 
-        // モックを適用
-        vi.doMock("@/global/GlobalUtil", () => ({
-            $clamp: mockClamp,
-            $setCursor: mockSetCursor
-        }));
-
-        vi.doMock("@/core/application/CoreUtil", () => ({
-            $getCurrentWorkSpace: mockGetCurrentWorkSpace
-        }));
-
-        vi.doMock("@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase", () => ({
-            execute: mockScreenReferencePointDeployElementUseCase
-        }));
-
-        vi.doMock("./ReferenceSettingUpdateYUseCase", () => ({
-            execute: mockReferenceSettingUpdateYUseCase
-        }));
-
-        mockReferenceSetting = {
-            pivotY: 50,
-            movementY: 0
-        };
-
-        vi.doMock("@/controller/domain/model/ReferenceSetting", () => ({
-            referenceSetting: mockReferenceSetting
-        }));
+        // mockReferenceSettingをリセット
+        mockReferenceSetting.pivotY = 50;
+        mockReferenceSetting.movementY = 0;
 
         // requestAnimationFrameのモック
         originalRequestAnimationFrame = global.requestAnimationFrame;
@@ -99,6 +85,7 @@ describe("ReferenceSettingYPointerMoveEventUseCase", () => {
         };
 
         mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
+        mockClamp.mockImplementation((value, min, max) => Math.max(min, Math.min(max, value)));
 
         // PointerEventのモック
         mockEvent = {
@@ -110,7 +97,7 @@ describe("ReferenceSettingYPointerMoveEventUseCase", () => {
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
         global.requestAnimationFrame = originalRequestAnimationFrame;
     });
 

@@ -1,7 +1,34 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ReferenceSettingXPointerUpEventUseCase";
 
-// モックの設定
+// モックの設定（vi.hoistedを使用してhoistingの問題を解決）
+const { 
+    mockSetCursor, 
+    mockClamp, 
+    mockGetCurrentWorkSpace, 
+    mockReferenceSettingXPointerMoveEventUseCase,
+    mockExternalReference,
+    mockExternalReferenceConstructor,
+    mockReferenceSetting
+} = vi.hoisted(() => {
+    const mockExternalReference = {
+        setX: vi.fn().mockResolvedValue(undefined)
+    };
+    
+    return {
+        mockSetCursor: vi.fn(),
+        mockClamp: vi.fn((value: number, min: number, max: number) => Math.max(min, Math.min(max, value))),
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockReferenceSettingXPointerMoveEventUseCase: vi.fn(),
+        mockExternalReference,
+        mockExternalReferenceConstructor: vi.fn(() => mockExternalReference),
+        mockReferenceSetting: {
+            beforeX: 0,
+            pivotX: 0,
+            movementX: 0
+        }
+    };
+});
+
 vi.mock("@/tool/domain/event/EventType", () => ({
     EventType: {
         POINTER_MOVE: "pointermove",
@@ -12,29 +39,27 @@ vi.mock("@/tool/domain/event/EventType", () => ({
 }));
 
 vi.mock("./ReferenceSettingXPointerMoveEventUseCase", () => ({
-    execute: vi.fn()
+    execute: mockReferenceSettingXPointerMoveEventUseCase
 }));
 
 vi.mock("@/external/controller/domain/model/ExternalReference", () => ({
-    ExternalReference: vi.fn()
+    ExternalReference: mockExternalReferenceConstructor
 }));
 
 vi.mock("@/core/application/CoreUtil", () => ({
-    $getCurrentWorkSpace: vi.fn()
+    $getCurrentWorkSpace: mockGetCurrentWorkSpace
 }));
 
 vi.mock("@/controller/domain/model/ReferenceSetting", () => ({
-    referenceSetting: {
-        beforeX: 0,
-        pivotX: 0,
-        movementX: 0
-    }
+    referenceSetting: mockReferenceSetting
 }));
 
 vi.mock("@/global/GlobalUtil", () => ({
-    $clamp: vi.fn((value, min, max) => Math.max(min, Math.min(max, value))),
-    $setCursor: vi.fn()
+    $clamp: mockClamp,
+    $setCursor: mockSetCursor
 }));
+
+import { execute } from "./ReferenceSettingXPointerUpEventUseCase";
 
 describe("ReferenceSettingXPointerUpEventUseCase", () => {
 
@@ -45,56 +70,15 @@ describe("ReferenceSettingXPointerUpEventUseCase", () => {
     let mockLayer: any;
     let mockCharacter: any;
     let mockReferencePosition: any;
-    let mockExternalReference: any;
-    let mockSetCursor: any;
-    let mockClamp: any;
-    let mockGetCurrentWorkSpace: any;
-    let mockExternalReferenceConstructor: any;
-    let mockReferenceSetting: any;
-    let mockReferenceSettingXPointerMoveEventUseCase: any;
 
     beforeEach(() => {
-        // モック関数を設定
-        mockSetCursor = vi.fn();
-        mockClamp = vi.fn((value, min, max) => Math.max(min, Math.min(max, value)));
-        mockGetCurrentWorkSpace = vi.fn();
-        mockExternalReferenceConstructor = vi.fn();
-        mockReferenceSettingXPointerMoveEventUseCase = vi.fn();
-
-        // モックを適用
-        vi.doMock("@/global/GlobalUtil", () => ({
-            $clamp: mockClamp,
-            $setCursor: mockSetCursor
-        }));
-
-        vi.doMock("@/core/application/CoreUtil", () => ({
-            $getCurrentWorkSpace: mockGetCurrentWorkSpace
-        }));
-
-        vi.doMock("./ReferenceSettingXPointerMoveEventUseCase", () => ({
-            execute: mockReferenceSettingXPointerMoveEventUseCase
-        }));
-
-        mockReferenceSetting = {
-            beforeX: 100,
-            pivotX: 50,
-            movementX: 0
-        };
-
-        vi.doMock("@/controller/domain/model/ReferenceSetting", () => ({
-            referenceSetting: mockReferenceSetting
-        }));
-
-        // ExternalReferenceのモック
-        mockExternalReference = {
-            setX: vi.fn().mockResolvedValue(undefined)
-        };
-
-        mockExternalReferenceConstructor = vi.fn(() => mockExternalReference);
-
-        vi.doMock("@/external/controller/domain/model/ExternalReference", () => ({
-            ExternalReference: mockExternalReferenceConstructor
-        }));
+        // モックをリセット
+        vi.clearAllMocks();
+        
+        // mockReferenceSettingをリセット
+        mockReferenceSetting.beforeX = 100;
+        mockReferenceSetting.pivotX = 50;
+        mockReferenceSetting.movementX = 0;
 
         // HTMLInputElementのモック
         mockElement = {
@@ -134,6 +118,8 @@ describe("ReferenceSettingXPointerUpEventUseCase", () => {
         };
 
         mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
+        mockExternalReference.setX.mockResolvedValue(undefined);
+        mockClamp.mockImplementation((value, min, max) => Math.max(min, Math.min(max, value)));
 
         // PointerEventのモック
         mockEvent = {
@@ -144,7 +130,7 @@ describe("ReferenceSettingXPointerUpEventUseCase", () => {
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     describe("正常系", () => {

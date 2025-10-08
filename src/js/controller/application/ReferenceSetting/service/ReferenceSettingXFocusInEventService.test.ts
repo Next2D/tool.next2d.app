@@ -1,54 +1,62 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ReferenceSettingXFocusInEventService";
 
-// モックの設定
+// モックの設定（vi.hoistedを使用してhoistingの問題を解決）
+const {
+    mockUpdateKeyLock,
+    mockGetCurrentWorkSpace,
+    mockSetEditingElement,
+    mockReferenceSetting
+} = vi.hoisted(() => {
+    return {
+        mockUpdateKeyLock: vi.fn(),
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockSetEditingElement: vi.fn(),
+        mockReferenceSetting: {
+            x: 100,
+            beforeX: 0,
+            movementX: 0
+        }
+    };
+});
+
 vi.mock("@/shortcut/ShortcutUtil", () => ({
-    $updateKeyLock: vi.fn()
+    $updateKeyLock: mockUpdateKeyLock
 }));
 
 vi.mock("@/core/application/CoreUtil", () => ({
-    $getCurrentWorkSpace: vi.fn()
+    $getCurrentWorkSpace: mockGetCurrentWorkSpace
 }));
 
 vi.mock("@/global/GlobalUtil", () => ({
-    $setEditingElement: vi.fn()
+    $setEditingElement: mockSetEditingElement
 }));
 
 vi.mock("@/controller/domain/model/ReferenceSetting", () => ({
-    referenceSetting: {
-        x: 100,
-        beforeX: 0,
-        movementX: 0
-    }
+    referenceSetting: mockReferenceSetting
 }));
+
+import { execute } from "./ReferenceSettingXFocusInEventService";
 
 describe("ReferenceSettingXFocusInEventService", () => {
 
     let mockEvent: FocusEvent;
     let mockInputElement: HTMLInputElement;
-    let mockUpdateKeyLock: any;
-    let mockGetCurrentWorkSpace: any;
-    let mockSetEditingElement: any;
-    let mockReferenceSetting: any;
     let mockWorkSpace: any;
     let mockMovieClip: any;
 
-    beforeEach(async () => {
-        // モックされた関数を取得
-        const { $updateKeyLock } = await import("../../../../shortcut/ShortcutUtil");
-        const { $getCurrentWorkSpace } = await import("../../../../core/application/CoreUtil");
-        const { $setEditingElement } = await import("../../../../global/GlobalUtil");
-        const { referenceSetting } = await import("../../../../controller/domain/model/ReferenceSetting");
+    beforeEach(() => {
+        vi.clearAllMocks();
 
-        mockUpdateKeyLock = vi.mocked($updateKeyLock);
-        mockGetCurrentWorkSpace = vi.mocked($getCurrentWorkSpace);
-        mockSetEditingElement = vi.mocked($setEditingElement);
-        mockReferenceSetting = referenceSetting;
+        // mockReferenceSettingのリセット
+        mockReferenceSetting.x = 100;
+        mockReferenceSetting.beforeX = 0;
+        mockReferenceSetting.movementX = 0;
 
         // HTMLInputElementをモック作成
         mockInputElement = document.createElement("input");
         mockInputElement.type = "text";
         mockInputElement.style.cursor = "text";
+        mockInputElement.value = "50";
 
         // MovieClipのモック作成
         mockMovieClip = {
@@ -81,18 +89,14 @@ describe("ReferenceSettingXFocusInEventService", () => {
             writable: true,
             configurable: true
         });
-
-        // referenceSettingの初期値設定
-        mockReferenceSetting.x = 100;
-        mockReferenceSetting.beforeX = 0;
-        mockReferenceSetting.movementX = 0;
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
         // 要素のスタイルをリセット
         if (mockInputElement) {
             mockInputElement.style.cursor = "";
+            mockInputElement.value = "";
         }
     });
 
@@ -112,7 +116,7 @@ describe("ReferenceSettingXFocusInEventService", () => {
         });
 
         test("選択されたオブジェクトがある場合、変更前の値が保存される", () => {
-            mockReferenceSetting.x = 150;
+            mockInputElement.value = "150";
             mockMovieClip.selectedDepths = new Set([5, 10]);
 
             execute(mockEvent);
@@ -122,7 +126,7 @@ describe("ReferenceSettingXFocusInEventService", () => {
         });
 
         test("referenceSettingのxが負の値でも正しく保存される", () => {
-            mockReferenceSetting.x = -75;
+            mockInputElement.value = "-75";
             mockMovieClip.selectedDepths = new Set([1]);
 
             execute(mockEvent);
@@ -132,7 +136,7 @@ describe("ReferenceSettingXFocusInEventService", () => {
         });
 
         test("referenceSettingのxが0でも正しく保存される", () => {
-            mockReferenceSetting.x = 0;
+            mockInputElement.value = "0";
             mockMovieClip.selectedDepths = new Set([1]);
 
             execute(mockEvent);
@@ -310,7 +314,7 @@ describe("ReferenceSettingXFocusInEventService", () => {
             const testValues = [0, 50, -25, 100.5, -150.75];
 
             testValues.forEach(value => {
-                mockReferenceSetting.x = value;
+                mockInputElement.value = String(value);
                 mockMovieClip.selectedDepths = new Set([1]);
 
                 execute(mockEvent);

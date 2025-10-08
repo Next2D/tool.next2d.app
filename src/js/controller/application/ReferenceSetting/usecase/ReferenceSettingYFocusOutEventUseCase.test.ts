@@ -1,34 +1,58 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ReferenceSettingYFocusOutEventUseCase";
 
-// モックの設定
+// モックの設定（vi.hoistedを使用してhoistingの問題を解決）
+const {
+    mockUpdateKeyLock,
+    mockClamp,
+    mockReferenceSetting,
+    mockGetCurrentWorkSpace,
+    mockExternalReferenceConstructor,
+    mockScreenReferencePointDeployElementUseCase,
+    mockExternalReference
+} = vi.hoisted(() => {
+    const mockExternalReference = {
+        setY: vi.fn().mockResolvedValue(undefined)
+    };
+    return {
+        mockUpdateKeyLock: vi.fn(),
+        mockClamp: vi.fn((value: number, min: number, max: number) => Math.max(min, Math.min(max, value))),
+        mockReferenceSetting: {
+            beforeY: 0,
+            pivotY: 0,
+            movementY: 0
+        },
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockExternalReferenceConstructor: vi.fn(() => mockExternalReference),
+        mockScreenReferencePointDeployElementUseCase: vi.fn(),
+        mockExternalReference
+    };
+});
+
 vi.mock("@/shortcut/ShortcutUtil", () => ({
-    $updateKeyLock: vi.fn()
+    $updateKeyLock: mockUpdateKeyLock
 }));
 
 vi.mock("@/global/GlobalUtil", () => ({
-    $clamp: vi.fn((value, min, max) => Math.max(min, Math.min(max, value)))
+    $clamp: mockClamp
 }));
 
 vi.mock("@/controller/domain/model/ReferenceSetting", () => ({
-    referenceSetting: {
-        beforeY: 0,
-        pivotY: 0,
-        movementY: 0
-    }
+    referenceSetting: mockReferenceSetting
 }));
 
 vi.mock("@/core/application/CoreUtil", () => ({
-    $getCurrentWorkSpace: vi.fn()
+    $getCurrentWorkSpace: mockGetCurrentWorkSpace
 }));
 
 vi.mock("@/external/controller/domain/model/ExternalReference", () => ({
-    ExternalReference: vi.fn()
+    ExternalReference: mockExternalReferenceConstructor
 }));
 
 vi.mock("@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase", () => ({
-    execute: vi.fn()
+    execute: mockScreenReferencePointDeployElementUseCase
 }));
+
+import { execute } from "./ReferenceSettingYFocusOutEventUseCase";
 
 describe("ReferenceSettingYFocusOutEventUseCase", () => {
 
@@ -38,59 +62,20 @@ describe("ReferenceSettingYFocusOutEventUseCase", () => {
     let mockMovieClip: any;
     let mockLayer: any;
     let mockCharacter: any;
-    let mockExternalReference: any;
-    let mockUpdateKeyLock: any;
-    let mockClamp: any;
-    let mockReferenceSetting: any;
-    let mockGetCurrentWorkSpace: any;
-    let mockExternalReferenceConstructor: any;
-    let mockScreenReferencePointDeployElementUseCase: any;
 
-    beforeEach(async () => {
-        // モック関数を設定
-        mockUpdateKeyLock = vi.fn();
-        mockClamp = vi.fn((value, min, max) => Math.max(min, Math.min(max, value)));
-        mockGetCurrentWorkSpace = vi.fn();
-        mockExternalReferenceConstructor = vi.fn();
-        mockScreenReferencePointDeployElementUseCase = vi.fn();
+    beforeEach(() => {
+        vi.clearAllMocks();
 
-        // モックを適用
-        vi.doMock("@/shortcut/ShortcutUtil", () => ({
-            $updateKeyLock: mockUpdateKeyLock
-        }));
+        // mockReferenceSettingをリセット
+        mockReferenceSetting.beforeY = 0;
+        mockReferenceSetting.pivotY = 50;
+        mockReferenceSetting.movementY = 0;
 
-        vi.doMock("@/global/GlobalUtil", () => ({
-            $clamp: mockClamp
-        }));
-
-        mockReferenceSetting = {
-            beforeY: 0,
-            pivotY: 50,
-            movementY: 0
-        };
-
-        vi.doMock("@/controller/domain/model/ReferenceSetting", () => ({
-            referenceSetting: mockReferenceSetting
-        }));
-
-        vi.doMock("@/core/application/CoreUtil", () => ({
-            $getCurrentWorkSpace: mockGetCurrentWorkSpace
-        }));
-
-        // ExternalReferenceのモック
-        mockExternalReference = {
-            setY: vi.fn().mockResolvedValue(undefined)
-        };
-
-        mockExternalReferenceConstructor = vi.fn(() => mockExternalReference);
-
-        vi.doMock("@/external/controller/domain/model/ExternalReference", () => ({
-            ExternalReference: mockExternalReferenceConstructor
-        }));
-
-        vi.doMock("@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase", () => ({
-            execute: mockScreenReferencePointDeployElementUseCase
-        }));
+        // mockClampをリセット
+        mockClamp.mockImplementation((value, min, max) => Math.max(min, Math.min(max, value)));
+        
+        // mockExternalReferenceをリセット
+        mockExternalReference.setY.mockResolvedValue(undefined);
 
         // HTMLInputElementのモック
         mockElement = {
@@ -135,7 +120,7 @@ describe("ReferenceSettingYFocusOutEventUseCase", () => {
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     describe("正常系", () => {

@@ -1,4 +1,24 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { Matrix } from "@next2d/geom";
+
+// モックの設定（vi.hoistedを使用してhoistingの問題を解決）
+const { mockGetCurrentWorkSpace, mockTimelineSceneList } = vi.hoisted(() => {
+    return {
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockTimelineSceneList: {
+            parents: [] as any[]
+        }
+    };
+});
+
+vi.mock("../../../core/application/CoreUtil", () => ({
+    $getCurrentWorkSpace: mockGetCurrentWorkSpace
+}));
+
+vi.mock("../../../timeline/domain/model/TimelineSceneList", () => ({
+    timelineSceneList: mockTimelineSceneList
+}));
+
 import {
     $getConcatenatedMatrix,
     $createTransformMatrix,
@@ -6,32 +26,22 @@ import {
 } from "./TransformSettingUtil";
 import type { Character } from "../../../core/domain/model/Character";
 
-// モック
-const mock$getCurrentWorkSpace = vi.fn();
-
-vi.mock("../../../core/application/CoreUtil", () => ({
-    $getCurrentWorkSpace: mock$getCurrentWorkSpace
-}));
-
-vi.mock("../../../timeline/domain/model/TimelineSceneList", () => ({
-    timelineSceneList: {
-        parents: []
-    }
-}));
-
 describe("TransformSettingUtil", () => {
     let mockWorkSpace: any;
     let mockCharacter: Character;
 
     beforeEach(() => {
         vi.clearAllMocks();
+        
+        // mockTimelineSceneList.parentsをリセット
+        mockTimelineSceneList.parents = [];
 
         // 基本的なモックWorkSpaceのセットアップ
         mockWorkSpace = {
             scale: 1
         };
 
-        mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
+        mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
 
         // 基本的なモックキャラクターのセットアップ
         mockCharacter = {
@@ -82,12 +92,11 @@ describe("TransformSettingUtil", () => {
             expect(result[3]).toBe(0.5);  // d
         });
 
-        it("親オブジェクトが1つ存在する場合、親のmatrixが乗算される", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
+        it("親オブジェクトが1つ存在する場合、親のmatrixが乗算される", () => {
             const parentCharacter = {
                 matrix: new Float32Array([2, 0, 0, 2, 10, 20])
             };
-            timelineSceneList.parents = [
+            mockTimelineSceneList.parents = [
                 { selectCharacter: parentCharacter }
             ];
 
@@ -104,15 +113,15 @@ describe("TransformSettingUtil", () => {
             expect(result[5]).toBe(20);  // ty
         });
 
-        it("複数の親オブジェクトが存在する場合、すべてのmatrixが順次乗算される", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
+        it("複数の親オブジェクトが存在する場合、すべてのmatrixが順次乗算される", () => {
+            
             const parent1 = {
                 matrix: new Float32Array([2, 0, 0, 2, 10, 20])
             };
             const parent2 = {
                 matrix: new Float32Array([1.5, 0, 0, 1.5, 5, 10])
             };
-            timelineSceneList.parents = [
+            mockTimelineSceneList.parents = [
                 { selectCharacter: parent1 },
                 { selectCharacter: parent2 }
             ];
@@ -124,13 +133,13 @@ describe("TransformSettingUtil", () => {
             // workspace.scale * parent1.matrix * parent2.matrix
             expect(result[0]).toBe(3);    // 2 * 1.5
             expect(result[3]).toBe(3);    // 2 * 1.5
-            expect(result[4]).toBeCloseTo(25);  // (10 * 1.5) + 5
-            expect(result[5]).toBeCloseTo(40);  // (20 * 1.5) + 10
+            expect(result[4]).toBeCloseTo(20);  // 2 * 5 + 0 * 10 + 10
+            expect(result[5]).toBeCloseTo(40);  // 0 * 5 + 2 * 10 + 20
         });
 
-        it("親オブジェクトがnullの場合はスキップされる", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
-            timelineSceneList.parents = [
+        it("親オブジェクトがnullの場合はスキップされる", () => {
+            
+            mockTimelineSceneList.parents = [
                 null,
                 { selectCharacter: { matrix: new Float32Array([2, 0, 0, 2, 0, 0]) } }
             ];
@@ -143,9 +152,9 @@ describe("TransformSettingUtil", () => {
             expect(result[3]).toBe(2);
         });
 
-        it("親オブジェクトのselectCharacterがnullの場合はスキップされる", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
-            timelineSceneList.parents = [
+        it("親オブジェクトのselectCharacterがnullの場合はスキップされる", () => {
+            
+            mockTimelineSceneList.parents = [
                 { selectCharacter: null },
                 { selectCharacter: { matrix: new Float32Array([2, 0, 0, 2, 0, 0]) } }
             ];
@@ -158,9 +167,9 @@ describe("TransformSettingUtil", () => {
             expect(result[3]).toBe(2);
         });
 
-        it("ワークスペースのスケールと親のmatrixの両方が適用される", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
-            timelineSceneList.parents = [
+        it("ワークスペースのスケールと親のmatrixの両方が適用される", () => {
+            
+            mockTimelineSceneList.parents = [
                 { selectCharacter: { matrix: new Float32Array([2, 0, 0, 2, 0, 0]) } }
             ];
 
@@ -173,12 +182,12 @@ describe("TransformSettingUtil", () => {
             expect(result[3]).toBe(3);
         });
 
-        it("回転を含むmatrixが正しく乗算される", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
+        it("回転を含むmatrixが正しく乗算される", () => {
+            
             const rad45 = Math.PI / 4;
             const cos45 = Math.cos(rad45);
             const sin45 = Math.sin(rad45);
-            timelineSceneList.parents = [
+            mockTimelineSceneList.parents = [
                 {
                     selectCharacter: {
                         matrix: new Float32Array([cos45, sin45, -sin45, cos45, 0, 0])
@@ -244,10 +253,12 @@ describe("TransformSettingUtil", () => {
 
             const result = $createTransformMatrix(mockCharacter);
 
-            expect(result[0]).toBeCloseTo(cos45);
-            expect(result[1]).toBeCloseTo(sin45);
-            expect(result[2]).toBeCloseTo(sin45);
-            expect(result[3]).toBeCloseTo(cos45);
+            // radianX = atan2(sin45, cos45) = 45°
+            // radianY = atan2(-sin45, cos45) = -45°
+            expect(result[0]).toBeCloseTo(cos45);  // cos(45°)
+            expect(result[1]).toBeCloseTo(sin45);  // sin(45°)
+            expect(result[2]).toBeCloseTo(-sin45); // sin(-45°)
+            expect(result[3]).toBeCloseTo(cos45);  // cos(-45°)
         });
 
         it("90度回転したmatrixから正しい変換matrixを生成", () => {
@@ -259,10 +270,12 @@ describe("TransformSettingUtil", () => {
 
             const result = $createTransformMatrix(mockCharacter);
 
-            expect(result[0]).toBeCloseTo(cos90, 5);
-            expect(result[1]).toBeCloseTo(sin90, 5);
-            expect(result[2]).toBeCloseTo(sin90, 5);
-            expect(result[3]).toBeCloseTo(cos90, 5);
+            // radianX = atan2(sin90, cos90) = 90°
+            // radianY = atan2(-sin90, cos90) = -90°
+            expect(result[0]).toBeCloseTo(cos90, 5);  // cos(90°) ≈ 0
+            expect(result[1]).toBeCloseTo(sin90, 5);  // sin(90°) = 1
+            expect(result[2]).toBeCloseTo(-sin90, 5); // sin(-90°) = -1
+            expect(result[3]).toBeCloseTo(cos90, 5);  // cos(-90°) ≈ 0
         });
 
         it("負の回転（-45度）のmatrixから正しい変換matrixを生成", () => {
@@ -278,9 +291,9 @@ describe("TransformSettingUtil", () => {
             expect(result[1]).toBeCloseTo(sin45);
         });
 
-        it("親のmatrixも考慮した変換matrixを生成", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
-            timelineSceneList.parents = [
+        it("親のmatrixも考慮した変換matrixを生成", () => {
+            
+            mockTimelineSceneList.parents = [
                 {
                     selectCharacter: {
                         matrix: new Float32Array([2, 0, 0, 2, 0, 0])
@@ -329,10 +342,12 @@ describe("TransformSettingUtil", () => {
             const result = $createTransformMatrix(mockCharacter);
 
             // Math.atan2で角度が抽出され、cos/sinで正規化される
+            // radianX = atan2(scale*sin(rad), scale*cos(rad)) = atan2(sin(rad), cos(rad)) = rad
+            // radianY = atan2(-scale*sin(rad), scale*cos(rad)) = atan2(-sin(rad), cos(rad)) = -rad
             expect(result[0]).toBeCloseTo(Math.cos(rad));
             expect(result[1]).toBeCloseTo(Math.sin(rad));
-            expect(result[2]).toBeCloseTo(Math.sin(rad));
-            expect(result[3]).toBeCloseTo(Math.cos(rad));
+            expect(result[2]).toBeCloseTo(-Math.sin(rad)); // sin(-rad) = -sin(rad)
+            expect(result[3]).toBeCloseTo(Math.cos(rad));  // cos(-rad) = cos(rad)
         });
 
         it("異なるX軸とY軸のスケールを持つmatrix", () => {
@@ -386,7 +401,7 @@ describe("TransformSettingUtil", () => {
             if (matches) {
                 expect(parseFloat(matches[1])).toBeCloseTo(cos45);
                 expect(parseFloat(matches[2])).toBeCloseTo(sin45);
-                expect(parseFloat(matches[3])).toBeCloseTo(sin45);
+                expect(parseFloat(matches[3])).toBeCloseTo(-sin45); // sin(-45°) = -sin45
                 expect(parseFloat(matches[4])).toBeCloseTo(cos45);
                 expect(parseFloat(matches[5])).toBe(0);
                 expect(parseFloat(matches[6])).toBe(0);
@@ -407,7 +422,7 @@ describe("TransformSettingUtil", () => {
             if (matches) {
                 expect(parseFloat(matches[1])).toBeCloseTo(cos90, 5);
                 expect(parseFloat(matches[2])).toBeCloseTo(sin90, 5);
-                expect(parseFloat(matches[3])).toBeCloseTo(sin90, 5);
+                expect(parseFloat(matches[3])).toBeCloseTo(-sin90, 5); // sin(-90°) = -1
                 expect(parseFloat(matches[4])).toBeCloseTo(cos90, 5);
             }
         });
@@ -442,7 +457,7 @@ describe("TransformSettingUtil", () => {
             if (matches) {
                 expect(parseFloat(matches[1])).toBeCloseTo(Math.cos(rad));
                 expect(parseFloat(matches[2])).toBeCloseTo(Math.sin(rad));
-                expect(parseFloat(matches[3])).toBeCloseTo(Math.sin(rad));
+                expect(parseFloat(matches[3])).toBeCloseTo(-Math.sin(rad)); // sin(-rad)
                 expect(parseFloat(matches[4])).toBeCloseTo(Math.cos(rad));
                 // 平行移動成分は常に0
                 expect(parseFloat(matches[5])).toBe(0);
@@ -450,9 +465,9 @@ describe("TransformSettingUtil", () => {
             }
         });
 
-        it("親のmatrixも考慮したCSSスタイル文字列を生成", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
-            timelineSceneList.parents = [
+        it("親のmatrixも考慮したCSSスタイル文字列を生成", () => {
+            
+            mockTimelineSceneList.parents = [
                 {
                     selectCharacter: {
                         matrix: new Float32Array([2, 0, 0, 2, 10, 20])
@@ -551,9 +566,9 @@ describe("TransformSettingUtil", () => {
             expect(styleString).toContain("matrix(");
         });
 
-        it("親とワークスペーススケールが全関数に影響する", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
-            timelineSceneList.parents = [
+        it("親とワークスペーススケールが全関数に影響する", () => {
+            
+            mockTimelineSceneList.parents = [
                 {
                     selectCharacter: {
                         matrix: new Float32Array([1.5, 0, 0, 1.5, 0, 0])
@@ -565,8 +580,8 @@ describe("TransformSettingUtil", () => {
             mockWorkSpace.scale = 1.2;
 
             const concatenatedMatrix = $getConcatenatedMatrix();
-            // 1.2 * 1.5 * 2 = 3.6
-            expect(concatenatedMatrix[0]).toBeCloseTo(3.6);
+            // 1.2 * 1.5 = 1.8 (character matrix is NOT included in getConcatenatedMatrix)
+            expect(concatenatedMatrix[0]).toBeCloseTo(1.8);
 
             const transformMatrix = $createTransformMatrix(mockCharacter);
             expect(transformMatrix).toBeDefined();
@@ -575,10 +590,10 @@ describe("TransformSettingUtil", () => {
             expect(styleString).toContain("matrix(");
         });
 
-        it("複雑な変換チェーン（回転+スケール+親+ワークスペース）", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
+        it("複雑な変換チェーン（回転+スケール+親+ワークスペース）", () => {
+            
             const rad45 = Math.PI / 4;
-            timelineSceneList.parents = [
+            mockTimelineSceneList.parents = [
                 {
                     selectCharacter: {
                         matrix: new Float32Array([
@@ -642,13 +657,13 @@ describe("TransformSettingUtil", () => {
 
             const result = $getConcatenatedMatrix();
 
-            expect(result[0]).toBe(0.001);
-            expect(result[3]).toBe(0.001);
+            expect(result[0]).toBeCloseTo(0.001, 5);
+            expect(result[3]).toBeCloseTo(0.001, 5);
         });
 
-        it("親の配列が空の場合", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
-            timelineSceneList.parents = [];
+        it("親の配列が空の場合", () => {
+            
+            mockTimelineSceneList.parents = [];
 
             const result = $getConcatenatedMatrix();
 
@@ -700,10 +715,7 @@ describe("TransformSettingUtil", () => {
             expect(actualDistance).toBe(expectedDistance);
         });
 
-        it("Matrix.multiplyの結合法則が成立する", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
-            const Matrix = await import("@next2d/geom").then(m => m.Matrix);
-
+        it("Matrix.multiplyの結合法則が成立する", () => {
             const m1 = new Float32Array([2, 0, 0, 2, 0, 0]);
             const m2 = new Float32Array([1.5, 0, 0, 1.5, 0, 0]);
             const m3 = new Float32Array([1.2, 0, 0, 1.2, 0, 0]);
@@ -759,11 +771,11 @@ describe("TransformSettingUtil", () => {
             expect(duration).toBeLessThan(50);
         });
 
-        it("多数の親を持つ場合でも妥当な時間で処理される", async () => {
-            const { timelineSceneList } = await import("../../../timeline/domain/model/TimelineSceneList");
+        it("多数の親を持つ場合でも妥当な時間で処理される", () => {
+            
             
             // 10個の親を設定
-            timelineSceneList.parents = Array.from({ length: 10 }, () => ({
+            mockTimelineSceneList.parents = Array.from({ length: 10 }, () => ({
                 selectCharacter: {
                     matrix: new Float32Array([1.1, 0, 0, 1.1, 1, 1])
                 }

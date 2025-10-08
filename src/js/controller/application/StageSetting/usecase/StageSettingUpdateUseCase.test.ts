@@ -1,28 +1,28 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./StageSettingUpdateUseCase";
-import type { Stage } from "@/core/domain/model/Stage";
 
 // サービスのモック
-const mockStageSettingUpdateWidthService = vi.fn();
-const mockStageSettingUpdateHeightService = vi.fn();
-const mockStageSettingUpdateFpsService = vi.fn();
-const mockStageSettingUpdateColorService = vi.fn();
-
 vi.mock("../service/StageSettingUpdateWidthService", () => ({
-    execute: mockStageSettingUpdateWidthService
+    execute: vi.fn()
 }));
 
 vi.mock("../service/StageSettingUpdateHeightService", () => ({
-    execute: mockStageSettingUpdateHeightService
+    execute: vi.fn()
 }));
 
 vi.mock("../service/StageSettingUpdateFpsService", () => ({
-    execute: mockStageSettingUpdateFpsService
+    execute: vi.fn()
 }));
 
 vi.mock("../service/StageSettingUpdateColorService", () => ({
-    execute: mockStageSettingUpdateColorService
+    execute: vi.fn()
 }));
+
+import { execute } from "./StageSettingUpdateUseCase";
+import { execute as stageSettingUpdateWidthService } from "../service/StageSettingUpdateWidthService";
+import { execute as stageSettingUpdateHeightService } from "../service/StageSettingUpdateHeightService";
+import { execute as stageSettingUpdateFpsService } from "../service/StageSettingUpdateFpsService";
+import { execute as stageSettingUpdateColorService } from "../service/StageSettingUpdateColorService";
+import type { Stage } from "@/core/domain/model/Stage";
 
 describe("StageSettingUpdateUseCase", () => {
     let mockStage: Stage;
@@ -47,19 +47,19 @@ describe("StageSettingUpdateUseCase", () => {
         it("すべてのステージ設定更新サービスが正しく呼ばれる", () => {
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(800);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(600);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(30);
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#FFFFFF");
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(800);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(600);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(30);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#FFFFFF");
         });
 
         it("すべてのサービスが1回ずつ呼ばれる", () => {
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledTimes(1);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledTimes(1);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledTimes(1);
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledTimes(1);
         });
 
         it("戻り値がundefinedである（voidを返す）", () => {
@@ -76,8 +76,8 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(320);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(240);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(320);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(240);
         });
 
         it("大きなステージサイズ（1920x1080）", () => {
@@ -86,8 +86,8 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(1920);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(1080);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(1920);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(1080);
         });
 
         it("正方形のステージサイズ（600x600）", () => {
@@ -96,8 +96,8 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(600);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(600);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(600);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(600);
         });
 
         it("縦長のステージサイズ（480x800）", () => {
@@ -106,8 +106,8 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(480);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(800);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(480);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(800);
         });
 
         it("非常に大きなステージサイズ（4096x2160）", () => {
@@ -116,8 +116,8 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(4096);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(2160);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(4096);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(2160);
         });
 
         it("小数点を含むステージサイズ", () => {
@@ -126,8 +126,8 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(800.5);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(600.75);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(800.5);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(600.75);
         });
     });
 
@@ -137,7 +137,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(12);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(12);
         });
 
         it("標準的なFPS（24）", () => {
@@ -145,7 +145,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(24);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(24);
         });
 
         it("高いFPS（60）", () => {
@@ -153,7 +153,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(60);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(60);
         });
 
         it("非常に高いFPS（120）", () => {
@@ -161,7 +161,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(120);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(120);
         });
 
         it("小数点を含むFPS", () => {
@@ -169,7 +169,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(29.97);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(29.97);
         });
     });
 
@@ -179,7 +179,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#FFFFFF");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#FFFFFF");
         });
 
         it("黒色の背景（#000000）", () => {
@@ -187,7 +187,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#000000");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#000000");
         });
 
         it("赤色の背景（#FF0000）", () => {
@@ -195,7 +195,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#FF0000");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#FF0000");
         });
 
         it("緑色の背景（#00FF00）", () => {
@@ -203,7 +203,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#00FF00");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#00FF00");
         });
 
         it("青色の背景（#0000FF）", () => {
@@ -211,7 +211,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#0000FF");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#0000FF");
         });
 
         it("グレーの背景（#CCCCCC）", () => {
@@ -219,7 +219,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#CCCCCC");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#CCCCCC");
         });
 
         it("小文字のカラーコード（#ffffff）", () => {
@@ -227,7 +227,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#ffffff");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#ffffff");
         });
 
         it("3桁のカラーコード（#FFF）", () => {
@@ -235,7 +235,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#FFF");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#FFF");
         });
 
         it("RGB形式のカラーコード", () => {
@@ -243,7 +243,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("rgb(255, 255, 255)");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("rgb(255, 255, 255)");
         });
 
         it("RGBA形式のカラーコード", () => {
@@ -251,7 +251,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("rgba(255, 255, 255, 0.5)");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("rgba(255, 255, 255, 0.5)");
         });
 
         it("色名形式（white）", () => {
@@ -259,7 +259,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("white");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("white");
         });
     });
 
@@ -269,7 +269,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(0);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(0);
         });
 
         it("高さが0の場合", () => {
@@ -277,7 +277,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(0);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(0);
         });
 
         it("FPSが0の場合", () => {
@@ -285,7 +285,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(0);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(0);
         });
 
         it("負の幅", () => {
@@ -293,7 +293,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(-100);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(-100);
         });
 
         it("負の高さ", () => {
@@ -301,7 +301,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(-100);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(-100);
         });
 
         it("負のFPS", () => {
@@ -309,7 +309,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(-30);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(-30);
         });
 
         it("空文字列の背景色", () => {
@@ -317,7 +317,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("");
         });
 
         it("非常に大きな幅", () => {
@@ -325,7 +325,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(Number.MAX_SAFE_INTEGER);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(Number.MAX_SAFE_INTEGER);
         });
 
         it("非常に大きな高さ", () => {
@@ -333,7 +333,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(Number.MAX_SAFE_INTEGER);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(Number.MAX_SAFE_INTEGER);
         });
 
         it("非常に大きなFPS", () => {
@@ -341,7 +341,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(Number.MAX_SAFE_INTEGER);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(Number.MAX_SAFE_INTEGER);
         });
 
         it("Infinity の幅", () => {
@@ -349,7 +349,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(Infinity);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(Infinity);
         });
 
         it("NaN の高さ", () => {
@@ -357,7 +357,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(NaN);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(NaN);
         });
     });
 
@@ -365,16 +365,16 @@ describe("StageSettingUpdateUseCase", () => {
         it("サービスが正しい順序で呼ばれる（width → height → fps → color）", () => {
             const callOrder: string[] = [];
 
-            mockStageSettingUpdateWidthService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateWidthService).mockImplementation(() => {
                 callOrder.push("width");
             });
-            mockStageSettingUpdateHeightService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateHeightService).mockImplementation(() => {
                 callOrder.push("height");
             });
-            mockStageSettingUpdateFpsService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateFpsService).mockImplementation(() => {
                 callOrder.push("fps");
             });
-            mockStageSettingUpdateColorService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateColorService).mockImplementation(() => {
                 callOrder.push("color");
             });
 
@@ -389,10 +389,10 @@ describe("StageSettingUpdateUseCase", () => {
             execute(mockStage);
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledTimes(2);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledTimes(2);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledTimes(2);
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledTimes(2);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledTimes(2);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledTimes(2);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledTimes(2);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledTimes(2);
         });
 
         it("異なるステージ設定で複数回呼び出し", () => {
@@ -402,20 +402,20 @@ describe("StageSettingUpdateUseCase", () => {
             execute(stage1);
             execute(stage2);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenNthCalledWith(1, 800);
-            expect(mockStageSettingUpdateWidthService).toHaveBeenNthCalledWith(2, 1024);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenNthCalledWith(1, 600);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenNthCalledWith(2, 768);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenNthCalledWith(1, 30);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenNthCalledWith(2, 60);
-            expect(mockStageSettingUpdateColorService).toHaveBeenNthCalledWith(1, "#FFFFFF");
-            expect(mockStageSettingUpdateColorService).toHaveBeenNthCalledWith(2, "#000000");
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenNthCalledWith(1, 800);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenNthCalledWith(2, 1024);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenNthCalledWith(1, 600);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenNthCalledWith(2, 768);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenNthCalledWith(1, 30);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenNthCalledWith(2, 60);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenNthCalledWith(1, "#FFFFFF");
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenNthCalledWith(2, "#000000");
         });
     });
 
     describe("エラーハンドリング", () => {
         it("widthサービスでエラーが発生した場合", () => {
-            mockStageSettingUpdateWidthService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateWidthService).mockImplementation(() => {
                 throw new Error("Width update failed");
             });
 
@@ -423,7 +423,7 @@ describe("StageSettingUpdateUseCase", () => {
         });
 
         it("heightサービスでエラーが発生した場合", () => {
-            mockStageSettingUpdateHeightService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateHeightService).mockImplementation(() => {
                 throw new Error("Height update failed");
             });
 
@@ -431,7 +431,7 @@ describe("StageSettingUpdateUseCase", () => {
         });
 
         it("fpsサービスでエラーが発生した場合", () => {
-            mockStageSettingUpdateFpsService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateFpsService).mockImplementation(() => {
                 throw new Error("FPS update failed");
             });
 
@@ -439,7 +439,7 @@ describe("StageSettingUpdateUseCase", () => {
         });
 
         it("colorサービスでエラーが発生した場合", () => {
-            mockStageSettingUpdateColorService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateColorService).mockImplementation(() => {
                 throw new Error("Color update failed");
             });
 
@@ -447,16 +447,16 @@ describe("StageSettingUpdateUseCase", () => {
         });
 
         it("heightサービスでエラーが発生した場合、それ以降のサービスは呼ばれない", () => {
-            mockStageSettingUpdateHeightService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateHeightService).mockImplementation(() => {
                 throw new Error("Height update failed");
             });
 
             expect(() => execute(mockStage)).toThrow("Height update failed");
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledTimes(1);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledTimes(1);
-            expect(mockStageSettingUpdateFpsService).not.toHaveBeenCalled();
-            expect(mockStageSettingUpdateColorService).not.toHaveBeenCalled();
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(stageSettingUpdateFpsService)).not.toHaveBeenCalled();
+            expect(vi.mocked(stageSettingUpdateColorService)).not.toHaveBeenCalled();
         });
     });
 
@@ -469,10 +469,10 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(1280);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(720);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(60);
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#FFFFFF");
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(1280);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(720);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(60);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#FFFFFF");
         });
 
         it("フルHD解像度（1920x1080, 30fps, 黒背景）", () => {
@@ -483,10 +483,10 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(1920);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(1080);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(30);
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#000000");
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(1920);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(1080);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(30);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#000000");
         });
 
         it("モバイル解像度（375x667, 30fps, グレー背景）", () => {
@@ -497,10 +497,10 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(375);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(667);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(30);
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#CCCCCC");
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(375);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(667);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(30);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#CCCCCC");
         });
 
         it("タブレット解像度（768x1024, 24fps, 青背景）", () => {
@@ -511,10 +511,10 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(768);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(1024);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(24);
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#0000FF");
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(768);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(1024);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(24);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#0000FF");
         });
 
         it("4K解像度（3840x2160, 60fps, 白背景）", () => {
@@ -525,10 +525,10 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(3840);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(2160);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(60);
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#FFFFFF");
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(3840);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(2160);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(60);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#FFFFFF");
         });
 
         it("レトロゲーム解像度（320x240, 12fps, 黒背景）", () => {
@@ -539,10 +539,10 @@ describe("StageSettingUpdateUseCase", () => {
 
             execute(mockStage);
 
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledWith(320);
-            expect(mockStageSettingUpdateHeightService).toHaveBeenCalledWith(240);
-            expect(mockStageSettingUpdateFpsService).toHaveBeenCalledWith(12);
-            expect(mockStageSettingUpdateColorService).toHaveBeenCalledWith("#000000");
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledWith(320);
+            expect(vi.mocked(stageSettingUpdateHeightService)).toHaveBeenCalledWith(240);
+            expect(vi.mocked(stageSettingUpdateFpsService)).toHaveBeenCalledWith(12);
+            expect(vi.mocked(stageSettingUpdateColorService)).toHaveBeenCalledWith("#000000");
         });
     });
 
@@ -550,28 +550,28 @@ describe("StageSettingUpdateUseCase", () => {
         it("widthがnumber型として渡される", () => {
             execute(mockStage);
 
-            const widthCall = mockStageSettingUpdateWidthService.mock.calls[0][0];
+            const widthCall = vi.mocked(stageSettingUpdateWidthService).mock.calls[0][0];
             expect(typeof widthCall).toBe("number");
         });
 
         it("heightがnumber型として渡される", () => {
             execute(mockStage);
 
-            const heightCall = mockStageSettingUpdateHeightService.mock.calls[0][0];
+            const heightCall = vi.mocked(stageSettingUpdateHeightService).mock.calls[0][0];
             expect(typeof heightCall).toBe("number");
         });
 
         it("fpsがnumber型として渡される", () => {
             execute(mockStage);
 
-            const fpsCall = mockStageSettingUpdateFpsService.mock.calls[0][0];
+            const fpsCall = vi.mocked(stageSettingUpdateFpsService).mock.calls[0][0];
             expect(typeof fpsCall).toBe("number");
         });
 
         it("bgColorがstring型として渡される", () => {
             execute(mockStage);
 
-            const colorCall = mockStageSettingUpdateColorService.mock.calls[0][0];
+            const colorCall = vi.mocked(stageSettingUpdateColorService).mock.calls[0][0];
             expect(typeof colorCall).toBe("string");
         });
     });
@@ -599,7 +599,7 @@ describe("StageSettingUpdateUseCase", () => {
 
             // 1000回の呼び出しが50ms以内で完了することを期待
             expect(duration).toBeLessThan(50);
-            expect(mockStageSettingUpdateWidthService).toHaveBeenCalledTimes(1000);
+            expect(vi.mocked(stageSettingUpdateWidthService)).toHaveBeenCalledTimes(1000);
         });
     });
 
@@ -610,16 +610,16 @@ describe("StageSettingUpdateUseCase", () => {
             let fpsUpdated = false;
             let colorUpdated = false;
 
-            mockStageSettingUpdateWidthService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateWidthService).mockImplementation(() => {
                 widthUpdated = true;
             });
-            mockStageSettingUpdateHeightService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateHeightService).mockImplementation(() => {
                 heightUpdated = true;
             });
-            mockStageSettingUpdateFpsService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateFpsService).mockImplementation(() => {
                 fpsUpdated = true;
             });
-            mockStageSettingUpdateColorService.mockImplementation(() => {
+            vi.mocked(stageSettingUpdateColorService).mockImplementation(() => {
                 colorUpdated = true;
             });
 
@@ -634,16 +634,16 @@ describe("StageSettingUpdateUseCase", () => {
         it("ステージ設定が段階的に更新される", () => {
             const updates: string[] = [];
 
-            mockStageSettingUpdateWidthService.mockImplementation((width) => {
+            vi.mocked(stageSettingUpdateWidthService).mockImplementation((width) => {
                 updates.push(`width:${width}`);
             });
-            mockStageSettingUpdateHeightService.mockImplementation((height) => {
+            vi.mocked(stageSettingUpdateHeightService).mockImplementation((height) => {
                 updates.push(`height:${height}`);
             });
-            mockStageSettingUpdateFpsService.mockImplementation((fps) => {
+            vi.mocked(stageSettingUpdateFpsService).mockImplementation((fps) => {
                 updates.push(`fps:${fps}`);
             });
-            mockStageSettingUpdateColorService.mockImplementation((color) => {
+            vi.mocked(stageSettingUpdateColorService).mockImplementation((color) => {
                 updates.push(`color:${color}`);
             });
 

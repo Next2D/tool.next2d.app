@@ -2,13 +2,13 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as characterUpdateRedMultiplierHistoryUseCase } from "@/history/application/core/application/Character/UpdateRedMultiplier/usecase/CharacterUpdateRedMultiplierHistoryUseCase";
-import { execute as viewColorSettingRedMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingRedMultiplierUseCase";
+import { execute as characterUpdateRedOffsetHistoryUseCase } from "@/history/application/core/application/Character/UpdateRedOffset/usecase/CharacterUpdateRedOffsetHistoryUseCase";
+import { execute as viewColorSettingRedOffsetUseCase } from "@/view/application/usecase/ViewColorSettingRedOffsetUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
- * @description キャラクターのred値を更新する
- *              Update the red value of the character
+ * @description キャラクターの赤色オフセット値を更新する
+ *              Update the red offset value of the character
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
@@ -29,15 +29,15 @@ export const execute = async (
     receiver: boolean = false
 ): Promise<void> => {
 
-    red = $clamp(red | 0, 0, 100);
-    const floatValue = new Float32Array([red / 100]);
-    if (character.colorTransform[0] === floatValue[0]) {
+    red = $clamp(red | 0, -255, 255);
+    const floatValue = new Float32Array([red]);
+    if (character.colorTransform[4] === floatValue[0]) {
         return ;
     }
 
     // 履歴を残す
     // fixed logic 変更前に実行
-    await characterUpdateRedMultiplierHistoryUseCase(
+    await characterUpdateRedOffsetHistoryUseCase(
         work_space,
         movie_clip,
         layer,
@@ -46,11 +46,11 @@ export const execute = async (
         receiver
     );
 
-    // alphaを更新前の値に戻す
-    character.colorTransform[0] = red / 100;
+    // redを更新前の値に戻す
+    character.colorTransform[4] = red;
 
     // Elementの更新
-    viewColorSettingRedMultiplierUseCase(
+    viewColorSettingRedOffsetUseCase(
         work_space,
         movie_clip,
         layer,

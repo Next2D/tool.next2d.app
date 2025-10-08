@@ -16,6 +16,7 @@ import { execute as externalCharacterUpdateHeightUseCase } from "@/external/core
 import { execute as externalCharacterUpdateAlphaMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateAlphaMultiplierUseCase";
 import { execute as externalCharacterUpdateAlphaOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateAlphaOffsetUseCase";
 import { execute as externalCharacterUpdateRedMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateRedMultiplierUseCase";
+import { execute as externalCharacterUpdateRedOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateRedOffsetUseCase";
 /**
  * @description DisplayObjectの管理クラス
  *              Management class of DisplayObject
@@ -468,6 +469,39 @@ export class ExternalCharacter
     async setRedMultiplier (red: number): Promise<void>
     {
         await externalCharacterUpdateRedMultiplierUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            red
+        );
+    }
+
+    /**
+     * @description DisplayObjectの赤色オフセット値を取得
+     *              Get the red offset value of DisplayObject
+     *
+     * @return {number} 0 ~ 100
+     * @method
+     * @public
+     */
+    getRedOffset (): number
+    {
+        return this._$character.colorTransform[4];
+    }
+
+    /**
+     * @description DisplayObjectの赤色値を設定
+     *              Set the red value of DisplayObject
+     *
+     * @param  {number} red -255 ~ 255
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setRedOffset (red: number): Promise<void>
+    {
+        await externalCharacterUpdateRedOffsetUseCase(
             this._$workSpace,
             this._$movieClip,
             this._$layer,

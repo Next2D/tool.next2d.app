@@ -24,9 +24,8 @@ export const execute = async (event: FocusEvent): Promise<void> =>
     // 入力モードを終了する
     $updateKeyLock(false);
 
-    // 変更後の値を設定
-    const alpha = $clamp(parseFloat(element.value), 0, 100);
-
     // 値を更新
-    await colorSettingAlphaMultiplierUpdateValueUseCase(alpha);
+    await colorSettingAlphaMultiplierUpdateValueUseCase(
+        $clamp(parseFloat(element.value), 0, 100)
+    );
 };

@@ -1,64 +1,57 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ReferenceSettingYFocusInEventService";
 
-// モックの設定
+// モックの設定（vi.hoistedを使用してhoistingの問題を解決）
+const {
+    mockUpdateKeyLock,
+    mockGetCurrentWorkSpace,
+    mockSetEditingElement,
+    mockReferenceSetting
+} = vi.hoisted(() => {
+    return {
+        mockUpdateKeyLock: vi.fn(),
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockSetEditingElement: vi.fn(),
+        mockReferenceSetting: {
+            y: 100,
+            beforeY: 0,
+            movementY: 0
+        }
+    };
+});
+
 vi.mock("@/shortcut/ShortcutUtil", () => ({
-    $updateKeyLock: vi.fn()
+    $updateKeyLock: mockUpdateKeyLock
 }));
 
 vi.mock("@/core/application/CoreUtil", () => ({
-    $getCurrentWorkSpace: vi.fn()
+    $getCurrentWorkSpace: mockGetCurrentWorkSpace
 }));
 
 vi.mock("@/global/GlobalUtil", () => ({
-    $setEditingElement: vi.fn()
+    $setEditingElement: mockSetEditingElement
 }));
 
 vi.mock("@/controller/domain/model/ReferenceSetting", () => ({
-    referenceSetting: {
-        y: 100,
-        beforeY: 0,
-        movementY: 0
-    }
+    referenceSetting: mockReferenceSetting
 }));
+
+import { execute } from "./ReferenceSettingYFocusInEventService";
 
 describe("ReferenceSettingYFocusInEventService", () => {
 
     let mockEvent: FocusEvent;
     let mockInputElement: HTMLInputElement;
-    let mockUpdateKeyLock: any;
-    let mockGetCurrentWorkSpace: any;
-    let mockSetEditingElement: any;
-    let mockReferenceSetting: any;
     let mockWorkSpace: any;
     let mockMovieClip: any;
 
     beforeEach(() => {
-        // モックされた関数を設定
-        mockUpdateKeyLock = vi.fn();
-        mockGetCurrentWorkSpace = vi.fn();
-        mockSetEditingElement = vi.fn();
-        
-        // モックを適用
-        vi.doMock("@/shortcut/ShortcutUtil", () => ({
-            $updateKeyLock: mockUpdateKeyLock
-        }));
-        vi.doMock("@/core/application/CoreUtil", () => ({
-            $getCurrentWorkSpace: mockGetCurrentWorkSpace
-        }));
-        vi.doMock("@/global/GlobalUtil", () => ({
-            $setEditingElement: mockSetEditingElement
-        }));
+        // モックをクリア
+        vi.clearAllMocks();
 
-        // referenceSettingのモック設定
-        mockReferenceSetting = {
-            y: 100,
-            beforeY: 0,
-            movementY: 0
-        };
-        vi.doMock("@/controller/domain/model/ReferenceSetting", () => ({
-            referenceSetting: mockReferenceSetting
-        }));
+        // mockReferenceSettingのリセット
+        mockReferenceSetting.y = 100;
+        mockReferenceSetting.beforeY = 0;
+        mockReferenceSetting.movementY = 0;
 
         // HTMLInputElementをモック作成
         mockInputElement = document.createElement("input");
@@ -100,7 +93,7 @@ describe("ReferenceSettingYFocusInEventService", () => {
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
         // 要素のスタイルをリセット
         if (mockInputElement) {
             mockInputElement.style.cursor = "";

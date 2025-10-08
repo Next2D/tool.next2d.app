@@ -672,3 +672,12 @@ export const $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND: number = 68;
  * @constant
  */
 export const $CHARACTER_UPDATE_RED_MULTIPLIER_COMMAND: number = 69;
+
+/**
+ * @description 赤のオフセット値の更新の識別コマンド名
+ *              Identification command name for updating the red offset of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_RED_OFFSET_COMMAND: number = 70;

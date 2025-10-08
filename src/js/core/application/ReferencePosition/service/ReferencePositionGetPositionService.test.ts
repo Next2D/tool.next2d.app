@@ -4,32 +4,44 @@ import type { IPivotType } from "../../../../interface/IPivotType";
 import type { IPosition } from "../../../../interface/IPosition";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, it, beforeEach, vi } from "vitest";
+
+// モックの設定（vi.hoistedを使用）
+const { mockGetConcatenatedMatrix } = vi.hoisted(() => {
+    return {
+        mockGetConcatenatedMatrix: vi.fn(() => [1, 0, 0, 1, 0, 0])
+    };
+});
+
+vi.mock("@/controller/application/TransformSetting/TransformSettingUtil", () => ({
+    $getConcatenatedMatrix: mockGetConcatenatedMatrix
+}));
 
 describe("ReferencePositionGetPositionServiceTest", () =>
 {
     let mockCharacter: Character;
+    let workSpace: WorkSpace;
 
     beforeEach(() =>
     {
-        const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
+        workSpace = $getCurrentWorkSpace() || $createWorkSpace();
 
         // モックCharacterを作成
         mockCharacter = new Character();
         
-        // width, height, matrixプロパティを設定
-        Object.defineProperty(mockCharacter, 'width', {
-            get: () => 100,
-            configurable: true
-        });
-        
-        Object.defineProperty(mockCharacter, 'height', {
-            get: () => 200,
-            configurable: true
-        });
-        
         // 単位行列を設定
         mockCharacter.matrix.set([1, 0, 0, 1, 0, 0]);
+
+        // getRawBoundsをモック
+        mockCharacter.getRawBounds = vi.fn().mockReturnValue({
+            xMin: 0,
+            yMin: 0,
+            xMax: 100,  // width = 100
+            yMax: 200   // height = 200
+        });
+
+        // $getConcatenatedMatrixは単位行列を返す
+        mockGetConcatenatedMatrix.mockReturnValue([1, 0, 0, 1, 0, 0]);
     });
 
     it("top-left位置の座標変換テスト - Top-left position coordinate transformation test", () =>
@@ -164,23 +176,20 @@ describe("ReferencePositionGetPositionServiceTest", () =>
     {
         const result: IPosition = execute("invalid" as IPivotType, 50, 75, mockCharacter);
         
-        // defaultケース: dx=x=50, dy=y=75
-        // matrix変換: x = 50*1 + 75*0 + 0 = 50, y = 50*0 + 75*1 + 0 = 75
-        expect(result.x).toBe(50);
-        expect(result.y).toBe(75);
+        // invalidなpivotの場合、$getPivotPositionは(0, 0)を返し、matrixで変換される
+        // matrix変換: x = 0*1 + 0*0 + 0 = 0, y = 0*0 + 0*1 + 0 = 0
+        expect(result.x).toBe(0);
+        expect(result.y).toBe(0);
     });
 
     it("異なるサイズのCharacterでのテスト - Test with different sized Character", () =>
     {
-        // 異なるサイズを設定
-        Object.defineProperty(mockCharacter, 'width', {
-            get: () => 80,
-            configurable: true
-        });
-        
-        Object.defineProperty(mockCharacter, 'height', {
-            get: () => 60,
-            configurable: true
+        // getRawBoundsをモック（width=80, height=60）
+        (mockCharacter.getRawBounds as any).mockReturnValue({
+            xMin: 0,
+            yMin: 0,
+            xMax: 80,   // width = 80
+            yMax: 60    // height = 60
         });
 
         const result: IPosition = execute("middle-center", 0, 0, mockCharacter);

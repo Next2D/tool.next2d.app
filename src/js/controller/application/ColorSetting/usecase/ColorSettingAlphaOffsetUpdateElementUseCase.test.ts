@@ -1,15 +1,17 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 
-// モック関数の定義
-const mockScreenAreaGetElementFromLayerIdAndDepthService = vi.fn();
+// モック関数の設定（vi.hoistedを使用してhoistingの問題を解決）
+const { mockScreenAreaGetElementFromLayerIdAndDepthService } = vi.hoisted(() => {
+    return {
+        mockScreenAreaGetElementFromLayerIdAndDepthService: vi.fn()
+    };
+});
 
-// vi.mockの呼び出し
 vi.mock("@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService", () => ({
-    execute: (layerId: string, depth: number) => mockScreenAreaGetElementFromLayerIdAndDepthService(layerId, depth)
+    execute: mockScreenAreaGetElementFromLayerIdAndDepthService
 }));
 
-// 動的インポート
-const { execute } = await import("./ColorSettingAlphaOffsetUpdateElementUseCase");
+import { execute } from "./ColorSettingAlphaOffsetUpdateElementUseCase";
 
 describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
     let mockMovieClip: any;
@@ -25,10 +27,10 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
         mockCanvas = document.createElement("canvas");
         mockCanvas.style.opacity = "1";
 
-        // モックNode
-        mockNode = {
-            querySelector: vi.fn().mockReturnValue(mockCanvas)
-        };
+        // モックNode (実際のHTMLElementを使用してstyleプロパティを持たせる)
+        mockNode = document.createElement("div");
+        // querySelectorをモック
+        vi.spyOn(mockNode, 'querySelector').mockReturnValue(mockCanvas);
 
         // モックCharacter
         mockCharacter = {
@@ -119,7 +121,7 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
         });
 
         it("canvas要素が存在しない場合でもエラーにならない", () => {
-            mockNode.querySelector.mockReturnValue(null);
+            vi.spyOn(mockNode, 'querySelector').mockReturnValue(null);
 
             execute(mockMovieClip, 50);
 
@@ -405,7 +407,7 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
         });
 
         it("canvas要素が見つからない場合でもエラーにならない", () => {
-            mockNode.querySelector.mockReturnValue(null);
+            vi.spyOn(mockNode, 'querySelector').mockReturnValue(null);
 
             execute(mockMovieClip, 50);
 

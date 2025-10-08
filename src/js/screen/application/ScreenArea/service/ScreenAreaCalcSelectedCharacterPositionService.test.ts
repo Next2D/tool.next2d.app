@@ -285,27 +285,31 @@ describe("ScreenAreaCalcSelectedCharacterPositionService", () => {
             expect(result).toBeNull();
         });
 
-        it("x座標のみが更新されない場合はnullを返す", () => {
-            // 実際にはあり得ないシナリオだが、論理的完全性のため
+        it("x座標のみが更新されない場合は{x: NaN, y: value}を返す", () => {
+            // xがundefinedの場合、Math.min(Number.MAX_VALUE, undefined)はNaNになる
             const characterWithoutX = { y: 100 };
             mockMovieClip.selectedDepths.set(0, [1]);
             mockLayer.getCharacter.mockReturnValue(characterWithoutX);
 
             const result = execute(mockMovieClip);
 
-            // xがundefinedの場合、Math.minでNaNになるが、
-            // 実装では厳密等価比較しているのでnull返却
-            expect(result).toBeNull();
+            // 実装ではNaNをそのまま返す（厳密等価比較でNumber.MAX_VALUEとは一致しない）
+            expect(result).not.toBeNull();
+            expect(result?.x).toBeNaN();
+            expect(result?.y).toBe(100);
         });
 
-        it("y座標のみが更新されない場合はnullを返す", () => {
+        it("y座標のみが更新されない場合は{x: value, y: NaN}を返す", () => {
             const characterWithoutY = { x: 100 };
             mockMovieClip.selectedDepths.set(0, [1]);
             mockLayer.getCharacter.mockReturnValue(characterWithoutY);
 
             const result = execute(mockMovieClip);
 
-            expect(result).toBeNull();
+            // 実装ではNaNをそのまま返す
+            expect(result).not.toBeNull();
+            expect(result?.x).toBe(100);
+            expect(result?.y).toBeNaN();
         });
     });
 

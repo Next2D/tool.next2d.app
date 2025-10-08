@@ -37,7 +37,7 @@ export const execute = async (
 
     // 履歴を残す
     // fixed logic 変更前に実行
-    characterUpdateAlphaMultiplierHistoryUseCase(
+    await characterUpdateAlphaMultiplierHistoryUseCase(
         work_space,
         movie_clip,
         layer,

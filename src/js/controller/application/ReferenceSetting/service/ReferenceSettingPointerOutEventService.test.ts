@@ -1,5 +1,6 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
 import { execute } from "./ReferenceSettingPointerOutEventService";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 // $useKeyboardをモック化
 vi.mock("@/shortcut/ShortcutUtil", () => ({
@@ -10,16 +11,10 @@ describe("ReferenceSettingPointerOutEventService", () => {
 
     let mockEvent: PointerEvent;
     let mockElement: HTMLElement;
-    let mockUseKeyboard: any;
 
     beforeEach(() => {
-        // $useKeyboardのモック設定
-        mockUseKeyboard = vi.fn();
-        
-        // モックされた関数を取得
-        vi.doMock("@/shortcut/ShortcutUtil", () => ({
-            $useKeyboard: mockUseKeyboard
-        }));
+        // モックをクリア
+        vi.clearAllMocks();
 
         // HTMLElementをモック作成
         mockElement = document.createElement("div");
@@ -57,7 +52,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
     describe("正常系", () => {
 
         test("キーボード未使用時にカーソルがデフォルト（空文字）に戻る", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             // 事前にカーソルを設定
             mockElement.style.cursor = "ew-resize";
 
@@ -68,7 +63,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("イベントの伝播が停止される", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
 
             execute(mockEvent);
 
@@ -76,7 +71,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("既存のカーソルスタイルがクリアされる", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             mockElement.style.cursor = "pointer";
 
             execute(mockEvent);
@@ -85,7 +80,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("複雑なカーソル値もクリアされる", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             mockElement.style.cursor = "url(custom-cursor.png), auto";
 
             execute(mockEvent);
@@ -98,7 +93,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
     describe("キーボード使用中の動作", () => {
 
         test("キーボード使用中は何もしない", () => {
-            mockUseKeyboard.mockReturnValue(true);
+            ($useKeyboard as any).mockReturnValue(true);
             mockElement.style.cursor = "ew-resize";
             const originalCursor = mockElement.style.cursor;
 
@@ -109,7 +104,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("キーボード使用中はstopPropagationが呼ばれない", () => {
-            mockUseKeyboard.mockReturnValue(true);
+            ($useKeyboard as any).mockReturnValue(true);
 
             execute(mockEvent);
 
@@ -117,7 +112,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("キーボード使用中はカーソルの変更が一切行われない", () => {
-            mockUseKeyboard.mockReturnValue(true);
+            ($useKeyboard as any).mockReturnValue(true);
             mockElement.style.cursor = "move";
 
             execute(mockEvent);
@@ -130,7 +125,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
     describe("異常系", () => {
 
         test("イベントターゲットがnullの場合、何もしない", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             Object.defineProperty(mockEvent, "target", {
                 value: null,
                 writable: true,
@@ -142,7 +137,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("イベントターゲットがundefinedの場合、何もしない", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             Object.defineProperty(mockEvent, "target", {
                 value: undefined,
                 writable: true,
@@ -154,7 +149,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("イベントターゲットがHTMLElementでない場合、エラーが発生する可能性がある", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             const textNode = document.createTextNode("test");
             Object.defineProperty(mockEvent, "target", {
                 value: textNode,
@@ -171,7 +166,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
     describe("DOM操作の検証", () => {
 
         test("カーソルスタイルが空文字に設定される", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             mockElement.style.cursor = "ew-resize";
 
             execute(mockEvent);
@@ -180,7 +175,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("他のスタイルプロパティは変更されない", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             mockElement.style.backgroundColor = "red";
             mockElement.style.width = "100px";
             mockElement.style.cursor = "ew-resize";
@@ -193,7 +188,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("カーソルが既に空文字の場合も安全に動作する", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             mockElement.style.cursor = "";
 
             execute(mockEvent);
@@ -206,7 +201,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
     describe("イベント処理の検証", () => {
 
         test("stopPropagationが正確に1回呼ばれる", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
 
             execute(mockEvent);
 
@@ -214,7 +209,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("複数回実行してもstopPropagationが毎回呼ばれる", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
 
             execute(mockEvent);
             execute(mockEvent);
@@ -228,7 +223,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
     describe("様々な要素での動作確認", () => {
 
         test("div要素で正しく動作する", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             const divElement = document.createElement("div");
             divElement.style.cursor = "pointer";
             Object.defineProperty(mockEvent, "target", {
@@ -243,7 +238,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("span要素で正しく動作する", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             const spanElement = document.createElement("span");
             spanElement.style.cursor = "text";
             Object.defineProperty(mockEvent, "target", {
@@ -258,7 +253,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("button要素で正しく動作する", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             const buttonElement = document.createElement("button");
             buttonElement.style.cursor = "pointer";
             Object.defineProperty(mockEvent, "target", {
@@ -277,7 +272,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
     describe("PointerOverEventServiceとの連携テスト", () => {
 
         test("ew-resizeカーソルが正しくクリアされる", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             // PointerOverEventServiceで設定されるであろうカーソル
             mockElement.style.cursor = "ew-resize";
 
@@ -287,7 +282,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("over->outの一連の流れをシミュレート", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             
             // 初期状態
             expect(mockElement.style.cursor).toBe("");
@@ -306,25 +301,25 @@ describe("ReferenceSettingPointerOutEventService", () => {
     describe("条件分岐の完全テスト", () => {
 
         test("$useKeyboard()がfalseの場合の完全なフロー", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             mockElement.style.cursor = "ew-resize";
 
             execute(mockEvent);
 
             // 全ての処理が実行される
-            expect(mockUseKeyboard).toHaveBeenCalled();
+            expect(($useKeyboard as any)).toHaveBeenCalled();
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
             expect(mockElement.style.cursor).toBe("");
         });
 
         test("$useKeyboard()がtrueの場合の早期リターン", () => {
-            mockUseKeyboard.mockReturnValue(true);
+            ($useKeyboard as any).mockReturnValue(true);
             mockElement.style.cursor = "ew-resize";
 
             execute(mockEvent);
 
             // 早期リターンにより後続の処理は実行されない
-            expect(mockUseKeyboard).toHaveBeenCalled();
+            expect(($useKeyboard as any)).toHaveBeenCalled();
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
             expect(mockElement.style.cursor).toBe("ew-resize"); // 変更されない
         });
@@ -334,7 +329,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
     describe("カーソルリセットの詳細検証", () => {
 
         test("様々なカーソル値が空文字にリセットされる", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             
             const cursorValues = [
                 "pointer",
@@ -356,7 +351,7 @@ describe("ReferenceSettingPointerOutEventService", () => {
         });
 
         test("連続実行でも安定して空文字が維持される", () => {
-            mockUseKeyboard.mockReturnValue(false);
+            ($useKeyboard as any).mockReturnValue(false);
             mockElement.style.cursor = "ew-resize";
 
             execute(mockEvent);

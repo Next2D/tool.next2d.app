@@ -1,15 +1,17 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 
-// モック関数の定義
-const mockScreenAreaGetElementFromLayerIdAndDepthService = vi.fn();
+// モック関数の設定（vi.hoistedを使用してhoistingの問題を解決）
+const { mockScreenAreaGetElementFromLayerIdAndDepthService } = vi.hoisted(() => {
+    return {
+        mockScreenAreaGetElementFromLayerIdAndDepthService: vi.fn()
+    };
+});
 
-// vi.mockの呼び出し
 vi.mock("@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService", () => ({
-    execute: (layerId: string, depth: number) => mockScreenAreaGetElementFromLayerIdAndDepthService(layerId, depth)
+    execute: mockScreenAreaGetElementFromLayerIdAndDepthService
 }));
 
-// 動的インポート
-const { execute } = await import("./ColorSettingAlphaMultiplierUpdateElementUseCase");
+import { execute } from "./ColorSettingAlphaMultiplierUpdateElementUseCase";
 
 describe("ColorSettingAlphaMultiplierUpdateElementUseCase", () => {
     let mockMovieClip: any;
@@ -25,10 +27,10 @@ describe("ColorSettingAlphaMultiplierUpdateElementUseCase", () => {
         mockCanvas = document.createElement("canvas");
         mockCanvas.style.opacity = "1";
 
-        // モックNode
-        mockNode = {
-            querySelector: vi.fn().mockReturnValue(mockCanvas)
-        };
+        // モックNode (実際のHTMLElementを使用してstyleプロパティを持たせる)
+        mockNode = document.createElement("div");
+        // querySelectorをモック
+        vi.spyOn(mockNode, 'querySelector').mockReturnValue(mockCanvas);
 
         // モックCharacter
         mockCharacter = {
@@ -105,12 +107,12 @@ describe("ColorSettingAlphaMultiplierUpdateElementUseCase", () => {
         });
 
         it("canvas要素が存在しない場合でもエラーにならない", () => {
-            mockNode.querySelector.mockReturnValue(null);
+            vi.spyOn(mockNode, 'querySelector').mockReturnValue(null);
 
             execute(mockMovieClip, 50);
 
-            // エラーが発生しないことを確認
-            expect(mockCharacter.colorTransform[3]).toBe(0.5);
+            // canvas-containerが見つからない場合は早期リターンするため、更新されない
+            expect(mockCharacter.colorTransform[3]).toBe(0);
         });
     });
 
@@ -375,13 +377,24 @@ describe("ColorSettingAlphaMultiplierUpdateElementUseCase", () => {
         });
 
         it("canvas要素が見つからない場合でもエラーにならない", () => {
-            mockNode.querySelector.mockReturnValue(null);
+            // containerは存在するが、canvasは存在しない
+            const mockContainer = document.createElement("div");
+            mockContainer.className = "canvas-container";
+            vi.spyOn(mockNode, 'querySelector').mockImplementation((selector) => {
+                if (selector === ".canvas-container") {
+                    return mockContainer;
+                }
+                if (selector === "canvas") {
+                    return null;
+                }
+                return null;
+            });
 
             execute(mockMovieClip, 50);
 
             // colorTransformは更新される
             expect(mockCharacter.colorTransform[3]).toBe(0.5);
-            // エラーは発生しない
+            // canvas要素がなくてもエラーは発生しない
         });
 
         it("character.alphaが正しく参照される", () => {

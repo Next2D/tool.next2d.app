@@ -72,6 +72,7 @@ import { execute as referenceSettingUpdateYHistoryRedoUseCase } from "@/history/
 import { execute as characterUpdateAlphaMultiplierHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateAlphaMultiplier/usecase/CharacterUpdateAlphaMultiplierHistoryRedoUseCase";
 import { execute as characterUpdateAlphaOffsetHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateAlphaOffset/usecase/CharacterUpdateAlphaOffsetHistoryRedoUseCase";
 import { execute as characterUpdateRedMultiplierHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateRedMultiplier/usecase/CharacterUpdateRedMultiplierHistoryRedoUseCase";
+import { execute as characterUpdateRedOffsetHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateRedOffset/usecase/CharacterUpdateRedOffsetHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -135,7 +136,8 @@ import {
     $REFERENCE_UPDATE_Y_COMMAND,
     $CHARACTER_UPDATE_ALPHA_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_ALPHA_OFFSET_COMMAND,
-    $CHARACTER_UPDATE_RED_MULTIPLIER_COMMAND
+    $CHARACTER_UPDATE_RED_MULTIPLIER_COMMAND,
+    $CHARACTER_UPDATE_RED_OFFSET_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -793,6 +795,17 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[6] as number  // After Red Multiplier
+            );
+            break;
+
+        case $CHARACTER_UPDATE_RED_OFFSET_COMMAND:
+            await characterUpdateRedOffsetHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[6] as number  // After Red Offset
             );
             break;
 

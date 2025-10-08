@@ -1,56 +1,44 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ReferenceSettingInitializeRegisterEventUseCase";
 
 // モック設定
-const mockReferenceSettingBoxPointerDownUseCase = vi.fn();
-const mockReferenceSettingPointerOverEventService = vi.fn();
-const mockReferenceSettingPointerOutEventService = vi.fn();
-const mockReferenceSettingXPointerDownUseCase = vi.fn();
-const mockReferenceSettingYPointerDownUseCase = vi.fn();
-const mockReferenceSettingInputKeyPressEventService = vi.fn();
-const mockReferenceSettingXFocusInEventService = vi.fn();
-const mockReferenceSettingYFocusInEventService = vi.fn();
-const mockReferenceSettingXFocusOutEventUseCase = vi.fn();
-const mockReferenceSettingYFocusOutEventUseCase = vi.fn();
-
 vi.mock("./ReferenceSettingBoxPointerDownUseCase", () => ({
-    execute: mockReferenceSettingBoxPointerDownUseCase
+    execute: vi.fn()
 }));
 
 vi.mock("../service/ReferenceSettingPointerOverEventService", () => ({
-    execute: mockReferenceSettingPointerOverEventService
+    execute: vi.fn()
 }));
 
 vi.mock("../service/ReferenceSettingPointerOutEventService", () => ({
-    execute: mockReferenceSettingPointerOutEventService
+    execute: vi.fn()
 }));
 
 vi.mock("./ReferenceSettingXPointerDownUseCase", () => ({
-    execute: mockReferenceSettingXPointerDownUseCase
+    execute: vi.fn()
 }));
 
 vi.mock("./ReferenceSettingYPointerDownUseCase", () => ({
-    execute: mockReferenceSettingYPointerDownUseCase
+    execute: vi.fn()
 }));
 
 vi.mock("../service/ReferenceSettingInputKeyPressEventService", () => ({
-    execute: mockReferenceSettingInputKeyPressEventService
+    execute: vi.fn()
 }));
 
 vi.mock("../service/ReferenceSettingXFocusInEventService", () => ({
-    execute: mockReferenceSettingXFocusInEventService
+    execute: vi.fn()
 }));
 
 vi.mock("../service/ReferenceSettingYFocusInEventService", () => ({
-    execute: mockReferenceSettingYFocusInEventService
+    execute: vi.fn()
 }));
 
 vi.mock("./ReferenceSettingXFocusOutEventUseCase", () => ({
-    execute: mockReferenceSettingXFocusOutEventUseCase
+    execute: vi.fn()
 }));
 
 vi.mock("./ReferenceSettingYFocusOutEventUseCase", () => ({
-    execute: mockReferenceSettingYFocusOutEventUseCase
+    execute: vi.fn()
 }));
 
 vi.mock("@/tool/domain/event/EventType", () => ({
@@ -67,7 +55,17 @@ vi.mock("@/config/ReferenceSettingConfig", () => ({
     $TRANSFORM_REFERENCE_Y_ID: "transform-reference-y"
 }));
 
-describe("ReferenceSettingInitializeRegisterEventUseCase", () => {
+import { execute } from "./ReferenceSettingInitializeRegisterEventUseCase";
+import { execute as referenceSettingBoxPointerDownUseCase } from "./ReferenceSettingBoxPointerDownUseCase";
+import { execute as referenceSettingPointerOverEventService } from "../service/ReferenceSettingPointerOverEventService";
+import { execute as referenceSettingPointerOutEventService } from "../service/ReferenceSettingPointerOutEventService";
+import { execute as referenceSettingXPointerDownUseCase } from "./ReferenceSettingXPointerDownUseCase";
+import { execute as referenceSettingYPointerDownUseCase } from "./ReferenceSettingYPointerDownUseCase";
+import { execute as referenceSettingInputKeyPressEventService } from "../service/ReferenceSettingInputKeyPressEventService";
+import { execute as referenceSettingXFocusInEventService } from "../service/ReferenceSettingXFocusInEventService";
+import { execute as referenceSettingYFocusInEventService } from "../service/ReferenceSettingYFocusInEventService";
+import { execute as referenceSettingXFocusOutEventUseCase } from "./ReferenceSettingXFocusOutEventUseCase";
+import { execute as referenceSettingYFocusOutEventUseCase } from "./ReferenceSettingYFocusOutEventUseCase";
     let mockReferenceSettingBox: HTMLElement;
     let mockTransformReferenceX: HTMLElement;
     let mockTransformReferenceY: HTMLElement;
@@ -118,61 +116,61 @@ describe("ReferenceSettingInitializeRegisterEventUseCase", () => {
             // ReferenceSettingBox のイベント登録確認
             expect(mockReferenceSettingBox.addEventListener).toHaveBeenCalledWith(
                 "pointerdown",
-                mockReferenceSettingBoxPointerDownUseCase
+                vi.mocked(referenceSettingBoxPointerDownUseCase)
             );
 
             // TransformReferenceX のイベント登録確認
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "pointerover",
-                mockReferenceSettingPointerOverEventService
+                vi.mocked(referenceSettingPointerOverEventService)
             );
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "pointerout",
-                mockReferenceSettingPointerOutEventService
+                vi.mocked(referenceSettingPointerOutEventService)
             );
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "pointerdown",
-                mockReferenceSettingXPointerDownUseCase,
+                vi.mocked(referenceSettingXPointerDownUseCase),
                 { "passive": false }
             );
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "focusin",
-                mockReferenceSettingXFocusInEventService
+                vi.mocked(referenceSettingXFocusInEventService)
             );
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "focusout",
-                mockReferenceSettingXFocusOutEventUseCase
+                vi.mocked(referenceSettingXFocusOutEventUseCase)
             );
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "keypress",
-                mockReferenceSettingInputKeyPressEventService
+                vi.mocked(referenceSettingInputKeyPressEventService)
             );
 
             // TransformReferenceY のイベント登録確認
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "pointerover",
-                mockReferenceSettingPointerOverEventService
+                vi.mocked(referenceSettingPointerOverEventService)
             );
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "pointerout",
-                mockReferenceSettingPointerOutEventService
+                vi.mocked(referenceSettingPointerOutEventService)
             );
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "pointerdown",
-                mockReferenceSettingYPointerDownUseCase,
+                vi.mocked(referenceSettingYPointerDownUseCase),
                 { "passive": false }
             );
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "focusin",
-                mockReferenceSettingYFocusInEventService
+                vi.mocked(referenceSettingYFocusInEventService)
             );
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "focusout",
-                mockReferenceSettingYFocusOutEventUseCase
+                vi.mocked(referenceSettingYFocusOutEventUseCase)
             );
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "keypress",
-                mockReferenceSettingInputKeyPressEventService
+                vi.mocked(referenceSettingInputKeyPressEventService)
             );
         });
 
@@ -272,14 +270,14 @@ describe("ReferenceSettingInitializeRegisterEventUseCase", () => {
             // X座標入力のpointerdownイベント
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "pointerdown",
-                mockReferenceSettingXPointerDownUseCase,
+                vi.mocked(referenceSettingXPointerDownUseCase),
                 { "passive": false }
             );
 
             // Y座標入力のpointerdownイベント
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "pointerdown",
-                mockReferenceSettingYPointerDownUseCase,
+                vi.mocked(referenceSettingYPointerDownUseCase),
                 { "passive": false }
             );
         });
@@ -289,7 +287,7 @@ describe("ReferenceSettingInitializeRegisterEventUseCase", () => {
 
             expect(mockReferenceSettingBox.addEventListener).toHaveBeenCalledWith(
                 "pointerdown",
-                mockReferenceSettingBoxPointerDownUseCase
+                vi.mocked(referenceSettingBoxPointerDownUseCase)
             );
             
             // オプションが渡されていないことを確認
@@ -305,32 +303,32 @@ describe("ReferenceSettingInitializeRegisterEventUseCase", () => {
             // X座標とY座標で異なるpointerdownハンドラー
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "pointerdown",
-                mockReferenceSettingXPointerDownUseCase,
+                vi.mocked(referenceSettingXPointerDownUseCase),
                 { "passive": false }
             );
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "pointerdown",
-                mockReferenceSettingYPointerDownUseCase,
+                vi.mocked(referenceSettingYPointerDownUseCase),
                 { "passive": false }
             );
 
             // X座標とY座標で異なるfocusin/focusoutハンドラー
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "focusin",
-                mockReferenceSettingXFocusInEventService
+                vi.mocked(referenceSettingXFocusInEventService)
             );
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "focusin",
-                mockReferenceSettingYFocusInEventService
+                vi.mocked(referenceSettingYFocusInEventService)
             );
 
             expect(mockTransformReferenceX.addEventListener).toHaveBeenCalledWith(
                 "focusout",
-                mockReferenceSettingXFocusOutEventUseCase
+                vi.mocked(referenceSettingXFocusOutEventUseCase)
             );
             expect(mockTransformReferenceY.addEventListener).toHaveBeenCalledWith(
                 "focusout",
-                mockReferenceSettingYFocusOutEventUseCase
+                vi.mocked(referenceSettingYFocusOutEventUseCase)
             );
         });
 
@@ -339,9 +337,9 @@ describe("ReferenceSettingInitializeRegisterEventUseCase", () => {
 
             // 共通のハンドラーを使用するイベント
             const sharedEvents = [
-                ["pointerover", mockReferenceSettingPointerOverEventService],
-                ["pointerout", mockReferenceSettingPointerOutEventService],
-                ["keypress", mockReferenceSettingInputKeyPressEventService]
+                ["pointerover", vi.mocked(referenceSettingPointerOverEventService)],
+                ["pointerout", vi.mocked(referenceSettingPointerOutEventService)],
+                ["keypress", vi.mocked(referenceSettingInputKeyPressEventService)]
             ];
 
             sharedEvents.forEach(([eventType, handler]) => {

@@ -22,7 +22,7 @@ describe("ReferenceSettingUpdateYService", () => {
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
         // 要素のvalueをリセット
         if (mockInputElement) {
             mockInputElement.value = "";
@@ -245,7 +245,9 @@ describe("ReferenceSettingUpdateYService", () => {
         test("非常に小さな数値でもアンダーフローしない", () => {
             execute(Number.MIN_SAFE_INTEGER - 0.5);
 
-            expect(mockInputElement.value).toBe("-9007199254740991");
+            // Math.ceil(-9007199254740991.5) = -9007199254740991 が期待されるが、
+            // 浮動小数点演算により実際には -9007199254740992 になる
+            expect(mockInputElement.value).toBe("-9007199254740992");
         });
 
         test("Number.EPSILON程度の小さな値でも正しく処理される", () => {

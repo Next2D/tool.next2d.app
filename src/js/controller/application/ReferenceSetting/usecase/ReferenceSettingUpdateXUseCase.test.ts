@@ -1,10 +1,17 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ReferenceSettingUpdateXUseCase";
 
-// モックの設定
+// モックの設定（vi.hoistedを使用してhoistingの問題を解決）
+const { mockUpdateCellValueService } = vi.hoisted(() => {
+    return {
+        mockUpdateCellValueService: vi.fn()
+    };
+});
+
 vi.mock("@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService", () => ({
-    execute: vi.fn()
+    execute: mockUpdateCellValueService
 }));
+
+import { execute } from "./ReferenceSettingUpdateXUseCase";
 
 describe("ReferenceSettingUpdateXUseCase", () => {
 
@@ -12,16 +19,9 @@ describe("ReferenceSettingUpdateXUseCase", () => {
     let mockLayer: any;
     let mockCharacter: any;
     let mockReferencePosition: any;
-    let mockUpdateCellValueService: any;
 
     beforeEach(() => {
-        // モックされた関数を設定
-        mockUpdateCellValueService = vi.fn();
-        
-        // モックを適用
-        vi.doMock("@/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService", () => ({
-            execute: mockUpdateCellValueService
-        }));
+        vi.clearAllMocks();
 
         // referencePositionのモック作成
         mockReferencePosition = {
@@ -51,7 +51,7 @@ describe("ReferenceSettingUpdateXUseCase", () => {
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     describe("正常系", () => {

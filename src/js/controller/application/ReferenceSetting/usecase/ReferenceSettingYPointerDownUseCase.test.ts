@@ -1,5 +1,11 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
 import { execute } from "./ReferenceSettingYPointerDownUseCase";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { $setEditingElement, $activeTouchPointers } from "@/global/GlobalUtil";
+import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
+import { execute as referenceSettingYPointerMoveEventUseCase } from "./ReferenceSettingYPointerMoveEventUseCase";
+import { execute as referenceSettingYPointerUpEventUseCase } from "./ReferenceSettingYPointerUpEventUseCase";
 
 // モックの設定
 vi.mock("@/shortcut/ShortcutUtil", () => ({
@@ -43,54 +49,20 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
     let mockEvent: any;
     let mockElement: any;
-    let mockUseKeyboard: any;
-    let mockAllHideMenu: any;
-    let mockSetEditingElement: any;
-    let mockReferenceSetting: any;
-    let mockActiveTouchPointers: any;
-    let mockReferenceSettingYPointerMoveEventUseCase: any;
-    let mockReferenceSettingYPointerUpEventUseCase: any;
 
     beforeEach(() => {
-        // モック関数を設定
-        mockUseKeyboard = vi.fn().mockReturnValue(false);
-        mockAllHideMenu = vi.fn();
-        mockSetEditingElement = vi.fn();
-        mockReferenceSettingYPointerMoveEventUseCase = vi.fn();
-        mockReferenceSettingYPointerUpEventUseCase = vi.fn();
+        // モックをクリア
+        vi.clearAllMocks();
 
-        // モックを適用
-        vi.doMock("@/shortcut/ShortcutUtil", () => ({
-            $useKeyboard: mockUseKeyboard
-        }));
+        // $useKeyboardのデフォルト動作を設定
+        ($useKeyboard as any).mockReturnValue(false);
 
-        vi.doMock("@/menu/application/MenuUtil", () => ({
-            $allHideMenu: mockAllHideMenu
-        }));
+        // referenceSettingの初期値を設定
+        (referenceSetting as any).movementY = 5;
+        (referenceSetting as any).beforeY = 10;
 
-        vi.doMock("./ReferenceSettingYPointerMoveEventUseCase", () => ({
-            execute: mockReferenceSettingYPointerMoveEventUseCase
-        }));
-
-        vi.doMock("./ReferenceSettingYPointerUpEventUseCase", () => ({
-            execute: mockReferenceSettingYPointerUpEventUseCase
-        }));
-
-        mockReferenceSetting = {
-            movementY: 5,  // 初期値を設定して変更を確認
-            beforeY: 10
-        };
-
-        vi.doMock("@/controller/domain/model/ReferenceSetting", () => ({
-            referenceSetting: mockReferenceSetting
-        }));
-
-        mockActiveTouchPointers = new Map();
-
-        vi.doMock("@/global/GlobalUtil", () => ({
-            $activeTouchPointers: mockActiveTouchPointers,
-            $setEditingElement: mockSetEditingElement
-        }));
+        // $activeTouchPointersをクリア
+        ($activeTouchPointers as any).clear();
 
         // HTMLInputElementのモック
         mockElement = {
@@ -112,7 +84,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
     afterEach(() => {
         vi.restoreAllMocks();
-        mockActiveTouchPointers.clear();
+        ($activeTouchPointers as any).clear();
     });
 
     describe("正常系", () => {
@@ -121,8 +93,8 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
             execute(mockEvent);
 
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
-            expect(mockAllHideMenu).toHaveBeenCalled();
-            expect(mockSetEditingElement).toHaveBeenCalledWith(null);
+            expect(($allHideMenu as any)).toHaveBeenCalled();
+            expect(($setEditingElement as any)).toHaveBeenCalledWith(null);
             expect(mockEvent.preventDefault).toHaveBeenCalled();
         });
 
@@ -137,8 +109,8 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.movementY).toBe(0);
-            expect(mockReferenceSetting.beforeY).toBe(456.78);
+            expect((referenceSetting as any).movementY).toBe(0);
+            expect((referenceSetting as any).beforeY).toBe(456.78);
         });
 
         test("ポインターキャプチャが正しく設定される", () => {
@@ -155,20 +127,20 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
             expect(mockElement.addEventListener).toHaveBeenCalledTimes(4);
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointermove",
-                mockReferenceSettingYPointerMoveEventUseCase,
+                (referenceSettingYPointerMoveEventUseCase as any),
                 { "passive": false }
             );
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointerup",
-                mockReferenceSettingYPointerUpEventUseCase
+                (referenceSettingYPointerUpEventUseCase as any)
             );
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointerleave",
-                mockReferenceSettingYPointerUpEventUseCase
+                (referenceSettingYPointerUpEventUseCase as any)
             );
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointercancel",
-                mockReferenceSettingYPointerUpEventUseCase
+                (referenceSettingYPointerUpEventUseCase as any)
             );
         });
 
@@ -177,7 +149,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.beforeY).toBe(100);
+            expect((referenceSetting as any).beforeY).toBe(100);
         });
 
         test("小数点値が正しくparseFloatされる", () => {
@@ -185,7 +157,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.beforeY).toBe(123.456);
+            expect((referenceSetting as any).beforeY).toBe(123.456);
         });
 
         test("負の値が正しくparseFloatされる", () => {
@@ -193,7 +165,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.beforeY).toBe(-789.123);
+            expect((referenceSetting as any).beforeY).toBe(-789.123);
         });
 
         test("0値が正しくparseFloatされる", () => {
@@ -201,7 +173,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.beforeY).toBe(0);
+            expect((referenceSetting as any).beforeY).toBe(0);
         });
 
     });
@@ -214,7 +186,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
             execute(mockEvent);
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-            expect(mockAllHideMenu).not.toHaveBeenCalled();
+            expect(($allHideMenu as any)).not.toHaveBeenCalled();
         });
 
         test("右クリック（button = 2）の場合、処理されない", () => {
@@ -223,28 +195,28 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
             execute(mockEvent);
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-            expect(mockAllHideMenu).not.toHaveBeenCalled();
+            expect(($allHideMenu as any)).not.toHaveBeenCalled();
         });
 
         test("マルチタッチ（2本以上）の場合、処理されない", () => {
-            mockActiveTouchPointers.set("pointer1", {});
-            mockActiveTouchPointers.set("pointer2", {});
+            ($activeTouchPointers as any).set("pointer1", {});
+            ($activeTouchPointers as any).set("pointer2", {});
 
             execute(mockEvent);
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-            expect(mockAllHideMenu).not.toHaveBeenCalled();
+            expect(($allHideMenu as any)).not.toHaveBeenCalled();
         });
 
         test("キーボード使用中の場合、メニュー非表示後に処理が中断される", () => {
-            mockUseKeyboard.mockReturnValue(true);
+            ($useKeyboard as any).mockReturnValue(true);
 
             execute(mockEvent);
 
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
-            expect(mockUseKeyboard).toHaveBeenCalled();
-            expect(mockAllHideMenu).not.toHaveBeenCalled();
-            expect(mockSetEditingElement).not.toHaveBeenCalled();
+            expect(($useKeyboard as any)).toHaveBeenCalled();
+            expect(($allHideMenu as any)).not.toHaveBeenCalled();
+            expect(($setEditingElement as any)).not.toHaveBeenCalled();
         });
 
         test("eventのtargetがnullの場合、処理が中断される", () => {
@@ -270,32 +242,32 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
     describe("activeTouchPointersの検証", () => {
 
         test("タッチポインターが1つの場合、処理が継続される", () => {
-            mockActiveTouchPointers.set("pointer1", {});
+            ($activeTouchPointers as any).set("pointer1", {});
 
             execute(mockEvent);
 
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
-            expect(mockAllHideMenu).toHaveBeenCalled();
+            expect(($allHideMenu as any)).toHaveBeenCalled();
         });
 
         test("タッチポインターが0個の場合、処理が継続される", () => {
-            // mockActiveTouchPointers は空のMap
+            // ($activeTouchPointers as any) は空のMap
 
             execute(mockEvent);
 
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
-            expect(mockAllHideMenu).toHaveBeenCalled();
+            expect(($allHideMenu as any)).toHaveBeenCalled();
         });
 
         test("タッチポインターが3つの場合、処理されない", () => {
-            mockActiveTouchPointers.set("pointer1", {});
-            mockActiveTouchPointers.set("pointer2", {});
-            mockActiveTouchPointers.set("pointer3", {});
+            ($activeTouchPointers as any).set("pointer1", {});
+            ($activeTouchPointers as any).set("pointer2", {});
+            ($activeTouchPointers as any).set("pointer3", {});
 
             execute(mockEvent);
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-            expect(mockAllHideMenu).not.toHaveBeenCalled();
+            expect(($allHideMenu as any)).not.toHaveBeenCalled();
         });
 
     });
@@ -307,7 +279,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(isNaN(mockReferenceSetting.beforeY)).toBe(true);
+            expect(isNaN((referenceSetting as any).beforeY)).toBe(true);
         });
 
         test("非数値文字列の場合、NaNが設定される", () => {
@@ -315,7 +287,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(isNaN(mockReferenceSetting.beforeY)).toBe(true);
+            expect(isNaN((referenceSetting as any).beforeY)).toBe(true);
         });
 
         test("先頭が数値で後が文字の場合、数値部分が設定される", () => {
@@ -323,7 +295,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.beforeY).toBe(123);
+            expect((referenceSetting as any).beforeY).toBe(123);
         });
 
         test("非常に大きな数値が正しく処理される", () => {
@@ -331,7 +303,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.beforeY).toBe(999999999999);
+            expect((referenceSetting as any).beforeY).toBe(999999999999);
         });
 
         test("非常に小さな数値が正しく処理される", () => {
@@ -339,7 +311,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.beforeY).toBe(-999999999999);
+            expect((referenceSetting as any).beforeY).toBe(-999999999999);
         });
 
         test("科学的記法が正しく処理される", () => {
@@ -347,7 +319,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.beforeY).toBe(123000);
+            expect((referenceSetting as any).beforeY).toBe(123000);
         });
 
     });
@@ -361,16 +333,16 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
                 callOrder.push("stopPropagation");
             });
 
-            mockUseKeyboard.mockImplementation(() => {
+            ($useKeyboard as any).mockImplementation(() => {
                 callOrder.push("useKeyboard");
                 return false;
             });
 
-            mockAllHideMenu.mockImplementation(() => {
+            ($allHideMenu as any).mockImplementation(() => {
                 callOrder.push("allHideMenu");
             });
 
-            mockSetEditingElement.mockImplementation(() => {
+            ($setEditingElement as any).mockImplementation(() => {
                 callOrder.push("setEditingElement");
             });
 
@@ -412,20 +384,20 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
     describe("referenceSettingの初期化確認", () => {
 
         test("movementYが確実に0にリセットされる", () => {
-            mockReferenceSetting.movementY = 100; // 既存値を設定
+            (referenceSetting as any).movementY = 100; // 既存値を設定
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.movementY).toBe(0);
+            expect((referenceSetting as any).movementY).toBe(0);
         });
 
         test("beforeYが現在のelement.valueで上書きされる", () => {
-            mockReferenceSetting.beforeY = 999; // 既存値を設定
+            (referenceSetting as any).beforeY = 999; // 既存値を設定
             mockElement.value = "200";
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.beforeY).toBe(200);
+            expect((referenceSetting as any).beforeY).toBe(200);
         });
 
     });
@@ -465,7 +437,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointermove",
-                mockReferenceSettingYPointerMoveEventUseCase,
+                (referenceSettingYPointerMoveEventUseCase as any),
                 { "passive": false }
             );
         });
@@ -475,15 +447,15 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointerup",
-                mockReferenceSettingYPointerUpEventUseCase
+                (referenceSettingYPointerUpEventUseCase as any)
             );
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointerleave",
-                mockReferenceSettingYPointerUpEventUseCase
+                (referenceSettingYPointerUpEventUseCase as any)
             );
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointercancel",
-                mockReferenceSettingYPointerUpEventUseCase
+                (referenceSettingYPointerUpEventUseCase as any)
             );
         });
 
@@ -510,7 +482,7 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointermove",
-                mockReferenceSettingYPointerMoveEventUseCase,
+                (referenceSettingYPointerMoveEventUseCase as any),
                 { "passive": false }
             );
         });
@@ -521,15 +493,15 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
             // UP, LEAVE, CANCELの3つのイベントで同じY座標用ハンドラーが使われる
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointerup",
-                mockReferenceSettingYPointerUpEventUseCase
+                (referenceSettingYPointerUpEventUseCase as any)
             );
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointerleave",
-                mockReferenceSettingYPointerUpEventUseCase
+                (referenceSettingYPointerUpEventUseCase as any)
             );
             expect(mockElement.addEventListener).toHaveBeenCalledWith(
                 "pointercancel",
-                mockReferenceSettingYPointerUpEventUseCase
+                (referenceSettingYPointerUpEventUseCase as any)
             );
         });
 
@@ -538,11 +510,11 @@ describe("ReferenceSettingYPointerDownUseCase", () => {
 
             execute(mockEvent);
 
-            expect(mockReferenceSetting.movementY).toBe(0);
-            expect(mockReferenceSetting.beforeY).toBe(250.75);
+            expect((referenceSetting as any).movementY).toBe(0);
+            expect((referenceSetting as any).beforeY).toBe(250.75);
             // X座標関連のプロパティは触れられていないことを確認
-            expect(mockReferenceSetting.movementX).toBeUndefined();
-            expect(mockReferenceSetting.beforeX).toBeUndefined();
+            expect((referenceSetting as any).movementX).toBeUndefined();
+            expect((referenceSetting as any).beforeX).toBeUndefined();
         });
 
     });

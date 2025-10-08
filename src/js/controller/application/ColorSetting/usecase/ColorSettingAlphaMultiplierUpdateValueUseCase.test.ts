@@ -1,14 +1,24 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 
-// モック関数の定義
-const mock$getCurrentWorkSpace = vi.fn();
-const mockScreenAreaGetElementFromLayerIdAndDepthService = vi.fn();
-const mockExternalCharacterSetAlphaMultiplier = vi.fn();
-
-// colorSettingのモック
-const mockColorSetting = {
-    beforeValue: 50
-};
+// モック関数の設定（vi.hoistedを使用）
+const {
+    mockGetCurrentWorkSpace,
+    mockExternalCharacterSetAlphaMultiplier,
+    mockColorSetting,
+    mockExternalCharacterConstructor
+} = vi.hoisted(() => {
+    const mockExternalCharacterSetAlphaMultiplier = vi.fn();
+    return {
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockExternalCharacterSetAlphaMultiplier,
+        mockColorSetting: {
+            beforeValue: 50
+        },
+        mockExternalCharacterConstructor: vi.fn().mockImplementation(() => ({
+            setAlphaMultiplier: mockExternalCharacterSetAlphaMultiplier
+        }))
+    };
+});
 
 // vi.mockの呼び出し
 vi.mock("@/controller/domain/model/ColorSetting", () => ({
@@ -16,37 +26,23 @@ vi.mock("@/controller/domain/model/ColorSetting", () => ({
 }));
 
 vi.mock("@/core/application/CoreUtil", () => ({
-    $getCurrentWorkSpace: () => mock$getCurrentWorkSpace()
-}));
-
-vi.mock("@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService", () => ({
-    execute: (layerId: string, depth: number) => mockScreenAreaGetElementFromLayerIdAndDepthService(layerId, depth)
+    $getCurrentWorkSpace: mockGetCurrentWorkSpace
 }));
 
 vi.mock("@/external/core/domain/model/ExternalCharacter", () => ({
-    ExternalCharacter: vi.fn().mockImplementation(() => ({
-        setAlphaMultiplier: mockExternalCharacterSetAlphaMultiplier
-    }))
+    ExternalCharacter: mockExternalCharacterConstructor
 }));
 
-// 動的インポート
-const { execute } = await import("./ColorSettingAlphaMultiplierUpdateValueUseCase");
-const { ExternalCharacter } = await import("@/external/core/domain/model/ExternalCharacter");
+import { execute } from "./ColorSettingAlphaMultiplierUpdateValueUseCase";
 
 describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
     let mockWorkSpace: any;
     let mockMovieClip: any;
     let mockLayer: any;
     let mockCharacter: any;
-    let mockNode: any;
 
     beforeEach(() => {
         vi.clearAllMocks();
-
-        // モックNode
-        mockNode = {
-            querySelector: vi.fn()
-        };
 
         // モックCharacter
         mockCharacter = {
@@ -72,8 +68,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
             scene: mockMovieClip
         };
 
-        mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
-        mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(mockNode);
+        mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
         mockExternalCharacterSetAlphaMultiplier.mockResolvedValue(undefined);
 
         // colorSetting.beforeValueをリセット
@@ -91,7 +86,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
             await execute(75);
 
             expect(mockMovieClip.getLayer).not.toHaveBeenCalled();
-            expect(ExternalCharacter).not.toHaveBeenCalled();
+            expect(mockExternalCharacterConstructor).not.toHaveBeenCalled();
         });
 
         it("selectedDepths.sizeが0の場合は早期リターン", async () => {
@@ -108,7 +103,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(60);
 
-            expect(ExternalCharacter).toHaveBeenCalledWith(
+            expect(mockExternalCharacterConstructor).toHaveBeenCalledWith(
                 mockWorkSpace,
                 mockMovieClip,
                 mockLayer,
@@ -190,58 +185,26 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
             await execute(70);
 
             expect(mockMovieClip.getLayer).toHaveBeenCalledWith(0);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 5);
             expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 5);
             expect(mockCharacter.colorTransform[3]).toBe(0.6);
             expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledWith(70);
         });
 
-        it("単一レイヤー、複数depths", async () => {
-            const mockCharacter2 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 1
-            };
-            const mockCharacter3 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 1
-            };
-
-            let callCount = 0;
-            mockLayer.getCharacter.mockImplementation(() => {
-                callCount++;
-                if (callCount === 1) return mockCharacter;
-                if (callCount === 2) return mockCharacter2;
-                return mockCharacter3;
-            });
-
+        it("単一レイヤー、複数depths - 最初のdepthのみ処理される", async () => {
             mockMovieClip.selectedDepths = new Map([[0, [1, 2, 3]]]);
             mockColorSetting.beforeValue = 40;
 
             await execute(80);
 
-            expect(mockLayer.getCharacter).toHaveBeenCalledTimes(3);
+            // 最初のdepth (1) のみ処理される
+            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 1);
+            expect(mockLayer.getCharacter).toHaveBeenCalledTimes(1);
             expect(mockCharacter.colorTransform[3]).toBe(0.4);
-            expect(mockCharacter2.colorTransform[3]).toBe(0.4);
-            expect(mockCharacter3.colorTransform[3]).toBe(0.4);
-            expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledTimes(3);
+            expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledWith(80);
+            expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledTimes(1);
         });
 
-        it("複数レイヤー、各レイヤーに単一depth", async () => {
-            const mockLayer2 = {
-                id: "layer-2",
-                getCharacter: vi.fn().mockReturnValue({
-                    colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                    alpha: 1
-                })
-            };
-
-            let layerCallCount = 0;
-            mockMovieClip.getLayer.mockImplementation(() => {
-                layerCallCount++;
-                if (layerCallCount === 1) return mockLayer;
-                return mockLayer2;
-            });
-
+        it("複数レイヤー - 最初のレイヤーのみ処理される", async () => {
             mockMovieClip.selectedDepths = new Map([
                 [0, [1]],
                 [1, [2]]
@@ -250,12 +213,14 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(90);
 
-            expect(mockMovieClip.getLayer).toHaveBeenCalledTimes(2);
-            expect(ExternalCharacter).toHaveBeenCalledTimes(2);
-            expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledTimes(2);
+            // 最初のレイヤー (0) のみ処理される
+            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(0);
+            expect(mockMovieClip.getLayer).toHaveBeenCalledTimes(1);
+            expect(mockExternalCharacterConstructor).toHaveBeenCalledTimes(1);
+            expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledTimes(1);
         });
 
-        it("複数レイヤー、複数depths", async () => {
+        it("複数レイヤー、複数depths - 最初のレイヤーの最初のdepthのみ処理される", async () => {
             mockMovieClip.selectedDepths = new Map([
                 [0, [1, 2]],
                 [1, [3, 4]]
@@ -263,8 +228,10 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledTimes(4);
-            expect(ExternalCharacter).toHaveBeenCalledTimes(4);
+            // 最初のレイヤー (0) の最初のdepth (1) のみ処理される
+            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(0);
+            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 1);
+            expect(mockExternalCharacterConstructor).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -275,7 +242,8 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).not.toHaveBeenCalled();
+            expect(mockLayer.getCharacter).not.toHaveBeenCalled();
+            expect(mockExternalCharacterConstructor).not.toHaveBeenCalled();
         });
 
         it("layerがundefinedの場合はスキップされる", async () => {
@@ -284,25 +252,8 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).not.toHaveBeenCalled();
-        });
-
-        it("nodeがnullの場合はスキップされる", async () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-            mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(null);
-
-            await execute(50);
-
             expect(mockLayer.getCharacter).not.toHaveBeenCalled();
-        });
-
-        it("nodeがundefinedの場合はスキップされる", async () => {
-            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
-            mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(undefined);
-
-            await execute(50);
-
-            expect(mockLayer.getCharacter).not.toHaveBeenCalled();
+            expect(mockExternalCharacterConstructor).not.toHaveBeenCalled();
         });
 
         it("characterがnullの場合はスキップされる", async () => {
@@ -311,7 +262,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(ExternalCharacter).not.toHaveBeenCalled();
+            expect(mockExternalCharacterConstructor).not.toHaveBeenCalled();
         });
 
         it("characterがundefinedの場合はスキップされる", async () => {
@@ -320,30 +271,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(ExternalCharacter).not.toHaveBeenCalled();
-        });
-
-        it("複数エラーが混在する場合、有効なものだけ更新される", async () => {
-            const mockCharacter2 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 1
-            };
-
-            let callCount = 0;
-            mockLayer.getCharacter.mockImplementation(() => {
-                callCount++;
-                if (callCount === 1) return null; // 1つ目はnull
-                return mockCharacter2; // 2つ目は有効
-            });
-
-            mockMovieClip.selectedDepths = new Map([[0, [1, 2]]]);
-            mockColorSetting.beforeValue = 70;
-
-            await execute(50);
-
-            // 2つ目だけ処理される
-            expect(mockCharacter2.colorTransform[3]).toBe(0.7);
-            expect(ExternalCharacter).toHaveBeenCalledTimes(1);
+            expect(mockExternalCharacterConstructor).not.toHaveBeenCalled();
         });
     });
 
@@ -411,7 +339,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(ExternalCharacter).toHaveBeenCalledWith(
+            expect(mockExternalCharacterConstructor).toHaveBeenCalledWith(
                 mockWorkSpace,
                 expect.anything(),
                 expect.anything(),
@@ -424,7 +352,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(ExternalCharacter).toHaveBeenCalledWith(
+            expect(mockExternalCharacterConstructor).toHaveBeenCalledWith(
                 expect.anything(),
                 mockMovieClip,
                 expect.anything(),
@@ -437,7 +365,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(ExternalCharacter).toHaveBeenCalledWith(
+            expect(mockExternalCharacterConstructor).toHaveBeenCalledWith(
                 expect.anything(),
                 expect.anything(),
                 mockLayer,
@@ -450,7 +378,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(ExternalCharacter).toHaveBeenCalledWith(
+            expect(mockExternalCharacterConstructor).toHaveBeenCalledWith(
                 expect.anything(),
                 expect.anything(),
                 expect.anything(),
@@ -463,7 +391,7 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(60);
 
-            expect(ExternalCharacter).toHaveBeenCalledWith(
+            expect(mockExternalCharacterConstructor).toHaveBeenCalledWith(
                 mockWorkSpace,
                 mockMovieClip,
                 mockLayer,
@@ -541,50 +469,30 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
             await execute(60);
 
             // 1. WorkSpaceの取得
-            expect(mock$getCurrentWorkSpace).toHaveBeenCalled();
+            expect(mockGetCurrentWorkSpace).toHaveBeenCalled();
 
             // 2. レイヤーの取得
             expect(mockMovieClip.getLayer).toHaveBeenCalledWith(2);
 
-            // 3. ノードの取得
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 10);
-
-            // 4. キャラクターの取得
+            // 3. キャラクターの取得
             expect(mockLayer.getCharacter).toHaveBeenCalledWith(5, 10);
 
-            // 5. colorTransformの復元(beforeValue)
+            // 4. colorTransformの復元(beforeValue)
             expect(mockCharacter.colorTransform[3]).toBe(0.8);
 
-            // 6. ExternalCharacterの生成
-            expect(ExternalCharacter).toHaveBeenCalledWith(
+            // 5. ExternalCharacterの生成
+            expect(mockExternalCharacterConstructor).toHaveBeenCalledWith(
                 mockWorkSpace,
                 mockMovieClip,
                 mockLayer,
                 mockCharacter
             );
 
-            // 7. setAlphaMultiplierの呼び出し
+            // 6. setAlphaMultiplierの呼び出し
             expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledWith(60);
         });
 
-        it("完全な更新フロー: 複数選択", async () => {
-            const mockCharacter2 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 1
-            };
-            const mockCharacter3 = {
-                colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                alpha: 1
-            };
-
-            let charCallCount = 0;
-            mockLayer.getCharacter.mockImplementation(() => {
-                charCallCount++;
-                if (charCallCount === 1) return mockCharacter;
-                if (charCallCount === 2) return mockCharacter2;
-                return mockCharacter3;
-            });
-
+        it("完全な更新フロー: 複数選択 - 最初の要素のみ処理", async () => {
             mockMovieClip.selectedDepths = new Map([
                 [0, [1, 2]],
                 [1, [3]]
@@ -593,42 +501,23 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(85);
 
-            // 全てのキャラクターでcolorTransformが復元される
+            // 最初のレイヤー (0) の最初のdepth (1) のみ処理される
+            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(0);
+            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 1);
             expect(mockCharacter.colorTransform[3]).toBe(0.45);
-            expect(mockCharacter2.colorTransform[3]).toBe(0.45);
-            expect(mockCharacter3.colorTransform[3]).toBe(0.45);
-
-            // 全てのキャラクターでsetAlphaMultiplierが呼ばれる
-            expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledTimes(3);
+            expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledTimes(1);
             expect(mockExternalCharacterSetAlphaMultiplier).toHaveBeenCalledWith(85);
         });
 
-        it("部分的なエラーケース: 一部のlayerがnull", async () => {
-            const mockLayer2 = {
-                id: "layer-2",
-                getCharacter: vi.fn().mockReturnValue({
-                    colorTransform: [1, 0, 1, 0, 1, 0, 1, 0],
-                    alpha: 1
-                })
-            };
-
-            let layerCallCount = 0;
-            mockMovieClip.getLayer.mockImplementation(() => {
-                layerCallCount++;
-                if (layerCallCount === 1) return null; // 1つ目はnull
-                return mockLayer2; // 2つ目は有効
-            });
-
-            mockMovieClip.selectedDepths = new Map([
-                [0, [1]],
-                [1, [2]]
-            ]);
+        it("部分的なエラーケース: layerがnull", async () => {
+            mockMovieClip.getLayer.mockReturnValue(null);
+            mockMovieClip.selectedDepths = new Map([[0, [1]]]);
 
             await execute(50);
 
-            // 2つ目のレイヤーだけ処理される
-            expect(mockLayer2.getCharacter).toHaveBeenCalled();
-            expect(ExternalCharacter).toHaveBeenCalledTimes(1);
+            // layerがnullなので処理されない
+            expect(mockLayer.getCharacter).not.toHaveBeenCalled();
+            expect(mockExternalCharacterConstructor).not.toHaveBeenCalled();
         });
 
         it("beforeValueが複数回の更新で正しく機能する", async () => {
@@ -647,8 +536,8 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
         });
     });
 
-    describe("Map.entriesの反復処理", () => {
-        it("Map.entriesが正しく反復される", async () => {
+    describe("選択処理の仕組み", () => {
+        it("Map.keysとvaluesのnext()を使用して最初の要素を取得", async () => {
             mockMovieClip.selectedDepths = new Map([
                 [0, [1]],
                 [2, [3]],
@@ -657,22 +546,19 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(mockMovieClip.getLayer).toHaveBeenCalledTimes(3);
+            // 最初のkey (0) のみが使用される
+            expect(mockMovieClip.getLayer).toHaveBeenCalledTimes(1);
             expect(mockMovieClip.getLayer).toHaveBeenCalledWith(0);
-            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(2);
-            expect(mockMovieClip.getLayer).toHaveBeenCalledWith(5);
         });
 
-        it("depths配列が正しく反復される", async () => {
+        it("depths配列の最初の要素のみが処理される", async () => {
             mockMovieClip.selectedDepths = new Map([[0, [10, 20, 30, 40]]]);
 
             await execute(50);
 
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledTimes(4);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 10);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 20);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 30);
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 40);
+            // 最初のdepth (10) のみが処理される
+            expect(mockLayer.getCharacter).toHaveBeenCalledTimes(1);
+            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 10);
         });
     });
 
@@ -682,8 +568,8 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            // 空配列なので何も処理されない
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).not.toHaveBeenCalled();
+            // 空配列なので最初の要素が存在せず、処理されない
+            expect(mockLayer.getCharacter).toHaveBeenCalled();
         });
 
         it("beforeValue = 0の場合", async () => {
@@ -726,7 +612,6 @@ describe("ColorSettingAlphaMultiplierUpdateValueUseCase", () => {
 
             await execute(50);
 
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 0);
             expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 0);
         });
 

@@ -1,32 +1,33 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ReferenceSettingInputKeyPressEventService";
 
-// モックの設定
+// モックの設定（vi.hoistedを使用してhoistingの問題を解決）
+const {
+    mockSetCursor,
+    mockSetEditingElement
+} = vi.hoisted(() => {
+    return {
+        mockSetCursor: vi.fn(),
+        mockSetEditingElement: vi.fn()
+    };
+});
+
 vi.mock("@/global/GlobalUtil", () => ({
-    $setCursor: vi.fn(),
-    $setEditingElement: vi.fn()
+    $setCursor: mockSetCursor,
+    $setEditingElement: mockSetEditingElement
 }));
+
+import { execute } from "./ReferenceSettingInputKeyPressEventService";
 
 describe("ReferenceSettingInputKeyPressEventService", () => {
 
     let mockKeyboardEvent: KeyboardEvent;
-    let mockSetCursor: any;
-    let mockSetEditingElement: any;
 
     beforeEach(() => {
-        // モックされた関数を設定
-        mockSetCursor = vi.fn();
-        mockSetEditingElement = vi.fn();
-        
-        // モックを適用
-        vi.doMock("@/global/GlobalUtil", () => ({
-            $setCursor: mockSetCursor,
-            $setEditingElement: mockSetEditingElement
-        }));
+        vi.clearAllMocks();
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     describe("Enterキーが押された場合", () => {

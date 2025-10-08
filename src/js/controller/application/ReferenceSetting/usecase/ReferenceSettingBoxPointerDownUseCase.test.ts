@@ -1,26 +1,39 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ReferenceSettingBoxPointerDownUseCase";
 
-// モック設定
-const mockGetCurrentWorkSpace = vi.fn();
-const mockActiveTouchPointers = { size: 1 };
-const mockExternalReference = vi.fn();
+// モック設定（vi.hoistedを使用）
+const {
+    mockGetCurrentWorkSpace,
+    mockActiveTouchPointers,
+    mockExternalReferenceConstructor,
+    mockExternalReferenceInstance
+} = vi.hoisted(() => {
+    const mockExternalReferenceInstance = {
+        setPivot: vi.fn().mockResolvedValue(undefined)
+    };
+    return {
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockActiveTouchPointers: { size: 1 },
+        mockExternalReferenceConstructor: vi.fn(() => mockExternalReferenceInstance),
+        mockExternalReferenceInstance
+    };
+});
 
 vi.mock("@/core/application/CoreUtil", () => ({
     $getCurrentWorkSpace: mockGetCurrentWorkSpace
 }));
 
 vi.mock("@/global/GlobalUtil", () => ({
-    $activeTouchPointers: mockActiveTouchPointers
+    mockActiveTouchPointers: mockActiveTouchPointers
 }));
 
 vi.mock("@/external/controller/domain/model/ExternalReference", () => ({
-    ExternalReference: mockExternalReference
+    ExternalReference: mockExternalReferenceConstructor
 }));
+
+import { execute } from "./ReferenceSettingBoxPointerDownUseCase";
 
 describe("ReferenceSettingBoxPointerDownUseCase", () => {
     let mockWorkSpace: any;
-    let mockExternalReferenceInstance: any;
     let mockElement: HTMLElement;
 
     beforeEach(() => {
@@ -33,11 +46,6 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
             }
         };
 
-        // ExternalReference インスタンスモック
-        mockExternalReferenceInstance = {
-            setPivot: vi.fn().mockResolvedValue(undefined)
-        };
-
         // HTML要素モック
         mockElement = {
             dataset: {
@@ -47,7 +55,9 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
         // 関数モック設定
         mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
-        mockExternalReference.mockReturnValue(mockExternalReferenceInstance);
+        
+        // mockExternalReferenceInstanceをリセット
+        mockExternalReferenceInstance.setPivot.mockResolvedValue(undefined);
 
         // activeTouchPointers のサイズをリセット
         Object.defineProperty(mockActiveTouchPointers, 'size', {
@@ -58,7 +68,7 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
     });
 
     afterEach(() => {
-        vi.resetAllMocks();
+        vi.clearAllMocks();
     });
 
     const createMockEvent = (overrides: Partial<PointerEvent> = {}): PointerEvent => ({
@@ -74,9 +84,9 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(mockEvent.stopPropagation).toHaveBeenCalledOnce();
-            expect(mockGetCurrentWorkSpace).toHaveBeenCalledOnce();
-            expect(mockExternalReference).toHaveBeenCalledWith(
+            expect(mockEvent.stopPropagation).toHaveBeenCalledTimes(1);
+            expect(mockGetCurrentWorkSpace).toHaveBeenCalledTimes(1);
+            expect(mockExternalReferenceConstructor).toHaveBeenCalledWith(
                 mockWorkSpace,
                 mockWorkSpace.scene
             );
@@ -119,7 +129,7 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
             expect(mockGetCurrentWorkSpace).not.toHaveBeenCalled();
-            expect(mockExternalReference).not.toHaveBeenCalled();
+            expect(mockExternalReferenceConstructor).not.toHaveBeenCalled();
             expect(mockExternalReferenceInstance.setPivot).not.toHaveBeenCalled();
         });
 
@@ -130,7 +140,7 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
             expect(mockGetCurrentWorkSpace).not.toHaveBeenCalled();
-            expect(mockExternalReference).not.toHaveBeenCalled();
+            expect(mockExternalReferenceConstructor).not.toHaveBeenCalled();
             expect(mockExternalReferenceInstance.setPivot).not.toHaveBeenCalled();
         });
 
@@ -146,7 +156,7 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
             expect(mockGetCurrentWorkSpace).not.toHaveBeenCalled();
-            expect(mockExternalReference).not.toHaveBeenCalled();
+            expect(mockExternalReferenceConstructor).not.toHaveBeenCalled();
             expect(mockExternalReferenceInstance.setPivot).not.toHaveBeenCalled();
         });
 
@@ -162,7 +172,7 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
             expect(mockGetCurrentWorkSpace).not.toHaveBeenCalled();
-            expect(mockExternalReference).not.toHaveBeenCalled();
+            expect(mockExternalReferenceConstructor).not.toHaveBeenCalled();
             expect(mockExternalReferenceInstance.setPivot).not.toHaveBeenCalled();
         });
 
@@ -171,9 +181,9 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(mockEvent.stopPropagation).toHaveBeenCalledOnce();
+            expect(mockEvent.stopPropagation).toHaveBeenCalledTimes(1);
             expect(mockGetCurrentWorkSpace).not.toHaveBeenCalled();
-            expect(mockExternalReference).not.toHaveBeenCalled();
+            expect(mockExternalReferenceConstructor).not.toHaveBeenCalled();
             expect(mockExternalReferenceInstance.setPivot).not.toHaveBeenCalled();
         });
 
@@ -182,9 +192,9 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(mockEvent.stopPropagation).toHaveBeenCalledOnce();
+            expect(mockEvent.stopPropagation).toHaveBeenCalledTimes(1);
             expect(mockGetCurrentWorkSpace).not.toHaveBeenCalled();
-            expect(mockExternalReference).not.toHaveBeenCalled();
+            expect(mockExternalReferenceConstructor).not.toHaveBeenCalled();
             expect(mockExternalReferenceInstance.setPivot).not.toHaveBeenCalled();
         });
     });
@@ -202,7 +212,7 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
             expect(mockGetCurrentWorkSpace).not.toHaveBeenCalled();
-            expect(mockExternalReference).not.toHaveBeenCalled();
+            expect(mockExternalReferenceConstructor).not.toHaveBeenCalled();
             expect(mockExternalReferenceInstance.setPivot).not.toHaveBeenCalled();
         });
     });
@@ -213,7 +223,7 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(mockEvent.stopPropagation).toHaveBeenCalledOnce();
+            expect(mockEvent.stopPropagation).toHaveBeenCalledTimes(1);
         });
 
         it("stopPropagationはtarget検証前に呼ばれる", async () => {
@@ -221,7 +231,7 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
 
             await execute(mockEvent);
 
-            expect(mockEvent.stopPropagation).toHaveBeenCalledOnce();
+            expect(mockEvent.stopPropagation).toHaveBeenCalledTimes(1);
             // target が null でも stopPropagation は呼ばれる
         });
     });
@@ -237,7 +247,7 @@ describe("ReferenceSettingBoxPointerDownUseCase", () => {
             const mockEvent = createMockEvent();
             await execute(mockEvent);
 
-            expect(mockExternalReference).toHaveBeenCalledWith(
+            expect(mockExternalReferenceConstructor).toHaveBeenCalledWith(
                 customWorkSpace,
                 customWorkSpace.scene
             );

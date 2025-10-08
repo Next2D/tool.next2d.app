@@ -1,17 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./SoundAreaRebuildSettingAreaUseCase";
-import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
 
 // サービスとユーティリティのモック
-const mockSoundAreaAddSettingAreaUseCase = vi.fn();
-const mock$getCurrentWorkSpace = vi.fn();
-
 vi.mock("./SoundAreaAddSettingAreaUseCase", () => ({
-    execute: mockSoundAreaAddSettingAreaUseCase
+    execute: vi.fn()
 }));
 
 vi.mock("@/core/application/CoreUtil", () => ({
-    $getCurrentWorkSpace: mock$getCurrentWorkSpace
+    $getCurrentWorkSpace: vi.fn()
 }));
 
 vi.mock("@/timeline/domain/model/TimelineHeader", () => ({
@@ -20,7 +15,10 @@ vi.mock("@/timeline/domain/model/TimelineHeader", () => ({
     }
 }));
 
-describe("SoundAreaRebuildSettingAreaUseCase", () => {
+import { execute } from "./SoundAreaRebuildSettingAreaUseCase";
+import { execute as soundAreaAddSettingAreaUseCase } from "./SoundAreaAddSettingAreaUseCase";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import { $SOUND_AREA_SOUND_LIST_AREA_ID } from "@/config/SoundSettingConfig";
     let mockElement: HTMLElement;
     let mockWorkSpace: any;
     let mockMovieClip: any;
@@ -61,8 +59,8 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
             getLibrary: vi.fn().mockReturnValue(mockSound)
         };
 
-        mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
-        mockSoundAreaAddSettingAreaUseCase.mockResolvedValue(undefined);
+        vi.mocked($getCurrentWorkSpace).mockReturnValue(mockWorkSpace);
+        vi.mocked(soundAreaAddSettingAreaUseCase).mockResolvedValue(undefined);
     });
 
     afterEach(() => {
@@ -77,7 +75,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).not.toHaveBeenCalled();
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).not.toHaveBeenCalled();
         });
 
         it("サウンドリストエリア要素が存在しない場合、何も処理しない", async () => {
@@ -85,7 +83,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).not.toHaveBeenCalled();
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).not.toHaveBeenCalled();
         });
 
         it("DisplayObjectが選択されている場合、何も処理しない", async () => {
@@ -93,7 +91,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).not.toHaveBeenCalled();
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).not.toHaveBeenCalled();
         });
 
         it("現在のフレームにサウンドが存在しない場合、何も処理しない", async () => {
@@ -101,7 +99,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).not.toHaveBeenCalled();
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).not.toHaveBeenCalled();
         });
 
         it("サウンドの配列が空の場合、何も処理しない", async () => {
@@ -109,7 +107,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).not.toHaveBeenCalled();
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).not.toHaveBeenCalled();
         });
     });
 
@@ -156,8 +154,8 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
         it("1つのサウンドが正しく追加される", async () => {
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(1);
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledWith(
                 0,
                 "Test Sound",
                 mockSoundObject
@@ -183,7 +181,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledWith(
                 0,
                 "Background Music",
                 mockSoundObject
@@ -193,7 +191,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
         it("インデックスが0から始まる", async () => {
             await execute();
 
-            const calls = mockSoundAreaAddSettingAreaUseCase.mock.calls;
+            const calls = vi.mocked(soundAreaAddSettingAreaUseCase).mock.calls;
             expect(calls[0][0]).toBe(0);
         });
     });
@@ -217,14 +215,14 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(3);
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(3);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 1, 0, "Test Sound", mockSoundObject
             );
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 2, 1, "Sound Effect 1", soundObject2
             );
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 3, 2, "Sound Effect 2", soundObject3
             );
         });
@@ -244,9 +242,9 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(10);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(10);
             for (let i = 0; i < 10; i++) {
-                expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+                expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                     i + 1,
                     i,
                     `Sound sound${i}`,
@@ -270,7 +268,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            const calls = mockSoundAreaAddSettingAreaUseCase.mock.calls;
+            const calls = vi.mocked(soundAreaAddSettingAreaUseCase).mock.calls;
             expect(calls[0][0]).toBe(0);
             expect(calls[1][0]).toBe(1);
             expect(calls[2][0]).toBe(2);
@@ -292,11 +290,11 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(2);
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(2);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 1, 0, "Sound sound1", mockSoundObject
             );
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 2, 2, "Sound sound3", expect.any(Object)
             );
         });
@@ -315,7 +313,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(2);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(2);
         });
 
         it("ライブラリからサウンドが見つからない場合はスキップされる", async () => {
@@ -332,11 +330,11 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(2);
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(2);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 1, 0, "Test Sound", mockSoundObject
             );
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 2, 2, "Sound 3", expect.any(Object)
             );
         });
@@ -357,11 +355,11 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(2);
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(2);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 1, 0, "Test Sound", mockSoundObject
             );
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 2, 3, "Sound 4", expect.any(Object)
             );
         });
@@ -381,7 +379,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
             }));
 
             let callCount = 0;
-            mockSoundAreaAddSettingAreaUseCase.mockImplementation(async () => {
+            vi.mocked(soundAreaAddSettingAreaUseCase).mockImplementation(async () => {
                 await new Promise(resolve => setTimeout(resolve, 10));
                 callCount++;
             });
@@ -405,7 +403,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
             }));
 
             const callOrder: number[] = [];
-            mockSoundAreaAddSettingAreaUseCase.mockImplementation(async (idx: number) => {
+            vi.mocked(soundAreaAddSettingAreaUseCase).mockImplementation(async (idx: number) => {
                 await new Promise(resolve => setTimeout(resolve, 5));
                 callOrder.push(idx);
             });
@@ -429,7 +427,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             // 削除されてから追加される
             expect(mockElement.children.length).toBe(0);
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(1);
         });
 
         it("再構成時にMovieClipの現在フレームが参照される", async () => {
@@ -471,7 +469,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledWith(
                 0,
                 "Test Sound",
                 expect.objectContaining({ volume: 0 })
@@ -483,7 +481,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledWith(
                 0,
                 "Test Sound",
                 expect.objectContaining({ volume: 1.5 })
@@ -495,7 +493,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledWith(
                 0,
                 "Test Sound",
                 expect.objectContaining({ loop: -1 })
@@ -507,7 +505,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledWith(
                 0,
                 "Test Sound",
                 expect.objectContaining({ loop: 999 })
@@ -519,7 +517,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledWith(
                 0,
                 "",
                 mockSoundObject
@@ -531,7 +529,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledWith(
                 0,
                 "A".repeat(1000),
                 mockSoundObject
@@ -555,7 +553,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(1);
         });
 
         it("複数フレーム間の切り替え", async () => {
@@ -565,7 +563,7 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(1);
 
             // フレーム2に切り替え
             vi.clearAllMocks();
@@ -576,8 +574,8 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
 
             await execute();
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(1);
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledWith(
                 0,
                 "Sound 2",
                 soundObject2
@@ -588,19 +586,19 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
             // 選択なし → 処理される
             mockMovieClip.selectedDepths = new Map();
             await execute();
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(1);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(1);
 
             // 選択あり → 処理されない
             vi.clearAllMocks();
             mockMovieClip.selectedDepths = new Map([[0, [1]]]);
             await execute();
-            expect(mockSoundAreaAddSettingAreaUseCase).not.toHaveBeenCalled();
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).not.toHaveBeenCalled();
         });
     });
 
     describe("エラーハンドリング", () => {
         it("soundAreaAddSettingAreaUseCaseでエラーが発生した場合", async () => {
-            mockSoundAreaAddSettingAreaUseCase.mockRejectedValue(new Error("Add failed"));
+            vi.mocked(soundAreaAddSettingAreaUseCase).mockRejectedValue(new Error("Add failed"));
 
             await expect(execute()).rejects.toThrow("Add failed");
         });
@@ -634,13 +632,13 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
                 id
             }));
 
-            mockSoundAreaAddSettingAreaUseCase
+            vi.mocked(soundAreaAddSettingAreaUseCase)
                 .mockResolvedValueOnce(undefined)
                 .mockRejectedValueOnce(new Error("Failed at index 1"));
 
             await expect(execute()).rejects.toThrow("Failed at index 1");
 
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(2);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(2);
         });
     });
 
@@ -703,14 +701,14 @@ describe("SoundAreaRebuildSettingAreaUseCase", () => {
             expect(mockElement.children.length).toBe(0);
 
             // すべてのサウンドが追加されている
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalledTimes(3);
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenCalledTimes(3);
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 1, 0, "Sound bgm1", sounds[0]
             );
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 2, 1, "Sound se1", sounds[1]
             );
-            expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCalledWith(
+            expect(vi.mocked(soundAreaAddSettingAreaUseCase)).toHaveBeenNthCalledWith(
                 3, 2, "Sound voice1", sounds[2]
             );
         });

@@ -1,5 +1,5 @@
 import { execute } from "./ScreenReferencePointMoveElementService";
-import { $SCREEN_REFERENCE_POINT_ID } from "../../../../config/ScreenConfig";
+import { $REFERENCE_POINT_ID } from "@/config/ReferenceSettingConfig";
 import { 
     $getReferencePointState,
     $setReferencePointState 
@@ -14,7 +14,7 @@ describe("ScreenReferencePointMoveElementServiceTest", () =>
     {
         // テスト用のDOM要素を作成
         testElement = document.createElement("div");
-        testElement.id = $SCREEN_REFERENCE_POINT_ID;
+        testElement.id = $REFERENCE_POINT_ID;
         
         // 初期位置を設定（absoluteポジション要素として設定）
         testElement.style.position = "absolute";

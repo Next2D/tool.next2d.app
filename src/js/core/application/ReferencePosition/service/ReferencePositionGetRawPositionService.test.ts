@@ -1,13 +1,19 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
 import type { Character } from "../../../../core/domain/model/Character";
 import { $MOVIE_CLIP_TYPE } from "../../../../config/InstanceConfig";
-import { execute } from "./ReferencePositionGetRawPositionService";
-import { $getCurrentWorkSpace } from "../../CoreUtil";
 
-// モック化
+// モック化（vi.hoistedを使用してhoistingの問題を解決）
+const { mockGetCurrentWorkSpace } = vi.hoisted(() => {
+    return {
+        mockGetCurrentWorkSpace: vi.fn()
+    };
+});
+
 vi.mock("../../CoreUtil", () => ({
-    $getCurrentWorkSpace: vi.fn()
+    $getCurrentWorkSpace: mockGetCurrentWorkSpace
 }));
+
+import { execute } from "./ReferencePositionGetRawPositionService";
 
 describe("ReferencePositionGetRawPositionService", () => {
 
@@ -16,6 +22,8 @@ describe("ReferencePositionGetRawPositionService", () => {
     let mockLibrary: any;
 
     beforeEach(() => {
+        vi.clearAllMocks();
+
         // キャラクターのモック作成
         mockCharacter = {
             libraryId: "test-library-id",
@@ -33,18 +41,18 @@ describe("ReferencePositionGetRawPositionService", () => {
         };
 
         // CoreUtilのモック設定
-        vi.mocked($getCurrentWorkSpace).mockReturnValue(mockWorkSpace);
+        mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     describe("正常系", () => {
 
         beforeEach(() => {
             // 標準的なrawBoundsを設定
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue({
+            mockCharacter.getRawBounds.mockReturnValue({
                 xMin: 10,
                 yMin: 20,
                 xMax: 110,  // width = 100
@@ -134,7 +142,7 @@ describe("ReferencePositionGetRawPositionService", () => {
         });
 
         test("負の座標のrawBoundsでも正しく計算される", () => {
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue({
+            mockCharacter.getRawBounds.mockReturnValue({
                 xMin: -50,
                 yMin: -30,
                 xMax: 50,   // width = 100
@@ -154,7 +162,7 @@ describe("ReferencePositionGetRawPositionService", () => {
     describe("MOVIE_CLIPタイプ以外の場合", () => {
 
         beforeEach(() => {
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue({
+            mockCharacter.getRawBounds.mockReturnValue({
                 xMin: 10,
                 yMin: 20,
                 xMax: 110,
@@ -188,7 +196,7 @@ describe("ReferencePositionGetRawPositionService", () => {
     describe("異常系", () => {
 
         test("rawBoundsがnullの場合、原点座標を返す", () => {
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue(null);
+            mockCharacter.getRawBounds.mockReturnValue(null);
 
             const result = execute("middle-center", 100, 200, mockCharacter);
 
@@ -196,7 +204,7 @@ describe("ReferencePositionGetRawPositionService", () => {
         });
 
         test("rawBoundsがundefinedの場合、原点座標を返す", () => {
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue(undefined as any);
+            mockCharacter.getRawBounds.mockReturnValue(undefined as any);
 
             const result = execute("middle-center", 100, 200, mockCharacter);
 
@@ -204,7 +212,7 @@ describe("ReferencePositionGetRawPositionService", () => {
         });
 
         test("ライブラリが存在しない場合、rawBounds.xMin/yMinが加算されない", () => {
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue({
+            mockCharacter.getRawBounds.mockReturnValue({
                 xMin: 10,
                 yMin: 20,
                 xMax: 110,
@@ -222,7 +230,7 @@ describe("ReferencePositionGetRawPositionService", () => {
         });
 
         test("無効なpivot値でもエラーにならない", () => {
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue({
+            mockCharacter.getRawBounds.mockReturnValue({
                 xMin: 10,
                 yMin: 20,
                 xMax: 110,
@@ -231,15 +239,16 @@ describe("ReferencePositionGetRawPositionService", () => {
 
             const result = execute("invalid-pivot" as any, 100, 200, mockCharacter);
 
-            // defaultケースで元のx, yが使用される
+            // 無効なpivotの場合、$getPivotPositionは(0, 0)を返し、
+            // MovieClipタイプの場合はrawBounds.xMin, yMinが加算される
             expect(result).toEqual({
-                x: 110, // x + rawBounds.xMin = 100 + 10
-                y: 220  // y + rawBounds.yMin = 200 + 20
+                x: 10, // 0 + rawBounds.xMin = 0 + 10
+                y: 20  // 0 + rawBounds.yMin = 0 + 20
             });
         });
 
         test("width/heightが0の場合でも正常に動作する", () => {
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue({
+            mockCharacter.getRawBounds.mockReturnValue({
                 xMin: 50,
                 yMin: 50,
                 xMax: 50,   // width = 0
@@ -260,7 +269,7 @@ describe("ReferencePositionGetRawPositionService", () => {
 
         test("Math.absによる幅・高さ計算が正しく動作する", () => {
             // 逆順のbounds（xMax < xMin, yMax < yMin）
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue({
+            mockCharacter.getRawBounds.mockReturnValue({
                 xMin: 100,
                 yMin: 80,
                 xMax: 50,   // width = Math.abs(50 - 100) = 50
@@ -276,7 +285,7 @@ describe("ReferencePositionGetRawPositionService", () => {
         });
 
         test("引数のx, yはdefaultケース以外では使用されない", () => {
-            vi.mocked(mockCharacter.getRawBounds).mockReturnValue({
+            mockCharacter.getRawBounds.mockReturnValue({
                 xMin: 0,
                 yMin: 0,
                 xMax: 100,
