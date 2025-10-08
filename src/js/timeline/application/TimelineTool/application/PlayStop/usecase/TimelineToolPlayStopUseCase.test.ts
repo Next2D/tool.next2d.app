@@ -1,26 +1,38 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TimelineToolPlayStopUseCase";
 
 // 定数定義
 const TIMELINE_PLAY_STOP_ID = "timeline-play";
 
-// モック設定
-const mockGetCurrentWorkSpace = vi.fn();
-const mockGetRightFrame = vi.fn();
-const mockTimelineScrollUpdateScrollXUseCase = vi.fn();
-const mockSoundAreaRebuildSettingAreaUseCase = vi.fn();
-const mockTimelineLabelNameUpdateService = vi.fn();
-const mockExternalTimeline = vi.fn();
-const mockTimelineHeader = {
-    stopFlag: false,
-    loopFlag: false,
-    clientWidth: 100
-};
-
-// グローバルモック
-const mockRequestAnimationFrame = vi.fn();
-const mockCancelAnimationFrame = vi.fn();
-const mockPerformanceNow = vi.fn();
+// モック設定（vi.hoistedを使用）
+const {
+    mockGetCurrentWorkSpace,
+    mockGetRightFrame,
+    mockTimelineScrollUpdateScrollXUseCase,
+    mockSoundAreaRebuildSettingAreaUseCase,
+    mockTimelineLabelNameUpdateService,
+    mockExternalTimeline,
+    mockTimelineHeader,
+    mockRequestAnimationFrame,
+    mockCancelAnimationFrame,
+    mockPerformanceNow
+} = vi.hoisted(() => {
+    return {
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockGetRightFrame: vi.fn(),
+        mockTimelineScrollUpdateScrollXUseCase: vi.fn(),
+        mockSoundAreaRebuildSettingAreaUseCase: vi.fn(),
+        mockTimelineLabelNameUpdateService: vi.fn(),
+        mockExternalTimeline: vi.fn(),
+        mockTimelineHeader: {
+            stopFlag: false,
+            loopFlag: false,
+            clientWidth: 100
+        },
+        mockRequestAnimationFrame: vi.fn(),
+        mockCancelAnimationFrame: vi.fn(),
+        mockPerformanceNow: vi.fn()
+    };
+});
 
 vi.mock("@/core/application/CoreUtil", () => ({
     $getCurrentWorkSpace: mockGetCurrentWorkSpace
@@ -49,6 +61,8 @@ vi.mock("@/external/timeline/domain/model/ExternalTimeline", () => ({
 vi.mock("@/timeline/domain/model/TimelineHeader", () => ({
     timelineHeader: mockTimelineHeader
 }));
+
+import { execute } from "./TimelineToolPlayStopUseCase";
 
 describe("TimelineToolPlayStopUseCase", () => {
     let mockElement: HTMLElement;
@@ -113,6 +127,8 @@ describe("TimelineToolPlayStopUseCase", () => {
 
         originalCancelAnimationFrame = global.cancelAnimationFrame;
         global.cancelAnimationFrame = mockCancelAnimationFrame;
+        // グローバルスコープにも設定（setTimeout内でアクセスできるように）
+        (globalThis as any).cancelAnimationFrame = mockCancelAnimationFrame;
 
         originalPerformanceNow = performance.now;
         performance.now = mockPerformanceNow.mockReturnValue(1000);
@@ -125,6 +141,7 @@ describe("TimelineToolPlayStopUseCase", () => {
         document.getElementById = originalGetElementById;
         global.requestAnimationFrame = originalRequestAnimationFrame;
         global.cancelAnimationFrame = originalCancelAnimationFrame;
+        delete (globalThis as any).cancelAnimationFrame;
         performance.now = originalPerformanceNow;
     });
 

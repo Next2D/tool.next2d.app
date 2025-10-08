@@ -70,3 +70,12 @@ if (typeof globalThis.ace === "undefined") {
         }
     };
 }
+
+// requestAnimationFrame and cancelAnimationFrame mocks
+(globalThis as any).requestAnimationFrame = (callback: FrameRequestCallback) => {
+    return setTimeout(() => callback(Date.now()), 16) as unknown as number;
+};
+
+(globalThis as any).cancelAnimationFrame = (id: number) => {
+    clearTimeout(id);
+};

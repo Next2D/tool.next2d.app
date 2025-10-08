@@ -12,7 +12,7 @@ const {
     };
     return {
         mockGetCurrentWorkSpace: vi.fn(),
-        mockActiveTouchPointers: { size: 1 },
+        mockActiveTouchPointers: new Set(),
         mockExternalReferenceConstructor: vi.fn(() => mockExternalReferenceInstance),
         mockExternalReferenceInstance
     };
@@ -23,7 +23,7 @@ vi.mock("@/core/application/CoreUtil", () => ({
 }));
 
 vi.mock("@/global/GlobalUtil", () => ({
-    mockActiveTouchPointers: mockActiveTouchPointers
+    $activeTouchPointers: mockActiveTouchPointers
 }));
 
 vi.mock("@/external/controller/domain/model/ExternalReference", () => ({

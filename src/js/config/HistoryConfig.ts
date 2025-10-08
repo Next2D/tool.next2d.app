@@ -681,3 +681,12 @@ export const $CHARACTER_UPDATE_RED_MULTIPLIER_COMMAND: number = 69;
  * @constant
  */
 export const $CHARACTER_UPDATE_RED_OFFSET_COMMAND: number = 70;
+
+/**
+ * @description 緑の更新の識別コマンド名
+ *              Identification command name for updating the green multiplier of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_GREEN_MULTIPLIER_COMMAND: number = 71;

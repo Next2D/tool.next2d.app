@@ -1,0 +1,1856 @@
+
+> @next2d/animation-tool@1.0.0 test
+> vitest --run
+
+
+ RUN  v3.2.4 /Users/l_0018/PhpstormProjects/Next2D/tool-typescript
+
+5:04:21 PM [vite] (client) warning: Module "node:worker_threads" has been externalized for browser compatibility, imported by "/Users/l_0018/PhpstormProjects/Next2D/tool-typescript/node_modules/@vitest/web-worker/dist/index.js". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+  Plugin: vite:resolve
+5:04:21 PM [vite] (client) warning: Module "node:fs" has been externalized for browser compatibility, imported by "/Users/l_0018/PhpstormProjects/Next2D/tool-typescript/node_modules/@vitest/web-worker/dist/index.js". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.
+  Plugin: vite:resolve
+ ❯ src/js/controller/application/TransformSetting/usecase/TransformSettingInitializeRegisterEventUseCase.test.ts (33 tests | 1 failed) 125ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > すべての要素にイベントリスナーが正しく登録される 10ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > sizeLock要素にPOINTER_DOWNイベントが登録される 2ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > x要素に6つのイベントが登録される 2ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > y要素に6つのイベントが登録される 3ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > width要素に6つのイベントが登録される 2ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > height要素に6つのイベントが登録される 3ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > scaleLock要素にPOINTER_DOWNイベントが登録される 2ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > scaleX要素に6つのイベントが登録される 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > scaleY要素に6つのイベントが登録される 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > rotate要素に6つのイベントが登録される 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 正常系 - イベントリスナーの登録 > pointerdown イベントに passive: false オプションが設定される 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 要素不存在時の動作 > sizeLock要素が存在しない場合、イベントは登録されない 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 要素不存在時の動作 > x要素が存在しない場合、イベントは登録されない 2ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 要素不存在時の動作 > すべての要素が存在しない場合、エラーなく終了する 37ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 要素不存在時の動作 > 一部の要素のみ存在する場合、存在する要素のみイベント登録される 5ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > イベントハンドラーの呼び出し > 登録されたイベントハンドラーが正しく動作する 17ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > イベントハンドラーの呼び出し > focusinイベントが正しく発火する 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > イベントハンドラーの呼び出し > focusoutイベントが正しく発火する 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > イベントハンドラーの呼び出し > keypressイベントが正しく発火する 3ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > イベントハンドラーの呼び出し > pointerdownイベントが正しく発火する 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 複数回実行時の動作 > 複数回実行しても重複してイベントが登録される 1ms
+   × TransformSettingInitializeRegisterEventUseCase > 複数回実行時の動作 > 複数回実行後、イベントハンドラーが複数回呼ばれる 6ms
+     → expected "spy" to be called 2 times, but got 1 times
+   ✓ TransformSettingInitializeRegisterEventUseCase > エッジケース > 要素が削除された後に実行してもエラーにならない 2ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > エッジケース > Documentがnullでないことを確認 2ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > エッジケース > getElementByIdがnullを返すケースに対応している 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > パフォーマンステスト > イベント登録が高速に完了する 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 統合テスト風のシナリオ > 実際の使用シナリオ：すべての要素でイベントが動作する 2ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 統合テスト風のシナリオ > 異なるイベントが順次発火するシナリオ 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > 統合テスト風のシナリオ > ロック要素のクリックシナリオ 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > イベントリスナー登録の詳細確認 > 各入力要素に同じPointerOverサービスが登録される 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > イベントリスナー登録の詳細確認 > 各入力要素に同じPointerOutサービスが登録される 1ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > イベントリスナー登録の詳細確認 > 各入力要素に同じKeyPressサービスが登録される 7ms
+   ✓ TransformSettingInitializeRegisterEventUseCase > イベントリスナー登録の詳細確認 > 各入力要素に異なるPointerDownハンドラーが登録される 2ms
+ ❯ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts (12 tests | 5 failed) 18ms
+   × ReferenceSettingInitializeRegisterEventUseCase > 正常系 > 全ての要素が存在する場合、すべてのイベントリスナーが登録される 9ms
+     → referenceSettingBoxPointerDownUseCase is not defined
+   ✓ ReferenceSettingInitializeRegisterEventUseCase > 正常系 > イベントリスナーの呼び出し回数が正しい 1ms
+   ✓ ReferenceSettingInitializeRegisterEventUseCase > 要素が存在しない場合 > referenceSettingBoxが存在しない場合はイベント登録されない 1ms
+   ✓ ReferenceSettingInitializeRegisterEventUseCase > 要素が存在しない場合 > transformReferenceXが存在しない場合はX座標関連のイベント登録されない 0ms
+   ✓ ReferenceSettingInitializeRegisterEventUseCase > 要素が存在しない場合 > transformReferenceYが存在しない場合はY座標関連のイベント登録されない 0ms
+   ✓ ReferenceSettingInitializeRegisterEventUseCase > 要素が存在しない場合 > すべての要素が存在しない場合はイベント登録されない 0ms
+   × ReferenceSettingInitializeRegisterEventUseCase > イベントタイプとオプションの確認 > pointerdownイベントにpassive:falseオプションが設定される 0ms
+     → referenceSettingXPointerDownUseCase is not defined
+   × ReferenceSettingInitializeRegisterEventUseCase > イベントタイプとオプションの確認 > referenceSettingBoxのpointerdownイベントにはオプションが設定されない 0ms
+     → referenceSettingBoxPointerDownUseCase is not defined
+   × ReferenceSettingInitializeRegisterEventUseCase > イベントハンドラーの対応確認 > X座標とY座標で異なるハンドラーが使用される 0ms
+     → referenceSettingXPointerDownUseCase is not defined
+   × ReferenceSettingInitializeRegisterEventUseCase > イベントハンドラーの対応確認 > X座標とY座標で同じハンドラーが使用されるイベント 0ms
+     → referenceSettingPointerOverEventService is not defined
+   ✓ ReferenceSettingInitializeRegisterEventUseCase > DOM操作の検証 > document.getElementByIdが正しいIDで呼ばれる 3ms
+   ✓ ReferenceSettingInitializeRegisterEventUseCase > 複数回実行の検証 > 複数回実行してもイベントが重複登録される 0ms
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts (44 tests | 28 failed) 74ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > 早期リターン条件 > 再生中（stopFlag=false）の場合、何も処理しない 5ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > 早期リターン条件 > サウンドリストエリア要素が存在しない場合、何も処理しない 1ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > 早期リターン条件 > DisplayObjectが選択されている場合、何も処理しない 0ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > 早期リターン条件 > 現在のフレームにサウンドが存在しない場合、何も処理しない 0ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > 早期リターン条件 > サウンドの配列が空の場合、何も処理しない 0ms
+   × SoundAreaRebuildSettingAreaUseCase > 設定エリアの初期化 > 既存の子要素がすべて削除される 34ms
+     → expected 3 to be +0 // Object.is equality
+   ✓ SoundAreaRebuildSettingAreaUseCase > 設定エリアの初期化 > 子要素がない場合もエラーなく処理される 0ms
+   × SoundAreaRebuildSettingAreaUseCase > 設定エリアの初期化 > 複数の子要素があってもすべて削除される 1ms
+     → expected 10 to be +0 // Object.is equality
+   × SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > 1つのサウンドが正しく追加される 1ms
+     → expected "spy" to be called 1 times, but got 0 times
+   × SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > currentFrameのサウンドが取得される 4ms
+     → expected "spy" to be called with arguments: [ 5 ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > libraryIdからサウンドライブラリが取得される 0ms
+     → expected "spy" to be called with arguments: [ 'sound1' ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > サウンド名が正しく渡される 0ms
+     → expected "spy" to be called with arguments: [ +0, 'Background Music', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > インデックスが0から始まる 0ms
+     → Cannot read properties of undefined (reading '0')
+   × SoundAreaRebuildSettingAreaUseCase > 複数サウンドの処理 > 複数のサウンドが順次追加される 0ms
+     → expected "spy" to be called 3 times, but got 0 times
+   × SoundAreaRebuildSettingAreaUseCase > 複数サウンドの処理 > 10個のサウンドが正しく処理される 0ms
+     → expected "spy" to be called 10 times, but got 0 times
+   × SoundAreaRebuildSettingAreaUseCase > 複数サウンドの処理 > 各サウンドのインデックスが正しく渡される 2ms
+     → Cannot read properties of undefined (reading '0')
+   × SoundAreaRebuildSettingAreaUseCase > サウンドオブジェクトの検証 > soundObjectがnullの場合はスキップされる 1ms
+     → expected "spy" to be called 2 times, but got 0 times
+   × SoundAreaRebuildSettingAreaUseCase > サウンドオブジェクトの検証 > soundObjectがundefinedの場合はスキップされる 1ms
+     → expected "spy" to be called 2 times, but got 0 times
+   × SoundAreaRebuildSettingAreaUseCase > サウンドオブジェクトの検証 > ライブラリからサウンドが見つからない場合はスキップされる 0ms
+     → expected "spy" to be called 2 times, but got 0 times
+   × SoundAreaRebuildSettingAreaUseCase > サウンドオブジェクトの検証 > 複数のサウンドでnullやライブラリ未検出が混在する場合 0ms
+     → expected "spy" to be called 2 times, but got 0 times
+   × SoundAreaRebuildSettingAreaUseCase > 非同期処理 > 各サウンドの追加が非同期で実行される 0ms
+     → expected +0 to be 2 // Object.is equality
+   × SoundAreaRebuildSettingAreaUseCase > 非同期処理 > 複数のサウンドが順次処理される 1ms
+     → expected [] to deeply equal [ +0, 1, 2 ]
+   × SoundAreaRebuildSettingAreaUseCase > 設定エリアの再構成 > 既存の設定エリアが削除されてから新しいエリアが追加される 0ms
+     → expected 2 to be +0 // Object.is equality
+   × SoundAreaRebuildSettingAreaUseCase > 設定エリアの再構成 > 再構成時にMovieClipの現在フレームが参照される 0ms
+     → expected "spy" to be called with arguments: [ 10 ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > currentFrameが0の場合 0ms
+     → expected "spy" to be called with arguments: [ +0 ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > currentFrameが負の値の場合 0ms
+     → expected "spy" to be called with arguments: [ -1 ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > currentFrameが非常に大きい値の場合 0ms
+     → expected "spy" to be called with arguments: [ 9999 ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > volumeが0の場合 0ms
+     → expected "spy" to be called with arguments: [ +0, 'Test Sound', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > volumeが1.0を超える場合 0ms
+     → expected "spy" to be called with arguments: [ +0, 'Test Sound', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > loopが負の値の場合 0ms
+     → expected "spy" to be called with arguments: [ +0, 'Test Sound', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > loopが非常に大きい値の場合 0ms
+     → expected "spy" to be called with arguments: [ +0, 'Test Sound', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > サウンド名が空文字列の場合 0ms
+     → expected "spy" to be called with arguments: [ +0, '', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > サウンド名が非常に長い場合 7ms
+     → expected "spy" to be called with arguments: [ +0, …(2) ][90m
+
+Number of calls: [1m0[22m
+[39m
+   × SoundAreaRebuildSettingAreaUseCase > エッジケース > libraryIdが空文字列の場合 1ms
+     → expected "spy" to be called with arguments: [ '' ][90m
+
+Number of calls: [1m0[22m
+[39m
+   ✓ SoundAreaRebuildSettingAreaUseCase > 複合シナリオ > 再生停止 → サウンドあり → 設定エリア追加 1ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > 複合シナリオ > 複数フレーム間の切り替え 1ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > 複合シナリオ > 選択状態の変化による処理制御 1ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > エラーハンドリング > soundAreaAddSettingAreaUseCaseでエラーが発生した場合 2ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > エラーハンドリング > getLibraryでエラーが発生した場合 1ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > エラーハンドリング > getSoundでエラーが発生した場合 2ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > エラーハンドリング > 途中でエラーが発生した場合、それ以降の処理は行われない 0ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > パフォーマンステスト > 単一サウンドの処理が高速に実行される 0ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > パフォーマンステスト > 複数サウンドの処理が妥当な時間で実行される 0ms
+   ✓ SoundAreaRebuildSettingAreaUseCase > 統合テスト > 完全な再構成フロー 0ms
+ ❯ src/js/controller/application/TransformSetting/usecase/TransformSettingUpdateHeightToElementValuesUseCase.test.ts (44 tests | 3 failed) 158ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 早期リターン条件 > scale_y が 1 の場合、何も処理しない 19ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 早期リターン条件 > 選択中のElementがない場合、何も処理しない 6ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 早期リターン条件 > スクリーンエリア要素が存在しない場合、何も処理しない 2ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 単一オブジェクト選択時の処理 > scale_y > 1 の場合、正しく変形処理が実行される 6ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 単一オブジェクト選択時の処理 > scale_y < 1 の場合、正しく縮小処理が実行される 4ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 単一オブジェクト選択時の処理 > 負のscale_yの場合も処理される 3ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 単一オブジェクト選択時の処理 > NodeのスタイルとCanvasサイズが更新される 2ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 単一オブジェクト選択時の処理 > マスクの更新が実行される 2ms
+   × TransformSettingUpdateHeightToElementValuesUseCase > 単一オブジェクト選択時の処理 > scaleXとscaleYの表示値が正しく計算される 19ms
+     → expected "spy" to be called with arguments: [ 150 ][90m
+
+Received: 
+
+[1m  1st spy call:
+
+[22m[2m  [[22m
+[32m-   150,[90m
+[31m+   100,[90m
+[2m  ][22m
+[39m[90m
+
+Number of calls: [1m1[22m
+[39m
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 単一オブジェクト選択時の処理 > キャラクターの回転が適用される 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 単一オブジェクト選択時の処理 > スクリーンオフセットが適用される 2ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 複数オブジェクト選択時の処理 > 複数選択時は選択範囲のBoundsが使用される 2ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 複数オブジェクト選択時の処理 > 複数選択時は基準点の再配置が実行されない 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 複数オブジェクト選択時の処理 > 複数レイヤーの複数オブジェクトが処理される 1ms
+   × TransformSettingUpdateHeightToElementValuesUseCase > 複数オブジェクト選択時の処理 > Boundsがnullの場合は座標更新がスキップされる 1ms
+     → expected "spy" to be called at least once
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > レイヤーとキャラクターの検証 > レイヤーが見つからない場合はスキップ 0ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > レイヤーとキャラクターの検証 > Nodeが見つからない場合はスキップ 0ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > レイヤーとキャラクターの検証 > キャラクターが見つからない場合はスキップ 0ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > レイヤーとキャラクターの検証 > インスタンスが見つからない場合はスキップ 0ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > レイヤーとキャラクターの検証 > getBoundsがnullを返す場合、スタイル更新がスキップされる 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > レイヤーとキャラクターの検証 > getRawBoundsがnullを返す場合、canvas更新がスキップされる 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > レイヤーとキャラクターの検証 > canvas要素が存在しない場合、canvasサイズ更新がスキップされる 3ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > レイヤーとキャラクターの検証 > container要素が存在しない場合、container処理がスキップされる 2ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > Matrix計算 > 連結Matrix、ローカル座標変換、回転処理が正しく実行される 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > Matrix計算 > 回転が適用された状態でのMatrix計算 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > Matrix計算 > referenceSettingの座標が使用される 4ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > scaleYの累積更新 > transformSetting.scaleYが正しく累積更新される 7ms
+   × TransformSettingUpdateHeightToElementValuesUseCase > scaleYの累積更新 > 複数回実行時のscaleY累積 4ms
+     → expected 1.7999999999999998 to be 1.8 // Object.is equality
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > scaleYの累積更新 > scaleYが0.5未満になる場合 3ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > scaleYの累積更新 > scaleYが負の値になる場合 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 非同期処理 > マスク更新が非同期で実行される 12ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > 非同期処理 > 複数のキャラクターのマスク更新が順次実行される 18ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > エッジケース > scale_y が 0 の場合も処理される 5ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > エッジケース > 非常に大きなscale_y値 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > エッジケース > 非常に小さなscale_y値 3ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > エッジケース > Infinity値の処理 2ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > エッジケース > 負のInfinity値の処理 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > エッジケース > Boundsの値が極端に小さい場合 2ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > エッジケース > Boundsが負の範囲の場合 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > transformSetting.hの更新 > 単一選択時、transformSetting.hがキャラクターの高さで更新される 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > transformSetting.hの更新 > 複数選択時、transformSetting.hが選択範囲の高さで更新される 1ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > transformSetting.hの更新 > 高さの計算で小数点以下が正しく丸められる 5ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > パフォーマンステスト > 単一オブジェクトの処理が高速に実行される 2ms
+   ✓ TransformSettingUpdateHeightToElementValuesUseCase > パフォーマンステスト > 複数オブジェクトの処理が妥当な時間で実行される 1ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingUpdateRotateToElementValuesUseCase.test.ts (59 tests) 624ms
+ ❯ src/js/core/application/Video/component/VideoDisplayObjectComponent.test.ts (1 test | 1 failed) 6ms
+   × VideoDisplayObjectComponent Test > test case 5ms
+     → expected '<div class="display-object layer-id-1…' to be '<div class="display-object layer-id-1…' // Object.is equality
+ ❯ src/js/core/application/Text/component/TextDisplayObjectComponent.test.ts (1 test | 1 failed) 13ms
+   × TextDisplayObjectComponent Test > test case 12ms
+     → expected '<div class="display-object layer-id-1…' to be '<div class="display-object layer-id-1…' // Object.is equality
+ ❯ src/js/core/application/Shape/component/ShapeDisplayObjectComponent.test.ts (1 test | 1 failed) 14ms
+   × ShapeDisplayObjectComponent Test > test case 13ms
+     → expected '<div class="display-object layer-id-1…' to be '<div class="display-object layer-id-1…' // Object.is equality
+ ❯ src/js/core/application/MovieClip/component/MovieClipDisplayObjectComponent.test.ts (1 test | 1 failed) 30ms
+   × MovieClipDisplayObjectComponent Test > test case 29ms
+     → expected '<div class="display-object layer-id-1…' to be '<div class="display-object layer-id-1…' // Object.is equality
+ ❯ src/js/menu/application/ScreenMenu/usecase/ScreenMenuTouchPointerDownUseCase.test.ts (1 test | 1 failed) 8ms
+   × ScreenMenuTouchPointerDownUseCase Test > execute test 7ms
+     → expected false to be true // Object.is equality
+ ✓ src/js/screen/application/ReferencePoint/service/ScreenReferencePointShowService.test.ts (13 tests) 169ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaLoopCountPointerMoveEventUseCase.test.ts (2 tests) 74ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingXFocusInEventUseCase.test.ts (1 test) 8ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingYFocusInEventUseCase.test.ts (1 test) 7ms
+ ✓ src/js/screen/application/ReferencePoint/service/ScreenReferencePointHideService.test.ts (6 tests) 52ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaOffsetFocusOutEventUseCase.test.ts (49 tests) 169ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaOffsetUpdateElementUseCase.test.ts (55 tests) 298ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaMultiplierFocusOutEventUseCase.test.ts (48 tests) 230ms
+ ✓ src/js/menu/application/ScriptEditorModal/service/ScriptEditorModalPointerMoveService.test.ts (1 test) 78ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingFpsPointerMoveEventUseCase.test.ts (1 test) 73ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaVolumePointerMoveEventUseCase.test.ts (2 tests) 92ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaPointerMoveEventService.test.ts (1 test) 45ms
+ ✓ src/js/controller/application/PropertyArea/service/PropertyAreaPointerMoveService.test.ts (1 test) 42ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingYPointerUpEventUseCase.test.ts (39 tests) 231ms
+ ✓ src/js/controller/application/PluginAreaScroll/service/PluginAreaScrollWheelEventService.test.ts (1 test) 48ms
+ ✓ src/js/controller/application/PropertyAreaScroll/service/PropertyAreaScrollWheelEventService.test.ts (1 test) 82ms
+ ✓ src/js/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService.test.ts (40 tests) 457ms
+ ✓ src/js/controller/application/PluginAreaScroll/usecase/PluginAreaScrollPointerMoveUseCase.test.ts (1 test) 46ms
+ ✓ src/js/controller/application/ScriptAreaScroll/usecase/ScriptAreaScrollPointerMoveUseCase.test.ts (1 test) 38ms
+ ✓ src/js/controller/application/HistoryAreaScroll/service/HistoryAreaScrollWheelEventService.test.ts (1 test) 45ms
+ ✓ src/js/controller/application/ScriptAreaScroll/service/ScriptAreaScrollWheelEventService.test.ts (1 test) 38ms
+ ✓ src/js/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollPointerMoveEventUseCase.test.ts (1 test) 47ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaInstanceNamePointerDownEventUseCase.test.ts (1 test) 65ms
+ ✓ src/js/screen/application/DisplayObject/usecase/ScreenDisplayObjectArrowRightEventUseCase.test.ts (47 tests) 97ms
+ ✓ src/js/controller/application/LibraryAreaScroll/service/LibraryAreaScrollWheelEventService.test.ts (1 test) 60ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingHeightPointerMoveEventUseCase.test.ts (1 test) 38ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingYFocusOutEventUseCase.test.ts (32 tests) 37ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingBoxPointerDownUseCase.test.ts (29 tests) 121ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingWidthPointerMoveEventUseCase.test.ts (1 test) 40ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingInputPointerOverEventService.test.ts (34 tests) 384ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingInputPointerOutEventService.test.ts (29 tests) 243ms
+ ✓ src/js/controller/application/PropertyAreaScroll/usecase/PropertyAreaScrollPointerMoveUseCase.test.ts (1 test) 110ms
+ ✓ src/js/controller/application/PropertyArea/service/PropertyAreaShowTabService.test.ts (1 test) 26ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaOffsetPointerUpUseCase.test.ts (42 tests) 123ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingXPointerUpEventUseCase.test.ts (33 tests) 66ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingXFocusOutEventUseCase.test.ts (25 tests) 46ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingXFocusInEventService.test.ts (21 tests) 186ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingPointerOutEventService.test.ts (24 tests) 47ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaOffsetPointerDownUseCase.test.ts (49 tests) 147ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingYPointerDownUseCase.test.ts (37 tests) 10ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingUpdateAlphaMultiplierElementValueService.test.ts (42 tests) 17ms
+ ✓ src/js/controller/application/PropertyArea/service/PropertyAreaHideTabService.test.ts (1 test) 13ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingUpdateYService.test.ts (28 tests) 33ms
+ ✓ src/js/timeline/application/TimelineArea/service/TimelineAreaPointerMoveService.test.ts (1 test) 25ms
+ ✓ src/js/tool/application/ToolArea/service/ToolAreaPointerMoveService.test.ts (1 test) 34ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaMultiplierPointerUpUseCase.test.ts (42 tests) 18ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaMultiplierUpdateElementUseCase.test.ts (48 tests) 50ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingYFocusInEventService.test.ts (28 tests) 33ms
+ ✓ src/js/controller/application/TransformSetting/TransformSettingUtil.test.ts (49 tests) 34ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaOffsetUpdateValueUseCase.test.ts (49 tests) 42ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaMultiplierPointerDownUseCase.test.ts (39 tests) 112ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingPointerOverEventService.test.ts (19 tests) 29ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingInputFocusInEventService.test.ts (31 tests) 29ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaMultiplierPointerMoveUseCase.test.ts (40 tests) 75ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaOffsetPointerMoveUseCase.test.ts (40 tests) 28ms
+ ✓ src/js/screen/application/ReferencePoint/service/ScreenReferencePointMoveElementService.test.ts (15 tests) 78ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingUpdateXService.test.ts (24 tests) 15ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateXUseCase.test.ts (30 tests) 9ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingUpdateCellValueService.test.ts (21 tests) 40ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingUpdateBlueMultiplierElementValueService.test.ts (49 tests) 120ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingUpdateUseCase.test.ts (59 tests) 14ms
+ ✓ src/js/screen/application/DrawRect/service/DrawRectShowService.test.ts (1 test) 39ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerInactiveExitIconElementService.test.ts (1 test) 20ms
+ ✓ src/js/timeline/application/TimelineHeader/usecase/TimelineHeaderLabelIconPointerDownEventUseCase.test.ts (1 test) 49ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingXPointerDownUseCase.test.ts (31 tests) 23ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingUpdateRedOffsetElementValueService.test.ts (48 tests) 19ms
+ ✓ src/js/screen/application/DisplayObject/usecase/ScreenDisplayObjectArrowLeftEventUseCase.test.ts (42 tests) 24ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaSoundAddPointerDownEventUseCase.test.ts (2 tests) 5ms
+ ✓ src/js/screen/application/DisplayObject/usecase/ScreenDisplayObjectArrowUpEventUseCase.test.ts (51 tests) 13ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateColorElementService.test.ts (1 test) 20ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabInactiveStyleService.test.ts (6 tests) 21ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingUpdateAlphaOffsetElementValueService.test.ts (48 tests) 12ms
+ ✓ src/js/timeline/application/TimelineHeader/service/TimelineHeaderUpdateDisplayElementService.test.ts (1 test) 9ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerNameTextInactiveStyleService.test.ts (1 test) 42ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuExportActiveService.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaActiveInstanceTextContentService.test.ts (1 test) 71ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaInactiveInstanceTextContentService.test.ts (1 test) 95ms
+ ✓ src/js/screen/application/DisplayObject/service/ScreenDisplayObjectResetMaskStyleService.test.ts (1 test) 10ms
+ ✓ src/js/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateSelectedValueService.test.ts (30 tests) 133ms
+ ✓ src/js/controller/application/ObjectSetting/usecase/ObjectSettingRegisterEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingUpdateRedMultiplierElementValueService.test.ts (49 tests) 37ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Sound/service/LibraryAreaAddNewVideoCreateHistoryObjectService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingWidthFocusInEventUseCase.test.ts (2 tests) 4ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerDisableIconWindowPointerUpService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingUpdateBlueOffsetElementValueService.test.ts (48 tests) 12ms
+ ✓ src/js/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRemoveInstanceService.test.ts (1 test) 12ms
+ ✓ src/js/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService.test.ts (1 test) 23ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaPointerDownEventUseCase.test.ts (1 test) 7ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingYPointerMoveEventUseCase.test.ts (38 tests) 15ms
+ ✓ src/js/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaChangeColorService.test.ts (1 test) 17ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingUpdateElementUseCase.test.ts (44 tests) 17ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuLanguageSettingOptionSelectedService.test.ts (1 test) 7ms
+ ✓ src/js/screen/application/ScreenStageArea/service/ScreenStageAreaAllDisplayObjectActiveService.test.ts (1 test) 12ms
+ ✓ src/js/core/application/Stage/service/StageStyleUpdateColorService.test.ts (1 test) 14ms
+ ✓ src/js/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuChangeColorUseCase.test.ts (1 test) 16ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingUpdateGreenMultiplierElementValueService.test.ts (49 tests) 23ms
+ ✓ src/js/screen/application/TargetRect/service/TargetRectShowElementService.test.ts (1 test) 41ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingUpdateGreenOffsetElementValueService.test.ts (48 tests) 31ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaInstanceSymbolPointerDownEventUseCase.test.ts (1 test) 90ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleXFocusInEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/screen/application/DisplayObject/usecase/ScreenDisplayObjectArrowDownEventUseCase.test.ts (37 tests) 30ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerNameTextActiveStyleService.test.ts (1 test) 38ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSettingAlphaMultiplierUpdateValueUseCase.test.ts (46 tests) 26ms
+ ✓ src/js/core/application/Character/usecase/CharacterCreateElementUseCase.test.ts (1 test) 22ms
+ ✓ src/js/timeline/application/TimelineMarker/service/TimelineMarkerMovePositionService.test.ts (1 test) 6ms
+ ✓ src/js/screen/application/StageRect/service/StageRectShowService.test.ts (1 test) 24ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingShowElementService.test.ts (1 test) 7ms
+ ✓ src/js/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropEndService.test.ts (1 test) 9ms
+ ✓ src/js/controller/application/ObjectSetting/service/ObjectSettingHideSymbolService.test.ts (1 test) 16ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabActiveStyleService.test.ts (1 test) 31ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaMovieClipIconPointerDownEventUseCase.test.ts (2 tests) 16ms
+ ✓ src/js/history/application/core/application/Character/UpdateMatrix/service/CharacterUpdateMatrixCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/ScriptArea/service/ScriptAreaRemoveElementService.test.ts (1 test) 8ms
+ ✓ src/js/controller/application/ReferenceSetting/ReferenceSettingUtil.test.ts (35 tests) 8ms
+ ✓ src/js/controller/application/ScriptAreaScroll/service/ScriptAreaScrollScrollUpdateHeightService.test.ts (1 test) 11ms
+ ✓ src/js/core/application/Instance/service/InstanceUpdateBlendModeService.test.ts (1 test) 21ms
+ ✓ src/js/screen/application/StandardPoint/service/ScreenParentStandardPointHideElementService.test.ts (1 test) 11ms
+ ✓ src/js/history/application/timeline/application/TimelineTool/LabelUpdate/service/LabelUpdateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ScriptEditorModal/service/ScriptEditorModalSaveService.test.ts (1 test) 3ms
+ ✓ src/js/global/application/usecase/GlobalRegisterEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/screen/application/ScreenArea/usecase/ScreenAreaMoveDisplayObjectElementUseCase.test.ts (1 test) 15ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService.test.ts (1 test) 15ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerActiveExitIconElementService.test.ts (1 test) 11ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaActiveInstanceSymbolService.test.ts (1 test) 10ms
+ ✓ src/js/screen/application/ScreenArea/service/ScreenAreaLibraryItemDropStartService.test.ts (1 test) 8ms
+ ✓ src/js/screen/application/DisplayObject/service/ScreenDisplayObjectActvieElementService.test.ts (1 test) 15ms
+ ✓ src/js/tool/application/StrokeSize/service/StrokeSizeMouseOutEventService.test.ts (1 test) 4ms
+ ✓ src/js/screen/application/StandardPoint/service/ScreenStandardPointHideElementService.test.ts (1 test) 7ms
+ ✓ src/js/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService.test.ts (37 tests) 9ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerActiveInsertIconElementService.test.ts (1 test) 39ms
+ ✓ src/js/timeline/application/TimelineLayer/service/TimelineLayerGetClassNameService.test.ts (1 test) 1ms
+ ✓ src/js/screen/application/ScreenArea/service/ScreenAreaRemoveAllDisplayObjectService.test.ts (1 test) 7ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaUpdateVolumeElementService.test.ts (1 test) 10ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuShowLibraryListService.test.ts (1 test) 10ms
+ ✓ src/js/core/application/ReferencePosition/usecase/ReferencePositionGetGlobalPositionUseCase.test.ts (12 tests) 7ms
+ ✓ src/js/screen/application/StandardPoint/service/ScreenParentStandardPointShowElementService.test.ts (1 test) 9ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabGetTextElementService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLightIconElementService.test.ts (1 test) 10ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateYUseCase.test.ts (30 tests) 8ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerInactiveInsertIconElementService.test.ts (1 test) 12ms
+ ✓ src/js/screen/application/DisplayObject/service/ScreenDisplayObjectChangeElementClassService.test.ts (1 test) 8ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateElementUseCase.test.ts (18 tests | 1 skipped) 5ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuEditMovieClipActiveService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/controller/application/SoundArea/AddSound/service/SoundAreaAddSoundCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameWidthService.test.ts (1 test) 8ms
+ ✓ src/js/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameUpdateStyleService.test.ts (1 test) 8ms
+ ✓ src/js/screen/application/TextRect/service/TextRectShowService.test.ts (1 test) 11ms
+ ✓ src/js/timeline/application/TimelineSceneList/service/TimelineSceneListClearAllService.test.ts (1 test) 7ms
+ ✓ src/js/screen/application/TextRect/service/TextRectHideService.test.ts (1 test) 8ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingXPointerMoveEventUseCase.test.ts (33 tests) 9ms
+ ✓ src/js/screen/application/DrawRect/service/DrawRectHideService.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/AdArea/service/AdAreaHideService.test.ts (1 test) 7ms
+ ✓ src/js/menu/application/ScreenMenu/usecase/ScreenMenuInitializeRegisterPointerOverUseCase.test.ts (1 test) 9ms
+ ✓ src/js/screen/application/StandardPoint/service/ScreenStandardPointShowElementService.test.ts (1 test) 9ms
+ ✓ src/js/controller/application/PluginAreaScroll/usecase/PluginAreaScrollInitializeRegisterEventUseCase.test.ts (1 test) 7ms
+ ✓ src/js/screen/application/DisplayObject/service/ScreenDisplayObjectInactvieElementService.test.ts (1 test) 7ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateNameElementService.test.ts (1 test) 10ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabRemoveElementService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/LibraryMenu/usecase/LibraryTouchPointerDownUseCase.test.ts (1 test) 4ms
+ ✓ src/js/screen/application/TargetRect/service/TargetRectMoveElementService.test.ts (1 test) 9ms
+ ✓ src/js/controller/application/HistoryAreaScroll/service/HistoryAreaScrollScrollUpdateHeightService.test.ts (1 test) 8ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleXPointerDownEventUseCase.test.ts (2 tests) 4ms
+ ✓ src/js/screen/application/TargetRect/service/TargetRectHideElementService.test.ts (1 test) 7ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaActiveElementService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleXPointerUpEventUseCase.test.ts (1 test) 5ms
+ ✓ src/js/timeline/application/TimelineHeader/service/TimelineHeaderIconPointerOverService.test.ts (1 test) 6ms
+ ✓ src/js/screen/application/ScreenArea/usecase/ScreenAreaRemoveDisplayObjectElementUseCase.test.ts (1 test) 7ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingInputKeyPressEventService.test.ts (20 tests) 17ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaRebuildSelectElementService.test.ts (1 test) 7ms
+ ✓ src/js/menu/application/TimelineHeaderMenu/usecase/TimelineHeaderMenuInitializeRegisterEventUseCase.test.ts (2 tests) 9ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingRotateFocusOutEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/TimelineLayerControllerMenu/service/TimelineLayerControllerMenuScaleSelectService.test.ts (1 test) 10ms
+ ✓ src/js/tool/application/StrokeSize/service/StrokeSizeMouseOverEventService.test.ts (1 test) 8ms
+ ✓ src/js/core/application/ReferencePosition/service/ReferencePositionGetRawPositionService.test.ts (19 tests) 5ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/InsertEmptyFrames/service/TimelineLayerFrameInsertEmptyFramesCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateDisableIconElementService.test.ts (1 test) 4ms
+ ✓ src/js/screen/application/ScreenStage/service/ScreenStagePositionCenterService.test.ts (1 test) 5ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingWidthPointerDownEventUseCase.test.ts (2 tests) 7ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingRotatePointerDownEventUseCase.test.ts (2 tests) 6ms
+ ✓ src/js/timeline/application/TimelineTool/application/ScaleFrame/service/ScaleFrameMouseOverEventService.test.ts (1 test) 10ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuCopyInactiveService.test.ts (1 test) 3ms
+ ✓ src/js/screen/application/StageRect/service/StageRectHideService.test.ts (1 test) 7ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingHeightPointerMoveEventUseCase.test.ts (1 test) 5ms
+ ✓ src/js/menu/application/LibraryMenu/usecase/LibraryMenuInitializeRegisterEventUseCase.test.ts (8 tests) 8ms
+ ✓ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingGetMultiRawPositionUseCase.test.ts (16 tests) 10ms
+ ✓ src/js/controller/application/HistoryArea/usecase/HistoryAddElementUseCase.test.ts (1 test) 12ms
+ ✓ src/js/controller/application/ObjectSetting/service/ObjectSettingShowSymbolService.test.ts (1 test) 6ms
+ ✓ src/js/timeline/application/TimelineTargetGroup/service/TimelineTargetGroupInactiveElementService.test.ts (1 test) 10ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaInitializeRegisterEventUseCase.test.ts (1 test) 5ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaUpdateLoopCountElementService.test.ts (1 test) 5ms
+ ✓ src/js/tool/domain/event/ToolEvent.test.ts (2 tests) 4ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingPointerOverEventService.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/ProgressMenu/service/ProgressMenuUpdateMessageService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingHeightPointerUpEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineHeader/service/TimelineHeaderIconPointerOutService.test.ts (1 test) 13ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingFpsFocusOutEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/PropertyArea/service/PropertyAreaBlockHideService.test.ts (1 test) 7ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaVolumePointerOverEventService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/PluginAreaScroll/service/PluginAreaScrollScrollUpdateHeightService.test.ts (1 test) 8ms
+ ✓ src/js/language/application/LanguageUtil.test.ts (2 tests) 1ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabActiveElementService.test.ts (1 test) 5ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuKeyboardEventUseCase.test.ts (1 test) 14ms
+ ✓ src/js/core/application/MovieClip/service/MovieClipCreatePublishPlaceObjectService.test.ts (5 tests) 2ms
+ ✓ src/js/controller/application/ControllerAdjustment/usecase/ControllerAdjustmentInitializeRegisterEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuShowTimelineListService.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/PropertyArea/service/PropertyAreaBlockShowService.test.ts (1 test) 5ms
+ ✓ src/js/screen/application/StandardPoint/service/ScreenStandardPointMoveElementService.test.ts (1 test) 9ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/UpdateEmptyKeyframe/service/TimelineLayerFrameUpdateEmptyKeyframeCreateHistoryObjectService.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/ScreenMenu/service/ScreenMenuShowSubMenuService.test.ts (1 test) 6ms
+ ✓ src/js/menu/application/ScriptEditorModal/service/ScriptEditorModalUpdateTitleService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateLockIconElementService.test.ts (1 test) 5ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuShowScreenListService.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingXPointerDownEventUseCase.test.ts (2 tests) 15ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabDragLeaveService.test.ts (1 test) 6ms
+ ✓ src/js/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameCreateContentComponentService.test.ts (1 test) 6ms
+ ✓ src/js/tool/application/ZoomTool/service/ZoomToolPointerOverEventService.test.ts (1 test) 4ms
+ ✓ src/js/history/application/controller/application/ReferenceSetting/UpdatePivot/service/ReferenceSettingUpdatePivotHistoryObjectService.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuResetElementTextService.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineScroll/service/TimelineScrollUpdateHeightService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ToolArea/service/ToolAreaInitializeBootService.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/TimelineLayerControllerMenu/service/TimelineLayerControllerMenuUpdateIconStyleService.test.ts (1 test) 5ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingHeightPointerDownEventUseCase.test.ts (2 tests) 3ms
+ ✓ src/js/tool/application/RoundRectTool/service/RoundRectToolPointerOverEventService.test.ts (1 test) 6ms
+ ✓ src/js/core/application/ReferencePosition/service/ReferencePositionGetPositionService.test.ts (15 tests) 5ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuChangeListStyleUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingYPointerDownEventUseCase.test.ts (2 tests) 7ms
+ ✓ src/js/controller/application/PropertyArea/usecase/PropertyAreaTitlePointerDownEventUseCase.test.ts (1 test) 10ms
+ ✓ src/js/core/application/Stage/service/StageStyleUpdateSizeService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/LibraryArea/component/LibraryAreaComponent.test.ts (2 tests) 3ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaReOrderingService.test.ts (2 tests) 2ms
+ ✓ src/js/timeline/application/TimelineTool/application/ScaleFrame/service/ScaleFrameMouseOutEventService.test.ts (1 test) 7ms
+ ✓ src/js/screen/application/ScreenStageArea/service/ScreenStageAreaAllDisplayObjectInactiveService.test.ts (1 test) 5ms
+ ✓ src/js/timeline/application/TimelineHeader/service/TimelineHeaderUpdateClientWidthService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingHeightFocusInEventUseCase.test.ts (2 tests) 4ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingInitializeRegisterEventUseCase.test.ts (5 tests) 9ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleYPointerDownEventUseCase.test.ts (2 tests) 4ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingPointerOutEventService.test.ts (1 test) 5ms
+ ✓ src/js/core/application/MovieClip/service/MovieClipCalcBoundService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaUpdateSymbolElementService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaRegisterPointerEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabGetListElementService.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineScroll/service/TimelineScrollUpdateWidthService.test.ts (1 test) 22ms
+ ✓ src/js/timeline/application/TimelineLabelName/service/TimelineLabelNameUpdateService.test.ts (1 test) 3ms
+ ✓ src/js/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingInputPointerOverEventService.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaVolumePointerUpEventUseCase.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaLoopCountFocusInEventService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingXFocusOutEventUseCase.test.ts (1 test) 5ms
+ ✓ src/js/timeline/application/TimelineHeader/service/TimelineHeaderUpdateFrameElementService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ZoomTool/service/ZoomToolPointerOutEventService.test.ts (1 test) 5ms
+ ✓ src/js/history/application/core/application/Layer/service/LayerUpdateLightColorCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineTool/application/CurrentFrame/service/TimelineToolCurrentFrameMouseOutEventService.test.ts (1 test) 16ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabGetElementService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ControllerTab/usecase/ControllerTabPointerDownEventUseCase.test.ts (1 test) 5ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaInstanceNameFocusOutEventUseCase.test.ts (3 tests) 5ms
+ ✓ src/js/menu/application/TimelineLayerControllerMenu/service/TimelineLayerControllerMenuSetColorService.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineTool/application/LabelInput/service/TimelineToolLabelInputKeyPressEventService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineSceneList/service/TimelineSceneListExcludeElememtService.test.ts (1 test) 5ms
+ ✓ src/js/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuInitializeRegisterEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaArrowIconPointerDownEventService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingInputPointerOutEventService.test.ts (1 test) 5ms
+ ✓ src/js/screen/application/DisplayObject/component/ScreenDisplayObjectSvgTagComponent.test.ts (26 tests) 5ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuInitializeRegisterEventUseCase.test.ts (6 tests) 4ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaLoopCountPointerOutEventService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingHeightFocusOutEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/ScreenTabMenu/usecase/ScreenTabMenuInitializeUseCase.test.ts (1 test) 4ms
+ ✓ src/js/menu/domain/model/BaseMenu.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaVolumeFocusInEventService.test.ts (1 test) 7ms
+ ✓ src/js/controller/application/HistoryAreaScroll/usecase/HistoryAreaScrollPointerDownUseCase.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuPublishTypeOptionSelectedService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaInstanceSymbolFocusOutEventUseCase.test.ts (3 tests) 18ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaVolumePointerOutEventService.test.ts (1 test) 7ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaLoopCountPointerOverEventService.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/ScriptAreaScroll/usecase/ScriptAreaScrollPointerDownUseCase.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuModalSettingOptionSelectedService.test.ts (1 test) 6ms
+ ✓ src/js/tool/application/RectangleTool/service/RectangleToolPointerOverEventService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingLockPointerDownEventService.test.ts (1 test) 2ms
+ ✓ src/js/language/application/service/LanguageTranslationService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuLayerSettingOptionSelectedService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineTool/application/CurrentFrame/service/TimelineToolCurrentFrameMouseOverEventService.test.ts (1 test) 4ms
+ ✓ src/js/history/application/timeline/application/TimelineTool/LabelDelete/service/LabelDeleteHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingFpsPointerUpEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService.test.ts (1 test) 9ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingXPointerUpEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToEmpty/service/TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingUpdateYElementService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuGuidePointerDownUseCase.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ArrowTool/usecase/ArrowToolStageRectPointerUpEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/user/application/Setting/service/UserSettingObjectUpdateService.test.ts (1 test) 2ms
+ ✓ src/js/core/application/Video/usecase/VideoRegisterEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ScriptEditorModal/usecase/ScriptEditorModalInitializeRegisterEventUseCase.test.ts (2 tests) 6ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaUpdateFolderStateService.test.ts (1 test) 7ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Video/service/LibraryAreaAddNewVideoCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuUpdateElementTextService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/SceneListMenu/service/SceneListMenuShowService.test.ts (1 test) 5ms
+ ✓ src/js/timeline/application/TimelineHeader/service/TimelineHeaderUpdateLabelElementService.test.ts (1 test) 11ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingUpdateWidthService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuUpdateOffsetService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingHeightFocusOutEventService.test.ts (1 test) 4ms
+ ✓ src/js/core/application/Bitmap/component/BitmapDisplayObjectComponent.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/TextTool/service/TextToolMouseOverEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaInactiveElementService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneListNameService.test.ts (1 test) 16ms
+ ✓ src/js/tool/application/ZoomPlusTool/service/ZoomPlusToolPointerOverEventService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineHeader/service/TimelineHeaderUpdateSoundElementService.test.ts (1 test) 3ms
+ ✓ src/js/core/application/Text/usecase/TextRegisterEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineHeader/usecase/TimelineHeaderSoundIconPointerDownEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/ConfirmModal/usecase/ConfirmModalAllCancelUseCase.test.ts (1 test) 1ms
+ ✓ src/js/timeline/application/TimelineHeader/usecase/TimelineHeaderScriptIconPointerDownEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameElementService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingWidthPointerMoveEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ScreenMenu/usecase/ScreenMenuInitializeRegisterEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/TextTool/service/TextToolChangeCursorEventService.test.ts (1 test) 3ms
+ ✓ src/js/core/application/Character/service/CharacterCalcSetRotationService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaGetPaddingService.test.ts (1 test) 5ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingRotatePointerUpEventUseCase.test.ts (1 test) 18ms
+ ✓ src/js/menu/application/ProgressMenu/service/ProgressMenuUpdateStateService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ConfirmModal/service/ConfirmModalFileResetService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineHeader/usecase/TimelineHeaderInitializeUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/LibraryPreviewArea/service/LibraryPreviewAreaClearDisplayService.test.ts (1 test) 5ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaLoopCountPointerUpEventUseCase.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/HistoryAreaScroll/usecase/HistoryAreaScrollPointerMoveUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/LibraryPreviewArea/usecase/LibraryPreviewAreaUpdateDisplayUseCase.test.ts (1 test) 5ms
+ ✓ src/js/history/application/controller/application/SoundArea/UpdateLoopCount/service/SoundAreaUpdateLoopCountCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingUpdateXElementService.test.ts (1 test) 6ms
+ ✓ src/js/menu/application/ScriptEditorModal/usecase/ScriptEditorModalCurrentBootUseCase.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineLayer/service/TimelineLayerDeactivatedElementService.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineLayer/service/TimelineLayerInactiveMoveTargetStyleService.test.ts (1 test) 5ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingUpdateColorService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaTrashPointerDownUseCase.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/RoundRectTool/service/RoundRectToolChangeCursorEventService.test.ts (1 test) 2ms
+ ✓ src/js/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendBehindKeyframeService.test.ts (2 tests) 2ms
+ ✓ src/js/controller/application/LibraryAreaScroll/service/LibraryAreaScrollUpdateHeightService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ArrowTool/usecase/ArrowToolStageRectPointerDownEventUseCase.test.ts (4 tests) 4ms
+ ✓ src/js/controller/application/HistoryArea/service/HistoryRemoveElementService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ZoomPlusTool/service/ZoomPlusToolPointerOutEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/PropertyAreaScroll/service/PropertyAreaScrollUpdateHeightService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingWidthFocusOutEventService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/InsertKeyFrames/service/TimelineLayerFrameInsertKeyFramesCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/PluginAreaScroll/usecase/PluginAreaScrollPointerDownUseCase.test.ts (1 test) 2ms
+ ✓ src/js/external/core/application/ExternalLayer/service/ExternalLayerGetLayerModeService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuLayerSettingChangeEventService.test.ts (1 test) 1ms
+ ✓ src/js/core/application/Bitmap/service/BitmapBufferToCanvasElementService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/CircleTool/service/CircleToolActiveService.test.ts (1 test) 1ms
+ ✓ src/js/external/timeline/application/ExternalTimelineLayerController/service/ExternalTimelineLayerControllerCorrectionRelationshipService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuShowScreenListUseCase.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingSizeLockPointerDownEventService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/SplitEmptyKeyframe/service/TimelineLayerFrameSplitEmptyKeyframeCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuUpdateOffsetService.test.ts (1 test) 5ms
+ ✓ src/js/menu/application/BillingModal/usecase/BillingModelHideIconPointerDownUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingYPointerUpEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingWidthFocusOutEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineHeader/service/TimelineHeaderUpdateScriptElementService.test.ts (1 test) 4ms
+ ✓ src/js/tool/application/ZoomTool/service/ZoomToolUpdateElementService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ToolArea/service/ToolAreaResetService.test.ts (1 test) 3ms
+ ✓ src/js/user/application/Shortcut/service/UserShortcutObjectRemoveService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuCopyActiveService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuAddNewFolderService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaLoopCountPointerDownEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/user/application/Tool/service/UserStrokeSizeGetService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleYFocusOutEventUseCase.test.ts (1 test) 5ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService.test.ts (1 test) 3ms
+ ✓ src/js/screen/application/ScreenStageArea/service/ScreenStageAreaUpdateSizeService.test.ts (1 test) 5ms
+ ✓ src/js/screen/application/ScreenStage/service/ScreenStageOffsetUpdateService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingUpdateHeightElementService.test.ts (1 test) 19ms
+ ✓ src/js/tool/application/ZoomMinusTool/service/ZoomMinusToolMouseOverEventService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/core/application/Instance/service/InstanceUpdateSymbolCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/BillingModal/usecase/BillingModelInitializeRegisterEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingWidthPointerUpEventUseCase.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingWidthPointerUpEventUseCase.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/HistoryAreaScroll/usecase/HistoryAreaScrollInitializeRegisterEventUseCase.test.ts (1 test) 5ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuEditMovieClipInactiveService.test.ts (1 test) 3ms
+ ✓ src/js/user/application/Tool/service/UserFillColorUpdateService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/ObjectSetting/usecase/ObjectSettingNameFocusOutEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/SplitKeyframeToKeyframe/service/TimelineLayerFrameSplitKeyframeToEmptyCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ScriptAreaScroll/usecase/ScriptAreaScrollInitializeRegisterEventUseCase.test.ts (1 test) 20ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Video/service/LibraryAreaUpdateVideoCreateHistoryObjectService.test.ts (1 test) 6ms
+ ✓ src/js/timeline/application/TimelineTool/application/LabelInput/service/TimelineToolLabelInputFocusInEventService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ScreenMenu/usecase/ScreenMenuShowUseCase.test.ts (1 test) 6ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerGetHighlightColorService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingWidthPointerDownEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaInitializeRegisterEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaDragoverService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuPhotopeaActiveService.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingHideUseCase.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollPointerUpEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ControllerAdjustment/usecase/ControllerAdjustmentPointerMoveUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaLoopCountFocusOutEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/PropertyAreaScroll/usecase/PropertyAreaScrollInitializeRegisterEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineScroll/service/TimelineScrollUpdateXPositionService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/TextTool/service/TextToolActiveService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingColorPointerDownEventService.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/DetailModal/service/DetailModalHideService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/ControllerTab/usecase/ControllerTabInitializeRegisterEventUseCase.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaVolumeFocusOutEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/global/GlobalUtil.test.ts (3 tests) 2ms
+ ✓ src/js/controller/application/PropertyAreaScroll/usecase/PropertyAreaScrollPointerUpUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingUpdateFpsService.test.ts (1 test) 3ms
+ ✓ src/js/user/application/Tool/service/UserStrokeColorGetService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleXPointerMoveEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/core/service/BufferToBinaryService.test.ts (1 test) 1ms
+ ✓ src/js/timeline/application/TimelineTool/application/CurrentFrame/service/TimelineToolCurrentFrameKeyPressEventService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuPhotopeaInactiveService.test.ts (1 test) 3ms
+ ✓ src/js/external/core/application/ExternalLayer/service/ExternalLayerUpdateLockHistoryObjectService.test.ts (1 test) 1ms
+ ✓ src/js/tool/application/ZoomMinusTool/service/ZoomMinusToolActiveService.test.ts (1 test) 1ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Instance/service/LibraryArearRemoveInstanceCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineTool/application/SceneName/service/TimelineToolUpdateSceneNameService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/ControllerAdjustment/usecase/ControllerAdjustmentPointerUpUseCase.test.ts (1 test) 2ms
+ ✓ src/js/external/controller/application/ExternalReference/service/ExternalReferencePivotValidation.test.ts (6 tests) 2ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingInputKeyPressEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaLoopCountKeyPressEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/HistoryAreaScroll/usecase/HistoryAreaScrollPointerUpUseCase.test.ts (1 test) 4ms
+ ✓ src/js/history/application/controller/application/SoundArea/RemoveSound/service/SoundAreaRemoveSoundCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollInitializeRegisterEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingUpdateHeightService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuExportInactiveService.test.ts (1 test) 3ms
+ ✓ src/js/core/application/Video/service/VideoCreateJsonService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineScroll/service/TimelineScrollUpdateYPositionService.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaSelectPointerDownService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/ObjectSetting/service/ObjectSettingUpdateSymbolService.test.ts (1 test) 10ms
+ ✓ src/js/controller/application/SoundArea/component/SoundAreaSelectOptionComponent.test.ts (1 test) 2ms
+ ✓ src/js/core/application/Instance/service/InstanceGetPathNameService.test.ts (2 tests) 3ms
+ ✓ src/js/menu/application/ProgressMenu/service/ProgressMenuShowService.test.ts (1 test) 1ms
+ ✓ src/js/timeline/application/TimelineLayer/service/TimelineLayerAllElementDisplayNoneService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleYPointerUpEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineUtil.test.ts (8 tests) 4ms
+ ✓ src/js/timeline/application/TimelineMarker/service/TimelineMarkerUpdateWidthService.test.ts (1 test) 2ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabDragOverService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/core/application/Character/UpdateRedMultiplier/service/CharacterUpdateRedMultiplierCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/timeline/application/TimelineTool/LabelNewRegister/service/LabelNewRegisterHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingHeightPointerUpEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/ScriptAreaScroll/usecase/ScriptAreaScrollPointerUpUseCase.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineLayer/service/TimelineLayerUpdateClientHeightService.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuHideService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleYPointerMoveEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaAllClearElementService.test.ts (1 test) 3ms
+ ✓ src/js/core/application/Video/service/VideoPointerDownEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ControllerArea/usecase/ControllerInitializeRegisterEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/RectangleTool/service/RectangleToolChangeCursorEventService.test.ts (1 test) 5ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Bitmap/service/LibraryAreaUpdateBitmapCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuOpenFileLoadingModalService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ZoomMinusTool/service/ZoomMinusToolMouseOutEventService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineHeader/usecase/TimelineHeaderFrameRegisterEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleXFocusOutEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/ScriptArea/usecase/ScriptAreaFrameElementPointerDownEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuChangeListStyleService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/controller/application/StageSetting/UpdateWidth/service/StageSettingUpdateWidthCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingScaleLockPointerDownEventService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/CircleTool/service/CircleToolChangeCursorEventService.test.ts (1 test) 5ms
+ ✓ src/js/controller/application/SoundArea/usecase/SoundAreaVolumePointerDownEventUseCase.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingScaleYFocusInEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/tool/application/ArrowTool/service/ArrowToolActiveService.test.ts (1 test) 1ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Sound/service/LibraryAreaUpdateSoundCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ArrowTool/usecase/ArrowToolInitializeUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/core/application/Character/UpdateName/service/CharacterUpdateNameCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineArea/service/TimelineAreaChageStyleToInactiveService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/timeline/application/TimelineTool/ScriptEditorDelete/service/ScriptEditorDeleteHistoryObjectService.test.ts (1 test) 1ms
+ ✓ src/js/timeline/application/TimelineLayer/service/TimelineLayerActiveMoveTargetStyleService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingRotateFocusInEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingFocusInEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaSelectedClearUseCase.test.ts (1 test) 3ms
+ ✓ src/js/user/application/Tool/service/UserStrokeSizeUpdateService.test.ts (1 test) 1ms
+ ✓ src/js/shortcut/ShortcutUtil.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/HistoryArea/service/HistoryGetTextService.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/RoundRectTool/service/RoundRectToolPointerOutEventService.test.ts (1 test) 3ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabKeyPressEventService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingYFocusOutEventUseCase.test.ts (1 test) 5ms
+ ✓ src/js/menu/application/TimelineHeaderMenu/usecase/TimelineHeaderMenuShowUseCase.test.ts (1 test) 5ms
+ ✓ src/js/history/application/controller/application/ReferenceSetting/UpdateX/service/ReferenceSettingUpdateXHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineHeader/service/TimelineHeaderTouchPointerUpService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ToolUtil.test.ts (3 tests) 4ms
+ ✓ src/js/core/application/Bitmap/service/BitmapCreateJsonService.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/LibraryMenu/usecase/LibraryMenuAddNewMovieClipPointerDownEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ColorSetting/usecase/ColorSetteingSetElementValueUseCase.test.ts (1 test) 1ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabDisableElementService.test.ts (1 test) 6ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingColorChangeEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/LibraryMenu/usecase/LibraryMenuAddNewFolderPointerDownEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaDropUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingHeightRegisterPointerEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineLayer/service/TimelineLayerInactiveElementService.test.ts (1 test) 4ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingRotatePointerMoveEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ToolArea/service/ToolAreaChageStyleToInactiveService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineFrame/service/TimelineFrameUpdateFrameHeightService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/DeleteKeyframe/service/TimelineLayerFrameDeleteKeyframeCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/core/application/Character/UpdateRotate/service/CharacterUpdateRotateCreateHistoryObjectService.test.ts (1 test) 5ms
+ ✓ src/js/timeline/application/TimelineArea/service/TimelineAreaChageStyleToActiveService.test.ts (1 test) 6ms
+ ✓ src/js/tool/application/CircleTool/service/CircleToolPointerOutEventService.test.ts (1 test) 6ms
+ ✓ src/js/tool/application/CircleTool/service/CircleToolPointerOverEventService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameInactiveElementService.test.ts (1 test) 5ms
+ ✓ src/js/tool/application/RectangleTool/service/RectangleToolPointerOutEventService.test.ts (1 test) 3ms
+ ✓ src/js/external/core/application/ExternalLayer/service/ExternalLayerUpdateDisableHistoryObjectService.test.ts (1 test) 1ms
+ ✓ src/js/core/application/WorkSpace/service/WorkSpaceLoadLibraryService.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/ScreenTabMenu/service/ScreenTabMenuHideService.test.ts (1 test) 4ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Folder/service/LibraryAreaAddNewFolderCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ZoomPlusTool/service/ZoomPlusToolChangeCursorEventService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineHeader/usecase/TimelineHeaderIconRegistePointerEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/core/application/WorkSpace/usecase/WorkSpaceBootControllerAreaUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/core/application/Character/UpdateX/service/CharacterUpdateXCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ScriptEditorModal/usecase/ScriptEditorModalBootUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/AddEmptyKeyframe/service/TimelineLayerFrameCreateEmptyKeyframeCreateHistoryObjectService.test.ts (1 test) 4ms
+ ✓ src/js/history/application/controller/application/ReferenceSetting/UpdateY/service/ReferenceSettingUpdateYHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingYPointerMoveEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuCloseElementPointerDownUseCase.test.ts (1 test) 5ms
+ ✓ src/js/menu/application/ScriptEditorModal/usecase/ScriptEditorModalPointerDownEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuShowLibraryListUseCase.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineLayerFrame/service/TimelineLayerFrameActiveElementService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ToolArea/service/ToolAreaChageStyleToActiveService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuNormalPointerDownUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ObjectSetting/usecase/ObjectSettingSymbolFocusOutEventUseCase.test.ts (1 test) 8ms
+ ✓ src/js/controller/application/TransformSetting/usecase/TransformSettingXPointerMoveEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuAddNewMovieClipService.test.ts (1 test) 4ms
+ ✓ src/js/tool/application/TextTool/service/TextToolMouseOutEventService.test.ts (1 test) 3ms
+ ✓ src/js/tool/application/ZoomMinusTool/service/ZoomMinusToolChangeCursorEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/PluginAreaScroll/usecase/PluginAreaScrollPointerUpUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Shape/service/LibraryAreaUpdateShapeGraphicsHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineLayer/service/TimelineLayerActiveElementService.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/TimelineLayerControllerMenu/usecase/TimelineLayerControllerMenuMaskPointerDownUseCase.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryTouchPointerUpService.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuShowService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ScriptEditorModal/usecase/ScriptEditorModalPointerUpUseCase.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ConfirmModal/service/ConfirmModalFileDuplicateCheckService.test.ts (2 tests) 2ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingHeightPointerDownEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingFpsPointerDownEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuSaveUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/PropertyArea/service/PropertyAreaChageStyleToActiveService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/MenuUtil.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/ShortcutSettingMenuUtil.test.ts (1 test) 2ms
+ ✓ src/js/view/application/service/ViewPointerDownEventService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingFpsRegisterPointerEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/StrokeSize/service/StrokeSizeFocusInEventService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuRegisterKeyboardEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuPublishTypeChangeEventService.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/ArrowTool/service/ArrowToolCreateAxesService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaInstanceTextContentKeyPressEventService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/ControllerAdjustment/usecase/ControllerAdjustmentPointerDownEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/StageSetting/usecase/StageSettingWidthRegisterPointerEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuShowService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/LibraryAreaScroll/usecase/LibraryAreaScrollPointerDownEventUseCase.test.ts (1 test) 4ms
+ ✓ src/js/tool/application/RectangleTool/service/RectangleToolActiveService.test.ts (1 test) 2ms
+ ✓ src/js/core/application/Bitmap/usecase/BitmapRegisterEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/ScriptArea/component/ScriptAreaParentComponent.test.ts (1 test) 1ms
+ ✓ src/js/history/application/core/application/Character/UpdateScaleY/service/CharacterUpdateScaleYCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ObjectSetting/usecase/ObjectSettingFocusInEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/core/application/Character/UpdateAlphaOffset/service/CharacterUpdateAlphaOffsetCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/LibraryMenu/service/LibraryMenuPhotopeaPointerDownService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/core/application/Character/UpdateScaleX/service/CharacterUpdateScaleXCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameBehindKeyframeService.test.ts (3 tests) 4ms
+ ✓ src/js/tool/application/ZoomTool/service/ZoomToolFocusInEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/PropertyAreaScroll/usecase/PropertyAreaScrollPointerDownUseCase.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/LibraryMenu/usecase/LibraryMenuEditMovieClipPointerDownEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/StrokeSize/service/StrokeSizeKeyPressEventService.test.ts (1 test) 2ms
+ ✓ src/js/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService.test.ts (2 tests) 3ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/EraseEmptyKeyframe/service/TimelineLayerFrameEraseEmptyKeyframeCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/core/application/Character/UpdateY/service/CharacterUpdateYCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/core/application/Layer/service/LayerUpdateModeCreateHistoryObjectService.test.ts (1 test) 15ms
+ ✓ src/js/menu/application/ScreenMenu/service/ScreenMenuHideSubMenuService.test.ts (1 test) 1ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/EraseKeyframe/service/TimelineLayerFrameEraseKeyframeCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendForwardKeyframeService.test.ts (2 tests) 3ms
+ ✓ src/js/timeline/application/TimelineHeader/usecase/TimelineHeaderTouchPointerDownUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/core/application/Character/UpdateAlphaMultiplier/service/CharacterUpdateAlphaMultiplierCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/TimelineHeaderMenu/usecase/TimelineHeaderScriptAddPointerDownEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/TransformSetting/service/TransformSettingCacheBeforeMatrixService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/core/application/Character/UpdateRedOffset/service/CharacterUpdateRedOffsetCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerNameTextKeyPressEventService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/service/TimelineLayerFrameAddKeyframeCreateHistoryObjectService.test.ts (1 test) 5ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/DeleteEmptyKeyframe/service/TimelineLayerFrameDeleteEmptyKeyframeCreateHistoryObjectService.test.ts (1 test) 4ms
+ ✓ src/js/history/application/timeline/application/TimelineTool/LayerDelete/service/TimelineToolLayerDeleteCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/HistoryArea/usecase/HistoryPointerDownEventUseCase.test.ts (2 tests) 2ms
+ ✓ src/js/core/application/Text/usecase/TextPointerDownEventUseCase.test.ts (1 test) 6ms
+ ✓ src/js/history/application/controller/application/SoundArea/UpdateVolume/service/SoundAreaUpdateVolumeCreateHistoryObjectService.test.ts (1 test) 9ms
+ ✓ src/js/history/application/timeline/application/TimelineTool/LayerAdd/service/TimelineToolLayerAddCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineTool/application/LightAll/service/TimelineToolLightAllGetCurrentModeService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/UpdateKeyframe/service/TimelineLayerFrameUpdateKeyframeCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/controller/application/StageSetting/UpdateHeight/service/StageSettingUpdateHeightCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/controller/application/StageSetting/UpdateColor/service/StageSettingUpdateColorCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerController/LayerName/service/TimelineLayerControllerLayerNameUpdateCreateHistoryObjectService.test.ts (1 test) 5ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuResetUseCase.test.ts (1 test) 2ms
+ ✓ src/js/core/application/Shape/usecase/ShapeRegisterEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/ToolArea/service/ToolAreaMouseMoveEventService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/RemoveEmptyFrames/service/TimelineLayerFrameRemoveEmptyFramesCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerController/MoveLayer/service/TimelineLayerControllerMoveLayerCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaCanDisplayInstanceService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineTool/application/DisableAll/service/TimelineToolDisableAllGetCurrentModeService.test.ts (1 test) 2ms
+ ✓ src/js/user/application/Shortcut/service/UserShortcutObjectUpdateService.test.ts (1 test) 1ms
+ ✓ src/js/core/application/WorkSpace/service/WorkSpaceCreatePathMapService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/screen/application/ScreenTab/service/ScreenTabCreateHistoryObjectService.test.ts (1 test) 1ms
+ ✓ src/js/core/application/WorkSpace/service/WorkSpaceCreateSymbolMapService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaAltSelectedUseCase.test.ts (2 tests) 2ms
+ ✓ src/js/core/application/MovieClip/usecase/MovieClipRegisterEventUseCase.test.ts (1 test) 3ms
+ ✓ src/js/screen/application/ScreenTab/service/ScreenTabDragStartService.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineTool/application/LockAll/service/TimelineToolLockAllGetCurrentModeService.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/ArrowTool/service/ArrowToolProjectOntoAxisService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/SoundArea/service/SoundAreaVolumeKeyPressEventService.test.ts (1 test) 1ms
+ ✓ src/js/external/core/application/ExternalWorkSpace/service/ExternalWorkSpaceRegisterInstanceService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineLayerFrame/RemoveKeyFrames/service/TimelineLayerFrameRemoveKeyFramesCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/user/application/Language/service/UserLanguageSettingObjectGetService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/timeline/application/TimelineTool/ScriptEditorNewRegister/service/ScriptEditorNewRegisterHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/core/application/Character/usecase/CharacterCalcSetScaleXUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/timeline/application/TimelineTool/ScriptEditorUpdate/service/ScriptEditorUpdateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/core/application/CoreUtil.test.ts (1 test) 2ms
+ ✓ src/js/timeline/application/TimelineTool/application/ScaleFrame/service/ScaleFrameFocusInEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ColorSetting/service/ColorSettingInputKeyPressEventService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ObjectSetting/service/ObjectSettingKeyPressEventService.test.ts (1 test) 3ms
+ ✓ src/js/tool/domain/event/EventDispatcher.test.ts (3 tests) 2ms
+ ✓ src/js/controller/application/ScriptArea/usecase/ScriptAreaParentElementRegisterEventUseCase.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/StageSetting/service/StageSettingKeyPressEventService.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/ZoomTool/service/ZoomToolKeyPressEventService.test.ts (1 test) 2ms
+ ✓ src/js/external/core/application/ExternalFolder/service/ExternalFolderCheckDuplicateService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/controller/application/StageSetting/UpdateFPS/service/StageSettingUpdateFpsCreateHistoryObjectService.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/ScriptEditorModal/service/ScriptEditorModalShowService.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/ScreenTabMenu/usecase/ScreenTabMenuPointerDownEventUseCase.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuRemoveKeyboardEventUseCase.test.ts (1 test) 1ms
+ ✓ src/js/core/application/Bitmap/service/BitmapToObjectService.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/ToolArea/ToolAreaUtil.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/PropertyArea/service/PropertyAreaPointerOutEventService.test.ts (1 test) 2ms
+ ✓ src/js/tool/application/ArrowTool/usecase/ArrowToolStageRectPointerMoveEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Shape/service/LibraryAreaAddNewShapeCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/core/application/Character/usecase/CharacterCalcSetScaleYUseCase.test.ts (1 test) 4ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Text/service/LibraryAreaAddNewTextCreateHistoryObjectService.test.ts (1 test) 19ms
+ ✓ src/js/timeline/application/TimelineTool/application/ScaleFrame/service/ScaleFrameKeyPressEventService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuShowTimelineListUseCase.test.ts (1 test) 2ms
+ ✓ src/js/external/controller/application/ExternalLibrary/service/ExternalLibrarySelectedOneService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ScriptEditorModal/usecase/ScriptEditorModalHideIconPointerDownUseCase.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/LibraryMenu/usecase/LibraryMenuFilePointerDownEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/core/application/Stage/service/StageToObjectService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ControllerArea/service/ControllerPointerDownEventService.test.ts (1 test) 1ms
+ ✓ src/js/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuUpdateCommandMappingService.test.ts (1 test) 3ms
+ ✓ src/js/controller/application/ObjectSetting/usecase/ObjectSettingPointerDownUseCase.test.ts (1 test) 4ms
+ ✓ src/js/tool/application/ZoomPlusTool/service/ZoomPlusToolActiveService.test.ts (1 test) 1ms
+ ✓ src/js/user/application/Shortcut/service/UserShortcutObjectGetService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/UserSettingMenu/service/UserSettingMenuModalSettingChangeEventService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingMenuLoadObjectUseCase.test.ts (1 test) 4ms
+ ✓ src/js/core/application/Shape/service/ShapeCreateJsonService.test.ts (1 test) 2ms
+ ✓ src/js/tool/domain/event/EventType.test.ts (1 test) 4ms
+ ✓ src/js/user/application/Language/service/UserLanguageSettingObjectUpdateService.test.ts (1 test) 11ms
+ ✓ src/js/core/application/Shape/service/ShapePointerDownEventService.test.ts (1 test) 3ms
+ ✓ src/js/shortcut/application/service/ShortcutCommandService.test.ts (1 test) 9ms
+ ✓ src/js/controller/application/LibraryArea/service/LibraryAreaSelectedEndTouchEndService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/PropertyArea/PropertyAreaUtil.test.ts (2 tests) 3ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuHideService.test.ts (1 test) 2ms
+ ✓ src/js/controller/application/ScriptArea/component/ScriptAreaFrameComponent.test.ts (1 test) 3ms
+ ✓ src/js/core/service/BinaryToBufferService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/ScreenMenu/service/ScreenMenuTouchPointerUpService.test.ts (1 test) 3ms
+ ✓ src/js/core/application/Bitmap/service/BitmapPointerDownEventService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ProgressMenu/service/ProgressMenuHideService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/PropertyArea/service/PropertyAreaChageStyleToInactiveService.test.ts (1 test) 2ms
+ ✓ src/js/history/application/controller/application/LibraryArea/MovieClip/service/LibraryAreaAddNewMovieClipCreateHistoryObjectService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaRegisterWindowKeyEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Folder/service/LibraryAreaMoveFolderCreateHistoryObjectService.test.ts (1 test) 2ms
+ ✓ src/js/menu/application/BillingModal/service/BillingModelShowService.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineHeader/component/TimelineHeaderFrameComponent.test.ts (2 tests) 3ms
+ ✓ src/js/controller/application/LibraryArea/usecase/LibraryAreaRemoveWindowKeyEventUseCase.test.ts (1 test) 2ms
+ ✓ src/js/external/core/application/ExternalFolder/service/ExternalFolderStateCreateHistoryObjectServic.test.ts (1 test) 1ms
+ ✓ src/js/history/application/controller/application/LibraryArea/Bitmap/service/LibraryAreaAddNewBitmapCreateHistoryObjectService.test.ts (1 test) 1ms
+ ✓ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLockIconWindowPointerUpService.test.ts (1 test) 3ms
+ ✓ src/js/history/application/core/application/Instance/service/InstanceUpdateNameCreateHistoryObjectService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/SceneListMenu/service/SceneListMenuHideService.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/BillingModal/service/BillingModelHideService.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/service/ShortcutSettingMenuUpdateViewMappingService.test.ts (1 test) 1ms
+ ✓ src/js/external/core/application/ExternalLayer/service/ExternalLayerGetLayerTypeService.test.ts (1 test) 1ms
+ ✓ src/js/timeline/application/TimelineTool/application/CurrentFrame/service/TimelineToolCurrentFrameFocusInEventService.test.ts (1 test) 3ms
+ ✓ src/js/user/application/Setting/service/UserSettingObjectGetService.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/usecase/ShortcutSettingShowUseCase.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/ScriptEditorModal/service/ScriptEditorModalHideService.test.ts (1 test) 1ms
+ ✓ src/js/tool/application/RoundRectTool/service/RoundRectToolActiveService.test.ts (1 test) 1ms
+ ✓ src/js/external/core/application/ExternalLayer/service/ExternalLayerUpdateLightHistoryObjectService.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/ConfirmModal/service/ConfirmModalInstaceResetService.test.ts (1 test) 2ms
+ ✓ src/js/user/application/Tool/service/UserStrokeColorUpdateService.test.ts (1 test) 1ms
+ ✓ src/js/core/application/Sound/usecase/SoundWaveformGetPeaksUseCase.test.ts (1 test) 3ms
+ ✓ src/js/timeline/application/TimelineTool/application/LabelInput/service/TimelineToolLabelMouseDownEventService.test.ts (1 test) 1ms
+ ✓ src/js/menu/application/ScreenTabMenu/service/ScreenTabMenuShowService.test.ts (1 test) 4ms
+ ✓ src/js/timeline/application/TimelineArea/service/TimelineAreaPointerOutEventService.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/HistoryArea/component/HistoryListComponent.test.ts (1 test) 1ms
+ ✓ src/js/tool/application/ToolArea/service/ToolAreaMouseOutEventService.test.ts (1 test) 3ms
+ ✓ src/js/user/application/Tool/service/UserFillColorGetService.test.ts (1 test) 3ms
+ ✓ src/js/core/application/Character/service/CharacterCalcGetRotationService.test.ts (1 test) 10ms
+ ✓ src/js/timeline/application/TimelineArea/TimelineAreaUtil.test.ts (1 test) 3ms
+ ✓ src/js/menu/application/ShortcutSettingMenu/component/ShortcutSettingMenuListComponent.test.ts (1 test) 1ms
+ ✓ src/js/controller/application/SoundArea/component/SoundAreaSettingComponent.test.ts (1 test) 4ms
+ ✓ src/js/core/application/Sound/service/SoundWaveformGetPeakService.test.ts (1 test) 2ms
+ ✓ src/js/core/application/Character/service/CharacterCalcGetScaleYService.test.ts (1 test) 1ms
+ ✓ src/js/core/application/Character/service/CharacterCalcGetScaleXService.test.ts (1 test) 1ms
+ ✓ src/js/timeline/application/TimelineLayerController/component/TimelineLayerControllerComponent.test.ts (1 test) 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 20 ⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/js/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService.test.ts [ src/js/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService.ts:5:1
+      3| import { Matrix } from "@next2d/geom";
+      4| import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
+      5| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+       | ^
+      6| import { $createTransformMatrix, $getConcatenatedMatrix } from "@/cont…
+      7| import { execute as screenDisplayObjectSvgTagComponent } from "../comp…
+
+Caused by: ReferenceError: Cannot access 'mock$getCurrentWorkSpace' before initialization
+ ❯ src/js/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService.test.ts:17:27
+ ❯ src/js/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService.ts:5:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/62]⎯
+
+ FAIL  src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase.test.ts [ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase.ts:1:1
+      1| import { $setReferencePointState } from "../ReferencePointUtil";
+       | ^
+      2| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+      3| import { execute as screenReferencePointShowService } from "../service…
+
+Caused by: ReferenceError: Cannot access 'mockSetReferencePointState' before initialization
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase.test.ts:20:30
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/62]⎯
+
+ FAIL  src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointInitializeRegisterEventUseCase.test.ts [ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointInitializeRegisterEventUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointInitializeRegisterEventUseCase.ts:3:1
+      1| import { $REFERENCE_POINT_ID } from "@/config/ReferenceSettingConfig";
+      2| import { EventType } from "@/tool/domain/event/EventType";
+      3| import { execute as screenReferencePointPointerDownEventUseCase } from…
+       | ^
+      4| 
+      5| /**
+
+Caused by: ReferenceError: Cannot access 'mockScreenReferencePointPointerDownEventUseCase' before initialization
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointInitializeRegisterEventUseCase.test.ts:8:14
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointInitializeRegisterEventUseCase.ts:3:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/62]⎯
+
+ FAIL  src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerDownEventUseCase.test.ts [ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerDownEventUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerDownEventUseCase.ts:1:1
+      1| import { $activeTouchPointers } from "@/global/GlobalUtil";
+       | ^
+      2| import { EventType } from "@/tool/domain/event/EventType";
+      3| import { execute as screenReferencePointPointerMoveEventUseCase } from…
+
+Caused by: ReferenceError: Cannot access 'mockActiveTouchPointers' before initialization
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerDownEventUseCase.test.ts:10:27
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerDownEventUseCase.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/62]⎯
+
+ FAIL  src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerMoveEventUseCase.test.ts [ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerMoveEventUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerMoveEventUseCase.ts:1:1
+      1| import { referenceSetting } from "@/controller/domain/model/ReferenceS…
+       | ^
+      2| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+      3| import { Matrix } from "@next2d/geom";
+
+Caused by: ReferenceError: Cannot access 'mockReferenceSetting' before initialization
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerMoveEventUseCase.test.ts:21:23
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerMoveEventUseCase.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/62]⎯
+
+ FAIL  src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerUpEventUseCase.test.ts [ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerUpEventUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerUpEventUseCase.ts:1:1
+      1| import { $setCursor } from "@/global/GlobalUtil";
+       | ^
+      2| import { EventType } from "@/tool/domain/event/EventType";
+      3| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+
+Caused by: ReferenceError: Cannot access 'mockSetCursor' before initialization
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerUpEventUseCase.test.ts:16:17
+ ❯ src/js/screen/application/ReferencePoint/usecase/ScreenReferencePointPointerUpEventUseCase.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/62]⎯
+
+ FAIL  src/js/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService.test.ts [ src/js/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService.ts:3:1
+      1| import type { MovieClip } from "@/core/domain/model/MovieClip";
+      2| import type { IBounds } from "@/interface/IBounds";
+      3| import { $calcBoundingBox } from "@/core/application/CoreUtil";
+       | ^
+      4| 
+      5| /**
+
+Caused by: ReferenceError: Cannot access 'mockCalcBoundingBox' before initialization
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService.test.ts:8:23
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService.ts:3:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/62]⎯
+
+ FAIL  src/js/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService.test.ts [ src/js/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService.ts:1:1
+      1| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+       | ^
+      2| import type { Layer } from "@/core/domain/model/Layer";
+      3| import { ExternalLayer } from "@/external/core/domain/model/ExternalLa…
+
+Caused by: ReferenceError: Cannot access 'mockGetCurrentWorkSpace' before initialization
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService.test.ts:9:27
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/62]⎯
+
+ FAIL  src/js/screen/application/ScreenArea/service/ScreenAreaPointerMoveEventService.test.ts [ src/js/screen/application/ScreenArea/service/ScreenAreaPointerMoveEventService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaPointerMoveEventService.ts:1:1
+      1| import { $getActiveTool } from "@/tool/application/ToolUtil";
+       | ^
+      2| import { EventType } from "@/tool/domain/event/EventType";
+      3| 
+
+Caused by: ReferenceError: Cannot access 'mockGetActiveTool' before initialization
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaPointerMoveEventService.test.ts:8:21
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaPointerMoveEventService.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/62]⎯
+
+ FAIL  src/js/screen/application/ScreenArea/service/ScreenAreaPointerOutEventService.test.ts [ src/js/screen/application/ScreenArea/service/ScreenAreaPointerOutEventService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaPointerOutEventService.ts:1:1
+      1| import { $getActiveTool } from "@/tool/application/ToolUtil";
+       | ^
+      2| import { EventType } from "@/tool/domain/event/EventType";
+      3| import { screenArea } from "@/screen/domain/model/ScreenArea";
+
+Caused by: ReferenceError: Cannot access 'mockGetActiveTool' before initialization
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaPointerOutEventService.test.ts:11:21
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaPointerOutEventService.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/62]⎯
+
+ FAIL  src/js/screen/application/ScreenArea/service/ScreenAreaPointerOverEventService.test.ts [ src/js/screen/application/ScreenArea/service/ScreenAreaPointerOverEventService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaPointerOverEventService.ts:1:1
+      1| import { screenArea } from "@/screen/domain/model/ScreenArea";
+       | ^
+      2| import { $getActiveTool } from "@/tool/application/ToolUtil";
+      3| import { EventType } from "@/tool/domain/event/EventType";
+
+Caused by: ReferenceError: Cannot access 'mockScreenArea' before initialization
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaPointerOverEventService.test.ts:11:17
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaPointerOverEventService.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/62]⎯
+
+ FAIL  src/js/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService.test.ts [ src/js/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService.ts:2:1
+      1| import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
+      2| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+       | ^
+      3| import type { Layer } from "@/core/domain/model/Layer";
+      4| import { ExternalLayer } from "@/external/core/domain/model/ExternalLa…
+
+Caused by: ReferenceError: Cannot access 'mockGetCurrentWorkSpace' before initialization
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService.test.ts:13:27
+ ❯ src/js/screen/application/ScreenArea/service/ScreenAreaUpdateMovedLayerService.ts:2:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/62]⎯
+
+ FAIL  src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerDisableIconPointerOverService.test.ts [ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerDisableIconPointerOverService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerDisableIconPointerOverService.ts:1:1
+      1| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+       | ^
+      2| import { $getDisableState, $getLayerFromElement } from "../../Timeline…
+      3| import { ExternalLayer } from "@/external/core/domain/model/ExternalLa…
+
+Caused by: ReferenceError: Cannot access 'mockGetCurrentWorkSpace' before initialization
+ ❯ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerDisableIconPointerOverService.test.ts:11:27
+ ❯ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerDisableIconPointerOverService.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/62]⎯
+
+ FAIL  src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLightIconPointerDownEventService.test.ts [ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLightIconPointerDownEventService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLightIconPointerDownEventService.ts:1:1
+      1| import { $allHideMenu } from "@/menu/application/MenuUtil";
+       | ^
+      2| import { $getLayerFromElement } from "../../TimelineUtil";
+      3| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+
+Caused by: ReferenceError: Cannot access 'mockAllHideMenu' before initialization
+ ❯ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLightIconPointerDownEventService.test.ts:13:19
+ ❯ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLightIconPointerDownEventService.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/62]⎯
+
+ FAIL  src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLockIconPointerOverService.test.ts [ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLockIconPointerOverService.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLockIconPointerOverService.ts:1:1
+      1| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+       | ^
+      2| import { $getLayerFromElement, $getLockState } from "../../TimelineUti…
+      3| import { ExternalLayer } from "@/external/core/domain/model/ExternalLa…
+
+Caused by: ReferenceError: Cannot access 'mockGetCurrentWorkSpace' before initialization
+ ❯ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLockIconPointerOverService.test.ts:11:27
+ ❯ src/js/timeline/application/TimelineLayerController/service/TimelineLayerControllerLockIconPointerOverService.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/62]⎯
+
+ FAIL  src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopInitializeRegisterEventUseCase.test.ts [ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopInitializeRegisterEventUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopInitializeRegisterEventUseCase.ts:3:1
+      1| import { $TIMELINE_PLAY_STOP_ID } from "@/config/TimelineConfig";
+      2| import { EventType } from "@/tool/domain/event/EventType";
+      3| import { execute as timelineToolPlayStopPointerDownEventUseCase } from…
+       | ^
+      4| 
+      5| /**
+
+Caused by: ReferenceError: Cannot access 'mockTimelineToolPlayStopPointerDownEventUseCase' before initialization
+ ❯ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopInitializeRegisterEventUseCase.test.ts:12:14
+ ❯ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopInitializeRegisterEventUseCase.ts:3:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/62]⎯
+
+ FAIL  src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopPointerDownEventUseCase.test.ts [ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopPointerDownEventUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopPointerDownEventUseCase.ts:1:1
+      1| import { $allHideMenu } from "@/menu/application/MenuUtil";
+       | ^
+      2| import { execute as timelineToolPlayStopUseCase } from "./TimelineTool…
+      3| import { $activeTouchPointers, $setEditingElement } from "@/global/Glo…
+
+Caused by: ReferenceError: Cannot access 'mockAllHideMenu' before initialization
+ ❯ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopPointerDownEventUseCase.test.ts:11:19
+ ❯ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopPointerDownEventUseCase.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/62]⎯
+
+ FAIL  src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase.test.ts [ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase.ts:2:1
+      1| import { $TIMELINE_PLAY_STOP_ID } from "@/config/TimelineConfig";
+      2| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+       | ^
+      3| import { ExternalTimeline } from "@/external/timeline/domain/model/Ext…
+      4| import { $getRightFrame } from "@/timeline/application/TimelineUtil";
+
+Caused by: ReferenceError: Cannot access 'mockGetCurrentWorkSpace' before initialization
+ ❯ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase.test.ts:26:27
+ ❯ src/js/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase.ts:2:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/62]⎯
+
+ FAIL  src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllInitializeRegisterEventUseCase.test.ts [ src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllInitializeRegisterEventUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllInitializeRegisterEventUseCase.ts:3:1
+      1| import { $TIMELINE_LAYER_LOCK_ALL_ID } from "@/config/TimelineConfig";
+      2| import { EventType } from "@/tool/domain/event/EventType";
+      3| import { execute as timelineToolLockAllUseCase } from "./TimelineToolL…
+       | ^
+      4| 
+      5| /**
+
+Caused by: ReferenceError: Cannot access 'mockTimelineToolLockAllUseCase' before initialization
+ ❯ src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllInitializeRegisterEventUseCase.test.ts:12:14
+ ❯ src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllInitializeRegisterEventUseCase.ts:3:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/62]⎯
+
+ FAIL  src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllUseCase.test.ts [ src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllUseCase.test.ts ]
+Error: [vitest] There was an error when mocking a module. If you are using "vi.mock" factory, make sure there are no top level variables inside, since this call is hoisted to top of the file. Read more: https://vitest.dev/api/vi.html#vi-mock
+ ❯ src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllUseCase.ts:1:1
+      1| import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+       | ^
+      2| import { $setAllLockMode } from "@/timeline/application/TimelineUtil";
+      3| import { execute as timelineToolLockAllGetCurrentModeService } from ".…
+
+Caused by: ReferenceError: Cannot access 'mockGetCurrentWorkSpace' before initialization
+ ❯ src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllUseCase.test.ts:12:27
+ ❯ src/js/timeline/application/TimelineTool/application/LockAll/usecase/TimelineToolLockAllUseCase.ts:1:1
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/62]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 42 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts > ReferenceSettingInitializeRegisterEventUseCase > 正常系 > 全ての要素が存在する場合、すべてのイベントリスナーが登録される
+ReferenceError: referenceSettingBoxPointerDownUseCase is not defined
+ ❯ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts:161:27
+    159|             expect(mockReferenceSettingBox.addEventListener).toHaveBee…
+    160|                 "pointerdown",
+    161|                 vi.mocked(referenceSettingBoxPointerDownUseCase)
+       |                           ^
+    162|             );
+    163| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/62]⎯
+
+ FAIL  src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts > ReferenceSettingInitializeRegisterEventUseCase > イベントタイプとオプションの確認 > pointerdownイベントにpassive:falseオプションが設定される
+ReferenceError: referenceSettingXPointerDownUseCase is not defined
+ ❯ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts:315:27
+    313|             expect(mockTransformReferenceX.addEventListener).toHaveBee…
+    314|                 "pointerdown",
+    315|                 vi.mocked(referenceSettingXPointerDownUseCase),
+       |                           ^
+    316|                 { "passive": false }
+    317|             );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/62]⎯
+
+ FAIL  src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts > ReferenceSettingInitializeRegisterEventUseCase > イベントタイプとオプションの確認 > referenceSettingBoxのpointerdownイベントにはオプションが設定されない
+ReferenceError: referenceSettingBoxPointerDownUseCase is not defined
+ ❯ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts:332:27
+    330|             expect(mockReferenceSettingBox.addEventListener).toHaveBee…
+    331|                 "pointerdown",
+    332|                 vi.mocked(referenceSettingBoxPointerDownUseCase)
+       |                           ^
+    333|             );
+    334|             
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/62]⎯
+
+ FAIL  src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts > ReferenceSettingInitializeRegisterEventUseCase > イベントハンドラーの対応確認 > X座標とY座標で異なるハンドラーが使用される
+ReferenceError: referenceSettingXPointerDownUseCase is not defined
+ ❯ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts:348:27
+    346|             expect(mockTransformReferenceX.addEventListener).toHaveBee…
+    347|                 "pointerdown",
+    348|                 vi.mocked(referenceSettingXPointerDownUseCase),
+       |                           ^
+    349|                 { "passive": false }
+    350|             );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/62]⎯
+
+ FAIL  src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts > ReferenceSettingInitializeRegisterEventUseCase > イベントハンドラーの対応確認 > X座標とY座標で同じハンドラーが使用されるイベント
+ReferenceError: referenceSettingPointerOverEventService is not defined
+ ❯ src/js/controller/application/ReferenceSetting/usecase/ReferenceSettingInitializeRegisterEventUseCase.test.ts:382:43
+    380|             // 共通のハンドラーを使用するイベント
+    381|             const sharedEvents = [
+    382|                 ["pointerover", vi.mocked(referenceSettingPointerOverE…
+       |                                           ^
+    383|                 ["pointerout", vi.mocked(referenceSettingPointerOutEve…
+    384|                 ["keypress", vi.mocked(referenceSettingInputKeyPressEv…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 設定エリアの初期化 > 既存の子要素がすべて削除される
+AssertionError: expected 3 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 3[39m
+
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:139:49
+    137|             await execute();
+    138| 
+    139|             expect(mockElement.children.length).toBe(0);
+       |                                                 ^
+    140|         });
+    141| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 設定エリアの初期化 > 複数の子要素があってもすべて削除される
+AssertionError: expected 10 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 10[39m
+
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:161:49
+    159|             await execute();
+    160| 
+    161|             expect(mockElement.children.length).toBe(0);
+       |                                                 ^
+    162|         });
+    163|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > 1つのサウンドが正しく追加される
+AssertionError: expected "spy" to be called 1 times, but got 0 times
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:169:56
+    167|             await execute();
+    168| 
+    169|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    170|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+    171|                 0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > currentFrameのサウンドが取得される
+AssertionError: expected "spy" to be called with arguments: [ 5 ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:182:44
+    180|             await execute();
+    181| 
+    182|             expect(mockMovieClip.getSound).toHaveBeenCalledWith(5);
+       |                                            ^
+    183|         });
+    184| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > libraryIdからサウンドライブラリが取得される
+AssertionError: expected "spy" to be called with arguments: [ 'sound1' ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:188:46
+    186|             await execute();
+    187| 
+    188|             expect(mockWorkSpace.getLibrary).toHaveBeenCalledWith("sou…
+       |                                              ^
+    189|         });
+    190| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > サウンド名が正しく渡される
+AssertionError: expected "spy" to be called with arguments: [ +0, 'Background Music', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:196:56
+    194|             await execute();
+    195| 
+    196|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    197|                 0,
+    198|                 "Background Music",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 単一サウンドの処理 > インデックスが0から始まる
+TypeError: Cannot read properties of undefined (reading '0')
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:207:27
+    205| 
+    206|             const calls = mockSoundAreaAddSettingAreaUseCase.mock.call…
+    207|             expect(calls[0][0]).toBe(0);
+       |                           ^
+    208|         });
+    209|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 複数サウンドの処理 > 複数のサウンドが順次追加される
+AssertionError: expected "spy" to be called 3 times, but got 0 times
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:230:56
+    228|             await execute();
+    229| 
+    230|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    231|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCa…
+    232|                 1, 0, "Test Sound", mockSoundObject
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 複数サウンドの処理 > 10個のサウンドが正しく処理される
+AssertionError: expected "spy" to be called 10 times, but got 0 times
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:257:56
+    255|             await execute();
+    256| 
+    257|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    258|             for (let i = 0; i < 10; i++) {
+    259|                 expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenN…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 複数サウンドの処理 > 各サウンドのインデックスが正しく渡される
+TypeError: Cannot read properties of undefined (reading '0')
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:284:27
+    282| 
+    283|             const calls = mockSoundAreaAddSettingAreaUseCase.mock.call…
+    284|             expect(calls[0][0]).toBe(0);
+       |                           ^
+    285|             expect(calls[1][0]).toBe(1);
+    286|             expect(calls[2][0]).toBe(2);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > サウンドオブジェクトの検証 > soundObjectがnullの場合はスキップされる
+AssertionError: expected "spy" to be called 2 times, but got 0 times
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:305:56
+    303|             await execute();
+    304| 
+    305|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    306|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCa…
+    307|                 1, 0, "Sound sound1", mockSoundObject
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > サウンドオブジェクトの検証 > soundObjectがundefinedの場合はスキップされる
+AssertionError: expected "spy" to be called 2 times, but got 0 times
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:328:56
+    326|             await execute();
+    327| 
+    328|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    329|         });
+    330| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > サウンドオブジェクトの検証 > ライブラリからサウンドが見つからない場合はスキップされる
+AssertionError: expected "spy" to be called 2 times, but got 0 times
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:345:56
+    343|             await execute();
+    344| 
+    345|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    346|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCa…
+    347|                 1, 0, "Test Sound", mockSoundObject
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > サウンドオブジェクトの検証 > 複数のサウンドでnullやライブラリ未検出が混在する場合
+AssertionError: expected "spy" to be called 2 times, but got 0 times
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:370:56
+    368|             await execute();
+    369| 
+    370|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    371|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenNthCa…
+    372|                 1, 0, "Test Sound", mockSoundObject
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 非同期処理 > 各サウンドの追加が非同期で実行される
+AssertionError: expected +0 to be 2 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 2[39m
+[31m+ 0[39m
+
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:401:31
+    399|             await execute();
+    400| 
+    401|             expect(callCount).toBe(2);
+       |                               ^
+    402|         });
+    403| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[40/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 非同期処理 > 複数のサウンドが順次処理される
+AssertionError: expected [] to deeply equal [ +0, 1, 2 ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [[39m
+[32m-   0,[39m
+[32m-   1,[39m
+[32m-   2,[39m
+[32m- ][39m
+[31m+ [][39m
+
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:425:31
+    423|             await execute();
+    424| 
+    425|             expect(callOrder).toEqual([0, 1, 2]);
+       |                               ^
+    426|         });
+    427|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[41/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 設定エリアの再構成 > 既存の設定エリアが削除されてから新しいエリアが追加される
+AssertionError: expected 2 to be +0 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 2[39m
+
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:441:49
+    439| 
+    440|             // 削除されてから追加される
+    441|             expect(mockElement.children.length).toBe(0);
+       |                                                 ^
+    442|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+    443|         });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[42/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > 設定エリアの再構成 > 再構成時にMovieClipの現在フレームが参照される
+AssertionError: expected "spy" to be called with arguments: [ 10 ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:450:44
+    448|             await execute();
+    449| 
+    450|             expect(mockMovieClip.getSound).toHaveBeenCalledWith(10);
+       |                                            ^
+    451|         });
+    452|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[43/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > currentFrameが0の場合
+AssertionError: expected "spy" to be called with arguments: [ +0 ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:460:44
+    458|             await execute();
+    459| 
+    460|             expect(mockMovieClip.getSound).toHaveBeenCalledWith(0);
+       |                                            ^
+    461|         });
+    462| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[44/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > currentFrameが負の値の場合
+AssertionError: expected "spy" to be called with arguments: [ -1 ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:468:44
+    466|             await execute();
+    467| 
+    468|             expect(mockMovieClip.getSound).toHaveBeenCalledWith(-1);
+       |                                            ^
+    469|         });
+    470| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[45/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > currentFrameが非常に大きい値の場合
+AssertionError: expected "spy" to be called with arguments: [ 9999 ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:476:44
+    474|             await execute();
+    475| 
+    476|             expect(mockMovieClip.getSound).toHaveBeenCalledWith(9999);
+       |                                            ^
+    477|         });
+    478| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[46/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > volumeが0の場合
+AssertionError: expected "spy" to be called with arguments: [ +0, 'Test Sound', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:484:56
+    482|             await execute();
+    483| 
+    484|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    485|                 0,
+    486|                 "Test Sound",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[47/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > volumeが1.0を超える場合
+AssertionError: expected "spy" to be called with arguments: [ +0, 'Test Sound', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:496:56
+    494|             await execute();
+    495| 
+    496|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    497|                 0,
+    498|                 "Test Sound",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[48/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > loopが負の値の場合
+AssertionError: expected "spy" to be called with arguments: [ +0, 'Test Sound', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:508:56
+    506|             await execute();
+    507| 
+    508|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    509|                 0,
+    510|                 "Test Sound",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[49/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > loopが非常に大きい値の場合
+AssertionError: expected "spy" to be called with arguments: [ +0, 'Test Sound', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:520:56
+    518|             await execute();
+    519| 
+    520|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    521|                 0,
+    522|                 "Test Sound",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[50/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > サウンド名が空文字列の場合
+AssertionError: expected "spy" to be called with arguments: [ +0, '', …(1) ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:532:56
+    530|             await execute();
+    531| 
+    532|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    533|                 0,
+    534|                 "",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[51/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > サウンド名が非常に長い場合
+AssertionError: expected "spy" to be called with arguments: [ +0, …(2) ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:544:56
+    542|             await execute();
+    543| 
+    544|             expect(mockSoundAreaAddSettingAreaUseCase).toHaveBeenCalle…
+       |                                                        ^
+    545|                 0,
+    546|                 "A".repeat(1000),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[52/62]⎯
+
+ FAIL  src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts > SoundAreaRebuildSettingAreaUseCase > エッジケース > libraryIdが空文字列の場合
+AssertionError: expected "spy" to be called with arguments: [ '' ][90m
+
+Number of calls: [1m0[22m
+[39m
+ ❯ src/js/controller/application/SoundArea/usecase/SoundAreaRebuildSettingAreaUseCase.test.ts:556:46
+    554|             await execute();
+    555| 
+    556|             expect(mockWorkSpace.getLibrary).toHaveBeenCalledWith("");
+       |                                              ^
+    557|         });
+    558|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[53/62]⎯
+
+ FAIL  src/js/controller/application/TransformSetting/usecase/TransformSettingInitializeRegisterEventUseCase.test.ts > TransformSettingInitializeRegisterEventUseCase > 複数回実行時の動作 > 複数回実行後、イベントハンドラーが複数回呼ばれる
+AssertionError: expected "spy" to be called 2 times, but got 1 times
+ ❯ src/js/controller/application/TransformSetting/usecase/TransformSettingInitializeRegisterEventUseCase.test.ts:519:70
+    517| 
+    518|             // 2回登録されているので2回呼ばれる
+    519|             expect(mockTransformSettingInputPointerOverEventService).t…
+       |                                                                      ^
+    520|         });
+    521|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[54/62]⎯
+
+ FAIL  src/js/controller/application/TransformSetting/usecase/TransformSettingUpdateHeightToElementValuesUseCase.test.ts > TransformSettingUpdateHeightToElementValuesUseCase > 単一オブジェクト選択時の処理 > scaleXとscaleYの表示値が正しく計算される
+AssertionError: expected "spy" to be called with arguments: [ 150 ][90m
+
+Received: 
+
+[1m  1st spy call:
+
+[22m[2m  [[22m
+[32m-   150,[90m
+[31m+   100,[90m
+[2m  ][22m
+[39m[90m
+
+Number of calls: [1m1[22m
+[39m
+ ❯ src/js/controller/application/TransformSetting/usecase/TransformSettingUpdateHeightToElementValuesUseCase.test.ts:290:68
+    288| 
+    289|             // scaleX: Math.round(1.5 * 10000) / 100 = 150
+    290|             expect(mockTransformSettingUpdateScaleXElementService).toH…
+       |                                                                    ^
+    291| 
+    292|             // scaleY: Math.round(2.0 * 1.2 * 10000) / 100 = 240
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[55/62]⎯
+
+ FAIL  src/js/controller/application/TransformSetting/usecase/TransformSettingUpdateHeightToElementValuesUseCase.test.ts > TransformSettingUpdateHeightToElementValuesUseCase > 複数オブジェクト選択時の処理 > Boundsがnullの場合は座標更新がスキップされる
+AssertionError: expected "spy" to be called at least once
+ ❯ src/js/controller/application/TransformSetting/usecase/TransformSettingUpdateHeightToElementValuesUseCase.test.ts:371:68
+    369| 
+    370|             // scaleYの更新は実行される
+    371|             expect(mockTransformSettingUpdateScaleYElementService).toH…
+       |                                                                    ^
+    372|             
+    373|             // Boundsがnullなので座標更新は実行されない
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[56/62]⎯
+
+ FAIL  src/js/controller/application/TransformSetting/usecase/TransformSettingUpdateHeightToElementValuesUseCase.test.ts > TransformSettingUpdateHeightToElementValuesUseCase > scaleYの累積更新 > 複数回実行時のscaleY累積
+AssertionError: expected 1.7999999999999998 to be 1.8 // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1.8[39m
+[31m+ 1.7999999999999998[39m
+
+ ❯ src/js/controller/application/TransformSetting/usecase/TransformSettingUpdateHeightToElementValuesUseCase.test.ts:513:45
+    511| 
+    512|             await execute(1.5);
+    513|             expect(transformSetting.scaleY).toBe(1.8);
+       |                                             ^
+    514| 
+    515|             expect(mockTransformSettingUpdateScaleYElementService).toH…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[57/62]⎯
+
+ FAIL  src/js/core/application/MovieClip/component/MovieClipDisplayObjectComponent.test.ts > MovieClipDisplayObjectComponent Test > test case
+AssertionError: expected '<div class="display-object layer-id-1…' to be '<div class="display-object layer-id-1…' // Object.is equality
+
+Expected: [32m"<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px;[7m [27m"><div class="canvas-container container-layer-id-1" style="width: 0px; height: 0px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>"[39m
+Received: [31m"<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px;"><div class="canvas-container container-layer-id-1" style="width: 0px; height: 0px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>"[39m
+
+ ❯ src/js/core/application/MovieClip/component/MovieClipDisplayObjectComponent.test.ts:30:14
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[58/62]⎯
+
+ FAIL  src/js/core/application/Shape/component/ShapeDisplayObjectComponent.test.ts > ShapeDisplayObjectComponent Test > test case
+AssertionError: expected '<div class="display-object layer-id-1…' to be '<div class="display-object layer-id-1…' // Object.is equality
+
+Expected: [32m"<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 100px; height: 120px;[7m [27m"><div class="canvas-container container-layer-id-1" style="width: 100px; height: 120px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>"[39m
+Received: [31m"<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 100px; height: 120px;"><div class="canvas-container container-layer-id-1" style="width: 100px; height: 120px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>"[39m
+
+ ❯ src/js/core/application/Shape/component/ShapeDisplayObjectComponent.test.ts:29:14
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[59/62]⎯
+
+ FAIL  src/js/core/application/Text/component/TextDisplayObjectComponent.test.ts > TextDisplayObjectComponent Test > test case
+AssertionError: expected '<div class="display-object layer-id-1…' to be '<div class="display-object layer-id-1…' // Object.is equality
+
+Expected: [32m"<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px;[7m opacity: 1;[27m"><div class="canvas-container container-layer-id-1" style="width: 0px; height: 0px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>"[39m
+Received: [31m"<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px;"><div class="canvas-container container-layer-id-1" style="width: 0px; height: 0px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>"[39m
+
+ ❯ src/js/core/application/Text/component/TextDisplayObjectComponent.test.ts:24:14
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[60/62]⎯
+
+ FAIL  src/js/core/application/Video/component/VideoDisplayObjectComponent.test.ts > VideoDisplayObjectComponent Test > test case
+AssertionError: expected '<div class="display-object layer-id-1…' to be '<div class="display-object layer-id-1…' // Object.is equality
+
+Expected: [32m"<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 100px; height: 120px;[7m opacity: 1;[27m"><div class="canvas-container container-layer-id-1" style="width: 100px; height: 120px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>"[39m
+Received: [31m"<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 100px; height: 120px;"><div class="canvas-container container-layer-id-1" style="width: 100px; height: 120px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>"[39m
+
+ ❯ src/js/core/application/Video/component/VideoDisplayObjectComponent.test.ts:26:14
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[61/62]⎯
+
+ FAIL  src/js/menu/application/ScreenMenu/usecase/ScreenMenuTouchPointerDownUseCase.test.ts > ScreenMenuTouchPointerDownUseCase Test > execute test
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ src/js/menu/application/ScreenMenu/usecase/ScreenMenuTouchPointerDownUseCase.test.ts:27:32
+     25| 
+     26|         expect(stopPropagation).toBe(true);
+     27|         expect(preventDefault).toBe(true);
+       |                                ^
+     28| 
+     29|         $activeTouchPointers.clear();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[62/62]⎯
+
+
+ Test Files  29 failed | 689 passed (718)
+      Tests  42 failed | 3035 passed | 1 skipped (3078)
+   Start at  17:04:20
+   Duration  211.54s (transform 29.76s, setup 35.86s, collect 680.09s, tests 9.66s, environment 362.01s, prepare 65.23s)
+

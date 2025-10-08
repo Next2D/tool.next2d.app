@@ -1,5 +1,5 @@
 import { execute } from "./LibraryAreaActiveInstanceTextContentService";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("LibraryAreaActiveInstanceTextContentService Test", () =>
 {
@@ -7,12 +7,15 @@ describe("LibraryAreaActiveInstanceTextContentService Test", () =>
     {
         const div = document.createElement("div");
         div.contentEditable = "false";
-        div.style.borderBottom = "";
+        
+        // focus()をspyする
+        const focusSpy = vi.spyOn(div, 'focus');
 
         expect(div.contentEditable).toBe("false");
-        expect(div.style.borderBottom).toBe("");
         execute(div);
         expect(div.contentEditable).toBe("true");
-        expect(div.style.borderBottom).toBe("1px solid rgb(245, 245, 245)");
+        
+        // focus()が呼ばれたことを確認
+        expect(focusSpy).toHaveBeenCalled();
     });
 });

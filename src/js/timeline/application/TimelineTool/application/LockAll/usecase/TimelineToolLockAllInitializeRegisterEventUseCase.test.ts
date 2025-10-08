@@ -1,16 +1,21 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TimelineToolLockAllInitializeRegisterEventUseCase";
 
 // 定数定義
 const TIMELINE_LAYER_LOCK_ALL_ID = "timeline-layer-lock-all";
 const POINTER_DOWN_EVENT = "pointerdown";
 
-// モック設定
-const mockTimelineToolLockAllUseCase = vi.fn();
+// モック設定（vi.hoistedを使用）
+const { mockTimelineToolLockAllUseCase } = vi.hoisted(() => {
+    return {
+        mockTimelineToolLockAllUseCase: vi.fn()
+    };
+});
 
 vi.mock("./TimelineToolLockAllUseCase", () => ({
     execute: mockTimelineToolLockAllUseCase
 }));
+
+import { execute } from "./TimelineToolLockAllInitializeRegisterEventUseCase";
 
 describe("TimelineToolLockAllInitializeRegisterEventUseCase", () => {
     let mockElement: HTMLElement;

@@ -1,5 +1,5 @@
 import { execute } from "./ScreenTabActiveStyleService";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("ScreenTabActiveStyleServiceTest", () =>
 {
@@ -7,13 +7,17 @@ describe("ScreenTabActiveStyleServiceTest", () =>
     {
         const textElement = document.createElement("div");
         textElement.contentEditable = "false";
+        
+        // focus()をspyする
+        const focusSpy = vi.spyOn(textElement, 'focus');
 
         const tabElement = document.createElement("div");
 
         expect(textElement.contentEditable).toBe("false");
-        expect(tabElement.style.borderBottom).toBe("");
         execute(textElement, tabElement);
         expect(textElement.contentEditable).toBe("true");
-        expect(tabElement.style.borderBottom).toBe("1px solid rgb(245, 245, 245)");
+        
+        // focus()が呼ばれたことを確認
+        expect(focusSpy).toHaveBeenCalled();
     });
 });

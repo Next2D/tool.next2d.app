@@ -11,11 +11,13 @@ import { execute as colorSettingRedMultiplierPointerDownUseCase } from "./ColorS
 import { execute as colorSettingRedMultiplierFocusOutEventUseCase } from "./ColorSettingRedMultiplierFocusOutEventUseCase";
 import { execute as colorSettingRedOffsetPointerDownUseCase } from "./ColorSettingRedOffsetPointerDownUseCase";
 import { execute as colorSettingRedOffsetFocusOutEventUseCase } from "./ColorSettingRedOffsetFocusOutEventUseCase";
+import { execute as colorSettingGreenMultiplierPointerDownUseCase } from "./ColorSettingGreenMultiplierPointerDownUseCase";
 import {
     $COLOR_ALPHA_MULTIPLIER_ID,
     $COLOR_ALPHA_OFFSET_ID,
     $COLOR_RED_MULTIPLIER_ID,
-    $COLOR_RED_OFFSET_ID
+    $COLOR_RED_OFFSET_ID,
+    $COLOR_GREEN_MULTIPLIER_ID
 } from "@/config/ColorSettingConfig";
 
 /**
@@ -28,6 +30,31 @@ import {
  */
 export const execute = (): void =>
 {
+    const greenMultiplierElement: HTMLInputElement | null = document
+        .getElementById($COLOR_GREEN_MULTIPLIER_ID) as HTMLInputElement;
+
+    if (greenMultiplierElement) {
+        greenMultiplierElement.addEventListener(EventType.POINTER_OVER,
+            colorSettingInputPointerOverEventService
+        );
+        greenMultiplierElement.addEventListener(EventType.POINTER_OUT,
+            colorSettingInputPointerOutEventService
+        );
+        greenMultiplierElement.addEventListener(EventType.POINTER_DOWN,
+            colorSettingGreenMultiplierPointerDownUseCase,
+            { "passive": false }
+        );
+        greenMultiplierElement.addEventListener("focusin",
+            colorSettingInputFocusInEventService
+        );
+        // greenMultiplierElement.addEventListener("focusout",
+        //     colorSettingRedOffsetFocusOutEventUseCase
+        // );
+        greenMultiplierElement.addEventListener("keypress",
+            colorSettingInputKeyPressEventService
+        );
+    }
+
     const redOffsetElement: HTMLInputElement | null = document
         .getElementById($COLOR_RED_OFFSET_ID) as HTMLInputElement;
 

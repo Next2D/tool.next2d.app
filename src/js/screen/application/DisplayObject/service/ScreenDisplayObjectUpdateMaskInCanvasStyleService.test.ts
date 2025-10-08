@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { execute } from "./ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
@@ -7,11 +6,20 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Instance } from "@/core/domain/model/Instance";
 import { Matrix } from "@next2d/geom";
 
-// モック
-const mock$getCurrentWorkSpace = vi.fn();
-const mock$createTransformMatrix = vi.fn();
-const mock$getConcatenatedMatrix = vi.fn();
-const mockScreenDisplayObjectSvgTagComponent = vi.fn();
+// モック（vi.hoistedを使用）
+const {
+    mock$getCurrentWorkSpace,
+    mock$createTransformMatrix,
+    mock$getConcatenatedMatrix,
+    mockScreenDisplayObjectSvgTagComponent
+} = vi.hoisted(() => {
+    return {
+        mock$getCurrentWorkSpace: vi.fn(),
+        mock$createTransformMatrix: vi.fn(),
+        mock$getConcatenatedMatrix: vi.fn(),
+        mockScreenDisplayObjectSvgTagComponent: vi.fn()
+    };
+});
 
 vi.mock("@/core/application/CoreUtil", () => ({
     $getCurrentWorkSpace: mock$getCurrentWorkSpace
@@ -34,6 +42,8 @@ vi.mock("@/config/InstanceConfig", () => ({
     $BITMAP_TYPE: "BITMAP",
     $VIDEO_TYPE: "VIDEO"
 }));
+
+import { execute } from "./ScreenDisplayObjectUpdateMaskInCanvasStyleService";
 
 describe("ScreenDisplayObjectUpdateMaskInCanvasStyleService", () => {
     let mockElement: HTMLElement;

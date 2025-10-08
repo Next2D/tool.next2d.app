@@ -1,8 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ScreenReferencePointInitializeRegisterEventUseCase";
 
-// モック設定
-const mockScreenReferencePointPointerDownEventUseCase = vi.fn();
+// モック設定（vi.hoistedを使用）
+const { mockScreenReferencePointPointerDownEventUseCase } = vi.hoisted(() => {
+    return {
+        mockScreenReferencePointPointerDownEventUseCase: vi.fn()
+    };
+});
 
 vi.mock("./ScreenReferencePointPointerDownEventUseCase", () => ({
     execute: mockScreenReferencePointPointerDownEventUseCase
@@ -17,6 +20,8 @@ vi.mock("@/tool/domain/event/EventType", () => ({
         POINTER_DOWN: "pointerdown"
     }
 }));
+
+import { execute } from "./ScreenReferencePointInitializeRegisterEventUseCase";
 
 describe("ScreenReferencePointInitializeRegisterEventUseCase", () => {
     let mockElement: HTMLElement;

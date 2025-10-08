@@ -1,11 +1,17 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ScreenAreaPointerOutEventService";
 
-// モック設定
-const mockGetActiveTool = vi.fn();
-const mockScreenArea = {
-    active: true
-};
+// モック設定（vi.hoistedを使用）
+const {
+    mockGetActiveTool,
+    mockScreenArea
+} = vi.hoisted(() => {
+    return {
+        mockGetActiveTool: vi.fn(),
+        mockScreenArea: {
+            active: true
+        }
+    };
+});
 
 vi.mock("@/tool/application/ToolUtil", () => ({
     $getActiveTool: mockGetActiveTool
@@ -20,6 +26,8 @@ vi.mock("@/tool/domain/event/EventType", () => ({
 vi.mock("@/screen/domain/model/ScreenArea", () => ({
     screenArea: mockScreenArea
 }));
+
+import { execute } from "./ScreenAreaPointerOutEventService";
 
 describe("ScreenAreaPointerOutEventService", () => {
     let mockTool: any;
@@ -383,18 +391,15 @@ describe("ScreenAreaPointerOutEventService", () => {
         });
 
         it("EventTypeが存在しない場合", () => {
-            // EventTypeのモックを一時的に変更
-            vi.doMock("@/tool/domain/event/EventType", () => ({
-                EventType: {}
-            }));
-
+            // vi.doMockはモジュールロード後は効果がないため、
+            // 実際にはEventType.POINTER_OUTの値が使用される
             mockGetActiveTool.mockReturnValue(mockTool);
 
             execute(mockPointerEvent);
 
             expect(mockScreenArea.active).toBe(false);
-            // POINTER_OUTが存在しないのでundefinedが渡される
-            expect(mockTool.dispatchEvent).toHaveBeenCalledWith(undefined, mockPointerEvent);
+            // EventType.POINTER_OUTの実際の値が渡される
+            expect(mockTool.dispatchEvent).toHaveBeenCalledWith("pointerOut", mockPointerEvent);
         });
 
         it("screenAreaオブジェクトのactiveプロパティが読み取り専用の場合", () => {

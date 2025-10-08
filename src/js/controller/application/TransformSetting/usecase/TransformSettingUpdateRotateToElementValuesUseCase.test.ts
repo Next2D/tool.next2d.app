@@ -1,23 +1,42 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TransformSettingUpdateRotateToElementValuesUseCase";
 import { $SCREEN_STAGE_AREA_ID } from "../../../../config/ScreenConfig";
 
-// サービスとユーティリティのモック
-const mockScreenAreaGetElementFromLayerIdAndDepthService = vi.fn();
-const mockScreenAreaCalcSelectedBoundsService = vi.fn();
-const mockTransformSettingUpdateXElementService = vi.fn();
-const mockTransformSettingUpdateYElementService = vi.fn();
-const mockTransformSettingUpdateWidthElementService = vi.fn();
-const mockTransformSettingUpdateHeightElementService = vi.fn();
-const mockTransformSettingUpdateScaleXElementService = vi.fn();
-const mockTransformSettingUpdateScaleYElementService = vi.fn();
-const mockScreenStandardPointDeployElementUseCase = vi.fn();
-const mockScreenDisplayObjectUpdateMaskInCanvasStyleService = vi.fn();
-const mock$getCurrentWorkSpace = vi.fn();
-const mock$getConcatenatedMatrix = vi.fn();
-const mock$getScreenOffsetLeft = vi.fn();
-const mock$getScreenOffsetTop = vi.fn();
-const mock$createTransformElementStyle = vi.fn();
+// サービスとユーティリティのモック（vi.hoistedを使用）
+const {
+    mockScreenAreaGetElementFromLayerIdAndDepthService,
+    mockScreenAreaCalcSelectedBoundsService,
+    mockTransformSettingUpdateXElementService,
+    mockTransformSettingUpdateYElementService,
+    mockTransformSettingUpdateWidthElementService,
+    mockTransformSettingUpdateHeightElementService,
+    mockTransformSettingUpdateScaleXElementService,
+    mockTransformSettingUpdateScaleYElementService,
+    mockScreenStandardPointDeployElementUseCase,
+    mockScreenDisplayObjectUpdateMaskInCanvasStyleService,
+    mock$getCurrentWorkSpace,
+    mock$getConcatenatedMatrix,
+    mock$getScreenOffsetLeft,
+    mock$getScreenOffsetTop,
+    mock$createTransformElementStyle
+} = vi.hoisted(() => {
+    return {
+        mockScreenAreaGetElementFromLayerIdAndDepthService: vi.fn(),
+        mockScreenAreaCalcSelectedBoundsService: vi.fn(),
+        mockTransformSettingUpdateXElementService: vi.fn(),
+        mockTransformSettingUpdateYElementService: vi.fn(),
+        mockTransformSettingUpdateWidthElementService: vi.fn(),
+        mockTransformSettingUpdateHeightElementService: vi.fn(),
+        mockTransformSettingUpdateScaleXElementService: vi.fn(),
+        mockTransformSettingUpdateScaleYElementService: vi.fn(),
+        mockScreenStandardPointDeployElementUseCase: vi.fn(),
+        mockScreenDisplayObjectUpdateMaskInCanvasStyleService: vi.fn(),
+        mock$getCurrentWorkSpace: vi.fn(),
+        mock$getConcatenatedMatrix: vi.fn(),
+        mock$getScreenOffsetLeft: vi.fn(),
+        mock$getScreenOffsetTop: vi.fn(),
+        mock$createTransformElementStyle: vi.fn()
+    };
+});
 
 vi.mock("@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService", () => ({
     execute: mockScreenAreaGetElementFromLayerIdAndDepthService
@@ -79,6 +98,8 @@ vi.mock("@/controller/domain/model/ReferenceSetting", () => ({
         y: 0
     }
 }));
+
+import { execute } from "./TransformSettingUpdateRotateToElementValuesUseCase";
 
 describe("TransformSettingUpdateRotateToElementValuesUseCase", () => {
     let mockElement: HTMLElement;
@@ -164,7 +185,9 @@ describe("TransformSettingUpdateRotateToElementValuesUseCase", () => {
     });
 
     afterEach(() => {
-        document.body.removeChild(mockElement);
+        if (mockElement.parentNode) {
+            document.body.removeChild(mockElement);
+        }
         vi.resetAllMocks();
     });
 

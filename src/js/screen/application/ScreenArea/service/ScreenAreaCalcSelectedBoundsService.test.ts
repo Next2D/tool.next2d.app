@@ -1,12 +1,17 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ScreenAreaCalcSelectedBoundsService";
 
-// モック設定
-const mockCalcBoundingBox = vi.fn();
+// モック設定（vi.hoistedを使用）
+const { mockCalcBoundingBox } = vi.hoisted(() => {
+    return {
+        mockCalcBoundingBox: vi.fn()
+    };
+});
 
 vi.mock("@/core/application/CoreUtil", () => ({
     $calcBoundingBox: mockCalcBoundingBox
 }));
+
+import { execute } from "./ScreenAreaCalcSelectedBoundsService";
 
 describe("ScreenAreaCalcSelectedBoundsService", () => {
     let mockMovieClip: any;

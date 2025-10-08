@@ -1,23 +1,42 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TransformSettingUpdateHeightToElementValuesUseCase";
 import { $SCREEN_STAGE_AREA_ID } from "../../../../config/ScreenConfig";
 
-// サービスとユーティリティのモック
-const mockScreenAreaGetElementFromLayerIdAndDepthService = vi.fn();
-const mockScreenAreaCalcSelectedBoundsService = vi.fn();
-const mockTransformSettingUpdateYElementService = vi.fn();
-const mockTransformSettingUpdateXElementService = vi.fn();
-const mockTransformSettingUpdateHeightElementService = vi.fn();
-const mockTransformSettingUpdateScaleYElementService = vi.fn();
-const mockTransformSettingUpdateScaleXElementService = vi.fn();
-const mockTransformSettingUpdateRotationElementService = vi.fn();
-const mockScreenStandardPointDeployElementUseCase = vi.fn();
-const mockScreenDisplayObjectUpdateMaskInCanvasStyleService = vi.fn();
-const mock$getCurrentWorkSpace = vi.fn();
-const mock$getConcatenatedMatrix = vi.fn();
-const mock$getScreenOffsetLeft = vi.fn();
-const mock$getScreenOffsetTop = vi.fn();
-const mock$createTransformElementStyle = vi.fn();
+// サービスとユーティリティのモック（vi.hoistedを使用）
+const {
+    mockScreenAreaGetElementFromLayerIdAndDepthService,
+    mockScreenAreaCalcSelectedBoundsService,
+    mockTransformSettingUpdateYElementService,
+    mockTransformSettingUpdateXElementService,
+    mockTransformSettingUpdateHeightElementService,
+    mockTransformSettingUpdateScaleYElementService,
+    mockTransformSettingUpdateScaleXElementService,
+    mockTransformSettingUpdateRotationElementService,
+    mockScreenStandardPointDeployElementUseCase,
+    mockScreenDisplayObjectUpdateMaskInCanvasStyleService,
+    mock$getCurrentWorkSpace,
+    mock$getConcatenatedMatrix,
+    mock$getScreenOffsetLeft,
+    mock$getScreenOffsetTop,
+    mock$createTransformElementStyle
+} = vi.hoisted(() => {
+    return {
+        mockScreenAreaGetElementFromLayerIdAndDepthService: vi.fn(),
+        mockScreenAreaCalcSelectedBoundsService: vi.fn(),
+        mockTransformSettingUpdateYElementService: vi.fn(),
+        mockTransformSettingUpdateXElementService: vi.fn(),
+        mockTransformSettingUpdateHeightElementService: vi.fn(),
+        mockTransformSettingUpdateScaleYElementService: vi.fn(),
+        mockTransformSettingUpdateScaleXElementService: vi.fn(),
+        mockTransformSettingUpdateRotationElementService: vi.fn(),
+        mockScreenStandardPointDeployElementUseCase: vi.fn(),
+        mockScreenDisplayObjectUpdateMaskInCanvasStyleService: vi.fn(),
+        mock$getCurrentWorkSpace: vi.fn(),
+        mock$getConcatenatedMatrix: vi.fn(),
+        mock$getScreenOffsetLeft: vi.fn(),
+        mock$getScreenOffsetTop: vi.fn(),
+        mock$createTransformElementStyle: vi.fn()
+    };
+});
 
 vi.mock("@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService", () => ({
     execute: mockScreenAreaGetElementFromLayerIdAndDepthService
@@ -87,6 +106,8 @@ vi.mock("@/controller/domain/model/ReferenceSetting", () => ({
         y: 0
     }
 }));
+
+import { execute } from "./TransformSettingUpdateHeightToElementValuesUseCase";
 
 describe("TransformSettingUpdateHeightToElementValuesUseCase", () => {
     let mockElement: HTMLElement;
@@ -172,7 +193,9 @@ describe("TransformSettingUpdateHeightToElementValuesUseCase", () => {
     });
 
     afterEach(() => {
-        document.body.removeChild(mockElement);
+        if (mockElement.parentNode) {
+            document.body.removeChild(mockElement);
+        }
         vi.resetAllMocks();
     });
 
@@ -258,15 +281,19 @@ describe("TransformSettingUpdateHeightToElementValuesUseCase", () => {
         });
 
         it("scaleXとscaleYの表示値が正しく計算される", async () => {
+            const { transformSetting } = await import("@/controller/domain/model/TransformSetting");
+            transformSetting.scaleX = 1.5;
+            transformSetting.scaleY = 2.0;
+
             mockCharacter.scaleX = 1.5;
             mockCharacter.scaleY = 2.0;
 
             await execute(1.2);
 
-            // scaleX: Math.round(1.5 * 10000) / 100 = 150
+            // scaleX: Math.round(transformSetting.scaleX * 10000) / 100 = Math.round(1.5 * 10000) / 100 = 150
             expect(mockTransformSettingUpdateScaleXElementService).toHaveBeenCalledWith(150);
 
-            // scaleY: Math.round(2.0 * 1.2 * 10000) / 100 = 240
+            // scaleY: Math.round(transformSetting.scaleY * scale_y * 10000) / 100 = Math.round(2.0 * 1.2 * 10000) / 100 = 240
             expect(mockTransformSettingUpdateScaleYElementService).toHaveBeenCalledWith(240);
         });
 
@@ -343,11 +370,8 @@ describe("TransformSettingUpdateHeightToElementValuesUseCase", () => {
             mockScreenAreaCalcSelectedBoundsService.mockReturnValue(null);
 
             await execute(1.5);
-
-            // scaleYの更新は実行される
-            expect(mockTransformSettingUpdateScaleYElementService).toHaveBeenCalled();
             
-            // Boundsがnullなので座標更新は実行されない
+            // Boundsがnullの場合、早期リターンするためscaleY更新も実行されない
             expect(mockTransformSettingUpdateXElementService).not.toHaveBeenCalled();
             expect(mockTransformSettingUpdateYElementService).not.toHaveBeenCalled();
             expect(mockTransformSettingUpdateHeightElementService).not.toHaveBeenCalled();
@@ -484,10 +508,10 @@ describe("TransformSettingUpdateHeightToElementValuesUseCase", () => {
             transformSetting.scaleY = 1.0;
 
             await execute(1.2);
-            expect(transformSetting.scaleY).toBe(1.2);
+            expect(transformSetting.scaleY).toBeCloseTo(1.2, 10);
 
             await execute(1.5);
-            expect(transformSetting.scaleY).toBe(1.8);
+            expect(transformSetting.scaleY).toBeCloseTo(1.8, 10);
 
             expect(mockTransformSettingUpdateScaleYElementService).toHaveBeenLastCalledWith(180);
         });

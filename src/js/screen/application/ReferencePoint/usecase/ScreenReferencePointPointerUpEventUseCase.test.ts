@@ -1,16 +1,29 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ScreenReferencePointPointerUpEventUseCase";
 
-// モック設定
-const mockSetCursor = vi.fn();
-const mockGetCurrentWorkSpace = vi.fn();
-const mockReferenceSetting = {
-    x: 100,
-    y: 200
-};
-const mockMatrix = vi.fn();
-const mockExternalReference = vi.fn();
-const mockScreenReferencePointPointerMoveEventUseCase = vi.fn();
+// モック設定（vi.hoistedを使用）
+const {
+    mockSetCursor,
+    mockGetCurrentWorkSpace,
+    mockReferenceSetting,
+    mockMatrix,
+    mockExternalReference,
+    mockScreenReferencePointPointerMoveEventUseCase
+} = vi.hoisted(() => {
+    const Matrix = vi.fn();
+    Matrix.multiply = vi.fn((a: Float32Array) => a);
+    
+    return {
+        mockSetCursor: vi.fn(),
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockReferenceSetting: {
+            x: 100,
+            y: 200
+        },
+        mockMatrix: Matrix,
+        mockExternalReference: vi.fn(),
+        mockScreenReferencePointPointerMoveEventUseCase: vi.fn()
+    };
+});
 
 vi.mock("@/global/GlobalUtil", () => ({
     $setCursor: mockSetCursor
@@ -44,6 +57,8 @@ vi.mock("@/tool/domain/event/EventType", () => ({
         POINTER_CANCEL: "pointercancel"
     }
 }));
+
+import { execute } from "./ScreenReferencePointPointerUpEventUseCase";
 
 describe("ScreenReferencePointPointerUpEventUseCase", () => {
     let mockElement: HTMLDivElement;

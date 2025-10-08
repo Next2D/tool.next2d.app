@@ -1,8 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ScreenAreaPointerMoveEventService";
 
-// モック設定
-const mockGetActiveTool = vi.fn();
+// モック設定（vi.hoistedを使用）
+const { mockGetActiveTool } = vi.hoisted(() => {
+    return {
+        mockGetActiveTool: vi.fn()
+    };
+});
 
 vi.mock("@/tool/application/ToolUtil", () => ({
     $getActiveTool: mockGetActiveTool
@@ -13,6 +16,8 @@ vi.mock("@/tool/domain/event/EventType", () => ({
         CHANGE_CURSOR: "changeCursor"
     }
 }));
+
+import { execute } from "./ScreenAreaPointerMoveEventService";
 
 describe("ScreenAreaPointerMoveEventService", () => {
     let mockTool: any;
@@ -305,17 +310,14 @@ describe("ScreenAreaPointerMoveEventService", () => {
         });
 
         it("EventTypeが存在しない場合", () => {
-            // EventTypeのモックを一時的に変更
-            vi.doMock("@/tool/domain/event/EventType", () => ({
-                EventType: {}
-            }));
-
+            // vi.doMockはモジュールロード後は効果がないため、
+            // 実際にはEventType.CHANGE_CURSORの値が使用される
             mockGetActiveTool.mockReturnValue(mockTool);
 
             execute(mockPointerEvent);
 
-            // CHANGE_CURSORが存在しないのでundefinedが渡される
-            expect(mockTool.dispatchEvent).toHaveBeenCalledWith(undefined, mockPointerEvent);
+            // EventType.CHANGE_CURSORの実際の値が渡される
+            expect(mockTool.dispatchEvent).toHaveBeenCalledWith("changeCursor", mockPointerEvent);
         });
     });
 

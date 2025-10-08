@@ -1,13 +1,23 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TimelineLayerControllerLightIconPointerDownEventService";
 
-// モック設定
-const mockAllHideMenu = vi.fn();
-const mockGetLayerFromElement = vi.fn();
-const mockGetCurrentWorkSpace = vi.fn();
-const mockActiveTouchPointers = { size: 1 };
-const mockSetEditingElement = vi.fn();
-const mockExternalLayer = vi.fn();
+// モック設定（vi.hoistedを使用）
+const {
+    mockAllHideMenu,
+    mockGetLayerFromElement,
+    mockGetCurrentWorkSpace,
+    mockActiveTouchPointers,
+    mockSetEditingElement,
+    mockExternalLayer
+} = vi.hoisted(() => {
+    return {
+        mockAllHideMenu: vi.fn(),
+        mockGetLayerFromElement: vi.fn(),
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockActiveTouchPointers: { size: 1 },
+        mockSetEditingElement: vi.fn(),
+        mockExternalLayer: vi.fn()
+    };
+});
 
 vi.mock("@/menu/application/MenuUtil", () => ({
     $allHideMenu: mockAllHideMenu
@@ -29,6 +39,8 @@ vi.mock("@/global/GlobalUtil", () => ({
 vi.mock("@/external/core/domain/model/ExternalLayer", () => ({
     ExternalLayer: mockExternalLayer
 }));
+
+import { execute } from "./TimelineLayerControllerLightIconPointerDownEventService";
 
 describe("TimelineLayerControllerLightIconPointerDownEventService", () => {
     let mockWorkSpace: any;

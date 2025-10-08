@@ -1,10 +1,17 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ScreenReferencePointPointerDownEventUseCase";
 
-// モック設定
-const mockActiveTouchPointers = { size: 1 };
-const mockScreenReferencePointPointerMoveEventUseCase = vi.fn();
-const mockScreenReferencePointPointerUpEventUseCase = vi.fn();
+// モック設定（vi.hoistedを使用）
+const {
+    mockActiveTouchPointers,
+    mockScreenReferencePointPointerMoveEventUseCase,
+    mockScreenReferencePointPointerUpEventUseCase
+} = vi.hoisted(() => {
+    return {
+        mockActiveTouchPointers: { size: 1 },
+        mockScreenReferencePointPointerMoveEventUseCase: vi.fn(),
+        mockScreenReferencePointPointerUpEventUseCase: vi.fn()
+    };
+});
 
 vi.mock("@/global/GlobalUtil", () => ({
     $activeTouchPointers: mockActiveTouchPointers
@@ -26,6 +33,8 @@ vi.mock("@/tool/domain/event/EventType", () => ({
         POINTER_CANCEL: "pointercancel"
     }
 }));
+
+import { execute } from "./ScreenReferencePointPointerDownEventUseCase";
 
 describe("ScreenReferencePointPointerDownEventUseCase", () => {
     let mockElement: HTMLElement;

@@ -1,12 +1,21 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TimelineToolLockAllUseCase";
 
-// モック設定
-const mockGetCurrentWorkSpace = vi.fn();
-const mockSetAllLockMode = vi.fn();
-const mockTimelineToolLockAllGetCurrentModeService = vi.fn();
-const mockExternalLayer = vi.fn();
-const mockActiveTouchPointers = new Map();
+// モック設定（vi.hoistedを使用）
+const {
+    mockGetCurrentWorkSpace,
+    mockSetAllLockMode,
+    mockTimelineToolLockAllGetCurrentModeService,
+    mockExternalLayer,
+    mockActiveTouchPointers
+} = vi.hoisted(() => {
+    return {
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockSetAllLockMode: vi.fn(),
+        mockTimelineToolLockAllGetCurrentModeService: vi.fn(),
+        mockExternalLayer: vi.fn(),
+        mockActiveTouchPointers: new Map()
+    };
+});
 
 vi.mock("@/core/application/CoreUtil", () => ({
     $getCurrentWorkSpace: mockGetCurrentWorkSpace
@@ -27,6 +36,8 @@ vi.mock("@/external/core/domain/model/ExternalLayer", () => ({
 vi.mock("@/global/GlobalUtil", () => ({
     $activeTouchPointers: mockActiveTouchPointers
 }));
+
+import { execute } from "./TimelineToolLockAllUseCase";
 
 describe("TimelineToolLockAllUseCase", () => {
     let mockWorkSpace: any;

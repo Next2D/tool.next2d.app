@@ -1,5 +1,5 @@
 import { execute } from "./TransformSettingYFocusInEventUseCase";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { $createWorkSpace, $getCurrentWorkSpace } from "../../../../core/application/CoreUtil";
 import type { WorkSpace } from "../../../../core/domain/model/WorkSpace";
 import { $useKeyboard, $updateKeyLock } from "../../../../shortcut/ShortcutUtil";
@@ -7,12 +7,33 @@ import { transformSetting } from "../../../../controller/domain/model/TransformS
 
 describe("TransformSettingYFocusInEventUseCase Test", () =>
 {
-    it("execute test case1", () =>
-    {
-        const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
+    let workSpace: WorkSpace;
+    let xInput: HTMLInputElement;
+
+    beforeEach(() => {
+        // X座標の入力要素を作成してDOMに追加
+        xInput = document.createElement("input");
+        xInput.id = "object-x";
+        xInput.value = "150";
+        document.body.appendChild(xInput);
+
+        workSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const movieClip = workSpace.scene;
         movieClip.selectedDepths.set(0, [0]);
 
+        // reset
+        transformSetting.clear();
+        $updateKeyLock(false);
+    });
+
+    afterEach(() => {
+        if (xInput.parentNode) {
+            document.body.removeChild(xInput);
+        }
+    });
+
+    it("execute test case1", () =>
+    {
         const input = document.createElement("input");
         input.value = "100";
 
@@ -24,10 +45,6 @@ describe("TransformSettingYFocusInEventUseCase Test", () =>
                 stopPropagation = true;
             })
         } as unknown as FocusEvent;
-
-        // reset
-        transformSetting.clear();
-        $updateKeyLock(false);
 
         expect(transformSetting.beforeY).toBe(0);
         expect(stopPropagation).toBe(false);

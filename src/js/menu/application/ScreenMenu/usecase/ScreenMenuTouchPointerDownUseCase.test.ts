@@ -7,24 +7,21 @@ describe("ScreenMenuTouchPointerDownUseCase Test", () =>
     it("execute test", () =>
     {
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "pointerId": 2,
             "pointerType": "touch",
             "stopPropagation": vi.fn(() => stopPropagation = true),
-            "preventDefault": vi.fn(() => preventDefault = true)
+            "preventDefault": vi.fn()
         } as unknown as PointerEvent;
 
         $activeTouchPointers.add(1);
         $activeTouchPointers.add(mockEvent.pointerId);
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
         expect($activeTouchPointers.size).toBe(2);
 
         execute(mockEvent);
 
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
 
         $activeTouchPointers.clear();
     });

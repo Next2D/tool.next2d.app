@@ -1,20 +1,30 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ScreenReferencePointDeployElementUseCase";
 
-// モック設定
-const mockSetReferencePointState = vi.fn();
-const mockGetCurrentWorkSpace = vi.fn();
-const mockScreenReferencePointShowService = vi.fn();
-const mockScreenReferencePointHideService = vi.fn();
-const mockReferencePositionGetGlobalPositionUseCase = vi.fn();
-const mockGetScreenOffsetLeft = vi.fn();
-const mockGetScreenOffsetTop = vi.fn();
-
-// ReferenceSetting モック
-const mockReferenceSetting = {
-    x: 0,
-    y: 0
-};
+// モック設定（vi.hoistedを使用）
+const {
+    mockSetReferencePointState,
+    mockGetCurrentWorkSpace,
+    mockScreenReferencePointShowService,
+    mockScreenReferencePointHideService,
+    mockReferencePositionGetGlobalPositionUseCase,
+    mockGetScreenOffsetLeft,
+    mockGetScreenOffsetTop,
+    mockReferenceSetting
+} = vi.hoisted(() => {
+    return {
+        mockSetReferencePointState: vi.fn(),
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockScreenReferencePointShowService: vi.fn(),
+        mockScreenReferencePointHideService: vi.fn(),
+        mockReferencePositionGetGlobalPositionUseCase: vi.fn(),
+        mockGetScreenOffsetLeft: vi.fn(),
+        mockGetScreenOffsetTop: vi.fn(),
+        mockReferenceSetting: {
+            x: 0,
+            y: 0
+        }
+    };
+});
 
 vi.mock("../ReferencePointUtil", () => ({
     $setReferencePointState: mockSetReferencePointState
@@ -44,6 +54,8 @@ vi.mock("@/global/GlobalUtil", () => ({
     $getScreenOffsetLeft: mockGetScreenOffsetLeft,
     $getScreenOffsetTop: mockGetScreenOffsetTop
 }));
+
+import { execute } from "./ScreenReferencePointDeployElementUseCase";
 
 describe("ScreenReferencePointDeployElementUseCase", () => {
     let mockWorkSpace: any;

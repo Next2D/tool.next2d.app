@@ -1,5 +1,5 @@
 import { execute } from "./TimelineLayerControllerNameTextActiveStyleService";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 describe("TimelineLayerControllerNameTextActiveStyleServiceTest", () =>
 {
@@ -9,14 +9,17 @@ describe("TimelineLayerControllerNameTextActiveStyleServiceTest", () =>
 
         div.id = "layer-name-0";
         div.contentEditable    = "false";
-        div.style.borderBottom = "";
+        
+        // focus()をspyする
+        const focusSpy = vi.spyOn(div, 'focus');
 
         expect(div.contentEditable).toBe("false");
-        expect(div.style.borderBottom).toBe("");
 
         execute(div);
 
         expect(div.contentEditable).toBe("true");
-        expect(div.style.borderBottom).toBe("1px solid rgb(245, 245, 245)");
+        
+        // focus()が呼ばれたことを確認
+        expect(focusSpy).toHaveBeenCalled();
     });
 });

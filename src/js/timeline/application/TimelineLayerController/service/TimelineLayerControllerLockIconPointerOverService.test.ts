@@ -1,11 +1,19 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TimelineLayerControllerLockIconPointerOverService";
 
-// モック設定
-const mockGetCurrentWorkSpace = vi.fn();
-const mockGetLayerFromElement = vi.fn();
-const mockGetLockState = vi.fn();
-const mockExternalLayer = vi.fn();
+// モック設定（vi.hoistedを使用）
+const {
+    mockGetCurrentWorkSpace,
+    mockGetLayerFromElement,
+    mockGetLockState,
+    mockExternalLayer
+} = vi.hoisted(() => {
+    return {
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockGetLayerFromElement: vi.fn(),
+        mockGetLockState: vi.fn(),
+        mockExternalLayer: vi.fn()
+    };
+});
 
 vi.mock("@/core/application/CoreUtil", () => ({
     $getCurrentWorkSpace: mockGetCurrentWorkSpace
@@ -19,6 +27,8 @@ vi.mock("../../TimelineUtil", () => ({
 vi.mock("@/external/core/domain/model/ExternalLayer", () => ({
     ExternalLayer: mockExternalLayer
 }));
+
+import { execute } from "./TimelineLayerControllerLockIconPointerOverService";
 
 describe("TimelineLayerControllerLockIconPointerOverService", () => {
     let mockWorkSpace: any;

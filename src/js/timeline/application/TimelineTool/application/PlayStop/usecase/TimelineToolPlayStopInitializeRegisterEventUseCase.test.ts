@@ -1,16 +1,21 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TimelineToolPlayStopInitializeRegisterEventUseCase";
 
 // 定数定義
 const TIMELINE_PLAY_STOP_ID = "timeline-play";
 const POINTER_DOWN_EVENT = "pointerdown";
 
-// モック設定
-const mockTimelineToolPlayStopPointerDownEventUseCase = vi.fn();
+// モック設定（vi.hoistedを使用）
+const { mockTimelineToolPlayStopPointerDownEventUseCase } = vi.hoisted(() => {
+    return {
+        mockTimelineToolPlayStopPointerDownEventUseCase: vi.fn()
+    };
+});
 
 vi.mock("./TimelineToolPlayStopPointerDownEventUseCase", () => ({
     execute: mockTimelineToolPlayStopPointerDownEventUseCase
 }));
+
+import { execute } from "./TimelineToolPlayStopInitializeRegisterEventUseCase";
 
 describe("TimelineToolPlayStopInitializeRegisterEventUseCase", () => {
     let mockElement: HTMLElement;

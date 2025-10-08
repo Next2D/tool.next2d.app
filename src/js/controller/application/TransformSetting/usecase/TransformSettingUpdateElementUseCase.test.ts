@@ -1,14 +1,25 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TransformSettingUpdateElementUseCase";
 
-// サービスのモック
-const mockTransformSettingUpdateXElementService = vi.fn();
-const mockTransformSettingUpdateYElementService = vi.fn();
-const mockTransformSettingUpdateWidthElementService = vi.fn();
-const mockTransformSettingUpdateHeightElementService = vi.fn();
-const mockTransformSettingUpdateScaleXElementService = vi.fn();
-const mockTransformSettingUpdateScaleYElementService = vi.fn();
-const mockTransformSettingUpdateRotationElementService = vi.fn();
+// サービスのモック（vi.hoistedを使用）
+const {
+    mockTransformSettingUpdateXElementService,
+    mockTransformSettingUpdateYElementService,
+    mockTransformSettingUpdateWidthElementService,
+    mockTransformSettingUpdateHeightElementService,
+    mockTransformSettingUpdateScaleXElementService,
+    mockTransformSettingUpdateScaleYElementService,
+    mockTransformSettingUpdateRotationElementService
+} = vi.hoisted(() => {
+    return {
+        mockTransformSettingUpdateXElementService: vi.fn(),
+        mockTransformSettingUpdateYElementService: vi.fn(),
+        mockTransformSettingUpdateWidthElementService: vi.fn(),
+        mockTransformSettingUpdateHeightElementService: vi.fn(),
+        mockTransformSettingUpdateScaleXElementService: vi.fn(),
+        mockTransformSettingUpdateScaleYElementService: vi.fn(),
+        mockTransformSettingUpdateRotationElementService: vi.fn()
+    };
+});
 
 vi.mock("../service/TransformSettingUpdateXElementService", () => ({
     execute: mockTransformSettingUpdateXElementService
@@ -37,6 +48,8 @@ vi.mock("../service/TransformSettingUpdateScaleYElementService", () => ({
 vi.mock("../service/TransformSettingUpdateRotationElementService", () => ({
     execute: mockTransformSettingUpdateRotationElementService
 }));
+
+import { execute } from "./TransformSettingUpdateElementUseCase";
 
 describe("TransformSettingUpdateElementUseCase", () => {
     beforeEach(() => {

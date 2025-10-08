@@ -1,21 +1,33 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./ScreenReferencePointPointerMoveEventUseCase";
 
-// モック設定
-const mockReferenceSetting = {
-    x: 0,
-    y: 0,
-    movementX: 0,
-    movementY: 0,
-    pivotX: 100,
-    pivotY: 200
-};
-
-const mockGetCurrentWorkSpace = vi.fn();
-const mockScreenReferencePointMoveElementService = vi.fn();
-const mockReferenceSettingUpdateXService = vi.fn();
-const mockReferenceSettingUpdateYService = vi.fn();
-const mockMatrix = vi.fn();
+// モック設定（vi.hoistedを使用）
+const {
+    mockReferenceSetting,
+    mockGetCurrentWorkSpace,
+    mockScreenReferencePointMoveElementService,
+    mockReferenceSettingUpdateXService,
+    mockReferenceSettingUpdateYService,
+    mockMatrix
+} = vi.hoisted(() => {
+    const Matrix = vi.fn();
+    Matrix.multiply = vi.fn((a: Float32Array) => a);
+    
+    return {
+        mockReferenceSetting: {
+            x: 0,
+            y: 0,
+            movementX: 0,
+            movementY: 0,
+            pivotX: 100,
+            pivotY: 200
+        },
+        mockGetCurrentWorkSpace: vi.fn(),
+        mockScreenReferencePointMoveElementService: vi.fn(),
+        mockReferenceSettingUpdateXService: vi.fn(),
+        mockReferenceSettingUpdateYService: vi.fn(),
+        mockMatrix: Matrix
+    };
+});
 
 vi.mock("@/controller/domain/model/ReferenceSetting", () => ({
     referenceSetting: mockReferenceSetting
@@ -40,6 +52,8 @@ vi.mock("@/controller/application/ReferenceSetting/service/ReferenceSettingUpdat
 vi.mock("@next2d/geom", () => ({
     Matrix: mockMatrix
 }));
+
+import { execute } from "./ScreenReferencePointPointerMoveEventUseCase";
 
 // requestAnimationFrame のモック
 Object.defineProperty(global, 'requestAnimationFrame', {

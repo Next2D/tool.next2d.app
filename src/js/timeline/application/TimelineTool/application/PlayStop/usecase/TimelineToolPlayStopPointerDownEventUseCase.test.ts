@@ -1,11 +1,19 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { execute } from "./TimelineToolPlayStopPointerDownEventUseCase";
 
-// モック設定
-const mockAllHideMenu = vi.fn();
-const mockSetEditingElement = vi.fn();
-const mockTimelineToolPlayStopUseCase = vi.fn();
-const mockActiveTouchPointers = new Map();
+// モック設定（vi.hoistedを使用）
+const {
+    mockAllHideMenu,
+    mockSetEditingElement,
+    mockTimelineToolPlayStopUseCase,
+    mockActiveTouchPointers
+} = vi.hoisted(() => {
+    return {
+        mockAllHideMenu: vi.fn(),
+        mockSetEditingElement: vi.fn(),
+        mockTimelineToolPlayStopUseCase: vi.fn(),
+        mockActiveTouchPointers: new Map()
+    };
+});
 
 vi.mock("@/menu/application/MenuUtil", () => ({
     $allHideMenu: mockAllHideMenu
@@ -19,6 +27,8 @@ vi.mock("@/global/GlobalUtil", () => ({
 vi.mock("./TimelineToolPlayStopUseCase", () => ({
     execute: mockTimelineToolPlayStopUseCase
 }));
+
+import { execute } from "./TimelineToolPlayStopPointerDownEventUseCase";
 
 describe("TimelineToolPlayStopPointerDownEventUseCase", () => {
     let mockEvent: PointerEvent;
