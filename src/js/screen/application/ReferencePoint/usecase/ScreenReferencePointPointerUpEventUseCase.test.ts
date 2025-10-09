@@ -7,10 +7,11 @@ const {
     mockReferenceSetting,
     mockMatrix,
     mockExternalReference,
-    mockScreenReferencePointPointerMoveEventUseCase
+    mockScreenReferencePointPointerMoveEventUseCase,
+    mockGetConcatenatedMatrix
 } = vi.hoisted(() => {
     const Matrix = vi.fn();
-    Matrix.multiply = vi.fn((a: Float32Array) => a);
+    Matrix.multiply = vi.fn(() => [1, 0, 0, 1, 0, 0]);
     
     return {
         mockSetCursor: vi.fn(),
@@ -21,7 +22,8 @@ const {
         },
         mockMatrix: Matrix,
         mockExternalReference: vi.fn(),
-        mockScreenReferencePointPointerMoveEventUseCase: vi.fn()
+        mockScreenReferencePointPointerMoveEventUseCase: vi.fn(),
+        mockGetConcatenatedMatrix: vi.fn(() => [1, 0, 0, 1, 0, 0])
     };
 });
 
@@ -47,6 +49,10 @@ vi.mock("@/external/controller/domain/model/ExternalReference", () => ({
 
 vi.mock("./ScreenReferencePointPointerMoveEventUseCase", () => ({
     execute: mockScreenReferencePointPointerMoveEventUseCase
+}));
+
+vi.mock("@/controller/application/TransformSetting/TransformSettingUtil", () => ({
+    $getConcatenatedMatrix: mockGetConcatenatedMatrix
 }));
 
 vi.mock("@/tool/domain/event/EventType", () => ({

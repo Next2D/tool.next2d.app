@@ -64,7 +64,6 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
         // モック関数の設定
         mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
         mockExternalLayer.mockReturnValue(mockExternalLayerInstance);
-        Element.prototype.appendChild = vi.fn();
     });
 
     afterEach(() => {
@@ -118,41 +117,55 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
         it("移動対象の要素をステージの最下位に配置する", () => {
             const element1 = document.createElement("div");
             element1.className = "layer-id-layer-1";
-            element1.insertAdjacentElement = vi.fn();
             const element2 = document.createElement("div");
             element2.className = "layer-id-layer-1";
-            element2.insertAdjacentElement = vi.fn();
 
+            // 実際のappendChildを使って要素を追加
             mockStageElement.appendChild(element1);
             mockStageElement.appendChild(element2);
+            
+            // appendChild のモックを作成（execute実行後の呼び出しをトラッキング）
+            const appendChildSpy = vi.spyOn(mockStageElement, 'appendChild');
 
             execute(mockLayer);
 
-            expect(mockStageElement.appendChild).toHaveBeenCalledWith(element1);
-            expect(mockStageElement.appendChild).toHaveBeenCalledWith(element2);
-            expect(mockStageElement.appendChild).toHaveBeenCalledTimes(4); // 初期2回 + 移動2回
+            // execute内でappendChildが2回呼ばれる（element1とelement2の再配置）
+            expect(appendChildSpy).toHaveBeenCalledWith(element1);
+            expect(appendChildSpy).toHaveBeenCalledWith(element2);
+            expect(appendChildSpy).toHaveBeenCalledTimes(2);
         });
 
         it("移動要素がnullの場合はスキップする", () => {
+            const element1 = document.createElement("div");
+            element1.className = "layer-id-layer-1";
+            const element2 = document.createElement("div");
+            element2.className = "layer-id-layer-1";
+            
+            // 実際に要素を追加
+            mockStageElement.appendChild(element1);
+            mockStageElement.appendChild(element2);
+            
             // querySelectorAllのモックで一部null要素を含む
-            const originalQuerySelectorAll = mockStageElement.querySelectorAll;
-            mockStageElement.querySelectorAll = vi.fn().mockReturnValue([
-                document.createElement("div"),
+            vi.spyOn(mockStageElement, 'querySelectorAll').mockReturnValue([
+                element1,
                 null,
-                document.createElement("div")
+                element2
             ] as any);
+            
+            const appendChildSpy = vi.spyOn(mockStageElement, 'appendChild');
 
             execute(mockLayer);
 
-            expect(mockStageElement.appendChild).toHaveBeenCalledTimes(2); // nullを除く2回
+            expect(appendChildSpy).toHaveBeenCalledTimes(2); // nullを除く2回
         });
 
         it("移動対象の要素が存在しない場合", () => {
             // layer-id-layer-1 のクラスを持つ要素がない状態
+            const appendChildSpy = vi.spyOn(mockStageElement, 'appendChild');
 
             execute(mockLayer);
 
-            expect(mockStageElement.appendChild).not.toHaveBeenCalled();
+            expect(appendChildSpy).not.toHaveBeenCalled();
         });
     });
 
@@ -166,17 +179,15 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             // 移動対象の要素
             const moveElement1 = document.createElement("div");
             moveElement1.className = "layer-id-layer-1";
-            moveElement1.insertAdjacentElement = vi.fn();
             const moveElement2 = document.createElement("div");
             moveElement2.className = "layer-id-layer-1";
-            moveElement2.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(moveElement1);
             mockStageElement.appendChild(moveElement2);
 
             // 上位レイヤーの要素
             const upperElement = document.createElement("div");
             upperElement.className = "layer-id-upper-layer";
-            upperElement.insertAdjacentElement = vi.fn();
+            const insertAdjacentElementSpy = vi.spyOn(upperElement, 'insertAdjacentElement');
             mockStageElement.appendChild(upperElement);
 
             // 上位レイヤーの設定
@@ -191,24 +202,23 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             execute(mockLayer);
 
             // 逆順で挿入される（elemets.length - 1 から 0 まで）
-            expect(upperElement.insertAdjacentElement).toHaveBeenCalledWith("beforebegin", moveElement2);
-            expect(upperElement.insertAdjacentElement).toHaveBeenCalledWith("beforebegin", moveElement1);
-            expect(upperElement.insertAdjacentElement).toHaveBeenCalledTimes(2);
+            expect(insertAdjacentElementSpy).toHaveBeenCalledWith("beforebegin", moveElement2);
+            expect(insertAdjacentElementSpy).toHaveBeenCalledWith("beforebegin", moveElement1);
+            expect(insertAdjacentElementSpy).toHaveBeenCalledTimes(2);
         });
 
         it("複数の上位レイヤーがある場合、最初に見つかったレイヤーで配置する", () => {
             const moveElement = document.createElement("div");
             moveElement.className = "layer-id-layer-1";
-            moveElement.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(moveElement);
 
             // 複数の上位レイヤー要素
             const upperElement1 = document.createElement("div");
             upperElement1.className = "layer-id-upper-layer-1";
-            upperElement1.insertAdjacentElement = vi.fn();
+            const insertSpy1 = vi.spyOn(upperElement1, 'insertAdjacentElement');
             const upperElement2 = document.createElement("div");
             upperElement2.className = "layer-id-upper-layer-2";
-            upperElement2.insertAdjacentElement = vi.fn();
+            const insertSpy2 = vi.spyOn(upperElement2, 'insertAdjacentElement');
             mockStageElement.appendChild(upperElement1);
             mockStageElement.appendChild(upperElement2);
 
@@ -233,23 +243,22 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             execute(mockLayer);
 
             // 最初に見つかったレイヤー（index=2）で配置され、ループ終了
-            expect(upperElement1.insertAdjacentElement).toHaveBeenCalledWith("beforebegin", moveElement);
-            expect(upperElement2.insertAdjacentElement).not.toHaveBeenCalled();
+            expect(insertSpy1).toHaveBeenCalledWith("beforebegin", moveElement);
+            expect(insertSpy2).not.toHaveBeenCalled();
         });
 
         it("上位レイヤーに複数の要素がある場合、最後の要素の前に配置する", () => {
             const moveElement = document.createElement("div");
             moveElement.className = "layer-id-layer-1";
-            moveElement.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(moveElement);
 
             // 上位レイヤーに複数要素
             const upperElement1 = document.createElement("div");
             upperElement1.className = "layer-id-upper-layer";
-            upperElement1.insertAdjacentElement = vi.fn();
+            const insertSpy1 = vi.spyOn(upperElement1, 'insertAdjacentElement');
             const upperElement2 = document.createElement("div");
             upperElement2.className = "layer-id-upper-layer";
-            upperElement2.insertAdjacentElement = vi.fn();
+            const insertSpy2 = vi.spyOn(upperElement2, 'insertAdjacentElement');
             mockStageElement.appendChild(upperElement1);
             mockStageElement.appendChild(upperElement2);
 
@@ -262,8 +271,8 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             execute(mockLayer);
 
             // 最後の要素（upperElement2）の前に配置
-            expect(upperElement2.insertAdjacentElement).toHaveBeenCalledWith("beforebegin", moveElement);
-            expect(upperElement1.insertAdjacentElement).not.toHaveBeenCalled();
+            expect(insertSpy2).toHaveBeenCalledWith("beforebegin", moveElement);
+            expect(insertSpy1).not.toHaveBeenCalled();
         });
     });
 
@@ -274,7 +283,6 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const moveElement = document.createElement("div");
             moveElement.className = "layer-id-layer-1";
-            moveElement.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(moveElement);
         });
 
@@ -288,6 +296,7 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const layer0Element = document.createElement("div");
             layer0Element.className = "layer-id-layer-0";
+            const insertSpy = vi.spyOn(layer0Element, 'insertAdjacentElement');
             mockStageElement.appendChild(layer0Element);
 
             execute(mockLayer);
@@ -295,7 +304,7 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             expect(mockMovieClip.getLayer).toHaveBeenCalledWith(2);
             expect(mockMovieClip.getLayer).toHaveBeenCalledWith(1);
             expect(mockMovieClip.getLayer).toHaveBeenCalledWith(0);
-            expect(layer0Element.insertAdjacentElement).toHaveBeenCalled();
+            expect(insertSpy).toHaveBeenCalled();
         });
 
         it("上位レイヤーにアクティブキャラクターがない場合はスキップ", () => {
@@ -318,13 +327,14 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const layer2Element = document.createElement("div");
             layer2Element.className = "layer-id-upper-layer-2";
+            const insertSpy = vi.spyOn(layer2Element, 'insertAdjacentElement');
             mockStageElement.appendChild(layer2Element);
 
             execute(mockLayer);
 
             expect(mockUpperLayer1.getActiveCharacters).toHaveBeenCalledWith(1);
             expect(mockUpperLayer2.getActiveCharacters).toHaveBeenCalledWith(1);
-            expect(layer2Element.insertAdjacentElement).toHaveBeenCalled();
+            expect(insertSpy).toHaveBeenCalled();
         });
 
         it("上位レイヤーに対応するDOM要素がない場合はスキップ", () => {
@@ -349,11 +359,12 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             // upper-layer-2 に対応するDOM要素のみ作成
             const layer2Element = document.createElement("div");
             layer2Element.className = "layer-id-upper-layer-2";
+            const insertSpy = vi.spyOn(layer2Element, 'insertAdjacentElement');
             mockStageElement.appendChild(layer2Element);
 
             execute(mockLayer);
 
-            expect(layer2Element.insertAdjacentElement).toHaveBeenCalled();
+            expect(insertSpy).toHaveBeenCalled();
         });
     });
 
@@ -381,27 +392,25 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const upperElement = document.createElement("div");
             upperElement.className = "layer-id-upper-layer";
+            const insertSpy = vi.spyOn(upperElement, 'insertAdjacentElement');
             mockStageElement.appendChild(upperElement);
 
             execute(mockLayer);
 
             // null要素は除外され、有効な1要素のみ処理される
-            expect(upperElement.insertAdjacentElement).toHaveBeenCalledTimes(1);
+            expect(insertSpy).toHaveBeenCalledTimes(1);
         });
 
         it("移動要素が複数ある場合、逆順で処理される", () => {
             const element1 = document.createElement("div");
             element1.id = "element-1";
             element1.className = "layer-id-layer-1";
-            element1.insertAdjacentElement = vi.fn();
             const element2 = document.createElement("div");
             element2.id = "element-2";
             element2.className = "layer-id-layer-1";
-            element2.insertAdjacentElement = vi.fn();
             const element3 = document.createElement("div");
             element3.id = "element-3";
             element3.className = "layer-id-layer-1";
-            element3.insertAdjacentElement = vi.fn();
 
             mockStageElement.appendChild(element1);
             mockStageElement.appendChild(element2);
@@ -415,15 +424,16 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const upperElement = document.createElement("div");
             upperElement.className = "layer-id-upper-layer";
+            const insertSpy = vi.spyOn(upperElement, 'insertAdjacentElement');
             mockStageElement.appendChild(upperElement);
 
             execute(mockLayer);
 
             // 逆順で処理される（index 2, 1, 0の順）
-            expect(upperElement.insertAdjacentElement).toHaveBeenCalledTimes(3);
-            expect(upperElement.insertAdjacentElement).toHaveBeenNthCalledWith(1, "beforebegin", element3);
-            expect(upperElement.insertAdjacentElement).toHaveBeenNthCalledWith(2, "beforebegin", element2);
-            expect(upperElement.insertAdjacentElement).toHaveBeenNthCalledWith(3, "beforebegin", element1);
+            expect(insertSpy).toHaveBeenCalledTimes(3);
+            expect(insertSpy).toHaveBeenNthCalledWith(1, "beforebegin", element3);
+            expect(insertSpy).toHaveBeenNthCalledWith(2, "beforebegin", element2);
+            expect(insertSpy).toHaveBeenNthCalledWith(3, "beforebegin", element1);
         });
     });
 
@@ -435,7 +445,6 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const element = document.createElement("div");
             element.className = "layer-id-layer-1";
-            element.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(element);
 
             execute(mockLayer);
@@ -450,7 +459,6 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const element = document.createElement("div");
             element.className = "layer-id-layer-1";
-            element.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(element);
 
             const mockUpperLayer = {
@@ -461,7 +469,6 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const upperElement = document.createElement("div");
             upperElement.className = "layer-id-upper-layer";
-            upperElement.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(upperElement);
 
             execute(mockLayer);
@@ -495,7 +502,6 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const element = document.createElement("div");
             element.className = "layer-id-layer-1";
-            element.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(element);
 
             mockMovieClip.getLayer.mockImplementation(() => {
@@ -511,7 +517,6 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const element = document.createElement("div");
             element.className = "layer-id-layer-1";
-            element.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(element);
 
             const mockUpperLayer = {
@@ -536,7 +541,6 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const element = document.createElement("div");
             element.className = "layer-id-layer-1";
-            element.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(element);
 
             mockStageElement.appendChild = vi.fn().mockImplementation(() => {
@@ -571,6 +575,9 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             const element = document.createElement("div");
             element.className = "layer-id-layer-1";
             element.insertAdjacentElement = vi.fn();
+            
+            // appendChildをスパイ化してから使用
+            const appendSpy = vi.spyOn(mockStageElement, 'appendChild');
             mockStageElement.appendChild(element);
 
             // 999から-1まで検索するが、該当レイヤーが見つからない
@@ -578,9 +585,9 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             execute(mockLayer);
 
-            // 最終的に配置されない
+            // 上位レイヤーが見つからないため、配置処理は行われない
             expect(element.insertAdjacentElement).not.toHaveBeenCalled();
-            expect(mockStageElement.appendChild).toHaveBeenCalledTimes(1); // 初期配置のみ
+            expect(appendSpy).toHaveBeenCalledTimes(1); // 初期配置のみ
         });
     });
 
@@ -593,7 +600,6 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             for (let i = 0; i < 100; i++) {
                 const element = document.createElement("div");
                 element.className = "layer-id-layer-1";
-                element.insertAdjacentElement = vi.fn();
                 element.id = `element-${i}`;
                 mockStageElement.appendChild(element);
             }
@@ -606,7 +612,7 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             const upperElement = document.createElement("div");
             upperElement.className = "layer-id-upper-layer";
-            upperElement.insertAdjacentElement = vi.fn();
+            const insertSpy = vi.spyOn(upperElement, 'insertAdjacentElement');
             mockStageElement.appendChild(upperElement);
 
             const start = performance.now();
@@ -616,12 +622,12 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
             // 100要素の処理が50ms以内で完了することを期待
             expect(duration).toBeLessThan(50);
-            expect(upperElement.insertAdjacentElement).toHaveBeenCalledTimes(100);
+            expect(insertSpy).toHaveBeenCalledTimes(100);
         });
     });
 
     describe("統合テスト風のシナリオ", () => {
-        it("実際のレイヤー移動シナリオ：中間レイヤーから最下位への移動", () => {
+        it("実際のレイヤー移動シナリオ:中間レイヤーから最下位への移動", () => {
             // シナリオ：レイヤーが中間位置から最下位に移動
 
             mockLayer.getActiveCharacters.mockReturnValue([{ id: "char1" }, { id: "char2" }]);
@@ -630,22 +636,22 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             // 移動対象の要素
             const element1 = document.createElement("div");
             element1.className = "layer-id-layer-1";
-            element1.insertAdjacentElement = vi.fn();
             element1.textContent = "Element 1";
             const element2 = document.createElement("div");
             element2.className = "layer-id-layer-1";
-            element2.insertAdjacentElement = vi.fn();
             element2.textContent = "Element 2";
 
+            // appendChildをスパイ化
+            const appendSpy = vi.spyOn(mockStageElement, 'appendChild');
             mockStageElement.appendChild(element1);
             mockStageElement.appendChild(element2);
 
             execute(mockLayer);
 
             // 最下位への移動なので appendChild が呼ばれる
-            expect(mockStageElement.appendChild).toHaveBeenCalledWith(element1);
-            expect(mockStageElement.appendChild).toHaveBeenCalledWith(element2);
-            expect(mockStageElement.appendChild).toHaveBeenCalledTimes(4); // 初期2回 + 移動2回
+            expect(appendSpy).toHaveBeenCalledWith(element1);
+            expect(appendSpy).toHaveBeenCalledWith(element2);
+            expect(appendSpy).toHaveBeenCalledTimes(4); // 初期2回 + 移動2回
         });
 
         it("複雑なレイヤー階層での移動処理", () => {
@@ -658,13 +664,12 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             // 移動対象の要素
             const moveElement = document.createElement("div");
             moveElement.className = "layer-id-layer-3";
-            moveElement.insertAdjacentElement = vi.fn();
             mockStageElement.appendChild(moveElement);
 
             // 上位レイヤー（layer-1）に要素が存在
             const layer1Element = document.createElement("div");
             layer1Element.className = "layer-id-layer-1";
-            layer1Element.insertAdjacentElement = vi.fn();
+            const insertSpy = vi.spyOn(layer1Element, 'insertAdjacentElement');
             mockStageElement.appendChild(layer1Element);
 
             // レイヤー構造の設定
@@ -692,7 +697,7 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
             // layer-1 で配置が決定
             expect(mockLayer2.getActiveCharacters).toHaveBeenCalledWith(1);
             expect(mockLayer1.getActiveCharacters).toHaveBeenCalledWith(1);
-            expect(layer1Element.insertAdjacentElement).toHaveBeenCalledWith("beforebegin", moveElement);
+            expect(insertSpy).toHaveBeenCalledWith("beforebegin", moveElement);
         });
     });
 });

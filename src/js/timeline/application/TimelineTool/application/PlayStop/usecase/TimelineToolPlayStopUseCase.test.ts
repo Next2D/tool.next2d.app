@@ -120,17 +120,19 @@ describe("TimelineToolPlayStopUseCase", () => {
         document.getElementById = vi.fn().mockReturnValue(mockElement);
 
         originalRequestAnimationFrame = global.requestAnimationFrame;
+        originalCancelAnimationFrame = global.cancelAnimationFrame;
+        originalPerformanceNow = performance.now;
+
+        // cancelAnimationFrameを先にグローバルに設定
+        global.cancelAnimationFrame = mockCancelAnimationFrame;
+        (globalThis as any).cancelAnimationFrame = mockCancelAnimationFrame;
+
         global.requestAnimationFrame = mockRequestAnimationFrame.mockImplementation((callback) => {
-            setTimeout(() => callback(performance.now()), 16);
+            // 非同期実行を避けて同期的に実行
+            // setTimeout(() => callback(performance.now()), 16);
             return 1;
         });
 
-        originalCancelAnimationFrame = global.cancelAnimationFrame;
-        global.cancelAnimationFrame = mockCancelAnimationFrame;
-        // グローバルスコープにも設定（setTimeout内でアクセスできるように）
-        (globalThis as any).cancelAnimationFrame = mockCancelAnimationFrame;
-
-        originalPerformanceNow = performance.now;
         performance.now = mockPerformanceNow.mockReturnValue(1000);
     });
 
@@ -326,7 +328,7 @@ describe("TimelineToolPlayStopUseCase", () => {
 
             // ループコールバックを実行
             if (loopCallback) {
-                await loopCallback(1041); // delta > fps になる値
+                await loopCallback(1042); // delta > fps になる値
             }
 
             expect(mockCancelAnimationFrame).toHaveBeenCalled();
@@ -336,6 +338,7 @@ describe("TimelineToolPlayStopUseCase", () => {
         it("フレーム更新時にスクロールが必要な場合に実行される", async () => {
             mockMovieClip.currentFrame = 7; // getRightFrame() - 1
             mockGetRightFrame.mockReturnValue(8);
+            mockTimelineHeader.stopFlag = true; // 再生処理を実行するためにtrueにする
 
             let loopCallback: Function | undefined;
             mockRequestAnimationFrame.mockImplementation((callback) => {
@@ -347,7 +350,7 @@ describe("TimelineToolPlayStopUseCase", () => {
 
             // フレーム更新でスクロールが必要になる
             if (loopCallback) {
-                await loopCallback(1041); // delta > fps
+                await loopCallback(1042); // delta > fps
             }
 
             expect(mockTimelineScrollUpdateScrollXUseCase).toHaveBeenCalledWith(100); // clientWidth
@@ -366,7 +369,7 @@ describe("TimelineToolPlayStopUseCase", () => {
             await execute();
 
             if (loopCallback) {
-                await loopCallback(1041);
+                await loopCallback(1042);
             }
 
             expect(mockTimelineScrollUpdateScrollXUseCase).toHaveBeenCalledWith(-0); // -scrollX
@@ -376,6 +379,7 @@ describe("TimelineToolPlayStopUseCase", () => {
         it("最終フレーム到達時にループフラグがfalseなら停止する", async () => {
             mockMovieClip.currentFrame = 9; // maxFrame - 1
             mockTimelineHeader.loopFlag = false;
+            mockTimelineHeader.stopFlag = true; // 再生処理を実行するためにtrueにする
 
             let loopCallback: Function | undefined;
             mockRequestAnimationFrame.mockImplementation((callback) => {
@@ -386,7 +390,7 @@ describe("TimelineToolPlayStopUseCase", () => {
             await execute();
 
             if (loopCallback) {
-                await loopCallback(1041);
+                await loopCallback(1042);
             }
 
             expect(mockTimelineHeader.stopFlag).toBe(true);
@@ -439,16 +443,19 @@ describe("TimelineToolPlayStopUseCase", () => {
         });
 
         it("停止時にtimerId でキャンセルされる", async () => {
-            // 最初に再生状態にする
+            // 最初に停止状態にする(stopFlag = true)
             mockTimelineHeader.stopFlag = true;
-            mockRequestAnimationFrame.mockReturnValue(456);
             await execute();
+            
+            // この時点でstopFlagはfalseになり、再生が開始される
+            expect(mockTimelineHeader.stopFlag).toBe(false);
 
-            // 停止処理
-            mockTimelineHeader.stopFlag = false;
+            // もう一度executeを呼び出して停止する
             await execute();
-
-            expect(mockCancelAnimationFrame).toHaveBeenCalledWith(0); // 初期値
+            
+            // stopFlagがtrueに戻り、cancelAnimationFrameが呼ばれる
+            expect(mockTimelineHeader.stopFlag).toBe(true);
+            expect(mockCancelAnimationFrame).toHaveBeenCalledWith(1); // requestAnimationFrameの戻り値
         });
     });
 
@@ -466,7 +473,7 @@ describe("TimelineToolPlayStopUseCase", () => {
             await execute();
 
             if (loopCallback) {
-                await loopCallback(1041);
+                await loopCallback(1042); // delta > fps になるように調整
             }
 
             expect(mockExternalTimelineInstance.changeFrame).toHaveBeenCalledWith(4);
@@ -486,7 +493,7 @@ describe("TimelineToolPlayStopUseCase", () => {
             await execute();
 
             if (loopCallback) {
-                await loopCallback(1041);
+                await loopCallback(1042); // delta > fps になるように調整
             }
 
             // frame (7) >= getRightFrame (7) でスクロール実行
@@ -529,7 +536,7 @@ describe("TimelineToolPlayStopUseCase", () => {
             await execute();
 
             if (loopCallback) {
-                await loopCallback(1041);
+                await loopCallback(1042);
             }
 
             expect(mockTimelineScrollUpdateScrollXUseCase).toHaveBeenCalledWith(-0);
@@ -549,7 +556,7 @@ describe("TimelineToolPlayStopUseCase", () => {
             await execute();
 
             if (loopCallback) {
-                await loopCallback(1041);
+                await loopCallback(1042);
             }
 
             expect(mockTimelineHeader.stopFlag).toBe(true);
@@ -580,7 +587,7 @@ describe("TimelineToolPlayStopUseCase", () => {
             await execute();
 
             if (loopCallback) {
-                await loopCallback(1041);
+                await loopCallback(1042);
             }
 
             expect(mockExternalTimelineInstance.changeFrame).toHaveBeenCalledWith(1);
@@ -589,6 +596,7 @@ describe("TimelineToolPlayStopUseCase", () => {
         it("scrollXが負の値の場合", async () => {
             mockMovieClip.scrollX = -50;
             mockMovieClip.currentFrame = 9; // 最終フレーム近く
+            mockTimelineHeader.stopFlag = true; // 再生処理を実行
 
             await execute();
 
@@ -599,6 +607,7 @@ describe("TimelineToolPlayStopUseCase", () => {
             mockTimelineHeader.clientWidth = 0;
             mockMovieClip.currentFrame = 7;
             mockGetRightFrame.mockReturnValue(8);
+            mockTimelineHeader.stopFlag = true; // 再生処理を実行
 
             let loopCallback: Function | undefined;
             mockRequestAnimationFrame.mockImplementation((callback) => {
@@ -606,11 +615,10 @@ describe("TimelineToolPlayStopUseCase", () => {
                 return 1;
             });
 
-            mockTimelineHeader.stopFlag = true; // 再生処理
             await execute();
 
             if (loopCallback) {
-                await loopCallback(1041);
+                await loopCallback(1042);
             }
 
             expect(mockTimelineScrollUpdateScrollXUseCase).toHaveBeenCalledWith(0);

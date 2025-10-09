@@ -37,6 +37,8 @@ describe("ScreenAreaPointerOverEventService", () => {
         vi.clearAllMocks();
 
         // screenArea の初期状態をリセット
+        // 前回のテストでプロパティがカスタマイズされている可能性があるため、削除して再設定
+        delete (mockScreenArea as any).active;
         mockScreenArea.active = false;
 
         // Tool モック
@@ -57,6 +59,7 @@ describe("ScreenAreaPointerOverEventService", () => {
     afterEach(() => {
         vi.resetAllMocks();
         // screenArea の状態をリセット
+        delete (mockScreenArea as any).active;
         mockScreenArea.active = false;
     });
 
@@ -412,6 +415,8 @@ describe("ScreenAreaPointerOverEventService", () => {
 
             mockGetActiveTool.mockReturnValue(mockTool);
 
+            // 読み取り専用プロパティへの代入はstrict modeでは例外を投げる
+            // 実装は代入を試みるが、読み取り専用なので例外が発生する
             expect(() => execute(mockPointerEvent)).toThrow();
         });
     });
@@ -419,6 +424,9 @@ describe("ScreenAreaPointerOverEventService", () => {
     describe("エッジケース", () => {
         it("eventがnullの場合", () => {
             mockGetActiveTool.mockReturnValue(mockTool);
+            
+            // モックをリセットして書き込み可能にする
+            mockScreenArea.active = false;
 
             execute(null as any);
 
@@ -428,6 +436,9 @@ describe("ScreenAreaPointerOverEventService", () => {
 
         it("eventがundefinedの場合", () => {
             mockGetActiveTool.mockReturnValue(mockTool);
+            
+            // モックをリセットして書き込み可能にする
+            mockScreenArea.active = false;
 
             execute(undefined as any);
 
@@ -442,6 +453,9 @@ describe("ScreenAreaPointerOverEventService", () => {
             });
 
             mockGetActiveTool.mockReturnValue(mockTool);
+            
+            // モックをリセットして書き込み可能にする
+            mockScreenArea.active = false;
 
             execute(mouseEvent as any);
 
@@ -457,6 +471,9 @@ describe("ScreenAreaPointerOverEventService", () => {
             };
 
             mockGetActiveTool.mockReturnValue(mockTool);
+            
+            // モックをリセットして書き込み可能にする
+            mockScreenArea.active = false;
 
             execute(plainEvent as any);
 
@@ -469,6 +486,10 @@ describe("ScreenAreaPointerOverEventService", () => {
         it("screenArea.activeの設定がgetActiveToolより先に実行される", () => {
             const executionOrder: string[] = [];
 
+            // mockScreenAreaのプロパティをリセット
+            delete (mockScreenArea as any).active;
+            let originalActive = false;
+
             // getActiveToolの実行をトラッキング
             mockGetActiveTool.mockImplementation(() => {
                 executionOrder.push("getActiveTool");
@@ -476,7 +497,6 @@ describe("ScreenAreaPointerOverEventService", () => {
             });
 
             // screenArea.activeのセッターをモック
-            let originalActive = mockScreenArea.active;
             Object.defineProperty(mockScreenArea, "active", {
                 get: () => originalActive,
                 set: (value) => {
@@ -489,9 +509,16 @@ describe("ScreenAreaPointerOverEventService", () => {
             execute(mockPointerEvent);
 
             expect(executionOrder).toEqual(["setActive", "getActiveTool"]);
+            
+            // クリーンアップ
+            delete (mockScreenArea as any).active;
+            mockScreenArea.active = false;
         });
 
         it("getActiveToolが失敗してもscreenArea.activeは設定済みである", () => {
+            // mockScreenAreaのプロパティをリセット
+            mockScreenArea.active = false;
+            
             mockGetActiveTool.mockImplementation(() => {
                 // この時点で既にactiveがtrueになっているべき
                 expect(mockScreenArea.active).toBe(true);

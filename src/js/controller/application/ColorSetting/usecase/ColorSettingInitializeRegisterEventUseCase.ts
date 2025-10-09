@@ -12,6 +12,7 @@ import { execute as colorSettingRedMultiplierFocusOutEventUseCase } from "./Colo
 import { execute as colorSettingRedOffsetPointerDownUseCase } from "./ColorSettingRedOffsetPointerDownUseCase";
 import { execute as colorSettingRedOffsetFocusOutEventUseCase } from "./ColorSettingRedOffsetFocusOutEventUseCase";
 import { execute as colorSettingGreenMultiplierPointerDownUseCase } from "./ColorSettingGreenMultiplierPointerDownUseCase";
+import { execute as colorSettingGreenMultiplierFocusOutEventUseCase } from "./ColorSettingGreenMultiplierFocusOutEventUseCase";
 import {
     $COLOR_ALPHA_MULTIPLIER_ID,
     $COLOR_ALPHA_OFFSET_ID,
@@ -47,9 +48,9 @@ export const execute = (): void =>
         greenMultiplierElement.addEventListener("focusin",
             colorSettingInputFocusInEventService
         );
-        // greenMultiplierElement.addEventListener("focusout",
-        //     colorSettingRedOffsetFocusOutEventUseCase
-        // );
+        greenMultiplierElement.addEventListener("focusout",
+            colorSettingGreenMultiplierFocusOutEventUseCase
+        );
         greenMultiplierElement.addEventListener("keypress",
             colorSettingInputKeyPressEventService
         );

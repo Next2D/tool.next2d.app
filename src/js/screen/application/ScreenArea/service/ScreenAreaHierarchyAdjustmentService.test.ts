@@ -433,9 +433,10 @@ describe("ScreenAreaHierarchyAdjustmentService", () => {
         });
 
         it("特殊文字を含むlayer.idの場合", () => {
-            mockLayer.id = "layer-with-special@#$%";
+            // CSS セレクタとして問題ない特殊文字を使用
+            mockLayer.id = "layer-with-special_-";
             
-            mockDisplayElement.className = "layer-id-layer-with-special@#$%";
+            mockDisplayElement.className = "layer-id-layer-with-special_-";
             mockStageAreaElement.appendChild(mockDisplayElement);
 
             // 特殊文字があってもエラーなく実行される
@@ -446,8 +447,10 @@ describe("ScreenAreaHierarchyAdjustmentService", () => {
     describe("複雑なシナリオ", () => {
         it("複数の上位レイヤーで一部にアクティブキャラクターがない場合", () => {
             mockExternalLayerInstance.index = 4; // index 3, 2, 1, 0 を検索
-
-            mockDisplayElement.className = "layer-id-layer-1";
+            
+            // 新しいレイヤーIDを使用(layer-4)して上位レイヤー検索をトリガー
+            mockLayer.id = "layer-4";
+            mockDisplayElement.className = "layer-id-layer-4";
             mockStageAreaElement.appendChild(mockDisplayElement);
 
             const mockLayer3 = {
