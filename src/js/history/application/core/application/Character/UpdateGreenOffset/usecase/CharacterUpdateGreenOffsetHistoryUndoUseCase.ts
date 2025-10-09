@@ -1,17 +1,17 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewColorSettingRedOffsetUseCase } from "@/view/application/usecase/ViewColorSettingRedOffsetUseCase";
+import { execute as viewColorSettingGreenOffsetUseCase } from "@/view/application/usecase/ViewColorSettingGreenOffsetUseCase";
 
 /**
- * @description DisplayObjectの赤色を変更前に戻す
- *              Reset the red offset of the DisplayObject
+ * @description DisplayObjectの緑色を変更前に戻す
+ *              Reset the green offset of the DisplayObject
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
  * @param  {number} keyframe
  * @param  {number} depth
- * @param  {number} before_red
+ * @param  {number} before_green
  * @return {Promise<void>}
  * @method
  * @public
@@ -22,7 +22,7 @@ export const execute = async (
     index: number,
     keyframe: number,
     depth: number,
-    before_red: number
+    before_green: number
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -46,14 +46,14 @@ export const execute = async (
     }
 
     // データを更新
-    character.colorTransform[4] = Math.floor(before_red);
+    character.colorTransform[5] = Math.floor(before_green);
 
     // アクティブなら表示を更新
-    viewColorSettingRedOffsetUseCase(
+    viewColorSettingGreenOffsetUseCase(
         workSpace,
         movieClip,
         layer,
         character,
-        before_red
+        before_green
     );
 };
