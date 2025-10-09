@@ -19,6 +19,8 @@ import { execute as externalCharacterUpdateRedMultiplierUseCase } from "@/extern
 import { execute as externalCharacterUpdateRedOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateRedOffsetUseCase";
 import { execute as externalCharacterUpdateGreenMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateGreenMultiplierUseCase";
 import { execute as externalCharacterUpdateGreenOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateGreenOffsetUseCase";
+import { execute as externalCharacterUpdateBlueMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlueMultiplierUseCase";
+
 /**
  * @description DisplayObjectの管理クラス
  *              Management class of DisplayObject
@@ -575,6 +577,39 @@ export class ExternalCharacter
             this._$layer,
             this._$character,
             green
+        );
+    }
+
+    /**
+     * @description DisplayObjectのblue値を取得
+     *              Get the blue value of DisplayObject
+     *
+     * @return {number} 0 ~ 100
+     * @method
+     * @public
+     */
+    getBlueMultiplier (): number
+    {
+        return this._$character.colorTransform[2] * 100;
+    }
+
+    /**
+     * @description DisplayObjectのblue値を設定
+     *              Set the blue value of DisplayObject
+     *
+     * @param  {number} blue 0 ~ 100
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setBlueMultiplier (blue: number): Promise<void>
+    {
+        await externalCharacterUpdateBlueMultiplierUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            blue
         );
     }
 }

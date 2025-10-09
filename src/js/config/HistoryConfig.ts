@@ -699,3 +699,21 @@ export const $CHARACTER_UPDATE_GREEN_MULTIPLIER_COMMAND: number = 71;
  * @constant
  */
 export const $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND: number = 72;
+
+/**
+ * @description 青の更新の識別コマンド名
+ *              Identification command name for updating the blue multiplier of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND: number = 73;
+
+/**
+ * @description 青のオフセット値の更新の識別コマンド名
+ *              Identification command name for updating the blue offset of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND: number = 74;

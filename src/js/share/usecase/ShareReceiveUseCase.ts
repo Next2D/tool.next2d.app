@@ -71,6 +71,7 @@ import { execute as characterUpdateRedMultiplierReceiveUseCase } from "@/share/r
 import { execute as characterUpdateRedOffsetReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateRedOffsetReceiveUseCase";
 import { execute as characterUpdateGreenMultiplierReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateGreenMultiplierReceiveUseCase";
 import { execute as characterUpdateGreenOffsetReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateGreenOffsetReceiveUseCase";
+import { execute as characterUpdateBlueMultiplierReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateBlueMultiplierReceiveUseCase";
 import {
     $HISTORY_REDO_COMMAND,
     $HISTORY_UNDO_COMMAND,
@@ -143,7 +144,8 @@ import {
     $CHARACTER_UPDATE_RED_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_RED_OFFSET_COMMAND,
     $CHARACTER_UPDATE_GREEN_MULTIPLIER_COMMAND,
-    $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND
+    $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND,
+    $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -525,6 +527,11 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         // greenOffsetを更新
         case $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND:
             await characterUpdateGreenOffsetReceiveUseCase(message);
+            break;
+
+        // blueMultiplierを更新
+        case $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND:
+            await characterUpdateBlueMultiplierReceiveUseCase(message);
             break;
 
         default:

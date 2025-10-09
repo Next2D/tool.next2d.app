@@ -65,7 +65,9 @@ import {
     $CHARACTER_UPDATE_RED_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_RED_OFFSET_COMMAND,
     $CHARACTER_UPDATE_GREEN_MULTIPLIER_COMMAND,
-    $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND
+    $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND,
+    $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
+    $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -137,5 +139,7 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($CHARACTER_UPDATE_RED_OFFSET_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の赤色成分オフセットを%s5から%s6に変更");
         expect(execute($CHARACTER_UPDATE_GREEN_MULTIPLIER_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の緑色成分を%s5%から%s6%に変更");
         expect(execute($CHARACTER_UPDATE_GREEN_OFFSET_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の緑色成分オフセットを%s5から%s6に変更");
+        expect(execute($CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の青色成分を%s5%から%s6%に変更");
+        expect(execute($CHARACTER_UPDATE_BLUE_OFFSET_COMMAND)).toBe("「%s1」のレイヤー「%s2」の%s3フレーム・深度%s4の青色成分オフセットを%s5から%s6に変更");
     });
 });

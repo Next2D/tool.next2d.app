@@ -2,19 +2,19 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as characterUpdateGreenOffsetHistoryUseCase } from "@/history/application/core/application/Character/UpdateGreenOffset/usecase/CharacterUpdateGreenOffsetHistoryUseCase";
-import { execute as viewColorSettingGreenOffsetUseCase } from "@/view/application/usecase/ViewColorSettingGreenOffsetUseCase";
+import { execute as characterUpdateBlueMultiplierHistoryUseCase } from "@/history/application/core/application/Character/UpdateBlueMultiplier/usecase/CharacterUpdateBlueMultiplierHistoryUseCase";
+import { execute as viewColorSettingBlueMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingBlueMultiplierUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
- * @description キャラクターの緑色オフセット値を更新する
- *              Update the green offset value of the character
+ * @description キャラクターのblue値を更新する
+ *              Update the blue value of the character
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {Character} character
- * @param  {number} green
+ * @param  {number} blue
  * @param  {boolean} [receiver=false]
  * @return {Promise<void>}
  * @method
@@ -25,36 +25,36 @@ export const execute = async (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    green: number,
+    blue: number,
     receiver: boolean = false
 ): Promise<void> => {
 
-    green = $clamp(green | 0, -255, 255);
-    const floatValue = new Float32Array([green]);
-    if (character.colorTransform[5] === floatValue[0]) {
+    blue = $clamp(blue | 0, 0, 100);
+    const floatValue = new Float32Array([blue / 100]);
+    if (character.colorTransform[2] === floatValue[0]) {
         return ;
     }
 
     // 履歴を残す
     // fixed logic 変更前に実行
-    await characterUpdateGreenOffsetHistoryUseCase(
+    await characterUpdateBlueMultiplierHistoryUseCase(
         work_space,
         movie_clip,
         layer,
         character,
-        green,
+        blue,
         receiver
     );
 
-    // greenを更新前の値に戻す
-    character.colorTransform[5] = green;
+    // alphaを更新前の値に戻す
+    character.colorTransform[2] = blue / 100;
 
     // Elementの更新
-    viewColorSettingGreenOffsetUseCase(
+    viewColorSettingBlueMultiplierUseCase(
         work_space,
         movie_clip,
         layer,
         character,
-        green
+        blue
     );
 };

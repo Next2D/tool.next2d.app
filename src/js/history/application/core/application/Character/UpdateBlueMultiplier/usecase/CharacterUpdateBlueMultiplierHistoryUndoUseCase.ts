@@ -1,0 +1,59 @@
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { execute as viewColorSettingBlueMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingBlueMultiplierUseCase";
+
+/**
+ * @description DisplayObjectの青色値を変更前に戻す
+ *              Reset the blue value of the DisplayObject
+ *
+ * @param  {number} work_space_id
+ * @param  {number} library_id
+ * @param  {number} index
+ * @param  {number} keyframe
+ * @param  {number} depth
+ * @param  {number} before_blue
+ * @return {Promise<void>}
+ * @method
+ * @public
+ */
+export const execute = async (
+    work_space_id: number,
+    library_id: number,
+    index: number,
+    keyframe: number,
+    depth: number,
+    before_blue: number
+): Promise<void> => {
+
+    const workSpace = $getWorkSpace(work_space_id);
+    if (!workSpace) {
+        return ;
+    }
+
+    const movieClip = workSpace.getLibrary(library_id) as MovieClip;
+    if (!movieClip) {
+        return ;
+    }
+
+    const layer = movieClip.getLayer(index);
+    if (!layer) {
+        return ;
+    }
+
+    const character = layer.getCharacter(keyframe, depth);
+    if (!character) {
+        return ;
+    }
+
+    // データを更新
+    character.colorTransform[2] = Math.floor(before_blue) / 100;
+
+    // アクティブなら表示を更新
+    viewColorSettingBlueMultiplierUseCase(
+        workSpace,
+        movieClip,
+        layer,
+        character,
+        before_blue
+    );
+};

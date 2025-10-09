@@ -15,6 +15,8 @@ import { execute as colorSettingGreenMultiplierPointerDownUseCase } from "./Colo
 import { execute as colorSettingGreenMultiplierFocusOutEventUseCase } from "./ColorSettingGreenMultiplierFocusOutEventUseCase";
 import { execute as colorSettingGreenOffsetPointerDownUseCase } from "./ColorSettingGreenOffsetPointerDownUseCase";
 import { execute as colorSettingGreenOffsetFocusOutEventUseCase } from "./ColorSettingGreenOffsetFocusOutEventUseCase";
+import { execute as colorSettingBlueMultiplierPointerDownUseCase } from "./ColorSettingBlueMultiplierPointerDownUseCase";
+import { execute as colorSettingBlueMultiplierFocusOutEventUseCase } from "./ColorSettingBlueMultiplierFocusOutEventUseCase";
 import {
     $COLOR_ALPHA_MULTIPLIER_ID,
     $COLOR_ALPHA_OFFSET_ID,
@@ -71,16 +73,16 @@ export const execute = (): void =>
         blueMultiplierElement.addEventListener(EventType.POINTER_OUT,
             colorSettingInputPointerOutEventService
         );
-        // blueMultiplierElement.addEventListener(EventType.POINTER_DOWN,
-        //     colorSettingGreenOffsetPointerDownUseCase,
-        //     { "passive": false }
-        // );
+        blueMultiplierElement.addEventListener(EventType.POINTER_DOWN,
+            colorSettingBlueMultiplierPointerDownUseCase,
+            { "passive": false }
+        );
         blueMultiplierElement.addEventListener("focusin",
             colorSettingInputFocusInEventService
         );
-        // blueMultiplierElement.addEventListener("focusout",
-        //     colorSettingGreenOffsetFocusOutEventUseCase
-        // );
+        blueMultiplierElement.addEventListener("focusout",
+            colorSettingBlueMultiplierFocusOutEventUseCase
+        );
         blueMultiplierElement.addEventListener("keypress",
             colorSettingInputKeyPressEventService
         );

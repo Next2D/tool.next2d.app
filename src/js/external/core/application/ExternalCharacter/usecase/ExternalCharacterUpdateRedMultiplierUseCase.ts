@@ -46,7 +46,7 @@ export const execute = async (
         receiver
     );
 
-    // alphaを更新前の値に戻す
+    // redを更新前の値に戻す
     character.colorTransform[0] = red / 100;
 
     // Elementの更新
