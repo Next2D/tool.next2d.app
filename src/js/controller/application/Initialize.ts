@@ -49,7 +49,7 @@ export const execute = async (): Promise<void> =>
     controllerAdjustmentInitializeRegisterEventUseCase();
 
     // 設定クラスの初期起動関数を実行
-    for (let idx: number = 0; idx < settings.length; ++idx) {
+    for (let idx = 0; idx < settings.length; ++idx) {
         const setting = settings[idx];
         if (!setting.initialize) {
             continue;
