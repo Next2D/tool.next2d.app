@@ -6,7 +6,7 @@ const mock$getCurrentWorkSpace = vi.fn();
 const mock$getColorSettingState = vi.fn();
 const mock$setCursor = vi.fn();
 const mock$clamp = vi.fn();
-const mockColorSettingGreenOffsetUpdateElementUseCase = vi.fn();
+const mockColorSettingBlueMultiplierUpdateElementUseCase = vi.fn();
 
 vi.mock("@/core/application/CoreUtil", () => ({
     $getCurrentWorkSpace: () => mock$getCurrentWorkSpace()
@@ -21,13 +21,13 @@ vi.mock("@/global/GlobalUtil", () => ({
     $clamp: (value: number, min: number, max: number) => mock$clamp(value, min, max)
 }));
 
-vi.mock("./ColorSettingGreenOffsetUpdateElementUseCase", () => ({
-    execute: (movieClip: MovieClip, green: number) => mockColorSettingGreenOffsetUpdateElementUseCase(movieClip, green)
+vi.mock("./ColorSettingBlueMultiplierUpdateElementUseCase", () => ({
+    execute: (movieClip: MovieClip, value: number) => mockColorSettingBlueMultiplierUpdateElementUseCase(movieClip, value)
 }));
 
-const { execute } = await import("./ColorSettingGreenOffsetPointerMoveUseCase");
+const { execute } = await import("./ColorSettingBlueMultiplierPointerMoveUseCase");
 
-describe("ColorSettingGreenOffsetPointerMoveUseCase", () => {
+describe("ColorSettingBlueMultiplierPointerMoveUseCase", () => {
     let mockWorkSpace: WorkSpace;
     let mockMovieClip: MovieClip;
     let mockElement: HTMLInputElement;
@@ -38,7 +38,7 @@ describe("ColorSettingGreenOffsetPointerMoveUseCase", () => {
 
         mockElement = document.createElement("input");
         mockElement.type = "range";
-        mockElement.value = "0";
+        mockElement.value = "50";
 
         mockMovieClip = {} as MovieClip;
         mockWorkSpace = {
@@ -97,7 +97,7 @@ describe("ColorSettingGreenOffsetPointerMoveUseCase", () => {
                 rafCallback();
             }
 
-            expect(mockColorSettingGreenOffsetUpdateElementUseCase).toHaveBeenCalled();
+            expect(mockColorSettingBlueMultiplierUpdateElementUseCase).toHaveBeenCalled();
         });
 
         it("カラー設定の状態がupの場合は処理をスキップ", () => {
@@ -116,7 +116,7 @@ describe("ColorSettingGreenOffsetPointerMoveUseCase", () => {
                 rafCallback();
             }
 
-            expect(mockColorSettingGreenOffsetUpdateElementUseCase).not.toHaveBeenCalled();
+            expect(mockColorSettingBlueMultiplierUpdateElementUseCase).not.toHaveBeenCalled();
         });
     });
 });

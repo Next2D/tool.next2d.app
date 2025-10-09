@@ -31,7 +31,7 @@ export const execute = async (
 
     blue = $clamp(blue | 0, -255, 255);
     const floatValue = new Float32Array([blue]);
-    if (character.colorTransform[5] === floatValue[0]) {
+    if (character.colorTransform[6] === floatValue[0]) {
         return ;
     }
 

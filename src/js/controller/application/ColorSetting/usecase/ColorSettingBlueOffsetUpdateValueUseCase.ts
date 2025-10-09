@@ -43,7 +43,7 @@ export const execute = async (blue: number): Promise<void> =>
     }
 
     // blueを更新前の値に戻す
-    character.colorTransform[5] = colorSetting.beforeValue;
+    character.colorTransform[6] = colorSetting.beforeValue;
 
     // blueを更新
     const externalCharacter = new ExternalCharacter(

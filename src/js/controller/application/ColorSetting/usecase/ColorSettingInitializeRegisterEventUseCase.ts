@@ -17,7 +17,7 @@ import { execute as colorSettingGreenOffsetPointerDownUseCase } from "./ColorSet
 import { execute as colorSettingGreenOffsetFocusOutEventUseCase } from "./ColorSettingGreenOffsetFocusOutEventUseCase";
 import { execute as colorSettingBlueMultiplierPointerDownUseCase } from "./ColorSettingBlueMultiplierPointerDownUseCase";
 import { execute as colorSettingBlueMultiplierFocusOutEventUseCase } from "./ColorSettingBlueMultiplierFocusOutEventUseCase";
-import { execute as colorSettingBlueOffsetPointerMoveUseCase } from "./ColorSettingBlueOffsetPointerMoveUseCase";
+import { execute as colorSettingBlueOffsetPointerDownUseCase } from "./ColorSettingBlueOffsetPointerDownUseCase";
 import { execute as colorSettingBlueOffsetFocusOutEventUseCase } from "./ColorSettingBlueOffsetFocusOutEventUseCase";
 import {
     $COLOR_ALPHA_MULTIPLIER_ID,
@@ -51,7 +51,7 @@ export const execute = (): void =>
             colorSettingInputPointerOutEventService
         );
         blueOffsetElement.addEventListener(EventType.POINTER_DOWN,
-            colorSettingBlueOffsetPointerMoveUseCase,
+            colorSettingBlueOffsetPointerDownUseCase,
             { "passive": false }
         );
         blueOffsetElement.addEventListener("focusin",

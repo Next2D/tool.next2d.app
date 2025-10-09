@@ -20,6 +20,7 @@ import { execute as externalCharacterUpdateRedOffsetUseCase } from "@/external/c
 import { execute as externalCharacterUpdateGreenMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateGreenMultiplierUseCase";
 import { execute as externalCharacterUpdateGreenOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateGreenOffsetUseCase";
 import { execute as externalCharacterUpdateBlueMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlueMultiplierUseCase";
+import { execute as externalCharacterUpdateBlueOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlueOffsetUseCase";
 
 /**
  * @description DisplayObjectの管理クラス
