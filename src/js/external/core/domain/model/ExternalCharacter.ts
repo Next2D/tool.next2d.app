@@ -18,6 +18,7 @@ import { execute as externalCharacterUpdateAlphaOffsetUseCase } from "@/external
 import { execute as externalCharacterUpdateRedMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateRedMultiplierUseCase";
 import { execute as externalCharacterUpdateRedOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateRedOffsetUseCase";
 import { execute as externalCharacterUpdateGreenMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateGreenMultiplierUseCase";
+import { execute as externalCharacterUpdateGreenOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateGreenOffsetUseCase";
 /**
  * @description DisplayObjectの管理クラス
  *              Management class of DisplayObject
@@ -536,6 +537,39 @@ export class ExternalCharacter
     async setGreenMultiplier (green: number): Promise<void>
     {
         await externalCharacterUpdateGreenMultiplierUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            green
+        );
+    }
+
+    /**
+     * @description DisplayObjectの緑色オフセット値を取得
+     *              Get the green offset value of DisplayObject
+     *
+     * @return {number} 0 ~ 100
+     * @method
+     * @public
+     */
+    getGreenOffset (): number
+    {
+        return this._$character.colorTransform[5];
+    }
+
+    /**
+     * @description DisplayObjectの緑色値を設定
+     *              Set the green value of DisplayObject
+     *
+     * @param  {number} green -255 ~ 255
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setGreenOffset (green: number): Promise<void>
+    {
+        await externalCharacterUpdateGreenOffsetUseCase(
             this._$workSpace,
             this._$movieClip,
             this._$layer,

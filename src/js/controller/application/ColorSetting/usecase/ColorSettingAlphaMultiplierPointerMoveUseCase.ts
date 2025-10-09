@@ -7,8 +7,8 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
- * @description 変形エリアのアルファマルチプライヤーの値操作のポインタームーブイベント
- *              Pointer move event for value operation of alpha multiplier of deformation area
+ * @description カラー設定エリアのアルファマルチプライヤーの値操作のポインタームーブイベント
+ *              Pointer move event for value operation of alpha multiplier of color setting area
  *
  * @param  {PointerEvent} event
  * @return {void}

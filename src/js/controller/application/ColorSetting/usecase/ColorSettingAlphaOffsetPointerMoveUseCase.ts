@@ -7,8 +7,8 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
- * @description 変形エリアのアルファオフセットの値操作のポインタームーブイベント
- *              Pointer move event for value operation of alpha offset of deformation area
+ * @description カラー設定エリアのアルファオフセットの値操作のポインタームーブイベント
+ *              Pointer move event for value operation of alpha offset of color setting area
  *
  * @param  {PointerEvent} event
  * @return {void}

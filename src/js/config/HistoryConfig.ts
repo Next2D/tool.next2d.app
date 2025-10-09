@@ -690,3 +690,12 @@ export const $CHARACTER_UPDATE_RED_OFFSET_COMMAND: number = 70;
  * @constant
  */
 export const $CHARACTER_UPDATE_GREEN_MULTIPLIER_COMMAND: number = 71;
+
+/**
+ * @description 緑のオフセット値の更新の識別コマンド名
+ *              Identification command name for updating the green offset of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND: number = 72;

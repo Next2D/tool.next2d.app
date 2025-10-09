@@ -7,8 +7,8 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
- * @description 変形エリアの赤色オフセットの値操作のポインタームーブイベント
- *              Pointer move event for value operation of red offset of deformation area
+ * @description カラー設定エリアの赤色オフセットの値操作のポインタームーブイベント
+ *              Pointer move event for value operation of red offset of color setting area
  *
  * @param  {PointerEvent} event
  * @return {void}

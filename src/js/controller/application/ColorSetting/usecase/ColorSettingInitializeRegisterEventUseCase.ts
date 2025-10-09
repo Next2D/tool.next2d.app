@@ -13,12 +13,15 @@ import { execute as colorSettingRedOffsetPointerDownUseCase } from "./ColorSetti
 import { execute as colorSettingRedOffsetFocusOutEventUseCase } from "./ColorSettingRedOffsetFocusOutEventUseCase";
 import { execute as colorSettingGreenMultiplierPointerDownUseCase } from "./ColorSettingGreenMultiplierPointerDownUseCase";
 import { execute as colorSettingGreenMultiplierFocusOutEventUseCase } from "./ColorSettingGreenMultiplierFocusOutEventUseCase";
+import { execute as colorSettingGreenOffsetPointerDownUseCase } from "./ColorSettingGreenOffsetPointerDownUseCase";
+import { execute as colorSettingGreenOffsetFocusOutEventUseCase } from "./ColorSettingGreenOffsetFocusOutEventUseCase";
 import {
     $COLOR_ALPHA_MULTIPLIER_ID,
     $COLOR_ALPHA_OFFSET_ID,
     $COLOR_RED_MULTIPLIER_ID,
     $COLOR_RED_OFFSET_ID,
-    $COLOR_GREEN_MULTIPLIER_ID
+    $COLOR_GREEN_MULTIPLIER_ID,
+    $COLOR_GREEN_OFFSET_ID
 } from "@/config/ColorSettingConfig";
 
 /**
@@ -31,6 +34,31 @@ import {
  */
 export const execute = (): void =>
 {
+    const greenOffsetElement: HTMLInputElement | null = document
+        .getElementById($COLOR_GREEN_OFFSET_ID) as HTMLInputElement;
+
+    if (greenOffsetElement) {
+        greenOffsetElement.addEventListener(EventType.POINTER_OVER,
+            colorSettingInputPointerOverEventService
+        );
+        greenOffsetElement.addEventListener(EventType.POINTER_OUT,
+            colorSettingInputPointerOutEventService
+        );
+        greenOffsetElement.addEventListener(EventType.POINTER_DOWN,
+            colorSettingGreenOffsetPointerDownUseCase,
+            { "passive": false }
+        );
+        greenOffsetElement.addEventListener("focusin",
+            colorSettingInputFocusInEventService
+        );
+        greenOffsetElement.addEventListener("focusout",
+            colorSettingGreenOffsetFocusOutEventUseCase
+        );
+        greenOffsetElement.addEventListener("keypress",
+            colorSettingInputKeyPressEventService
+        );
+    }
+
     const greenMultiplierElement: HTMLInputElement | null = document
         .getElementById($COLOR_GREEN_MULTIPLIER_ID) as HTMLInputElement;
 

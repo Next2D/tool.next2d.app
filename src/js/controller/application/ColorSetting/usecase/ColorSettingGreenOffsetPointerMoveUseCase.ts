@@ -1,14 +1,14 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getColorSettingState } from "../ColorSettingUtil";
-import { execute as colorSettingRedMultiplierUpdateElementUseCase } from "./ColorSettingRedMultiplierUpdateElementUseCase";
+import { execute as colorSettingGreenOffsetUpdateElementUseCase } from "./ColorSettingGreenOffsetUpdateElementUseCase";
 import {
     $clamp,
     $setCursor
 } from "@/global/GlobalUtil";
 
 /**
- * @description カラー設定エリアの赤色マルチプライヤーの値操作のポインタームーブイベント
- *              Pointer move event for value operation of red multiplier of color setting area
+ * @description カラー設定エリアの緑色オフセットの値操作のポインタームーブイベント
+ *              Pointer move event for value operation of green offset of color setting area
  *
  * @param  {PointerEvent} event
  * @return {void}
@@ -41,13 +41,13 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 変更後の値を設定
-        const value = $clamp(parseFloat(element.value) + event.movementX, 0, 100);
+        const value = $clamp(parseFloat(element.value) + event.movementX, -255, 255);
 
         element.value = `${value}`;
 
         // カラー設定を更新
         const workSpace = $getCurrentWorkSpace();
-        colorSettingRedMultiplierUpdateElementUseCase(
+        colorSettingGreenOffsetUpdateElementUseCase(
             workSpace.scene,
             value
         );

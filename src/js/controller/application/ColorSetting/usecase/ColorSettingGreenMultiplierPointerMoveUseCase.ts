@@ -7,8 +7,8 @@ import {
 } from "@/global/GlobalUtil";
 
 /**
- * @description 変形エリアの緑色マルチプライヤーの値操作のポインタームーブイベント
- *              Pointer move event for value operation of green multiplier of deformation area
+ * @description カラー設定エリアの緑色マルチプライヤーの値操作のポインタームーブイベント
+ *              Pointer move event for value operation of green multiplier of color setting area
  *
  * @param  {PointerEvent} event
  * @return {void}
