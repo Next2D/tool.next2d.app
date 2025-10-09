@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 
@@ -31,6 +31,7 @@ describe("ColorSettingRedMultiplierPointerMoveUseCase", () => {
     let mockWorkSpace: WorkSpace;
     let mockMovieClip: MovieClip;
     let mockElement: HTMLInputElement;
+    let rafCallback: (() => void) | null = null;
 
     beforeEach(() => {
         vi.clearAllMocks();
@@ -49,6 +50,17 @@ describe("ColorSettingRedMultiplierPointerMoveUseCase", () => {
         mock$clamp.mockImplementation((value: number, min: number, max: number) => {
             return Math.max(min, Math.min(max, value));
         });
+
+        // requestAnimationFrameのモック
+        rafCallback = null;
+        global.requestAnimationFrame = vi.fn((callback: () => void) => {
+            rafCallback = callback;
+            return 1;
+        }) as any;
+    });
+
+    afterEach(() => {
+        rafCallback = null;
     });
 
     describe("基本動作", () => {
@@ -79,6 +91,32 @@ describe("ColorSettingRedMultiplierPointerMoveUseCase", () => {
             expect(mock$setCursor).toHaveBeenCalledWith("ew-resize");
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
             expect(mockEvent.preventDefault).toHaveBeenCalled();
+
+            // requestAnimationFrameのコールバックを実行
+            if (rafCallback) {
+                rafCallback();
+            }
+
+            expect(mockColorSettingRedMultiplierUpdateElementUseCase).toHaveBeenCalled();
+        });
+
+        it("カラー設定の状態がupの場合は処理をスキップ", () => {
+            mock$getColorSettingState.mockReturnValue("up");
+            const mockEvent = {
+                movementX: 10,
+                target: mockElement,
+                stopPropagation: vi.fn(),
+                preventDefault: vi.fn()
+            } as unknown as PointerEvent;
+
+            execute(mockEvent);
+
+            // requestAnimationFrameのコールバックを実行
+            if (rafCallback) {
+                rafCallback();
+            }
+
+            expect(mockColorSettingRedMultiplierUpdateElementUseCase).not.toHaveBeenCalled();
         });
     });
 });

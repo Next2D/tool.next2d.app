@@ -21,7 +21,9 @@ import {
     $COLOR_RED_MULTIPLIER_ID,
     $COLOR_RED_OFFSET_ID,
     $COLOR_GREEN_MULTIPLIER_ID,
-    $COLOR_GREEN_OFFSET_ID
+    $COLOR_GREEN_OFFSET_ID,
+    $COLOR_BLUE_MULTIPLIER_ID,
+    $COLOR_BLUE_OFFSET_ID
 } from "@/config/ColorSettingConfig";
 
 /**
@@ -34,6 +36,56 @@ import {
  */
 export const execute = (): void =>
 {
+    const blueOffsetElement: HTMLInputElement | null = document
+        .getElementById($COLOR_BLUE_OFFSET_ID) as HTMLInputElement;
+
+    if (blueOffsetElement) {
+        blueOffsetElement.addEventListener(EventType.POINTER_OVER,
+            colorSettingInputPointerOverEventService
+        );
+        blueOffsetElement.addEventListener(EventType.POINTER_OUT,
+            colorSettingInputPointerOutEventService
+        );
+        // blueOffsetElement.addEventListener(EventType.POINTER_DOWN,
+        //     colorSettingGreenOffsetPointerDownUseCase,
+        //     { "passive": false }
+        // );
+        blueOffsetElement.addEventListener("focusin",
+            colorSettingInputFocusInEventService
+        );
+        // blueOffsetElement.addEventListener("focusout",
+        //     colorSettingGreenOffsetFocusOutEventUseCase
+        // );
+        blueOffsetElement.addEventListener("keypress",
+            colorSettingInputKeyPressEventService
+        );
+    }
+
+    const blueMultiplierElement: HTMLInputElement | null = document
+        .getElementById($COLOR_BLUE_MULTIPLIER_ID) as HTMLInputElement;
+
+    if (blueMultiplierElement) {
+        blueMultiplierElement.addEventListener(EventType.POINTER_OVER,
+            colorSettingInputPointerOverEventService
+        );
+        blueMultiplierElement.addEventListener(EventType.POINTER_OUT,
+            colorSettingInputPointerOutEventService
+        );
+        // blueMultiplierElement.addEventListener(EventType.POINTER_DOWN,
+        //     colorSettingGreenOffsetPointerDownUseCase,
+        //     { "passive": false }
+        // );
+        blueMultiplierElement.addEventListener("focusin",
+            colorSettingInputFocusInEventService
+        );
+        // blueMultiplierElement.addEventListener("focusout",
+        //     colorSettingGreenOffsetFocusOutEventUseCase
+        // );
+        blueMultiplierElement.addEventListener("keypress",
+            colorSettingInputKeyPressEventService
+        );
+    }
+
     const greenOffsetElement: HTMLInputElement | null = document
         .getElementById($COLOR_GREEN_OFFSET_ID) as HTMLInputElement;
 

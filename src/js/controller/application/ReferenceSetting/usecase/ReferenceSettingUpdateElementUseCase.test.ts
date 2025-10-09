@@ -42,10 +42,32 @@ describe("ReferenceSettingUpdateElementUseCase", () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
+        
+        // モック実装をリセット
+        mockUpdateCellValueService.mockReset();
+        mockUpdateXService.mockReset();
+        mockUpdateYService.mockReset();
 
         // mockReferenceSettingのリセット
-        mockReferenceSetting.pivotX = 0;
-        mockReferenceSetting.pivotY = 0;
+        // _pivotXや_pivotYなどの内部プロパティを削除
+        delete (mockReferenceSetting as any)._pivotX;
+        delete (mockReferenceSetting as any)._pivotY;
+        
+        // プロパティディスクリプタのリセット（もし変更されていた場合）
+        // pivotXとpivotYを通常のプロパティとして再定義
+        Object.defineProperty(mockReferenceSetting, 'pivotX', {
+            value: 0,
+            writable: true,
+            configurable: true,
+            enumerable: true
+        });
+        Object.defineProperty(mockReferenceSetting, 'pivotY', {
+            value: 0,
+            writable: true,
+            configurable: true,
+            enumerable: true
+        });
+        
         mockReferenceSetting.pivot = "middle-center";
     });
 
@@ -316,32 +338,37 @@ describe("ReferenceSettingUpdateElementUseCase", () => {
             expect(mockUpdateYService).not.toHaveBeenCalledWith(x);
         });
 
-        test.skip("サービスの実行がreferenceSettingの更新より先に行われる", () => {
+        test("サービスの実行がreferenceSettingの更新より先に行われる", () => {
             let servicesExecuted = false;
-            let referenceSettingUpdated = false;
+            let pivotXSet = false;
 
             mockUpdateCellValueService.mockImplementation(() => {
                 servicesExecuted = true;
-                expect(referenceSettingUpdated).toBe(false);
+                expect(pivotXSet).toBe(false);
             });
 
             mockUpdateXService.mockImplementation(() => {
-                expect(referenceSettingUpdated).toBe(false);
+                expect(pivotXSet).toBe(false);
             });
 
             mockUpdateYService.mockImplementation(() => {
-                expect(referenceSettingUpdated).toBe(false);
+                expect(pivotXSet).toBe(false);
             });
 
             // referenceSettingの更新をフック
-            const originalPivotXSetter = Object.getOwnPropertyDescriptor(mockReferenceSetting, 'pivotX')?.set;
+            const originalValue = mockReferenceSetting.pivotX;
             Object.defineProperty(mockReferenceSetting, 'pivotX', {
                 set: (value) => {
-                    referenceSettingUpdated = true;
+                    pivotXSet = true;
                     expect(servicesExecuted).toBe(true);
-                    if (originalPivotXSetter) originalPivotXSetter.call(mockReferenceSetting, value);
+                    // 内部的に値を保持するための_pivotXプロパティに保存
+                    Object.defineProperty(mockReferenceSetting, '_pivotX', {
+                        value: value,
+                        writable: true,
+                        configurable: true
+                    });
                 },
-                get: () => mockReferenceSetting._pivotX || 0,
+                get: () => mockReferenceSetting._pivotX !== undefined ? mockReferenceSetting._pivotX : originalValue,
                 configurable: true
             });
 
@@ -350,6 +377,15 @@ describe("ReferenceSettingUpdateElementUseCase", () => {
             const y = 888;
 
             execute(pivot, x, y);
+
+            // テスト後にプロパティディスクリプタをクリーンアップ
+            Object.defineProperty(mockReferenceSetting, 'pivotX', {
+                value: x,
+                writable: true,
+                configurable: true,
+                enumerable: true
+            });
+            delete mockReferenceSetting._pivotX;
         });
 
     });
