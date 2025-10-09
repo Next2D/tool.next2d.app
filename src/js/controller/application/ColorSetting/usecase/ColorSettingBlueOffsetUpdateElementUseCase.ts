@@ -2,18 +2,18 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 
 /**
- * @description スクリーンで選択中のElementのgreenを更新する
- *              Update the green of the selected Element on the screen
+ * @description スクリーンで選択中のElementのblueを更新する
+ *              Update the blue of the selected Element on the screen
  *
  * @param  {MovieClip} movie_clip
- * @param  {number} green
+ * @param  {number} blue
  * @return {void}
  * @method
  * @public
  */
 export const execute = (
     movie_clip: MovieClip,
-    green: number
+    blue: number
 ): void => {
 
     // 選択中のelementがない場合、複数選択時は何もしない
@@ -46,8 +46,8 @@ export const execute = (
         return ;
     }
 
-    // green offset を更新
-    character.colorTransform[5] = Math.floor(green);
+    // blue offset を更新
+    character.colorTransform[6] = Math.floor(blue);
 
     // 画面に反映
     const colorTransform = character.colorTransform;

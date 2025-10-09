@@ -612,4 +612,38 @@ export class ExternalCharacter
             blue
         );
     }
+
+    /**
+     * @description DisplayObjectの青色オフセット値を取得
+     *              Get the blue offset value of DisplayObject
+     *
+     * @return {number} 0 ~ 100
+     * @method
+     * @public
+     */
+    getBlueOffset (): number
+    {
+        return this._$character.colorTransform[6];
+    }
+
+    /**
+     * @description DisplayObjectの青色値を設定
+     *              Set the blue value of DisplayObject
+     *
+     * @param  {number} blue -255 ~ 255
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setBlueOffset (blue: number): Promise<void>
+    {
+        await externalCharacterUpdateBlueOffsetUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            blue
+        );
+    }
+
 }

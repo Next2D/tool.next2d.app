@@ -77,6 +77,7 @@ import { execute as characterUpdateRedOffsetHistoryUndoUseCase } from "@/history
 import { execute as characterUpdateGreenMultiplierHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateGreenMultiplier/usecase/CharacterUpdateGreenMultiplierHistoryUndoUseCase";
 import { execute as characterUpdateGreenOffsetHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateGreenOffset/usecase/CharacterUpdateGreenOffsetHistoryUndoUseCase";
 import { execute as characterUpdateBlueMultiplierHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateBlueMultiplier/usecase/CharacterUpdateBlueMultiplierHistoryUndoUseCase";
+import { execute as characterUpdateBlueOffsetHistoryUndoUseCase } from "@/history/application/core/application/Character/UpdateBlueOffset/usecase/CharacterUpdateBlueOffsetHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -144,7 +145,8 @@ import {
     $CHARACTER_UPDATE_RED_OFFSET_COMMAND,
     $CHARACTER_UPDATE_GREEN_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND,
-    $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND
+    $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
+    $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -842,6 +844,17 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[5] as number  // Before Blue Multiplier
+            );
+            break;
+
+        case $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND:
+            await characterUpdateBlueOffsetHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[5] as number  // Before Blue Offset
             );
             break;
 

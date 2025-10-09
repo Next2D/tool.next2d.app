@@ -5,8 +5,8 @@ import type { Character } from "@/core/domain/model/Character";
 import { execute as historyRemoveElementService } from "@/controller/application/HistoryArea/service/HistoryRemoveElementService";
 import { execute as historyAddElementUseCase } from "@/controller/application/HistoryArea/usecase/HistoryAddElementUseCase";
 import { execute as historyGetTextService } from "@/controller/application/HistoryArea/service/HistoryGetTextService";
-import { execute as characterUpdateGreenOffsetCreateHistoryObjectService } from "../service/CharacterUpdateGreenOffsetCreateHistoryObjectService";
-import { $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND } from "@/config/HistoryConfig";
+import { execute as characterUpdateBlueOffsetCreateHistoryObjectService } from "../service/CharacterUpdateBlueOffsetCreateHistoryObjectService";
+import { $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND } from "@/config/HistoryConfig";
 import { $useSocket } from "@/share/ShareUtil";
 import { execute as shareSendService } from "@/share/service/ShareSendService";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
@@ -19,7 +19,7 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  * @param  {MovieClip} movie_clip
  * @param  {Layer} layer
  * @param  {Character} character
- * @param  {number} after_green
+ * @param  {number} after_blue
  * @param  {boolean} [receiver=false]
  * @return {Promise<void>}
  * @method
@@ -30,7 +30,7 @@ export const execute = async (
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
-    after_green: number,
+    after_blue: number,
     receiver: boolean = false
 ): Promise<void> => {
 
@@ -39,8 +39,8 @@ export const execute = async (
     historyRemoveElementService(work_space);
 
     // fixed logic
-    const historyObject = characterUpdateGreenOffsetCreateHistoryObjectService(
-        work_space.id, movie_clip, layer, character, after_green
+    const historyObject = characterUpdateBlueOffsetCreateHistoryObjectService(
+        work_space.id, movie_clip, layer, character, after_blue
     );
 
     // 作業履歴にElementを追加
@@ -49,7 +49,7 @@ export const execute = async (
         historyAddElementUseCase(
             movie_clip.id,
             work_space.historyIndex,
-            historyGetTextService($CHARACTER_UPDATE_GREEN_OFFSET_COMMAND),
+            historyGetTextService($CHARACTER_UPDATE_BLUE_OFFSET_COMMAND),
             "",
             ...historyObject.args
         );
