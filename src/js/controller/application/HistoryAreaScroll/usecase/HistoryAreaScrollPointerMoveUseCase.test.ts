@@ -1,8 +1,26 @@
 import { execute } from "./HistoryAreaScrollPointerMoveUseCase";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 
 describe("HistoryAreaScrollPointerMoveUseCase Test", () =>
 {
+    let rafCallback: (() => void) | null = null;
+    let rafId: number = 0;
+
+    beforeEach(() => {
+        rafCallback = null;
+        rafId = 0;
+        // requestAnimationFrameをモック
+        global.requestAnimationFrame = vi.fn((callback: () => void) => {
+            rafCallback = callback;
+            return ++rafId;
+        }) as any;
+    });
+
+    afterEach(() => {
+        // コールバックをクリア
+        rafCallback = null;
+    });
+
     it("test case", () =>
     {
         let stopPropagation = false;
@@ -27,5 +45,6 @@ describe("HistoryAreaScrollPointerMoveUseCase Test", () =>
 
         expect(preventDefault).toBe(true);
         expect(stopPropagation).toBe(true);
+        expect(global.requestAnimationFrame).toHaveBeenCalled();
     });
 });
