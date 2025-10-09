@@ -1,17 +1,17 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewColorSettingRedMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingRedMultiplierUseCase";
+import { execute as viewColorSettingGreenMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingGreenMultiplierUseCase";
 
 /**
- * @description DisplayObjectの赤色値を変更後に戻す
- *              Reset the red value of the DisplayObject
+ * @description DisplayObjectの緑色値を変更後に戻す
+ *              Reset the green value of the DisplayObject
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
  * @param  {number} keyframe
  * @param  {number} depth
- * @param  {number} after_red
+ * @param  {number} after_green
  * @return {Promise<void>}
  * @method
  * @public
@@ -22,7 +22,7 @@ export const execute = async (
     index: number,
     keyframe: number,
     depth: number,
-    after_red: number
+    after_green: number
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -46,14 +46,14 @@ export const execute = async (
     }
 
     // データを更新
-    character.colorTransform[0] = Math.floor(after_red) / 100;
+    character.colorTransform[1] = Math.floor(after_green) / 100;
 
     // アクティブなら表示を更新
-    viewColorSettingRedMultiplierUseCase(
+    viewColorSettingGreenMultiplierUseCase(
         workSpace,
         movieClip,
         layer,
         character,
-        after_red
+        after_green
     );
 };
