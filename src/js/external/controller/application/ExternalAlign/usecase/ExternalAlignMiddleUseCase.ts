@@ -24,7 +24,7 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
         return ;
     }
 
-    const height = Math.abs(bounds.yMax - bounds.yMin);
+    const middleY = (bounds.yMin + bounds.yMax) / 2;
     const frame = movie_clip.currentFrame;
     for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
@@ -39,16 +39,25 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
                 continue ;
             }
 
+            // 現在の境界を取得
+            const bounds = character.getBounds(frame);
+            if (!bounds) {
+                continue ;
+            }
+
+            // キャラクターの中心位置を計算
+            const characterMiddleY = (bounds.yMin + bounds.yMax) / 2;
+
+            // 目標のy座標 = 選択範囲の中心(middleY) + 現在のオフセット(character.y - characterMiddleY)
+            const dy = middleY + (character.y - characterMiddleY);
+
             const externalCharacter = new ExternalCharacter(
                 work_space,
                 movie_clip,
                 layer,
                 character
             );
-
-            await externalCharacter.setY(
-                bounds.yMin + height / 2 - character.height / 2
-            );
+            await externalCharacter.setY(dy);
         }
     }
 };

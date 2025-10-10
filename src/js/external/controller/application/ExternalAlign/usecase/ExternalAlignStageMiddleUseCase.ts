@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 選択範囲の中央に合わせて選択中のキャラクターを移動
@@ -24,7 +25,10 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
         return ;
     }
 
-    const centerX = (bounds.xMin + bounds.xMax) / 2;
+    const workSpace = $getCurrentWorkSpace();
+    const stage = workSpace.stage;
+
+    const middleY = stage.height / 2;
     const frame = movie_clip.currentFrame;
     for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
@@ -46,10 +50,10 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
             }
 
             // キャラクターの中心位置を計算
-            const characterCenterX = (bounds.xMin + bounds.xMax) / 2;
+            const characterMiddleY = (bounds.yMin + bounds.yMax) / 2;
 
-            // 目標のx座標 = 選択範囲の中心(centerX) + 現在のオフセット(character.x - characterCenterX)
-            const dx = centerX + (character.x - characterCenterX);
+            // 目標のy座標 = 選択範囲の中心(middleY) + 現在のオフセット(character.y - characterMiddleY)
+            const dy = middleY + (character.y - characterMiddleY);
 
             const externalCharacter = new ExternalCharacter(
                 work_space,
@@ -57,7 +61,7 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
                 layer,
                 character
             );
-            await externalCharacter.setX(dx);
+            await externalCharacter.setY(dy);
         }
     }
 };

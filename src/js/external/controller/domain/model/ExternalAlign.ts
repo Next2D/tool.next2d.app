@@ -6,7 +6,19 @@ import { execute as externalAlignRightUseCase } from "@/external/controller/appl
 import { execute as externalAlignTopUseCase } from "@/external/controller/application/ExternalAlign/usecase/ExternalAlignTopUseCase";
 import { execute as externalAlignMiddleUseCase } from "@/external/controller/application/ExternalAlign/usecase/ExternalAlignMiddleUseCase";
 import { execute as externalAlignBottomUseCase } from "@/external/controller/application/ExternalAlign/usecase/ExternalAlignBottomUseCase";
+import { execute as externalAlignStageLeftUseCase } from "@/external/controller/application/ExternalAlign/usecase/ExternalAlignStageLeftUseCase";
+import { execute as externalAlignStageCenterUseCase } from "@/external/controller/application/ExternalAlign/usecase/ExternalAlignStageCenterUseCase";
+import { execute as externalAlignStageRightUseCase } from "@/external/controller/application/ExternalAlign/usecase/ExternalAlignStageRightUseCase";
+import { execute as externalAlignStageTopUseCase } from "@/external/controller/application/ExternalAlign/usecase/ExternalAlignStageTopUseCase";
+import { execute as externalAlignStageMiddleUseCase } from "@/external/controller/application/ExternalAlign/usecase/ExternalAlignStageMiddleUseCase";
+import { execute as externalAlignStageBottomUseCase } from "@/external/controller/application/ExternalAlign/usecase/ExternalAlignStageBottomUseCase";
 
+/**
+ * @description キャラクターの配置を行う外部APIクラス
+ *              External API class for aligning characters
+ *
+ * @class
+ */
 export class ExternalAlign
 {
     private readonly _$workSpace: WorkSpace;
@@ -111,5 +123,83 @@ export class ExternalAlign
     async bottom (): Promise<void>
     {
         await externalAlignBottomUseCase(this._$workSpace, this._$movieClip);
+    }
+
+    /**
+     * @description ステージの左端に合わせて選択中のキャラクターを移動
+     *              Move the selected character to the left edge of the stage
+     *
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async stageLeft (): Promise<void>
+    {
+        await externalAlignStageLeftUseCase(this._$workSpace, this._$movieClip);
+    }
+
+    /**
+     * @description ステージの中央に合わせて選択中のキャラクターを移動
+     *              Move the selected character to the center of the stage
+     *
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async stageCenter (): Promise<void>
+    {
+        await externalAlignStageCenterUseCase(this._$workSpace, this._$movieClip);
+    }
+
+    /**
+     * @description ステージの右端に合わせて選択中のキャラクターを移動
+     *              Move the selected character to the right edge of the stage
+     *
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async stageRight (): Promise<void>
+    {
+        await externalAlignStageRightUseCase(this._$workSpace, this._$movieClip);
+    }
+
+    /**
+     * @description ステージの上端に合わせて選択中のキャラクターを移動
+     *              Move the selected character to the top edge of the stage
+     *
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async stageTop (): Promise<void>
+    {
+        await externalAlignStageTopUseCase(this._$workSpace, this._$movieClip);
+    }
+
+    /**
+     * @description ステージの中央に合わせて選択中のキャラクターを移動
+     *              Move the selected character to the middle of the stage
+     *
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async stageMiddle (): Promise<void>
+    {
+        await externalAlignStageMiddleUseCase(this._$workSpace, this._$movieClip);
+    }
+
+    /**
+     * @description ステージの下端に合わせて選択中のキャラクターを移動
+     *              Move the selected character to the bottom of the stage
+     *
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async stageBottom (): Promise<void>
+    {
+        await externalAlignStageBottomUseCase(this._$workSpace, this._$movieClip);
     }
 }

@@ -2,6 +2,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 選択範囲の中央に合わせて選択中のキャラクターを移動
@@ -24,7 +25,10 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
         return ;
     }
 
-    const centerX = (bounds.xMin + bounds.xMax) / 2;
+    const workSpace = $getCurrentWorkSpace();
+    const stage = workSpace.stage;
+
+    const centerX = stage.width / 2;
     const frame = movie_clip.currentFrame;
     for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 

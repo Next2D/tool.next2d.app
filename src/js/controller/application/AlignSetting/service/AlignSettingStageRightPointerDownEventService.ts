@@ -3,8 +3,8 @@ import { ExternalAlign } from "@/external/controller/domain/model/ExternalAlign"
 import { $activeTouchPointers } from "@/global/GlobalUtil";
 
 /**
- * @description 選択範囲の下端に合わせて選択中のキャラクターを移動
- *              Move the selected character to the bottom of the selection
+ * @description ステージの右端に合わせて選択中のキャラクターを移動
+ *              Move the selected character to the right edge of the stage
  *
  * @param  {PointerEvent} event
  * @return {Promise<void>}
@@ -27,7 +27,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // イベントのバブリングを停止
     event.stopPropagation();
 
-    // 選択範囲の下端に合わせて選択中のキャラクターを移動
+    // ステージの右端に合わせて選択中のキャラクターを移動
     const externalAlign = new ExternalAlign(workSpace, movieClip);
-    await externalAlign.bottom();
+    await externalAlign.stageRight();
 };

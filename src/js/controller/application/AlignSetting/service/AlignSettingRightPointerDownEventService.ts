@@ -1,8 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalAlign } from "@/external/controller/domain/model/ExternalAlign";
-import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 import { $activeTouchPointers } from "@/global/GlobalUtil";
-import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 
 /**
  * @description 選択範囲の右端に合わせて選択中のキャラクターを移動

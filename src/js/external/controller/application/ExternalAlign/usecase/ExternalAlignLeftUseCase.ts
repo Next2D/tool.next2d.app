@@ -25,7 +25,6 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
     }
 
     const x = bounds.xMin;
-    const y = bounds.yMin;
     const frame = movie_clip.currentFrame;
     for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
@@ -40,15 +39,21 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
                 continue ;
             }
 
+            // 現在の境界を取得
+            const bounds = character.getBounds(frame);
+            if (!bounds) {
+                continue ;
+            }
+
+            // 目標のx座標 = 選択範囲の左端(x) + 現在のオフセット(character.x - bounds.xMin)
+            const dx = x + (character.x - bounds.xMin);
+
             const externalCharacter = new ExternalCharacter(
                 work_space,
                 movie_clip,
                 layer,
                 character
             );
-
-            const matrix = character.matrix;
-            const dx = x * matrix[0] + y * matrix[2];
             await externalCharacter.setX(dx);
         }
     }

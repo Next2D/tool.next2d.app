@@ -39,14 +39,22 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
                 continue ;
             }
 
+            // 現在の境界を取得
+            const bounds = character.getBounds(frame);
+            if (!bounds) {
+                continue ;
+            }
+
+            // 目標のy座標 = 選択範囲の上端(y) + 現在のオフセット(character.y - bounds.yMin)
+            const dy = y + (character.y - bounds.yMin);
+
             const externalCharacter = new ExternalCharacter(
                 work_space,
                 movie_clip,
                 layer,
                 character
             );
-
-            await externalCharacter.setY(y);
+            await externalCharacter.setY(dy);
         }
     }
 };
