@@ -3,6 +3,7 @@ import { execute as screenMenuShowUseCase } from "./ScreenMenuShowUseCase";
 import { execute as screenMenuInitializeRegisterPointerOverUseCase } from "./ScreenMenuInitializeRegisterPointerOverUseCase";
 import { execute as screenMenuTouchPointerDownUseCase } from "./ScreenMenuTouchPointerDownUseCase";
 import { execute as screenMenuTouchPointerUpService } from "../service/ScreenMenuTouchPointerUpService";
+import { execute as screenAlignMenuMenuInitializeRegisterEventUseCase } from "@/menu/application/ScreenAlignMenu/usecase/ScreenAlignMenuMenuInitializeRegisterEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 
 /**
@@ -44,4 +45,7 @@ export const execute = (): void =>
 
     // マウスオーバーイベントを登録
     screenMenuInitializeRegisterPointerOverUseCase();
+
+    // スクリーンメニューの整列エリアのイベント登録
+    screenAlignMenuMenuInitializeRegisterEventUseCase();
 };

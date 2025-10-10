@@ -1,6 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalAlign } from "@/external/controller/domain/model/ExternalAlign";
-import { $activeTouchPointers } from "@/global/GlobalUtil";
+import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
+import { $allHideMenu } from "@/menu/application/MenuUtil";
 
 /**
  * @description 選択範囲の下端に合わせて選択中のキャラクターを移動
@@ -23,6 +24,12 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     if (!movieClip.selectedDepths.size) {
         return ;
     }
+
+    // メニューを閉じる
+    $allHideMenu();
+
+    // 編集中の要素を解除
+    $setEditingElement(null);
 
     // イベントのバブリングを停止
     event.stopPropagation();

@@ -1,13 +1,18 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 
+
 const {
     mock$getCurrentWorkSpace,
     mock$activeTouchPointers,
+    mock$setEditingElement,
+    mock$allHideMenu,
     mockExternalAlign
 } = vi.hoisted(() => {
     return {
         mock$getCurrentWorkSpace: vi.fn(),
         mock$activeTouchPointers: new Set(),
+        mock$setEditingElement: vi.fn(),
+        mock$allHideMenu: vi.fn(),
         mockExternalAlign: vi.fn()
     };
 });
@@ -17,7 +22,12 @@ vi.mock("@/core/application/CoreUtil", () => ({
 }));
 
 vi.mock("@/global/GlobalUtil", () => ({
-    $activeTouchPointers: mock$activeTouchPointers
+    $activeTouchPointers: mock$activeTouchPointers,
+    $setEditingElement: mock$setEditingElement
+}));
+
+vi.mock("@/menu/application/MenuUtil", () => ({
+    $allHideMenu: mock$allHideMenu
 }));
 
 vi.mock("@/external/controller/domain/model/ExternalAlign", () => ({
