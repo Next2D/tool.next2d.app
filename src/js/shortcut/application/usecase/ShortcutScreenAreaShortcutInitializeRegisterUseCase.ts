@@ -16,7 +16,6 @@ import { execute as alignSettingStageTopPointerDownEventService } from "@/contro
 import { execute as alignSettingStageMiddlePointerDownEventService } from "@/controller/application/AlignSetting/service/AlignSettingStageMiddlePointerDownEventService";
 import { execute as alignSettingStageBottomPointerDownEventService } from "@/controller/application/AlignSetting/service/AlignSettingStageBottomPointerDownEventService";
 
-
 /**
  * @description スクリーンエリアのショートカットイベントを登録
  *              Register shortcut events in the screen area
