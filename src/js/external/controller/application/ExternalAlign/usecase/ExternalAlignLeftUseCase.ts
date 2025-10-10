@@ -25,6 +25,7 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
     }
 
     const x = bounds.xMin;
+    const y = bounds.yMin;
     const frame = movie_clip.currentFrame;
     for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
@@ -46,7 +47,9 @@ export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Pro
                 character
             );
 
-            await externalCharacter.setX(x);
+            const matrix = character.matrix;
+            const dx = x * matrix[0] + y * matrix[2];
+            await externalCharacter.setX(dx);
         }
     }
 };

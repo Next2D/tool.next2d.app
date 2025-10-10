@@ -44,7 +44,8 @@ describe("ColorSettingGreenMultiplierUpdateElementUseCase", () => {
         mockMovieClip = {
             selectedDepths: selectedDepths,
             currentFrame: 0,
-            getLayer: vi.fn().mockReturnValue(mockLayer)
+            getLayer: vi.fn().mockReturnValue(mockLayer),
+            isSingleSelectedOfDisplayObject: vi.fn().mockReturnValue(true)
         } as unknown as MovieClip;
 
         mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(mockNode);
@@ -61,6 +62,7 @@ describe("ColorSettingGreenMultiplierUpdateElementUseCase", () => {
 
         it("複数選択時は何もしない", () => {
             mockMovieClip.selectedDepths = new Map([[1, [10]], [2, [20]]]);
+            mockMovieClip.isSingleSelectedOfDisplayObject.mockReturnValue(false);
 
             execute(mockMovieClip, 50);
 

@@ -41,7 +41,8 @@ describe("ColorSettingBlueOffsetUpdateElementUseCase", () => {
         mockMovieClip = {
             selectedDepths: selectedDepths,
             currentFrame: 0,
-            getLayer: vi.fn().mockReturnValue(mockLayer)
+            getLayer: vi.fn().mockReturnValue(mockLayer),
+            isSingleSelectedOfDisplayObject: vi.fn().mockReturnValue(true)
         } as unknown as MovieClip;
 
         mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(mockNode);

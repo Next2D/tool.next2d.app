@@ -48,7 +48,8 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
         mockMovieClip = {
             currentFrame: 1,
             selectedDepths: new Map([[0, [1]]]), // デフォルトで単一選択
-            getLayer: vi.fn().mockReturnValue(mockLayer)
+            getLayer: vi.fn().mockReturnValue(mockLayer),
+            isSingleSelectedOfDisplayObject: vi.fn().mockReturnValue(true)
         };
 
         mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(mockNode);
@@ -145,6 +146,7 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
                 [0, [1]],
                 [1, [2]]
             ]);
+            mockMovieClip.isSingleSelectedOfDisplayObject.mockReturnValue(false);
 
             execute(mockMovieClip, 60);
 
@@ -159,6 +161,7 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
                 [1, [2]],
                 [2, [3]]
             ]);
+            mockMovieClip.isSingleSelectedOfDisplayObject.mockReturnValue(false);
 
             execute(mockMovieClip, 70);
 
@@ -167,12 +170,12 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
 
         it("1つのレイヤーに複数depthsがある場合、最初のdepthのみ処理", () => {
             mockMovieClip.selectedDepths = new Map([[0, [1, 2, 3]]]);
+            mockMovieClip.isSingleSelectedOfDisplayObject.mockReturnValue(false);
 
             execute(mockMovieClip, 40);
 
-            // 最初のdepth(1)のみ処理される
-            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 1);
-            expect(mockLayer.getCharacter).toHaveBeenCalledTimes(1);
+            // 複数depths選択時は何もしない
+            expect(mockMovieClip.getLayer).not.toHaveBeenCalled();
         });
 
         it("keys().next().valueで最初のlayerIndexを取得", () => {
@@ -185,11 +188,12 @@ describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
 
         it("values().next().value[0]で最初のdepthを取得", () => {
             mockMovieClip.selectedDepths = new Map([[0, [7, 8, 9]]]);
+            mockMovieClip.isSingleSelectedOfDisplayObject.mockReturnValue(false);
 
             execute(mockMovieClip, 50);
 
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).toHaveBeenCalledWith("layer-1", 7);
-            expect(mockLayer.getCharacter).toHaveBeenCalledWith(1, 7);
+            // 複数depths選択時は何もしない
+            expect(mockMovieClip.getLayer).not.toHaveBeenCalled();
         });
     });
 

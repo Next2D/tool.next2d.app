@@ -41,7 +41,8 @@ describe("ColorSettingGreenOffsetUpdateElementUseCase", () => {
         mockMovieClip = {
             selectedDepths: selectedDepths,
             currentFrame: 1,
-            getLayer: vi.fn().mockReturnValue(mockLayer)
+            getLayer: vi.fn().mockReturnValue(mockLayer),
+            isSingleSelectedOfDisplayObject: vi.fn().mockReturnValue(true)
         } as unknown as MovieClip;
 
         mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(mockNode);
@@ -61,6 +62,7 @@ describe("ColorSettingGreenOffsetUpdateElementUseCase", () => {
             selectedDepths.set(0, [10]);
             selectedDepths.set(1, [20]); // 2つのレイヤーが選択されている
             mockMovieClip.selectedDepths = selectedDepths;
+            mockMovieClip.isSingleSelectedOfDisplayObject.mockReturnValue(false);
 
             execute(mockMovieClip, 50);
 
