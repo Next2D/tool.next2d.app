@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 
-
 const {
     mock$getCurrentWorkSpace,
     mock$activeTouchPointers,
@@ -63,6 +62,7 @@ describe("AlignSettingLeftPointerDownEventService", () => {
         mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
 
         mockEvent = {
+            type: "pointerdown",
             button: 0,
             stopPropagation: vi.fn()
         } as unknown as PointerEvent;
@@ -106,6 +106,8 @@ describe("AlignSettingLeftPointerDownEventService", () => {
         it("左クリック時に左端揃えが実行される", async () => {
             await execute(mockEvent);
 
+            expect(mock$allHideMenu).toHaveBeenCalled();
+            expect(mock$setEditingElement).toHaveBeenCalledWith(null);
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
             expect(mockExternalAlign).toHaveBeenCalledWith(mockWorkSpace, mockMovieClip);
             expect(mockExternalAlignInstance.left).toHaveBeenCalled();
@@ -133,15 +135,15 @@ describe("AlignSettingLeftPointerDownEventService", () => {
 
     describe("非同期処理", () => {
         it("left メソッドが非同期で実行される", async () => {
-            let leftCalled = false;
+            let methodCalled = false;
             mockExternalAlignInstance.left.mockImplementation(async () => {
                 await new Promise(resolve => setTimeout(resolve, 10));
-                leftCalled = true;
+                methodCalled = true;
             });
 
             await execute(mockEvent);
 
-            expect(leftCalled).toBe(true);
+            expect(methodCalled).toBe(true);
         });
     });
 });

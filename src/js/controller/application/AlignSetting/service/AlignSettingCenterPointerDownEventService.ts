@@ -2,20 +2,23 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalAlign } from "@/external/controller/domain/model/ExternalAlign";
 import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
+import { EventType } from "@/tool/domain/event/EventType";
 
 /**
  * @description 選択範囲の中央に合わせて選択中のキャラクターを移動
  *              Move the selected character to the center of the selection
  *
- * @param  {PointerEvent} event
+ * @param  {PointerEvent | KeyboardEvent} event
  * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = async (event: PointerEvent): Promise<void> =>
+export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void> =>
 {
     // 左クリック以外、またはマルチタッチの場合は処理を行わない
-    if (event.button !== 0 || $activeTouchPointers.size > 1) {
+    if (event.type === EventType.POINTER_DOWN && (event as PointerEvent).button !== 0
+        || $activeTouchPointers.size > 1
+    ) {
         return ;
     }
 

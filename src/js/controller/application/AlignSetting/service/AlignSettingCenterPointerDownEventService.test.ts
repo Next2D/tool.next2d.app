@@ -62,6 +62,7 @@ describe("AlignSettingCenterPointerDownEventService", () => {
         mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
 
         mockEvent = {
+            type: "pointerdown",
             button: 0,
             stopPropagation: vi.fn()
         } as unknown as PointerEvent;
@@ -105,6 +106,8 @@ describe("AlignSettingCenterPointerDownEventService", () => {
         it("左クリック時に中央揃えが実行される", async () => {
             await execute(mockEvent);
 
+            expect(mock$allHideMenu).toHaveBeenCalled();
+            expect(mock$setEditingElement).toHaveBeenCalledWith(null);
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
             expect(mockExternalAlign).toHaveBeenCalledWith(mockWorkSpace, mockMovieClip);
             expect(mockExternalAlignInstance.center).toHaveBeenCalled();
@@ -132,15 +135,15 @@ describe("AlignSettingCenterPointerDownEventService", () => {
 
     describe("非同期処理", () => {
         it("center メソッドが非同期で実行される", async () => {
-            let centerCalled = false;
+            let methodCalled = false;
             mockExternalAlignInstance.center.mockImplementation(async () => {
                 await new Promise(resolve => setTimeout(resolve, 10));
-                centerCalled = true;
+                methodCalled = true;
             });
 
             await execute(mockEvent);
 
-            expect(centerCalled).toBe(true);
+            expect(methodCalled).toBe(true);
         });
     });
 });
