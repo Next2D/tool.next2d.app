@@ -21,6 +21,8 @@ export const execute = async (): Promise<void> =>
     const x = transformSetting.x;
     const y = transformSetting.y;
 
+    const isSingleSelected = movieClip.isSingleSelectedOfDisplayObject();
+
     // 選択中のDisplayObjectの座標を更新
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
@@ -38,8 +40,10 @@ export const execute = async (): Promise<void> =>
             }
 
             // 移動前の座標に戻す
-            character.x = transformSetting.beforeX;
-            character.y = transformSetting.beforeY;
+            if (isSingleSelected && transformSetting.matrixs.length > 0) {
+                character.x = transformSetting.beforeX;
+                character.y = transformSetting.beforeY;
+            }
 
             // 外部APIを起動
             const externalCharacter = new ExternalCharacter(

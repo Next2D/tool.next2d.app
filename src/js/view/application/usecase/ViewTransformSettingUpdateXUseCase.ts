@@ -40,7 +40,7 @@ export const execute = async (
         // 表示Elementを移動
         screenAreaMoveDisplayObjectElementUseCase(layer, character);
 
-        if (movie_clip.selectedDepths.size > 0) {
+        if (movie_clip.selectedDepths.size) {
 
             // 変形の中心点のElementを再配置
             screenReferencePointDeployElementUseCase();

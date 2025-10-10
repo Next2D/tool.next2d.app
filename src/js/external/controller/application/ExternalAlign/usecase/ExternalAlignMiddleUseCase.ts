@@ -1,0 +1,54 @@
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
+
+/**
+ * @description 選択範囲の中央に合わせて選択中のキャラクターを移動
+ *              Move the selected character to the center of the selection
+ *
+ * @param  {WorkSpace} work_space
+ * @param  {MovieClip} movie_clip
+ * @return {Promise<void>}
+ * @method
+ * @public
+ */
+export const execute = async (work_space: WorkSpace, movie_clip: MovieClip): Promise<void> =>
+{
+    if (!movie_clip.selectedDepths.size) {
+        return ;
+    }
+
+    const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
+    if (!bounds) {
+        return ;
+    }
+
+    const height = Math.abs(bounds.yMax - bounds.yMin);
+    const frame = movie_clip.currentFrame;
+    for (const [layerIndex, depths] of movie_clip.selectedDepths) {
+
+        const layer = movie_clip.getLayer(layerIndex);
+        if (!layer) {
+            continue ;
+        }
+
+        for (let idx = 0; idx < depths.length; idx++) {
+            const character = layer.getCharacter(frame, depths[idx]);
+            if (!character) {
+                continue ;
+            }
+
+            const externalCharacter = new ExternalCharacter(
+                work_space,
+                movie_clip,
+                layer,
+                character
+            );
+
+            await externalCharacter.setY(
+                bounds.yMin + height / 2 - character.height / 2
+            );
+        }
+    }
+};

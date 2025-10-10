@@ -42,7 +42,7 @@ export const execute = async (
     // アクティブなら表示を更新
     if (work_space.active && movie_clip.active) {
 
-        if (movie_clip.selectedDepths.size > 0) {
+        if (movie_clip.selectedDepths.size) {
 
             // 変形の中心点のElementを再配置
             screenReferencePointDeployElementUseCase();

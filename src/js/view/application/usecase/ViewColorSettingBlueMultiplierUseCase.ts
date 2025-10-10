@@ -47,7 +47,7 @@ export const execute = (
 
     // 選択中のElementがない場合は何もしない
     if (!movie_clip.selectedDepths.size
-        || movie_clip.selectedDepths.size > 1
+        || !movie_clip.isSingleSelectedOfDisplayObject()
     ) {
         return ;
     }

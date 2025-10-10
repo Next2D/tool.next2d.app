@@ -17,7 +17,9 @@ export const execute = (
 ): void => {
 
     // 選択中のelementがない場合は何もしない
-    if (!movie_clip.selectedDepths.size || movie_clip.selectedDepths.size > 1) {
+    if (!movie_clip.selectedDepths.size
+        || !movie_clip.isSingleSelectedOfDisplayObject()
+    ) {
         return ;
     }
 
