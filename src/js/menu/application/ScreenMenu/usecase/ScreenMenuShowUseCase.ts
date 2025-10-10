@@ -5,6 +5,7 @@ import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
+import { execute as screenMenuUpdateActiveElementUseCase } from "./ScreenMenuUpdateActiveElementUseCase";
 
 /**
  * @description スクリーンエリアのメニューを表示
@@ -61,6 +62,9 @@ export const execute = (event: MouseEvent): void =>
 
     menu.offsetLeft = event.pageX + 15;
     menu.offsetTop  = top;
+
+    // スクリーンの選択状態に合わせて表示を切り替える
+    screenMenuUpdateActiveElementUseCase();
 
     menu.show();
 };

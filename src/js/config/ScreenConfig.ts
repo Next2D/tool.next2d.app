@@ -123,3 +123,21 @@ export const $SCREEN_STANDARD_POINT_ID: string = "standard-point";
  * @constant
  */
 export const $SCREEN_PARENT_STANDARD_POINT_ID: string = "parent-standard-point";
+
+/**
+ * @description スクリーンの表示順序変更用ElementのID
+ *              ID of the Element for changing the display order of the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_ORDER_ID: string = "screen-order";
+
+/**
+ * @description スクリーンの基準点ElementのID
+ *              ID of the reference point Element of the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_ALIGN_ID: string = "screen-align";

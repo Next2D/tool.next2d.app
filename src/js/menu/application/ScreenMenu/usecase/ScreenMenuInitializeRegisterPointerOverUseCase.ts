@@ -1,6 +1,10 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as screenMenuHideSubMenuService } from "../service/ScreenMenuHideSubMenuService";
 import { execute as screenMenuShowSubMenuService } from "../service/ScreenMenuShowSubMenuService";
+import {
+    $SCREEN_ALIGN_ID,
+    $SCREEN_ORDER_ID
+} from "@/config/ScreenConfig";
 
 /**
  * @description スクリーンメニューのマウスオーバー時のイベント登録
@@ -45,8 +49,8 @@ export const execute = (): void =>
 
     // サブメニュー対象のElelmentIdの配列
     const showElementIds = [
-        "screen-order",
-        "screen-align"
+        $SCREEN_ORDER_ID,
+        $SCREEN_ALIGN_ID
     ];
 
     // 対象のElelmentの場合は、サブメニューを表示にする

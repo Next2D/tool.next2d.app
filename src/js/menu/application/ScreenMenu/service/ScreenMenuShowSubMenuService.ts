@@ -2,6 +2,10 @@ import type { ScreenOrderMenu } from "@/menu/domain/model/ScreenOrderMenu";
 import type { ScreenAlignMenu } from "@/menu/domain/model/ScreenAlignMenu";
 import { $SCREEN_MENU_NAME } from "@/config/MenuConfig";
 import { $getMenu } from "../../MenuUtil";
+import {
+    $SCREEN_ALIGN_ID,
+    $SCREEN_ORDER_ID
+} from "@/config/ScreenConfig";
 
 /**
  * @description スクリーンエリアのサブメニューを全て非表示にする
@@ -27,8 +31,8 @@ export const execute = (event: PointerEvent): void =>
     const targetElement = event.target as HTMLElement;
 
     const showElementIds = [
-        "screen-order",
-        "screen-align"
+        $SCREEN_ALIGN_ID,
+        $SCREEN_ORDER_ID
     ];
 
     for (let idx = 0; idx < showElementIds.length; ++idx) {
