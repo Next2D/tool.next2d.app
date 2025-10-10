@@ -1,0 +1,137 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+
+const {
+    mock$getCurrentWorkSpace,
+    mock$activeTouchPointers,
+    mockExternalAlign
+} = vi.hoisted(() => {
+    return {
+        mock$getCurrentWorkSpace: vi.fn(),
+        mock$activeTouchPointers: new Set(),
+        mockExternalAlign: vi.fn()
+    };
+});
+
+vi.mock("@/core/application/CoreUtil", () => ({
+    $getCurrentWorkSpace: mock$getCurrentWorkSpace
+}));
+
+vi.mock("@/global/GlobalUtil", () => ({
+    $activeTouchPointers: mock$activeTouchPointers
+}));
+
+vi.mock("@/external/controller/domain/model/ExternalAlign", () => ({
+    ExternalAlign: mockExternalAlign
+}));
+
+import { execute } from "./AlignSettingStageCenterPointerDownEventService";
+
+describe("AlignSettingStageCenterPointerDownEventService", () => {
+    let mockWorkSpace: any;
+    let mockMovieClip: any;
+    let mockEvent: PointerEvent;
+    let mockExternalAlignInstance: any;
+
+    beforeEach(() => {
+        vi.clearAllMocks();
+        mock$activeTouchPointers.clear();
+
+        mockExternalAlignInstance = {
+            stageCenter: vi.fn().mockResolvedValue(undefined)
+        };
+
+        mockExternalAlign.mockImplementation(() => mockExternalAlignInstance);
+
+        mockMovieClip = {
+            selectedDepths: new Map([[0, [1]]])
+        };
+
+        mockWorkSpace = {
+            scene: mockMovieClip
+        };
+
+        mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
+
+        mockEvent = {
+            button: 0,
+            stopPropagation: vi.fn()
+        } as unknown as PointerEvent;
+    });
+
+    afterEach(() => {
+        vi.resetAllMocks();
+    });
+
+    describe("早期リターン条件", () => {
+        it("左クリック以外の場合、何も処理しない", async () => {
+            mockEvent.button = 1;
+
+            await execute(mockEvent);
+
+            expect(mockExternalAlign).not.toHaveBeenCalled();
+            expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
+        });
+
+        it("マルチタッチの場合、何も処理しない", async () => {
+            mock$activeTouchPointers.add(1);
+            mock$activeTouchPointers.add(2);
+
+            await execute(mockEvent);
+
+            expect(mockExternalAlign).not.toHaveBeenCalled();
+            expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
+        });
+
+        it("選択中のキャラクターがない場合、何も処理しない", async () => {
+            mockMovieClip.selectedDepths = new Map();
+
+            await execute(mockEvent);
+
+            expect(mockExternalAlign).not.toHaveBeenCalled();
+            expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("正常処理", () => {
+        it("左クリック時にステージ中央揃えが実行される", async () => {
+            await execute(mockEvent);
+
+            expect(mockEvent.stopPropagation).toHaveBeenCalled();
+            expect(mockExternalAlign).toHaveBeenCalledWith(mockWorkSpace, mockMovieClip);
+            expect(mockExternalAlignInstance.stageCenter).toHaveBeenCalled();
+        });
+
+        it("複数のキャラクターが選択されている場合でも実行される", async () => {
+            mockMovieClip.selectedDepths = new Map([
+                [0, [1, 2]],
+                [1, [3]]
+            ]);
+
+            await execute(mockEvent);
+
+            expect(mockExternalAlignInstance.stageCenter).toHaveBeenCalled();
+        });
+
+        it("シングルタッチの場合は実行される", async () => {
+            mock$activeTouchPointers.add(1);
+
+            await execute(mockEvent);
+
+            expect(mockExternalAlignInstance.stageCenter).toHaveBeenCalled();
+        });
+    });
+
+    describe("非同期処理", () => {
+        it("stageCenter メソッドが非同期で実行される", async () => {
+            let stageCenterCalled = false;
+            mockExternalAlignInstance.stageCenter.mockImplementation(async () => {
+                await new Promise(resolve => setTimeout(resolve, 10));
+                stageCenterCalled = true;
+            });
+
+            await execute(mockEvent);
+
+            expect(stageCenterCalled).toBe(true);
+        });
+    });
+});
