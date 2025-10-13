@@ -1,7 +1,7 @@
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as layerUpdateLightColorHistoryUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateLightColorHistoryUseCase";
+import { execute as layerUpdateLightColorHistoryUseCase } from "@/history/application/core/application/Layer/UpdateLight/usecase/LayerUpdateLightColorHistoryUseCase";
 import { execute as timelineLayerControllerUpdateColorUseCase } from "@/timeline/application/TimelineLayerController/usecase/TimelineLayerControllerUpdateColorUseCase";
 
 /**

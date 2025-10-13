@@ -1,6 +1,6 @@
 import { execute } from "./LayerUpdateLightColorCreateHistoryObjectService";
-import { $LAYER_UPDATE_LIGHT_COLOR_COMMAND } from "../../../../../../config/HistoryConfig";
-import { MovieClip } from "../../../../../../core/domain/model/MovieClip";
+import { $LAYER_UPDATE_LIGHT_COLOR_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import { describe, expect, it } from "vitest";
 
 describe("LayerUpdateLightColorCreateHistoryObjectServiceTest", () =>

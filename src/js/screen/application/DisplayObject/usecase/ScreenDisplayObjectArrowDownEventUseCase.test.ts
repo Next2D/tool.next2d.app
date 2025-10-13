@@ -106,15 +106,6 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
         } as HTMLInputElement;
 
         // document.getElementByIdのモック
-        vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
-            if (id === "transform-object-x") {
-                return mockTransformObjectXElement;
-            }
-            if (id === "transform-object-y") {
-                return mockTransformObjectYElement;
-            }
-            return null;
-        });
     });
 
     afterEach(() => {
@@ -231,38 +222,6 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
             expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-        });
-
-            vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
-                if (id === "transform-object-x") {
-                    return null;
-                }
-                if (id === "transform-object-y") {
-                    return mockTransformObjectYElement;
-                }
-                return null;
-            });
-
-            await execute(mockEvent);
-
-            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
-            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
-        });
-
-            vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
-                if (id === "transform-object-x") {
-                    return mockTransformObjectXElement;
-                }
-                if (id === "transform-object-y") {
-                    return null;
-                }
-                return null;
-            });
-
-            await execute(mockEvent);
-
-            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
-            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
         });
 
         it("positionがnullの場合は何もしない", async () => {

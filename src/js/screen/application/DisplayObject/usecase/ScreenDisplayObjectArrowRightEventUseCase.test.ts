@@ -83,15 +83,6 @@ describe("ScreenDisplayObjectArrowRightEventUseCase", () => {
         mockTransformObjectXElement = { value: "50" } as HTMLInputElement;
         mockTransformObjectYElement = { value: "75" } as HTMLInputElement;
 
-        vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
-            if (id === "transform-object-x") {
-                return mockTransformObjectXElement;
-            }
-            if (id === "transform-object-y") {
-                return mockTransformObjectYElement;
-            }
-            return null;
-        });
     });
 
     describe("早期リターン条件", () => {
@@ -111,15 +102,6 @@ describe("ScreenDisplayObjectArrowRightEventUseCase", () => {
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
         });
 
-            vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
-                if (id === "transform-object-x") {
-                    return null;
-                }
-                if (id === "transform-object-y") {
-                    return mockTransformObjectYElement;
-                }
-                return null;
-            });
 
             await execute(mockEvent);
 
@@ -128,15 +110,6 @@ describe("ScreenDisplayObjectArrowRightEventUseCase", () => {
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
         });
 
-            vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
-                if (id === "transform-object-x") {
-                    return mockTransformObjectXElement;
-                }
-                if (id === "transform-object-y") {
-                    return null;
-                }
-                return null;
-            });
 
             await execute(mockEvent);
 

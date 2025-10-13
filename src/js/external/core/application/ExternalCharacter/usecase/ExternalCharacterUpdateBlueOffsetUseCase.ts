@@ -2,7 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as characterUpdateBlueOffsetHistoryUseCase } from "@/history/application/core/application/Character/UpdateBlueOffset/usecase/CharacterUpdateBlueOffsetHistoryUseCase";
+import { execute as characterUpdateBlueOffsetHistoryUseCase } from "@/history/application/controller/application/ColorSetting/UpdateBlueOffset/usecase/CharacterUpdateBlueOffsetHistoryUseCase";
 import { execute as viewColorSettingBlueOffsetUseCase } from "@/view/application/usecase/ViewColorSettingBlueOffsetUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 

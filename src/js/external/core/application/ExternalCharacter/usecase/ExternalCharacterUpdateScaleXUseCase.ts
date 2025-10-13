@@ -2,7 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as characterUpdateScaleXHistoryUseCase } from "@/history/application/core/application/Character/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryUseCase";
+import { execute as characterUpdateScaleXHistoryUseCase } from "@/history/application/controller/application/TransformSetting/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryUseCase";
 import { execute as viewTransformSettingUpdateScaleXUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateScaleXUseCase";
 
 /**

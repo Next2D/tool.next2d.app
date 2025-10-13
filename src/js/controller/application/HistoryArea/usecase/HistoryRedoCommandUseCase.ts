@@ -28,8 +28,8 @@ import { execute as libraryAreaUpdateSoundHistoryRedoUseCase } from "@/history/a
 import { execute as libraryAreaAddNewMovieClipHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/MovieClip/usecase/LibraryAreaAddNewMovieClipHistoryRedoUseCase";
 import { execute as libraryAreaRemoveInstanceHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Instance/usecase/LibraryAreaRemoveInstanceHistoryRedoUseCase";
 import { execute as timelineLayerControllerMoveLayerHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerController/MoveLayer/usecase/TimelineLayerControllerMoveLayerHistoryRedoUseCase";
-import { execute as layerUpdateLightColorHistoryRedoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateLightColorHistoryRedoUseCase";
-import { execute as layerUpdateModeHistoryRedoUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateModeHistoryRedoUseCase";
+import { execute as layerUpdateLightColorHistoryRedoUseCase } from "@/history/application/core/application/Layer/UpdateLight/usecase/LayerUpdateLightColorHistoryRedoUseCase";
+import { execute as layerUpdateModeHistoryRedoUseCase } from "@/history/application/core/application/Layer/UpdateMode/usecase/LayerUpdateModeHistoryRedoUseCase";
 import { execute as timelineLayerFrameCreateEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddEmptyKeyframe/usecase/TimelineLayerFrameCreateEmptyKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/UpdateEmptyKeyframe/usecase/TimelineLayerFrameUpdateEmptyKeyframeHistoryRedoUseCase";
 import { execute as timelineLayerFrameSplitEmptyKeyframeHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/SplitEmptyKeyframe/usecase/TimelineLayerFrameSplitEmptyKeyframeHistoryRedoUseCase";
@@ -56,29 +56,29 @@ import { execute as stageSettingUpdateWidthHistoryRedoUseCase } from "@/history/
 import { execute as stageSettingUpdateHeightHistoryRedoUseCase } from "@/history/application/controller/application/StageSetting/UpdateHeight/usecacse/StageSettingUpdateHeightHistoryRedoUseCase";
 import { execute as stageSettingUpdateFpsHistoryRedoUseCase } from "@/history/application/controller/application/StageSetting/UpdateFPS/usecase/StageSettingUpdateFpsHistoryRedoUseCase";
 import { execute as stageSettingUpdateColorHistoryRedoUseCase } from "@/history/application/controller/application/StageSetting/UpdateColor/usecase/StageSettingUpdateColorHistoryRedoUseCase";
-import { execute as characterUpdateXHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateX/usecase/CharacterUpdateXHistoryRedoUseCase";
-import { execute as characterUpdateYHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateY/usecase/CharacterUpdateYHistoryRedoUseCase";
+import { execute as characterUpdateXHistoryRedoUseCase } from "@/history/application/controller/application/TransformSetting/UpdateX/usecase/CharacterUpdateXHistoryRedoUseCase";
+import { execute as characterUpdateYHistoryRedoUseCase } from "@/history/application/controller/application/TransformSetting/UpdateY/usecase/CharacterUpdateYHistoryRedoUseCase";
 import { execute as instanceUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateNameHistoryRedoUseCase";
 import { execute as instanceUpdateSymbolHistoryRedoUseCase } from "@/history/application/core/application/Instance/usecase/InstanceUpdateSymbolHistoryRedoUseCase";
 import { execute as libraryAreaAddNewShapeHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaAddNewShapeHistoryRedoUseCase";
 import { execute as libraryAreaUpdateShapeGraphicsHistoryRedoUseCase } from "@/history/application/controller/application/LibraryArea/Shape/usecase/LibraryAreaUpdateShapeGraphicsHistoryRedoUseCase";
 import { execute as characterUpdateNameHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateName/usecase/CharacterUpdateNameHistoryRedoUseCase";
-import { execute as characterUpdateScaleXHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryRedoUseCase";
-import { execute as characterUpdateScaleYHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateScaleY/usecase/CharacterUpdateScaleYHistoryRedoUseCase";
-import { execute as characterUpdateRotateHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateRotate/usecase/CharacterUpdateRotateHistoryRedoUseCase";
-import { execute as characterUpdateMatrixHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryRedoUseCase";
+import { execute as characterUpdateScaleXHistoryRedoUseCase } from "@/history/application/controller/application/TransformSetting/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryRedoUseCase";
+import { execute as characterUpdateScaleYHistoryRedoUseCase } from "@/history/application/controller/application/TransformSetting/UpdateScaleY/usecase/CharacterUpdateScaleYHistoryRedoUseCase";
+import { execute as characterUpdateRotateHistoryRedoUseCase } from "@/history/application/controller/application/TransformSetting/UpdateRotate/usecase/CharacterUpdateRotateHistoryRedoUseCase";
+import { execute as characterUpdateMatrixHistoryRedoUseCase } from "@/history/application/controller/application/TransformSetting/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryRedoUseCase";
 import { execute as referenceSettingUpdatePivotHistoryRedoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdatePivot/usecase/ReferenceSettingUpdatePivotHistoryRedoUseCase";
 import { execute as referenceSettingUpdateXHistoryRedoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateX/usecase/ReferenceSettingUpdateXHistoryRedoUseCase";
 import { execute as referenceSettingUpdateYHistoryRedoUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateY/usecase/ReferenceSettingUpdateYHistoryRedoUseCase";
-import { execute as characterUpdateAlphaMultiplierHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateAlphaMultiplier/usecase/CharacterUpdateAlphaMultiplierHistoryRedoUseCase";
-import { execute as characterUpdateAlphaOffsetHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateAlphaOffset/usecase/CharacterUpdateAlphaOffsetHistoryRedoUseCase";
-import { execute as characterUpdateRedMultiplierHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateRedMultiplier/usecase/CharacterUpdateRedMultiplierHistoryRedoUseCase";
-import { execute as characterUpdateRedOffsetHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateRedOffset/usecase/CharacterUpdateRedOffsetHistoryRedoUseCase";
-import { execute as characterUpdateGreenMultiplierHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateGreenMultiplier/usecase/CharacterUpdateGreenMultiplierHistoryRedoUseCase";
-import { execute as characterUpdateGreenOffsetHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateGreenOffset/usecase/CharacterUpdateGreenOffsetHistoryRedoUseCase";
-import { execute as characterUpdateBlueMultiplierHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateBlueMultiplier/usecase/CharacterUpdateBlueMultiplierHistoryRedoUseCase";
-import { execute as characterUpdateBlueOffsetHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateBlueOffset/usecase/CharacterUpdateBlueOffsetHistoryRedoUseCase";
-import { execute as characterUpdateBlendModeHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateBlendMode/usecase/CharacterUpdateBlendModeHistoryRedoUseCase";
+import { execute as characterUpdateAlphaMultiplierHistoryRedoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateAlphaMultiplier/usecase/CharacterUpdateAlphaMultiplierHistoryRedoUseCase";
+import { execute as characterUpdateAlphaOffsetHistoryRedoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateAlphaOffset/usecase/CharacterUpdateAlphaOffsetHistoryRedoUseCase";
+import { execute as characterUpdateRedMultiplierHistoryRedoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateRedMultiplier/usecase/CharacterUpdateRedMultiplierHistoryRedoUseCase";
+import { execute as characterUpdateRedOffsetHistoryRedoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateRedOffset/usecase/CharacterUpdateRedOffsetHistoryRedoUseCase";
+import { execute as characterUpdateGreenMultiplierHistoryRedoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateGreenMultiplier/usecase/CharacterUpdateGreenMultiplierHistoryRedoUseCase";
+import { execute as characterUpdateGreenOffsetHistoryRedoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateGreenOffset/usecase/CharacterUpdateGreenOffsetHistoryRedoUseCase";
+import { execute as characterUpdateBlueMultiplierHistoryRedoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateBlueMultiplier/usecase/CharacterUpdateBlueMultiplierHistoryRedoUseCase";
+import { execute as characterUpdateBlueOffsetHistoryRedoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateBlueOffset/usecase/CharacterUpdateBlueOffsetHistoryRedoUseCase";
+import { execute as characterUpdateBlendModeHistoryRedoUseCase } from "@/history/application/controller/application/BlendModeSetting/UpdateBlendMode/usecase/CharacterUpdateBlendModeHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,

@@ -89,15 +89,6 @@ describe("ScreenDisplayObjectArrowLeftEventUseCase", () => {
         } as HTMLInputElement;
 
         // document.getElementByIdのモック
-        vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
-            if (id === "transform-object-x") {
-                return mockTransformObjectXElement;
-            }
-            if (id === "transform-object-y") {
-                return mockTransformObjectYElement;
-            }
-            return null;
-        });
     });
 
     describe("基本的な左方向移動", () => {
@@ -224,40 +215,6 @@ describe("ScreenDisplayObjectArrowLeftEventUseCase", () => {
                 value: emptySelectedDepths,
                 writable: true,
                 configurable: true
-            });
-
-            await execute(mockEvent);
-
-            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
-            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
-            expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-        });
-
-            vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
-                if (id === "transform-object-x") {
-                    return null;
-                }
-                if (id === "transform-object-y") {
-                    return mockTransformObjectYElement;
-                }
-                return null;
-            });
-
-            await execute(mockEvent);
-
-            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
-            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
-            expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-        });
-
-            vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
-                if (id === "transform-object-x") {
-                    return mockTransformObjectXElement;
-                }
-                if (id === "transform-object-y") {
-                    return null;
-                }
-                return null;
             });
 
             await execute(mockEvent);

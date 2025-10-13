@@ -583,13 +583,19 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             // 両方のキャラクターが処理される
             expect(mockLayer.getCharacter).toHaveBeenCalledTimes(2);
 
-            // 複数選択時は座標復元されない（元の座標のまま）
-            expect(mockCharacter2.x).toBe(200);
-            expect(mockCharacter2.y).toBe(250);
-
             // 両方のキャラクターに新しい座標が設定される
             expect(mockExternalCharacterSetX).toHaveBeenCalledTimes(2);
             expect(mockExternalCharacterSetY).toHaveBeenCalledTimes(2);
+            
+            // 1つ目のキャラクターは100 + 25 = 125
+            expect(mockExternalCharacterSetX).toHaveBeenNthCalledWith(1, 125);
+            // 1つ目のキャラクターは150 + 35 = 185
+            expect(mockExternalCharacterSetY).toHaveBeenNthCalledWith(1, 185);
+            
+            // 2つ目のキャラクターは200 + 25 = 225
+            expect(mockExternalCharacterSetX).toHaveBeenNthCalledWith(2, 225);
+            // 2つ目のキャラクターは250 + 35 = 285
+            expect(mockExternalCharacterSetY).toHaveBeenNthCalledWith(2, 285);
         });
 
         it("一部のキャラクターが存在しない場合", async () => {

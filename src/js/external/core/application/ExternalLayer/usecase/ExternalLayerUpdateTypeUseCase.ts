@@ -4,7 +4,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ILayerType } from "@/interface/ILayerType";
 import { execute as timelineLayerControllerUpdateIconElementService } from "@/timeline/application/TimelineLayerController/service/TimelineLayerControllerUpdateIconElementService";
 import { execute as externalLayerGetLayerModeService } from "../service/ExternalLayerGetLayerModeService";
-import { execute as layerUpdateModeHistoryUseCase } from "@/history/application/core/application/Layer/usecase/LayerUpdateModeHistoryUseCase";
+import { execute as layerUpdateModeHistoryUseCase } from "@/history/application/core/application/Layer/UpdateMode/usecase/LayerUpdateModeHistoryUseCase";
 import { execute as screenDisplayObjectAllResetMaskStyleUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllResetMaskStyleUseCase";
 import { execute as screenDisplayObjectUpdateDisabledElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectUpdateDisabledElementUseCase";
 import { execute as screenDisplayObjectMaskLockUpdateElementUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectMaskLockUpdateElementUseCase";

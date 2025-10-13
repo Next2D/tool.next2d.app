@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IBlendMode } from "@/interface/IBlendMode";
-import { execute as characterUpdateBlendModeHistoryUseCase } from "@/history/application/core/application/Character/UpdateBlendMode/usecase/CharacterUpdateBlendModeHistoryUseCase";
+import { execute as characterUpdateBlendModeHistoryUseCase } from "@/history/application/controller/application/BlendModeSetting/UpdateBlendMode/usecase/CharacterUpdateBlendModeHistoryUseCase";
 import { execute as viewBlendModeSettingBlendModeUseCase } from "@/view/application/usecase/ViewBlendModeSettingBlendModeUseCase";
 
 /**

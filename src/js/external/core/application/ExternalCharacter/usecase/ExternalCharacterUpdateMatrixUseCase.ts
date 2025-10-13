@@ -2,7 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import { execute as characterUpdateMatrixHistoryUseCase } from "@/history/application/core/application/Character/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryUseCase";
+import { execute as characterUpdateMatrixHistoryUseCase } from "@/history/application/controller/application/TransformSetting/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryUseCase";
 import { execute as viewTransformSettingUpdateMatrixUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateMatrixUseCase";
 
 /**

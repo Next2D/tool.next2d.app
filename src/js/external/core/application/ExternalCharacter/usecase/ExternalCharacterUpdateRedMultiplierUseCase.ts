@@ -2,7 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as characterUpdateRedMultiplierHistoryUseCase } from "@/history/application/core/application/Character/UpdateRedMultiplier/usecase/CharacterUpdateRedMultiplierHistoryUseCase";
+import { execute as characterUpdateRedMultiplierHistoryUseCase } from "@/history/application/controller/application/ColorSetting/UpdateRedMultiplier/usecase/CharacterUpdateRedMultiplierHistoryUseCase";
 import { execute as viewColorSettingRedMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingRedMultiplierUseCase";
 import { $clamp } from "@/global/GlobalUtil";
 
