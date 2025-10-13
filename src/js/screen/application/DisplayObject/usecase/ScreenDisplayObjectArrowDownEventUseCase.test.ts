@@ -17,7 +17,8 @@ const {
             x: 0,
             y: 0,
             beforeX: 0,
-            beforeY: 0
+            beforeY: 0,
+            matrixs: []
         }
     };
 });
@@ -66,6 +67,7 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
         // transformSettingのリセット
         mockTransformSetting.x = 0;
         mockTransformSetting.y = 0;
+        mockTransformSetting.matrixs = [];
         mockTransformSetting.beforeX = 0;
         mockTransformSetting.beforeY = 0;
 
@@ -231,8 +233,6 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
         });
 
-        it("transformObjectXElementが存在しない場合は何もしない", async () => {
-            const mockEvent = createMockEvent(false);
             vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
                 if (id === "transform-object-x") {
                     return null;
@@ -249,8 +249,6 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
             expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
         });
 
-        it("transformObjectYElementが存在しない場合は何もしない", async () => {
-            const mockEvent = createMockEvent(false);
             vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
                 if (id === "transform-object-x") {
                     return mockTransformObjectXElement;

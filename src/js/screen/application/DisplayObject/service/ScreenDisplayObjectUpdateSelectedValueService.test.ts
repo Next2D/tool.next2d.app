@@ -238,7 +238,11 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
 
         it("複数のレイヤーのキャラクターを更新する", async () => {
             const mockLayer2 = {
-                getCharacter: vi.fn(() => ({ x: 150, y: 150 } as Character))
+                getCharacter: vi.fn(() => ({ 
+                    x: 150, 
+                    y: 150, 
+                    matrix: new Float32Array([1, 0, 0, 1, 0, 0]) 
+                } as Character))
             } as unknown as Layer;
 
             transformSetting.matrixs = [
@@ -598,7 +602,11 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             mockLayer.getCharacter = vi.fn((_frame: number, depth: number) => {
                 if (depth === 1) return mockCharacter;
                 if (depth === 2) return null; // 存在しない
-                if (depth === 3) return { x: 300, y: 300 } as Character;
+                if (depth === 3) return { 
+                    x: 300, 
+                    y: 300, 
+                    matrix: new Float32Array([1, 0, 0, 1, 0, 0]) 
+                } as Character;
                 return null;
             });
 

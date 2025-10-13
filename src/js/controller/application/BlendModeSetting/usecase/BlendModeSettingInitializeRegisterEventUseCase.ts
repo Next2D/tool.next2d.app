@@ -15,9 +15,11 @@ export const execute = (): void =>
     const element: HTMLSelectElement | null = document
         .getElementById($BLEND_SELECT_ID) as HTMLSelectElement;
 
-    if (element) {
-        element.addEventListener(EventType.CHANGE,
-            blendModeSettingSelectEventService
-        );
+    if (!element) {
+        return;
     }
+
+    element.addEventListener(EventType.CHANGE,
+        blendModeSettingSelectEventService
+    );
 };

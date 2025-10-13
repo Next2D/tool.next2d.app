@@ -37,10 +37,10 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // マウスで移動した量を更新
-        const position = $globalToLocal(event.movementX, event.movementY);
-
         const movementX = event.movementX;
         const movementY = event.movementY;
+
+        const position = $globalToLocal(movementX, movementY);
         const x = position.x;
         const y = position.y;
 

@@ -1,17 +1,18 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { IBlendMode } from "@/interface/IBlendMode";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewColorSettingAlphaOffsetUseCase } from "@/view/application/usecase/ViewColorSettingAlphaOffsetUseCase";
+import { execute as viewBlendModeSettingBlendModeUseCase } from "@/view/application/usecase/ViewBlendModeSettingBlendModeUseCase";
 
 /**
- * @description DisplayObjectの透明度を変更前に戻す
- *              Reset the alpha of the DisplayObject
+ * @description DisplayObjectのブレンドモードを変更前に戻す
+ *              Reset the blend mode of the DisplayObject
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
  * @param  {number} keyframe
  * @param  {number} depth
- * @param  {number} before_alpha
+ * @param  {number} before_blend_mode
  * @return {Promise<void>}
  * @method
  * @public
@@ -22,7 +23,7 @@ export const execute = async (
     index: number,
     keyframe: number,
     depth: number,
-    before_alpha: number
+    before_blend_mode: IBlendMode
 ): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
@@ -46,14 +47,14 @@ export const execute = async (
     }
 
     // データを更新
-    character.colorTransform[7] = Math.floor(before_alpha);
+    character.blendMode = before_blend_mode;
 
     // アクティブなら表示を更新
-    viewColorSettingAlphaOffsetUseCase(
+    viewBlendModeSettingBlendModeUseCase(
         workSpace,
         movieClip,
         layer,
         character,
-        before_alpha
+        before_blend_mode
     );
 };

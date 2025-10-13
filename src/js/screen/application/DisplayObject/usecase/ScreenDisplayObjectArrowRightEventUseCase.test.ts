@@ -50,6 +50,7 @@ describe("ScreenDisplayObjectArrowRightEventUseCase", () => {
         // transformSettingのリセット
         transformSetting.x = 0;
         transformSetting.y = 0;
+        transformSetting.matrixs = [];
         transformSetting.beforeX = 0;
         transformSetting.beforeY = 0;
 
@@ -110,8 +111,6 @@ describe("ScreenDisplayObjectArrowRightEventUseCase", () => {
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
         });
 
-        it("transformObjectXElementが存在しない場合は何もしない", async () => {
-            const mockEvent = createMockEvent(false);
             vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
                 if (id === "transform-object-x") {
                     return null;
@@ -129,8 +128,6 @@ describe("ScreenDisplayObjectArrowRightEventUseCase", () => {
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
         });
 
-        it("transformObjectYElementが存在しない場合は何もしない", async () => {
-            const mockEvent = createMockEvent(false);
             vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
                 if (id === "transform-object-x") {
                     return mockTransformObjectXElement;

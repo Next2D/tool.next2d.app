@@ -73,6 +73,7 @@ import { execute as characterUpdateGreenMultiplierReceiveUseCase } from "@/share
 import { execute as characterUpdateGreenOffsetReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateGreenOffsetReceiveUseCase";
 import { execute as characterUpdateBlueMultiplierReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateBlueMultiplierReceiveUseCase";
 import { execute as characterUpdateBlueOffsetReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateBlueOffsetReceiveUseCase";
+import { execute as characterUpdateBlendModeReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateBlendModeReceiveUseCase";
 import {
     $HISTORY_REDO_COMMAND,
     $HISTORY_UNDO_COMMAND,
@@ -147,7 +148,8 @@ import {
     $CHARACTER_UPDATE_GREEN_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND,
     $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
-    $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND
+    $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND,
+    $CHARACTER_UPDATE_BLEND_MODE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -539,6 +541,11 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         // blueOffsetを更新
         case $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND:
             await characterUpdateBlueOffsetReceiveUseCase(message);
+            break;
+
+        // BlendModeを更新
+        case $CHARACTER_UPDATE_BLEND_MODE_COMMAND:
+            await characterUpdateBlendModeReceiveUseCase(message);
             break;
 
         default:

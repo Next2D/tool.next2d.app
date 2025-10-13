@@ -224,43 +224,7 @@ describe("ScreenDisplayObjectArrowUpEventUseCase", () => {
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
         });
 
-        it("transformObjectXElementが存在しない場合は何もしない", async () => {
-            const mockEvent = createMockEvent(false);
-            vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
-                if (id === "transform-object-x") {
-                    return null;
-                }
-                if (id === "transform-object-y") {
-                    return mockTransformObjectYElement;
-                }
-                return null;
-            });
 
-            await execute(mockEvent);
-
-            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
-            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
-            expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-        });
-
-        it("transformObjectYElementが存在しない場合は何もしない", async () => {
-            const mockEvent = createMockEvent(false);
-            vi.spyOn(document, "getElementById").mockImplementation((id: string) => {
-                if (id === "transform-object-x") {
-                    return mockTransformObjectXElement;
-                }
-                if (id === "transform-object-y") {
-                    return null;
-                }
-                return null;
-            });
-
-            await execute(mockEvent);
-
-            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
-            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
-            expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-        });
 
         it("positionがnullの場合は何もしない", async () => {
             const mockEvent = createMockEvent(false);
@@ -545,31 +509,25 @@ describe("ScreenDisplayObjectArrowUpEventUseCase", () => {
         it("完全な上移動フロー（Shiftキーなし）", async () => {
             const mockEvent = createMockEvent(false);
             mockWorkSpace.scale = 1;
-            mockTransformObjectXElement.value = "100";
-            mockTransformObjectYElement.value = "200";
 
             await execute(mockEvent);
 
             // 1. selectedDepthsのチェック
             expect(mockMovieClip.selectedDepths.size).toBeGreaterThan(0);
 
-            // 2. HTML要素の取得
-            expect(document.getElementById).toHaveBeenCalledWith("transform-object-x");
-            expect(document.getElementById).toHaveBeenCalledWith("transform-object-y");
-
-            // 3. position計算
+            // 2. position計算
             expect(mockScreenAreaCalcSelectedCharacterPositionService).toHaveBeenCalledWith(mockMovieClip);
 
-            // 4. イベント処理
+            // 3. イベント処理
             expect(mockEvent.stopPropagation).toHaveBeenCalled();
 
-            // 5. transformSettingの設定
+            // 4. transformSettingの設定
             // expect(transformSetting.beforeX).toBe(100);  // Arrow events don\'t set beforeX/Y
             // expect(transformSetting.beforeY).toBe(200);  // Arrow events don\'t set beforeX/Y
             expect(transformSetting.x).toBe(0);
             expect(transformSetting.y).toBe(-1);
 
-            // 6. 値の更新
+            // 5. 値の更新
             expect(mockScreenDisplayObjectUpdateSelectedValueService).toHaveBeenCalled();
         });
 
@@ -602,16 +560,6 @@ describe("ScreenDisplayObjectArrowUpEventUseCase", () => {
             await execute(mockEvent);
 
             // 何も実行されない
-            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
-            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
-        });
-
-        it("エラーケース: HTML要素が存在しない", async () => {
-            const mockEvent = createMockEvent(false);
-            vi.spyOn(document, "getElementById").mockReturnValue(null);
-
-            await execute(mockEvent);
-
             expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
             expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
         });

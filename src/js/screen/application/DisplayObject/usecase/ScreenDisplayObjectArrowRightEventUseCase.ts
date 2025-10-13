@@ -4,7 +4,6 @@ import { execute as screenDisplayObjectUpdateSelectedValueService } from "../ser
 import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
 import { execute as transformSettingCacheBeforeMatrixService } from "@/controller/application/TransformSetting/service/TransformSettingCacheBeforeMatrixService";
 
-
 /**
  * @description DisplayObjectのキーボードイベント、右方向に移動
  *              Keyboard event of DisplayObject, move to the right

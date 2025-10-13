@@ -9,6 +9,7 @@ import type { ISoundObject } from "@/interface/ISoundObject";
 import type { IShapeSaveObject } from "@/interface/IShapeSaveObject";
 import type { IBounds } from "@/interface/IBounds";
 import type { IPivotType } from "@/interface/IPivotType";
+import type { IBlendMode } from "@/interface/IBlendMode";
 import { execute as screenTabNameAddHistoryRedoUseCase } from "@/history/application/screen/application/ScreenTab/usecase/ScreenTabNameAddHistoryRedoUseCase";
 import { execute as timelineToolLayerAddHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerAdd/usecase/TimelineToolLayerAddHistoryRedoUseCase";
 import { execute as timelineToolLayerDeleteHistoryRedoUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryRedoUseCase";
@@ -77,6 +78,7 @@ import { execute as characterUpdateGreenMultiplierHistoryRedoUseCase } from "@/h
 import { execute as characterUpdateGreenOffsetHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateGreenOffset/usecase/CharacterUpdateGreenOffsetHistoryRedoUseCase";
 import { execute as characterUpdateBlueMultiplierHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateBlueMultiplier/usecase/CharacterUpdateBlueMultiplierHistoryRedoUseCase";
 import { execute as characterUpdateBlueOffsetHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateBlueOffset/usecase/CharacterUpdateBlueOffsetHistoryRedoUseCase";
+import { execute as characterUpdateBlendModeHistoryRedoUseCase } from "@/history/application/core/application/Character/UpdateBlendMode/usecase/CharacterUpdateBlendModeHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -145,7 +147,8 @@ import {
     $CHARACTER_UPDATE_GREEN_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND,
     $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
-    $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND
+    $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND,
+    $CHARACTER_UPDATE_BLEND_MODE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -858,6 +861,17 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[6] as number  // After Blue Offset
+            );
+            break;
+
+        case $CHARACTER_UPDATE_BLEND_MODE_COMMAND:
+            characterUpdateBlendModeHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Depth
+                messages[6] as IBlendMode  // After BlendMode
             );
             break;
 

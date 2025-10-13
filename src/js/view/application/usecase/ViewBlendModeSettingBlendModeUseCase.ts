@@ -35,8 +35,8 @@ export const execute = (
 
     // Elementの更新
     const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-    if (element) {
-        instanceUpdateBlendModeService(element, blend_mode);
+    if (!element) {
+        return ;
     }
 
     // 選択中のElementがない場合は何もしない
@@ -45,6 +45,9 @@ export const execute = (
     ) {
         return ;
     }
+
+    // Elementの更新
+    instanceUpdateBlendModeService(element, blend_mode);
 
     // ブレンドモードの選択状態を更新
     blendModeSettingUpdateSelectElementService(blend_mode);
