@@ -102,22 +102,6 @@ describe("ScreenDisplayObjectArrowRightEventUseCase", () => {
             expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
         });
 
-
-            await execute(mockEvent);
-
-            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
-            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
-            expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-        });
-
-
-            await execute(mockEvent);
-
-            expect(mockScreenAreaCalcSelectedCharacterPositionService).not.toHaveBeenCalled();
-            expect(mockScreenDisplayObjectUpdateSelectedValueService).not.toHaveBeenCalled();
-            expect(mockEvent.stopPropagation).not.toHaveBeenCalled();
-        });
-
         it("positionがnullの場合は何もしない", async () => {
             const mockEvent = createMockEvent(false);
             mockScreenAreaCalcSelectedCharacterPositionService.mockReturnValue(null);

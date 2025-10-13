@@ -92,10 +92,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // スクリーンへの移動イベントを登録
     if (instance.type === $MOVIE_CLIP_TYPE) {
         if (!(instance as unknown as MovieClip).active) {
-            libraryAreaRegisterPointerEventUseCase(event, element);
+            libraryAreaRegisterPointerEventUseCase(event, element, workSpace.scene);
         }
     } else {
-        libraryAreaRegisterPointerEventUseCase(event, element);
+        libraryAreaRegisterPointerEventUseCase(event, element, workSpace.scene);
     }
 
     // 外部APIを起動
