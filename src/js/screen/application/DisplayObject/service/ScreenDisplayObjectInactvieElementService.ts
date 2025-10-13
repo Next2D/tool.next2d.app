@@ -30,6 +30,7 @@ export const execute = (layer: Layer, depths: number[]): void =>
         if (!displayObject || !displayObject.classList.contains("active")) {
             continue;
         }
+
         displayObject.classList.remove("active");
     }
 };

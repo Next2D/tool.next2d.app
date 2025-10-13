@@ -6,6 +6,7 @@ import { execute as screenDisplayObjectRegisterPointerEventUseCase } from "./Scr
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { execute as referenceSettingHideElementService } from "@/controller/application/ReferenceSetting/service/ReferenceSettingHideElementService";
 import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
+import { execute as transformSettingCacheBeforeMatrixService } from "@/controller/application/TransformSetting/service/TransformSettingCacheBeforeMatrixService";
 import { $setPointerId } from "../DisplayObjectUtil";
 import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
 
@@ -125,6 +126,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     // 移動前の座標を保持
     transformSetting.beforeX = position.x;
     transformSetting.beforeY = position.y;
+
+    // 変更前のmatrixを格納
+    transformSettingCacheBeforeMatrixService();
 
     $setPointerId(event.pointerId);
 

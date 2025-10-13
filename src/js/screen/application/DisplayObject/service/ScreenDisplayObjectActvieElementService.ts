@@ -13,8 +13,13 @@ import type { Layer } from "@/core/domain/model/Layer";
  */
 export const execute = (layer: Layer, depths: number[]): void =>
 {
+    if (layer.lock) {
+        return ;
+    }
+
     const element: HTMLElement | null = document
         .getElementById($SCREEN_STAGE_AREA_ID);
+
     if (!element) {
         return ;
     }
@@ -30,6 +35,7 @@ export const execute = (layer: Layer, depths: number[]): void =>
         if (!displayObject || displayObject.classList.contains("active")) {
             continue;
         }
+
         displayObject.classList.add("active");
     }
 };

@@ -71,7 +71,13 @@ describe("ScreenDisplayObjectArrowDownEventUseCase", () => {
 
         const selectedDepths = new Map([[0, [1]]]);
         mockMovieClip = {
-            selectedDepths: selectedDepths
+            selectedDepths: selectedDepths,
+            currentFrame: 1,
+            getLayer: vi.fn().mockReturnValue({
+                getCharacter: vi.fn().mockReturnValue({
+                    matrix: new Float32Array([1, 0, 0, 1, 0, 0])
+                })
+            })
         } as unknown as MovieClip;
 
         mockWorkSpace = {

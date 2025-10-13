@@ -6,6 +6,7 @@ import { execute as objectSettingHideSymbolService } from "@/controller/applicat
 import { execute as transformSettingUpdateElementUseCase } from "@/controller/application/TransformSetting/usecase/TransformSettingUpdateElementUseCase";
 import { execute as referenceSettingUpdateElementUseCase } from "@/controller/application/ReferenceSetting/usecase/ReferenceSettingUpdateElementUseCase";
 import { execute as colorSetteingSetElementValueUseCase } from "@/controller/application/ColorSetting/usecase/ColorSetteingSetElementValueUseCase";
+import { execute as blendModeSettingUpdateSelectElementService } from "@/controller/application/BlendModeSetting/service/BlendModeSettingUpdateSelectElementService";
 
 /**
  * @description Video選択時のプロパティエリアの設定項目を表示
@@ -59,6 +60,7 @@ export const execute = (character: Character): void =>
     );
 
     // ブレンドの値を更新
+    blendModeSettingUpdateSelectElementService(character.blendMode);
 
     // フィルターの値を更新
 };

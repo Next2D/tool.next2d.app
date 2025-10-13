@@ -24,19 +24,34 @@ export const execute = (layer: Layer): void =>
     const length = displayObjects.length;
     if (layer.lock) {
         for (let idx = 0; idx < length; ++idx) {
+
             const displayObject = displayObjects[idx] as HTMLElement;
-            if (displayObject.classList.contains("disabled")) {
+            if (!displayObject) {
                 continue;
             }
-            displayObject.classList.add("disabled");
+
+            const container = displayObject.querySelector(".canvas-container") as HTMLDivElement;
+            if (!container) {
+                return ;
+            }
+
+            container.classList.remove("active");
+            container.style.pointerEvents = "none";
         }
     } else {
         for (let idx = 0; idx < length; ++idx) {
+
             const displayObject = displayObjects[idx] as HTMLElement;
-            if (!displayObject.classList.contains("disabled")) {
+            if (!displayObject) {
                 continue;
             }
-            displayObject.classList.remove("disabled");
+
+            const container = displayObject.querySelector(".canvas-container") as HTMLDivElement;
+            if (!container) {
+                return ;
+            }
+
+            container.style.pointerEvents = "";
         }
     }
 };

@@ -27,5 +27,16 @@ export const execute = (): void =>
         }
 
         child.style.pointerEvents = "";
+
+        if (!child.classList.contains("display-object")) {
+            continue ;
+        }
+
+        const container = child.querySelector(".canvas-container") as HTMLDivElement;
+        if (!container) {
+            return ;
+        }
+
+        container.style.pointerEvents = "";
     }
 };

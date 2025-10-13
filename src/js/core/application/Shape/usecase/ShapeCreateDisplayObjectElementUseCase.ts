@@ -49,15 +49,16 @@ export const execute = async (
         $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
     }
 
-    // ブレンドモードを設定
-    instanceUpdateBlendModeService(canvas, character.blendMode);
-
     // ステージに追加
     element.insertAdjacentHTML("beforeend",
         shapeDisplayObjectComponent(character, layer.id)
     );
 
     const div = element.lastElementChild as HTMLDivElement;
+
+    // ブレンドモードを設定
+    instanceUpdateBlendModeService(div, character.blendMode);
+
     const container = div.querySelector(".canvas-container") as HTMLDivElement;
     if (!container) {
         throw new Error("Canvas container not found in the display object element.");

@@ -4,6 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IPivotType } from "@/interface/IPivotType";
 import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
+import { IBlendMode } from "@/interface/IBlendMode";
 import { execute as externalCharacterUpdateXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateXUseCase";
 import { execute as externalCharacterUpdateYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateYUseCase";
 import { execute as externalCharacterUpdateScaleXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateScaleXUseCase";
@@ -21,6 +22,7 @@ import { execute as externalCharacterUpdateGreenMultiplierUseCase } from "@/exte
 import { execute as externalCharacterUpdateGreenOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateGreenOffsetUseCase";
 import { execute as externalCharacterUpdateBlueMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlueMultiplierUseCase";
 import { execute as externalCharacterUpdateBlueOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlueOffsetUseCase";
+import { execute as externalCharacterUpdateBlendModeUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlendModeUseCase";
 
 /**
  * @description DisplayObjectの管理クラス
@@ -647,4 +649,23 @@ export class ExternalCharacter
         );
     }
 
+    /**
+     * @description DisplayObjectのブレンドモードを設定
+     *              Set the blend mode of DisplayObject
+     *
+     * @param  {IBlendMode} blend_mode
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async setBlendMode (blend_mode: IBlendMode): Promise<void>
+    {
+        await externalCharacterUpdateBlendModeUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            blend_mode
+        );
+    }
 }

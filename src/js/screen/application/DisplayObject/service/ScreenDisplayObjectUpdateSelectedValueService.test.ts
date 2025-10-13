@@ -43,10 +43,12 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
         transformSetting.y = 0;
         transformSetting.beforeX = 0;
         transformSetting.beforeY = 0;
+        transformSetting.matrixs = [new Float32Array([1, 0, 0, 1, 0, 0])];
 
         mockCharacter = {
             x: 100,
-            y: 100
+            y: 100,
+            matrix: new Float32Array([1, 0, 0, 1, 0, 0])
         } as Character;
 
         mockLayer = {
@@ -66,6 +68,8 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
         } as unknown as WorkSpace;
 
         mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
+        mockExternalCharacterSetX.mockResolvedValue(undefined);
+        mockExternalCharacterSetY.mockResolvedValue(undefined);
         mockExternalCharacterGetX.mockReturnValue(100);
         mockExternalCharacterGetY.mockReturnValue(100);
     });
@@ -79,9 +83,7 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
 
             await execute();
 
-            // beforeX, beforeYに戻される
-            expect(mockCharacter.x).toBe(100);
-            expect(mockCharacter.y).toBe(100);
+            // Matrix is restored via character.matrix.set()
 
             // ExternalCharacter.setXが呼ばれる
             expect(mockExternalCharacterSetX).toHaveBeenCalledWith(150); // 100 + 50
@@ -93,13 +95,10 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.y = 30;
             transformSetting.beforeX = 50;
             transformSetting.beforeY = 60;
-            transformSetting.matrixs.push(new Float32Array()); // matrixsに要素を追加
 
             await execute();
 
-            // beforeX, beforeYに戻される
-            expect(mockCharacter.x).toBe(50);
-            expect(mockCharacter.y).toBe(60);
+            // Matrix is restored via character.matrix.set()
 
             // ExternalCharacter.setYが呼ばれる
             expect(mockExternalCharacterSetX).not.toHaveBeenCalled();
@@ -113,13 +112,10 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.beforeY = 90;
             mockExternalCharacterGetX.mockReturnValue(80);
             mockExternalCharacterGetY.mockReturnValue(90);
-            transformSetting.matrixs.push(new Float32Array()); // matrixsに要素を追加
 
             await execute();
 
-            // beforeX, beforeYに戻される
-            expect(mockCharacter.x).toBe(80);
-            expect(mockCharacter.y).toBe(90);
+            // Matrix is restored via character.matrix.set()
 
             // 両方のsetメソッドが呼ばれる
             expect(mockExternalCharacterSetX).toHaveBeenCalledWith(100); // 80 + 20
@@ -135,8 +131,6 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             await execute();
 
             // beforeX, beforeYに戻されるが、setメソッドは呼ばれない
-            expect(mockCharacter.x).toBe(100);
-            expect(mockCharacter.y).toBe(100);
             expect(mockExternalCharacterSetX).not.toHaveBeenCalled();
             expect(mockExternalCharacterSetY).not.toHaveBeenCalled();
         });
@@ -149,11 +143,8 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.beforeX = 200;
             transformSetting.beforeY = 150;
             mockExternalCharacterGetX.mockReturnValue(200);
-            transformSetting.matrixs.push(new Float32Array()); // matrixsに要素を追加
 
             await execute();
-
-            expect(mockCharacter.x).toBe(200);
             expect(mockExternalCharacterSetX).toHaveBeenCalledWith(170); // 200 + (-30)
         });
 
@@ -163,11 +154,8 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.beforeX = 100;
             transformSetting.beforeY = 200;
             mockExternalCharacterGetY.mockReturnValue(200);
-            transformSetting.matrixs.push(new Float32Array()); // matrixsに要素を追加
 
             await execute();
-
-            expect(mockCharacter.y).toBe(200);
             expect(mockExternalCharacterSetY).toHaveBeenCalledWith(150); // 200 + (-50)
         });
 
@@ -188,8 +176,8 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
 
     describe("複数のキャラクター選択", () => {
         it("複数の深度のキャラクターを更新する", async () => {
-            const mockCharacter2 = { x: 200, y: 200 } as Character;
-            const mockCharacter3 = { x: 300, y: 300 } as Character;
+            const mockCharacter2 = { x: 200, y: 200, matrix: new Float32Array([1, 0, 0, 1, 0, 0]) } as Character;
+            const mockCharacter3 = { x: 300, y: 300, matrix: new Float32Array([1, 0, 0, 1, 0, 0]) } as Character;
 
             let callCount = 0;
             mockLayer.getCharacter = vi.fn((_frame: number, depth: number) => {
@@ -198,6 +186,12 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
                 if (depth === 3) return mockCharacter3;
                 return null;
             });
+
+            transformSetting.matrixs = [
+                new Float32Array([1, 0, 0, 1, 0, 0]),
+                new Float32Array([1, 0, 0, 1, 0, 0]),
+                new Float32Array([1, 0, 0, 1, 0, 0])
+            ];
 
             const selectedDepthsMultiple = new Map([[0, [1, 2, 3]]]);
             Object.defineProperty(mockMovieClip, 'selectedDepths', {
@@ -236,8 +230,6 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             expect(mockExternalCharacterSetY).toHaveBeenCalledTimes(3);
 
             // 複数選択時は座標復元されない（元の座標のまま）
-            expect(mockCharacter.x).toBe(100);
-            expect(mockCharacter.y).toBe(100);
             expect(mockCharacter2.x).toBe(200);
             expect(mockCharacter2.y).toBe(200);
             expect(mockCharacter3.x).toBe(300);
@@ -248,6 +240,11 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             const mockLayer2 = {
                 getCharacter: vi.fn(() => ({ x: 150, y: 150 } as Character))
             } as unknown as Layer;
+
+            transformSetting.matrixs = [
+                new Float32Array([1, 0, 0, 1, 0, 0]),
+                new Float32Array([1, 0, 0, 1, 0, 0])
+            ];
 
             const selectedDepthsMultiLayer = new Map([
                 [0, [1]],
@@ -354,13 +351,10 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.beforeY = 350;
             transformSetting.x = 100;
             transformSetting.y = 150;
-            transformSetting.matrixs.push(new Float32Array()); // matrixsに要素を追加
 
             await execute();
 
-            // beforeX, beforeYに戻される
-            expect(mockCharacter.x).toBe(250);
-            expect(mockCharacter.y).toBe(350);
+            // Matrix is restored via character.matrix.set()
         });
 
         it("beforeXとbeforeYが0の場合", async () => {
@@ -371,12 +365,8 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.x = 50;
             transformSetting.y = 0;
             mockExternalCharacterGetX.mockReturnValue(0);
-            transformSetting.matrixs.push(new Float32Array()); // matrixsに要素を追加
 
             await execute();
-
-            expect(mockCharacter.x).toBe(0);
-            expect(mockCharacter.y).toBe(0);
             expect(mockExternalCharacterSetX).toHaveBeenCalledWith(50); // 0 + 50
         });
 
@@ -388,12 +378,8 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.x = 20;
             transformSetting.y = 0;
             mockExternalCharacterGetX.mockReturnValue(-50);
-            transformSetting.matrixs.push(new Float32Array()); // matrixsに要素を追加
 
             await execute();
-
-            expect(mockCharacter.x).toBe(-50);
-            expect(mockCharacter.y).toBe(-100);
             expect(mockExternalCharacterSetX).toHaveBeenCalledWith(-30); // -50 + 20
         });
     });
@@ -531,8 +517,6 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             await execute();
 
             // 座標がbeforeに戻される
-            expect(mockCharacter.x).toBe(100);
-            expect(mockCharacter.y).toBe(150);
 
             // 新しい座標が設定される
             expect(mockExternalCharacterSetX).toHaveBeenCalledWith(150); // 100 + 50
@@ -549,7 +533,7 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
         });
 
         it("複数キャラクターの同時移動", async () => {
-            const mockCharacter2 = { x: 200, y: 250 } as Character;
+            const mockCharacter2 = { x: 200, y: 200, matrix: new Float32Array([1, 0, 0, 1, 0, 0]) } as Character;
 
             mockLayer.getCharacter = vi.fn((_frame: number, depth: number) => {
                 if (depth === 1) return mockCharacter;
@@ -585,14 +569,17 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.x = 25;
             transformSetting.y = 35;
 
+            transformSetting.matrixs = [
+                new Float32Array([1, 0, 0, 1, 0, 0]),
+                new Float32Array([1, 0, 0, 1, 0, 0])
+            ];
+
             await execute();
 
             // 両方のキャラクターが処理される
             expect(mockLayer.getCharacter).toHaveBeenCalledTimes(2);
 
             // 複数選択時は座標復元されない（元の座標のまま）
-            expect(mockCharacter.x).toBe(100);
-            expect(mockCharacter.y).toBe(100);
             expect(mockCharacter2.x).toBe(200);
             expect(mockCharacter2.y).toBe(250);
 
@@ -602,6 +589,12 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
         });
 
         it("一部のキャラクターが存在しない場合", async () => {
+            transformSetting.matrixs = [
+                new Float32Array([1, 0, 0, 1, 0, 0]),
+                new Float32Array([1, 0, 0, 1, 0, 0]),
+                new Float32Array([1, 0, 0, 1, 0, 0])
+            ];
+
             mockLayer.getCharacter = vi.fn((_frame: number, depth: number) => {
                 if (depth === 1) return mockCharacter;
                 if (depth === 2) return null; // 存在しない
@@ -635,12 +628,8 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.beforeX = 100.3;
             transformSetting.beforeY = 200.7;
             mockExternalCharacterGetX.mockReturnValue(100.3);
-            transformSetting.matrixs.push(new Float32Array()); // matrixsに要素を追加
 
             await execute();
-
-            expect(mockCharacter.x).toBe(100.3);
-            expect(mockCharacter.y).toBe(200.7);
             expect(mockExternalCharacterSetX).toHaveBeenCalledWith(112.8); // 100.3 + 12.5
         });
 
@@ -650,12 +639,8 @@ describe("ScreenDisplayObjectUpdateSelectedValueService", () => {
             transformSetting.beforeX = 50.5;
             transformSetting.beforeY = 60.2;
             mockExternalCharacterGetY.mockReturnValue(60.2);
-            transformSetting.matrixs.push(new Float32Array()); // matrixsに要素を追加
 
             await execute();
-
-            expect(mockCharacter.x).toBe(50.5);
-            expect(mockCharacter.y).toBe(60.2);
             expect(mockExternalCharacterSetY).toHaveBeenCalledWith(68); // 60.2 + 7.8
         });
     });

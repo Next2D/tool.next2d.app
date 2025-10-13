@@ -75,6 +75,8 @@ export const execute = async (): Promise<void> =>
                 propertyAreaVideoDisplayControllerUseCase(character);
                 break;
 
+                // todo text
+
             default:
                 break;
 

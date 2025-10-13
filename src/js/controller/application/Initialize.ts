@@ -1,6 +1,7 @@
 import { execute as controllerInitializeRegisterEventUseCase } from "@/controller/application/ControllerArea/usecase/ControllerInitializeRegisterEventUseCase";
 import { execute as controllerAdjustmentInitializeRegisterEventUseCase } from "@/controller/application/ControllerAdjustment/usecase/ControllerAdjustmentInitializeRegisterEventUseCase";
 import { execute as alignSettingInitializeRegisterEventUseCase } from "@/controller/application/AlignSetting/usecase/AlignSettingInitializeRegisterEventUseCase";
+import { execute as blendModeSettingInitializeRegisterEventUseCase } from "@/controller/application/BlendModeSetting/usecase/BlendModeSettingInitializeRegisterEventUseCase";
 import { controllerTab } from "../domain/model/ControllerTab";
 import { stageSetting } from "../domain/model/StageSetting";
 import { libraryArea } from "../domain/model/LibraryArea";
@@ -51,6 +52,9 @@ export const execute = async (): Promise<void> =>
 
     // 整列設定のイベント登録
     alignSettingInitializeRegisterEventUseCase();
+
+    // ブレンドモード設定のイベント登録
+    blendModeSettingInitializeRegisterEventUseCase();
 
     // 設定クラスの初期起動関数を実行
     for (let idx = 0; idx < settings.length; ++idx) {

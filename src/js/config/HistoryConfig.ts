@@ -717,3 +717,12 @@ export const $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND: number = 73;
  * @constant
  */
 export const $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND: number = 74;
+
+/**
+ * @description ブレンドモードの更新の識別コマンド名
+ *              Identification command name for updating the blend mode of the DisplayObject
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_UPDATE_BLEND_MODE_COMMAND: number = 75;

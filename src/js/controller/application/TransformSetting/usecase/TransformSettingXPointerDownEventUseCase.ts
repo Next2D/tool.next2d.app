@@ -4,12 +4,13 @@ import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { EventType } from "@/tool/domain/event/EventType";
 import { execute as transformSettingXPointerMoveEventUseCase } from "./TransformSettingXPointerMoveEventUseCase";
 import { execute as transformSettingXPointerUpEventUseCase } from "./TransformSettingXPointerUpEventUseCase";
+import { execute as transformSettingCacheBeforeMatrixService } from "../service/TransformSettingCacheBeforeMatrixService";
+import { $TRANSFORM_OBJECT_Y_ID } from "@/config/TransformSettingConfig";
+import { $setTransformSettingState } from "../TransformSettingUtil";
 import {
     $activeTouchPointers,
     $setEditingElement
 } from "@/global/GlobalUtil";
-import { $TRANSFORM_OBJECT_Y_ID } from "@/config/TransformSettingConfig";
-import { $setTransformSettingState } from "../TransformSettingUtil";
 
 /**
  * @description 変形エリアのx座標のマウスダウンイベント
@@ -57,8 +58,6 @@ export const execute = (event: PointerEvent): void =>
 
     // マウスで移動した量を更新
     transformSetting.clear();
-    transformSetting.x = 0;
-    transformSetting.y = 0;
     transformSetting.beforeX = parseFloat(element.value);
     transformSetting.beforeY = parseFloat(yInputElement.value);
 
@@ -85,4 +84,7 @@ export const execute = (event: PointerEvent): void =>
 
     // 変形の状態を変更
     $setTransformSettingState("down");
+
+    // 変更前のmatrixを格納
+    transformSettingCacheBeforeMatrixService();
 };
