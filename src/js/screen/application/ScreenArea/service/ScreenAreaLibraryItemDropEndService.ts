@@ -17,10 +17,31 @@ export const execute = (): void =>
         return ;
     }
 
+    // スクリーンエリアの親要素のイベントを無効化を解除する
     const children = element.children;
     const length = children.length;
     for (let idx = 0; idx < length; ++idx) {
         const node = children[idx] as HTMLElement;
         node.style.pointerEvents = "";
+    }
+
+    // スクリーンエリアに配置されている、DisplayObjectのイベント無効化を解除する
+    const elements = element
+        .querySelectorAll(".display-object") as NodeListOf<HTMLElement>;
+
+    const count = elements.length;
+    for (let idx = 0; idx < count; ++idx) {
+
+        const displayObject = elements[idx];
+        if (!displayObject) {
+            continue ;
+        }
+
+        const container = displayObject.querySelector(".canvas-container") as HTMLDivElement;
+        if (!container) {
+            return ;
+        }
+
+        container.style.pointerEvents = "";
     }
 };

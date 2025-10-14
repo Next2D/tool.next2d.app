@@ -131,22 +131,4 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // スクリーンエリアのDisplayObjectをアクティブに戻す
     screenAreaLibraryItemDropEndService();
-
-    // スクリーンに配置しているDisplayObjectを非アクティブ化
-    // const elements = element
-    //     .querySelectorAll(".display-object") as NodeListOf<HTMLElement>;
-
-    // for (let idx = 0; idx < elements.length; idx++) {
-    //     const displayObject = elements[idx];
-    //     if (!displayObject) {
-    //         continue;
-    //     }
-
-    //     const container = displayObject.querySelector(".canvas-container") as HTMLDivElement;
-    //     if (!container) {
-    //         return ;
-    //     }
-
-    //     container.style.pointerEvents = "";
-    // }
 };
