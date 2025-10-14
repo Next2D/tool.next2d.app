@@ -39,15 +39,15 @@ export const execute = (
         return ;
     }
 
+    // Elementの更新
+    instanceUpdateBlendModeService(element, blend_mode);
+
     // 選択中のElementがない場合は何もしない
     if (!movie_clip.selectedDepths.size
         || !movie_clip.isSingleSelectedOfDisplayObject()
     ) {
         return ;
     }
-
-    // Elementの更新
-    instanceUpdateBlendModeService(element, blend_mode);
 
     // ブレンドモードの選択状態を更新
     blendModeSettingUpdateSelectElementService(blend_mode);
