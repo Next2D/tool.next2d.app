@@ -4,6 +4,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateAlphaOffsetElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateAlphaOffsetElementValueService";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 
 /**
  * @description 選択中のElementのアルファオフセット値を更新する
@@ -26,6 +27,9 @@ export const execute = (
     alpha: number
 ): void => {
 
+    // 先祖のキャッシュを削除する
+    timelineSceneListCacheRemoveService(work_space);
+
     // アクティブでない場合は何もしない
     if (!work_space.active || !movie_clip.active) {
         return ;
@@ -34,16 +38,19 @@ export const execute = (
     // Elementの更新
     const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
     if (element) {
+
         // alphaを更新
+        const alpha = character.alpha;
+
         const container = element.querySelector(".canvas-container") as HTMLDivElement;
         if (container) {
-            container.style.setProperty("--alpha", `${character.alpha}`);
+            container.style.setProperty("--alpha", `${alpha}`);
         }
 
         // canvasのopacityも更新
         const canvas = element.querySelector("canvas");
         if (canvas) {
-            canvas.style.opacity = `${character.alpha}`;
+            canvas.style.opacity = `${alpha}`;
         }
     }
 

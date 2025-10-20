@@ -51,6 +51,18 @@ export const execute = (
     // redを更新
     character.colorTransform[0] = Math.floor(red) / 100;
 
+    if (container.dataset.colorTransform !== "true") {
+        container.dataset.colorTransform = "true";
+
+        const canvas = node.querySelector("canvas");
+        if (canvas) {
+            if (!canvas.dataset.base64) {
+                canvas.dataset.base64 = canvas.toDataURL();
+            }
+            container.style.setProperty("--mask", `url("${canvas.dataset.base64}")`);
+        }
+    }
+
     // 画面に反映
     const colorTransform = character.colorTransform;
     const r = Math.max(0, Math.min(255 * colorTransform[0] + colorTransform[4], 255));

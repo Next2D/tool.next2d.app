@@ -64,24 +64,36 @@ export const execute = async (
     if (!container) {
         throw new Error("Canvas container not found in the display object element.");
     }
-    container.appendChild(canvas);
 
-    // マスクを反映
-    if (!canvas.dataset.base64) {
-        canvas.dataset.base64 = canvas.toDataURL();
+    const colorTransform = character.colorTransform;
+    if (colorTransform[0] !== 1
+        || colorTransform[1] !== 1
+        || colorTransform[2] !== 1
+        || colorTransform[4] !== 0
+        || colorTransform[5] !== 0
+        || colorTransform[6] !== 0
+    ) {
+        container.dataset.colorTransform = "true";
+
+        // マスクを反映
+        if (!canvas.dataset.base64) {
+            canvas.dataset.base64 = canvas.toDataURL();
+        }
+        container.style.setProperty("--mask", `url("${canvas.dataset.base64}")`);
+
+        // カラー設定を反映
+        const r = Math.max(0, Math.min(255 * colorTransform[0] + colorTransform[4], 255));
+        const g = Math.max(0, Math.min(255 * colorTransform[1] + colorTransform[5], 255));
+        const b = Math.max(0, Math.min(255 * colorTransform[2] + colorTransform[6], 255));
+        container.style.setProperty("--color-transform", `${r} ${g} ${b}`);
     }
-    container.style.setProperty("--mask", `url("${canvas.dataset.base64}")`);
 
     // alpha値を反映
-    container.style.setProperty("--alpha", `${character.alpha}`);
-    canvas.style.opacity = `${character.alpha}`;
-
-    // カラー設定を反映
-    const colorTransform = character.colorTransform;
-    const r = Math.max(0, Math.min(255 * colorTransform[0] + colorTransform[4], 255));
-    const g = Math.max(0, Math.min(255 * colorTransform[1] + colorTransform[5], 255));
-    const b = Math.max(0, Math.min(255 * colorTransform[2] + colorTransform[6], 255));
-    container.style.setProperty("--color-transform", `${r} ${g} ${b}`);
+    const alpha = character.alpha;
+    if (alpha !== 1) {
+        container.style.setProperty("--alpha", `${alpha}`);
+        canvas.style.opacity = `${alpha}`;
+    }
 
     // canvasを追加
     container.appendChild(canvas);

@@ -152,6 +152,9 @@ export const $getCanvas = (): HTMLCanvasElement =>
  */
 export const $poolCanvas = (canvas: HTMLCanvasElement): void =>
 {
+    // DOMから削除
+    canvas.remove();
+
     // キャンバスの描画をリセット
     canvas.width = canvas.height = 1;
 

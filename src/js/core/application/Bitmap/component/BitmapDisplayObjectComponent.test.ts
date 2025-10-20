@@ -11,6 +11,7 @@ describe("BitmapDisplayObjectComponent Test", () =>
     {
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const bitmap = new Bitmap({
+            "imageType": "png",
             "id": 1,
             "type": "bitmap",
             "name": "Bitmap_2",

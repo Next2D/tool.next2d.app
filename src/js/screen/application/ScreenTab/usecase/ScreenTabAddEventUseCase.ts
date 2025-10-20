@@ -2,6 +2,7 @@ import { $createWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "@/menu/application/MenuUtil";
 import { $setEditingElement } from "@/global/GlobalUtil";
 import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/application/Database/usecase/UserDatabaseAutoSaveReservationUseCase";
+import { execute as workSpaceInitializeUseCase } from "@/core/application/WorkSpace/usecase/WorkSpaceInitializeUseCase";
 
 /**
  * @description 新規のプロジェクトを追加
@@ -24,7 +25,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     event.preventDefault();
 
     // プロジェクトを作成して、初期起動関数を実行
-    $createWorkSpace().initialize();
+    workSpaceInitializeUseCase($createWorkSpace());
 
     // 自動保存予約
     await userDatabaseAutoSaveReservationUseCase();

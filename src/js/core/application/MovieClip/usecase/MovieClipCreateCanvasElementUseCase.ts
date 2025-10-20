@@ -92,6 +92,9 @@ export const execute = async (
     const scaleX = Math.hypot(tMatrix[0], tMatrix[1]);
     const scaleY = Math.hypot(tMatrix[2], tMatrix[3]);
 
+    // const workSpace = $getCurrentWorkSpace();
+    // const stage = workSpace.stage;
+
     const rectangle = movieClip.getBounds();
     const canvas = await next2d.captureToCanvas(container, {
         "matrix": new Matrix(
@@ -100,7 +103,8 @@ export const execute = async (
             -rectangle.y * scaleY
         ),
         "canvas": $getCanvas(),
-        "videoSync": true
+        "videoSync": true,
+        "bgColor": "#000000"
     });
 
     // alphaを設定

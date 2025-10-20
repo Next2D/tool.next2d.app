@@ -44,12 +44,13 @@
 
         .canvas-container
         {
+            --color-transform : none;
+            --alpha           : 1;
+            --mask            : none;
             display           : flex;
             pointer-events    : auto;
             isolation         : isolate;
-            --color-transform : none;
-            --alpha           : none;
-            --mask            : none;
+            // opacity           : var(--alpha);
 
             canvas
             {

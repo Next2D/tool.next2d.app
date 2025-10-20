@@ -51,12 +51,15 @@ export const execute = (
     // alphaを更新
     character.colorTransform[3] = Math.floor(alpha) / 100;
 
+    // 変更後のalpha値を取得
+    const afterAlpha = character.alpha;
+
     // nodeのスタイルを更新
-    container.style.setProperty("--alpha", `${character.alpha}`);
+    container.style.setProperty("--alpha", `${afterAlpha}`);
 
     // canvasのopacityも更新
     const canvas = node.querySelector("canvas");
     if (canvas) {
-        canvas.style.opacity = `${character.alpha}`;
+        canvas.style.opacity = `${afterAlpha}`;
     }
 };

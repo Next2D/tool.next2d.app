@@ -4,6 +4,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateGreenMultiplierElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateGreenMultiplierElementValueService";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 
 /**
  * @description 選択中のElementの緑色値を更新する
@@ -26,6 +27,9 @@ export const execute = (
     green: number
 ): void => {
 
+    // 先祖のキャッシュを削除する
+    timelineSceneListCacheRemoveService(work_space);
+
     // アクティブでない場合は何もしない
     if (!work_space.active || !movie_clip.active) {
         return ;
@@ -37,6 +41,18 @@ export const execute = (
         // redを更新
         const container = element.querySelector(".canvas-container") as HTMLDivElement;
         if (container) {
+            if (container.dataset.colorTransform !== "true") {
+                container.dataset.colorTransform = "true";
+
+                const canvas = element.querySelector("canvas");
+                if (canvas) {
+                    if (!canvas.dataset.base64) {
+                        canvas.dataset.base64 = canvas.toDataURL();
+                    }
+                    container.style.setProperty("--mask", `url("${canvas.dataset.base64}")`);
+                }
+            }
+
             const colorTransform = character.colorTransform;
             const r = Math.max(0, Math.min(255 * colorTransform[0] + colorTransform[4], 255));
             const g = Math.max(0, Math.min(255 * colorTransform[1] + colorTransform[5], 255));

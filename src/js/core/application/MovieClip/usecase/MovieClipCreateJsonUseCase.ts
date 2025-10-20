@@ -327,7 +327,7 @@ export const execute = async (movie_clip: MovieClip): Promise<IMovieClipPublishJ
 
     const object: IMovieClipPublishJson = {
         "extends": next2d.display.MovieClip.namespace,
-        "totalFrame": movie_clip.maxFrame,
+        "totalFrame": movie_clip.maxFrame - 1,
         "dictionary": dictionary,
         "controller": controller,
         "placeMap": placeMap,

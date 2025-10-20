@@ -71,8 +71,9 @@ export const execute = async (
     container.style.setProperty("--mask", `url("${canvas.dataset.base64}")`);
 
     // alpha値を反映
-    container.style.setProperty("--alpha", `${character.alpha}`);
-    canvas.style.opacity = `${character.alpha}`;
+    const alpha = character.alpha;
+    container.style.setProperty("--alpha", `${alpha}`);
+    canvas.style.opacity = `${alpha}`;
 
     // カラー設定を反映
     const colorTransform = character.colorTransform;
