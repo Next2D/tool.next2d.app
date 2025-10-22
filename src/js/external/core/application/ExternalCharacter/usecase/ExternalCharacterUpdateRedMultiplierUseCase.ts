@@ -29,7 +29,7 @@ export const execute = async (
     receiver: boolean = false
 ): Promise<void> => {
 
-    red = $clamp(red | 0, 0, 100);
+    red = $clamp(red | 0, -100, 100);
     const floatValue = new Float32Array([red / 100]);
     if (character.colorTransform[0] === floatValue[0]) {
         return ;

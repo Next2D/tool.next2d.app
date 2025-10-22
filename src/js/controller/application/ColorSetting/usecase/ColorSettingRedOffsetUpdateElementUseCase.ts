@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as viewColorSettingChangeSvgFromRedOffsetUseCase } from "@/view/application/usecase/ViewColorSettingChangeSvgFromRedOffsetUseCase";
 
 /**
  * @description スクリーンで選択中のElementのredを更新する
@@ -38,23 +38,9 @@ export const execute = (
         return ;
     }
 
-    const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
-    if (!node) {
-        return ;
-    }
-
-    const container = node.querySelector(".canvas-container") as HTMLDivElement;
-    if (!container) {
-        return ;
-    }
-
     // red offset を更新
     character.colorTransform[4] = Math.floor(red);
 
     // 画面に反映
-    const colorTransform = character.colorTransform;
-    const r = Math.max(0, Math.min(255 * colorTransform[0] + colorTransform[4], 255));
-    const g = Math.max(0, Math.min(255 * colorTransform[1] + colorTransform[5], 255));
-    const b = Math.max(0, Math.min(255 * colorTransform[2] + colorTransform[6], 255));
-    container.style.setProperty("--color-transform", `${r} ${g} ${b}`);
+    viewColorSettingChangeSvgFromRedOffsetUseCase(character, layer);
 };

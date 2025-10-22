@@ -26,6 +26,6 @@ export const execute = async (event: FocusEvent): Promise<void> =>
 
     // 値を更新
     await colorSettingRedMultiplierUpdateValueUseCase(
-        $clamp(parseFloat(element.value), 0, 100)
+        $clamp(parseFloat(element.value), -100, 100)
     );
 };

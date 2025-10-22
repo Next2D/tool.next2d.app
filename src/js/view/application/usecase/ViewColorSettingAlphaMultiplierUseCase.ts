@@ -38,19 +38,10 @@ export const execute = (
     // Elementの更新
     const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
     if (element) {
-
         // alphaを更新
-        const alpha = character.alpha;
-
-        const container = element.querySelector(".canvas-container") as HTMLDivElement;
-        if (container) {
-            container.style.setProperty("--alpha", `${alpha}`);
-        }
-
-        // canvasのopacityも更新
         const canvas = element.querySelector("canvas");
         if (canvas) {
-            canvas.style.opacity = `${alpha}`;
+            canvas.style.opacity = `${character.alpha}`;
         }
     }
 

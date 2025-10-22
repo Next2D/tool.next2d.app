@@ -38,12 +38,12 @@ export const execute = (
         return ;
     }
 
-    const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
-    if (!node) {
+    const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
+    if (!element) {
         return ;
     }
 
-    const container = node.querySelector(".canvas-container") as HTMLDivElement;
+    const container = element.querySelector(".canvas-container") as HTMLDivElement;
     if (!container) {
         return ;
     }
@@ -51,15 +51,9 @@ export const execute = (
     // alphaを更新
     character.colorTransform[3] = Math.floor(alpha) / 100;
 
-    // 変更後のalpha値を取得
-    const afterAlpha = character.alpha;
-
-    // nodeのスタイルを更新
-    container.style.setProperty("--alpha", `${afterAlpha}`);
-
-    // canvasのopacityも更新
-    const canvas = node.querySelector("canvas");
+    // canvasのopacityを更新
+    const canvas = element.querySelector("canvas");
     if (canvas) {
-        canvas.style.opacity = `${afterAlpha}`;
+        canvas.style.opacity = `${character.alpha}`;
     }
 };

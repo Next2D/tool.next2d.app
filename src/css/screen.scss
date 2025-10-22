@@ -44,13 +44,8 @@
 
         .canvas-container
         {
-            --color-transform : none;
-            --alpha           : 1;
-            --mask            : none;
-            display           : flex;
-            pointer-events    : auto;
-            isolation         : isolate;
-            // opacity           : var(--alpha);
+            display        : flex;
+            pointer-events : auto;
 
             canvas
             {
@@ -59,20 +54,11 @@
                 display : block;
             }
 
-            &::after
+            svg
             {
-                content             : "";
-                position            : absolute;
-                inset               : 0;
-                background          : rgb(var(--color-transform) / var(--alpha));
-                mix-blend-mode      : multiply;
-                pointer-events      : none;
-                mask-image          : var(--mask);
-                mask-repeat         : no-repeat;
-                mask-size           : 100% 100%;
-                -webkit-mask-image  : var(--mask);
-                -webkit-mask-repeat : no-repeat;
-                -webkit-mask-size   : 100% 100%;
+                position : absolute;
+                left     : -9999px;
+                top      : -9999px;
             }
 
             &:hover

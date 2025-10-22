@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as viewColorSettingChangeSvgFromRedMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingChangeSvgFromRedMultiplierUseCase";
 
 /**
  * @description スクリーンで選択中のElementのredを更新する
@@ -38,35 +38,9 @@ export const execute = (
         return ;
     }
 
-    const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, depth);
-    if (!node) {
-        return ;
-    }
-
-    const container = node.querySelector(".canvas-container") as HTMLDivElement;
-    if (!container) {
-        return ;
-    }
-
     // redを更新
     character.colorTransform[0] = Math.floor(red) / 100;
 
-    if (container.dataset.colorTransform !== "true") {
-        container.dataset.colorTransform = "true";
-
-        const canvas = node.querySelector("canvas");
-        if (canvas) {
-            if (!canvas.dataset.base64) {
-                canvas.dataset.base64 = canvas.toDataURL();
-            }
-            container.style.setProperty("--mask", `url("${canvas.dataset.base64}")`);
-        }
-    }
-
     // 画面に反映
-    const colorTransform = character.colorTransform;
-    const r = Math.max(0, Math.min(255 * colorTransform[0] + colorTransform[4], 255));
-    const g = Math.max(0, Math.min(255 * colorTransform[1] + colorTransform[5], 255));
-    const b = Math.max(0, Math.min(255 * colorTransform[2] + colorTransform[6], 255));
-    container.style.setProperty("--color-transform", `${r} ${g} ${b}`);
+    viewColorSettingChangeSvgFromRedMultiplierUseCase(character, layer);
 };

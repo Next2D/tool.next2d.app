@@ -41,7 +41,7 @@ export const execute = (event: PointerEvent): void =>
         }
 
         // 変更後の値を設定
-        const value = $clamp(parseFloat(element.value) + event.movementX, 0, 100);
+        const value = $clamp(parseFloat(element.value) + event.movementX, -100, 100);
 
         element.value = `${value}`;
 

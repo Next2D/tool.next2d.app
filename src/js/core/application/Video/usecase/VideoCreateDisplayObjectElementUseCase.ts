@@ -4,6 +4,7 @@ import type { Video } from "@/core/domain/model/Video";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as videoRegisterEventUseCase } from "./VideoRegisterEventUseCase";
 import { execute as videoDisplayObjectComponent } from "../component/VideoDisplayObjectComponent";
+import { execute as svgColorTransformComponent } from "@/core/application/Svg/component/SvgColorTransformComponent";
 import { execute as screenAreaHierarchyAdjustmentService } from "@/screen/application/ScreenArea/service/ScreenAreaHierarchyAdjustmentService";
 import { execute as screenAreaReadOnlyElementService } from "@/screen/application/ScreenArea/service/ScreenAreaReadOnlyElementService";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
@@ -71,23 +72,22 @@ export const execute = async (
         throw new Error("Canvas container not found in the display object element.");
     }
 
-    // マスクを反映
-    if (!canvas.dataset.base64) {
-        canvas.dataset.base64 = canvas.toDataURL();
+    const colorTransform = character.colorTransform;
+    if (colorTransform[0] !== 1
+        || colorTransform[1] !== 1
+        || colorTransform[2] !== 1
+        || colorTransform[4] !== 0
+        || colorTransform[5] !== 0
+        || colorTransform[6] !== 0
+    ) {
+        container.insertAdjacentHTML("beforeend",
+            svgColorTransformComponent(character, layer.id)
+        );
+        canvas.style.filter = `url(#color-transform-${layer.id}-${character.id})`;
     }
-    container.style.setProperty("--mask", `url("${canvas.dataset.base64}")`);
 
     // alpha値を反映
-    const alpha = character.alpha;
-    container.style.setProperty("--alpha", `${alpha}`);
-    canvas.style.opacity = `${alpha}`;
-
-    // カラー設定を反映
-    const colorTransform = character.colorTransform;
-    const r = Math.max(0, Math.min(255 * colorTransform[0] + colorTransform[4], 255));
-    const g = Math.max(0, Math.min(255 * colorTransform[1] + colorTransform[5], 255));
-    const b = Math.max(0, Math.min(255 * colorTransform[2] + colorTransform[6], 255));
-    container.style.setProperty("--color-transform", `${r} ${g} ${b}`);
+    canvas.style.opacity = `${character.alpha}`;
 
     // canvasを追加
     container.appendChild(canvas);

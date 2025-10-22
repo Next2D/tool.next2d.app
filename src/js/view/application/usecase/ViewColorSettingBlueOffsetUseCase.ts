@@ -3,8 +3,8 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateBlueOffsetElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateBlueOffsetElementValueService";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { execute as viewColorSettingChangeSvgFromBlueOffsetUseCase } from "./ViewColorSettingChangeSvgFromBlueOffsetUseCase";
 
 /**
  * @description 選択中のElementの青色オフセット値を更新する
@@ -36,30 +36,7 @@ export const execute = (
     }
 
     // Elementの更新
-    const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-    if (element) {
-        // redを更新
-        const container = element.querySelector(".canvas-container") as HTMLDivElement;
-        if (container) {
-            if (container.dataset.colorTransform !== "true") {
-                container.dataset.colorTransform = "true";
-
-                const canvas = element.querySelector("canvas");
-                if (canvas) {
-                    if (!canvas.dataset.base64) {
-                        canvas.dataset.base64 = canvas.toDataURL();
-                    }
-                    container.style.setProperty("--mask", `url("${canvas.dataset.base64}")`);
-                }
-            }
-
-            const colorTransform = character.colorTransform;
-            const r = Math.max(0, Math.min(255 * colorTransform[0] + colorTransform[4], 255));
-            const g = Math.max(0, Math.min(255 * colorTransform[1] + colorTransform[5], 255));
-            const b = Math.max(0, Math.min(255 * colorTransform[2] + colorTransform[6], 255));
-            container.style.setProperty("--color-transform", `${r} ${g} ${b}`);
-        }
-    }
+    viewColorSettingChangeSvgFromBlueOffsetUseCase(character, layer);
 
     // 選択中のElementがない場合は何もしない
     if (!movie_clip.selectedDepths.size
