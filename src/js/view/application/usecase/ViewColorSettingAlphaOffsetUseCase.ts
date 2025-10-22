@@ -5,6 +5,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateAlphaOffsetElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateAlphaOffsetElementValueService";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 
 /**
  * @description 選択中のElementのアルファオフセット値を更新する
@@ -41,13 +42,14 @@ export const execute = (
         // alphaを更新
         const canvas = element.querySelector("canvas");
         if (canvas) {
-            canvas.style.opacity = `${alpha}`;
+            canvas.style.opacity = `${character.alpha}`;
         }
     }
 
     // 選択中のElementがない場合は何もしない
     if (!movie_clip.selectedDepths.size
         || !movie_clip.isSingleSelectedOfDisplayObject()
+        || !screenAreaIsCharacterSelectedService(movie_clip, layer, character)
     ) {
         return ;
     }

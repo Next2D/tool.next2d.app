@@ -5,6 +5,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateBlueOffsetElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateBlueOffsetElementValueService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as viewColorSettingChangeSvgFromBlueOffsetUseCase } from "./ViewColorSettingChangeSvgFromBlueOffsetUseCase";
+import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 
 /**
  * @description 選択中のElementの青色オフセット値を更新する
@@ -41,6 +42,7 @@ export const execute = (
     // 選択中のElementがない場合は何もしない
     if (!movie_clip.selectedDepths.size
         || !movie_clip.isSingleSelectedOfDisplayObject()
+        || !screenAreaIsCharacterSelectedService(movie_clip, layer, character)
     ) {
         return ;
     }

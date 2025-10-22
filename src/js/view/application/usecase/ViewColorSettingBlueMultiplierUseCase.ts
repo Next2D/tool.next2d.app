@@ -3,9 +3,9 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateBlueMultiplierElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateBlueMultiplierElementValueService";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as viewColorSettingChangeSvgFromBlueMultiplierUseCase } from "./ViewColorSettingChangeSvgFromBlueMultiplierUseCase";
+import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 
 /**
  * @description 選択中のElementの青色値を更新する
@@ -42,6 +42,7 @@ export const execute = (
     // 選択中のElementがない場合は何もしない
     if (!movie_clip.selectedDepths.size
         || !movie_clip.isSingleSelectedOfDisplayObject()
+        || !screenAreaIsCharacterSelectedService(movie_clip, layer, character)
     ) {
         return ;
     }
