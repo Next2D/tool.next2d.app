@@ -3,24 +3,32 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
 
-const mockViewColorSettingChangeSvgFromBlueOffsetUseCase = vi.fn();
+const mockScreenAreaGetElementFromLayerIdAndDepthService = vi.fn();
 
-vi.mock("@/view/application/usecase/ViewColorSettingChangeSvgFromBlueOffsetUseCase", () => ({
-    execute: (character: Character, layer: Layer) => mockViewColorSettingChangeSvgFromBlueOffsetUseCase(character, layer)
+vi.mock("@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService", () => ({
+    execute: (layerId: number, depth: number) => mockScreenAreaGetElementFromLayerIdAndDepthService(layerId, depth)
 }));
 
-const { execute } = await import("./ColorSettingBlueOffsetUpdateElementUseCase");
+const { execute } = await import("./ColorSettingAlphaOffsetUpdateElementUseCase");
 
-describe("ColorSettingBlueOffsetUpdateElementUseCase", () => {
+describe("ColorSettingAlphaOffsetUpdateElementUseCase", () => {
     let mockMovieClip: MovieClip;
     let mockLayer: Layer;
     let mockCharacter: Character;
+    let mockNode: HTMLElement;
+    let mockCanvas: HTMLCanvasElement;
 
     beforeEach(() => {
         vi.clearAllMocks();
 
+        mockCanvas = document.createElement("canvas");
+
+        mockNode = document.createElement("div");
+        mockNode.appendChild(mockCanvas);
+
         mockCharacter = {
-            colorTransform: [1, 1, 1, 1, 0, 0, 0, 0]
+            colorTransform: [1, 1, 1, 1, 0, 0, 0, 0],
+            alpha: 1
         } as unknown as Character;
 
         mockLayer = {
@@ -35,6 +43,8 @@ describe("ColorSettingBlueOffsetUpdateElementUseCase", () => {
             getLayer: vi.fn().mockReturnValue(mockLayer),
             isSingleSelectedOfDisplayObject: vi.fn().mockReturnValue(true)
         } as unknown as MovieClip;
+
+        mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(mockNode);
     });
 
     describe("基本動作", () => {
@@ -46,11 +56,16 @@ describe("ColorSettingBlueOffsetUpdateElementUseCase", () => {
             expect(mockMovieClip.getLayer).not.toHaveBeenCalled();
         });
 
-        it("blueOffsetが正しく更新される", () => {
+        it("alphaOffsetが正しく更新される", () => {
             execute(mockMovieClip, 50);
 
-            expect(mockCharacter.colorTransform[6]).toBe(50);
-            expect(mockViewColorSettingChangeSvgFromBlueOffsetUseCase).toHaveBeenCalledWith(mockCharacter, mockLayer);
+            expect(mockCharacter.colorTransform[7]).toBe(50);
+        });
+
+        it("canvasのopacityが更新される", () => {
+            execute(mockMovieClip, 100);
+
+            expect(mockCanvas.style.opacity).toBe("1");
         });
     });
 });

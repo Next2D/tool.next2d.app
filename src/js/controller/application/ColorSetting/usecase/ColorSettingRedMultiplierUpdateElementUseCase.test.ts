@@ -3,15 +3,15 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
 
-const mockViewColorSettingChangeSvgFromBlueOffsetUseCase = vi.fn();
+const mockViewColorSettingChangeSvgFromRedMultiplierUseCase = vi.fn();
 
-vi.mock("@/view/application/usecase/ViewColorSettingChangeSvgFromBlueOffsetUseCase", () => ({
-    execute: (character: Character, layer: Layer) => mockViewColorSettingChangeSvgFromBlueOffsetUseCase(character, layer)
+vi.mock("@/view/application/usecase/ViewColorSettingChangeSvgFromRedMultiplierUseCase", () => ({
+    execute: (character: Character, layer: Layer) => mockViewColorSettingChangeSvgFromRedMultiplierUseCase(character, layer)
 }));
 
-const { execute } = await import("./ColorSettingBlueOffsetUpdateElementUseCase");
+const { execute } = await import("./ColorSettingRedMultiplierUpdateElementUseCase");
 
-describe("ColorSettingBlueOffsetUpdateElementUseCase", () => {
+describe("ColorSettingRedMultiplierUpdateElementUseCase", () => {
     let mockMovieClip: MovieClip;
     let mockLayer: Layer;
     let mockCharacter: Character;
@@ -46,11 +46,11 @@ describe("ColorSettingBlueOffsetUpdateElementUseCase", () => {
             expect(mockMovieClip.getLayer).not.toHaveBeenCalled();
         });
 
-        it("blueOffsetが正しく更新される", () => {
+        it("redMultiplierが正しく更新される", () => {
             execute(mockMovieClip, 50);
 
-            expect(mockCharacter.colorTransform[6]).toBe(50);
-            expect(mockViewColorSettingChangeSvgFromBlueOffsetUseCase).toHaveBeenCalledWith(mockCharacter, mockLayer);
+            expect(mockCharacter.colorTransform[0]).toBe(0.5);
+            expect(mockViewColorSettingChangeSvgFromRedMultiplierUseCase).toHaveBeenCalledWith(mockCharacter, mockLayer);
         });
     });
 });

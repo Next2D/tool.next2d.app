@@ -5,17 +5,12 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
 
 const mock$getCurrentWorkSpace = vi.fn();
-const mockScreenAreaGetElementFromLayerIdAndDepthService = vi.fn();
 const mockExternalCharacter = {
     setGreenOffset: vi.fn()
 };
 
 vi.mock("@/core/application/CoreUtil", () => ({
     $getCurrentWorkSpace: () => mock$getCurrentWorkSpace()
-}));
-
-vi.mock("@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService", () => ({
-    execute: (layerId: number, depth: number) => mockScreenAreaGetElementFromLayerIdAndDepthService(layerId, depth)
 }));
 
 vi.mock("@/external/core/domain/model/ExternalCharacter", () => ({
@@ -30,13 +25,10 @@ describe("ColorSettingGreenOffsetUpdateValueUseCase", () => {
     let mockMovieClip: MovieClip;
     let mockLayer: Layer;
     let mockCharacter: Character;
-    let mockNode: HTMLElement;
 
     beforeEach(() => {
         vi.clearAllMocks();
         colorSetting.beforeValue = 0;
-
-        mockNode = document.createElement("div");
 
         mockCharacter = {
             colorTransform: [1, 1, 1, 1, 0, 0, 0, 0]
@@ -59,7 +51,6 @@ describe("ColorSettingGreenOffsetUpdateValueUseCase", () => {
         } as unknown as WorkSpace;
 
         mock$getCurrentWorkSpace.mockReturnValue(mockWorkSpace);
-        mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(mockNode);
         mockExternalCharacter.setGreenOffset.mockResolvedValue(undefined);
     });
 
@@ -82,14 +73,6 @@ describe("ColorSettingGreenOffsetUpdateValueUseCase", () => {
 
         it("characterが存在しない場合は何もしない", async () => {
             (mockLayer.getCharacter as any).mockReturnValue(null);
-
-            await execute(50);
-
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).not.toHaveBeenCalled();
-        });
-
-        it("nodeが存在しない場合は何もしない", async () => {
-            mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(null);
 
             await execute(50);
 

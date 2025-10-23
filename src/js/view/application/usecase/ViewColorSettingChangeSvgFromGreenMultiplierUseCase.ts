@@ -48,5 +48,5 @@ export const execute = (
         return ;
     }
 
-    greenFilter.setAttribute("slope", `${character.colorTransform[2]}`);
+    greenFilter.setAttribute("slope", `${character.colorTransform[1]}`);
 };

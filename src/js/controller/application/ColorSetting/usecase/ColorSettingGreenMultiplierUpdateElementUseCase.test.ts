@@ -3,33 +3,21 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
 
-// モック関数の定義
-const mockScreenAreaGetElementFromLayerIdAndDepthService = vi.fn();
+const mockViewColorSettingChangeSvgFromGreenMultiplierUseCase = vi.fn();
 
-// vi.mockの呼び出し
-vi.mock("@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService", () => ({
-    execute: (layerId: number, depth: number) => mockScreenAreaGetElementFromLayerIdAndDepthService(layerId, depth)
+vi.mock("@/view/application/usecase/ViewColorSettingChangeSvgFromGreenMultiplierUseCase", () => ({
+    execute: (character: Character, layer: Layer) => mockViewColorSettingChangeSvgFromGreenMultiplierUseCase(character, layer)
 }));
 
-// 動的インポート
 const { execute } = await import("./ColorSettingGreenMultiplierUpdateElementUseCase");
 
 describe("ColorSettingGreenMultiplierUpdateElementUseCase", () => {
     let mockMovieClip: MovieClip;
     let mockLayer: Layer;
     let mockCharacter: Character;
-    let mockNode: HTMLElement;
-    let mockContainer: HTMLDivElement;
 
     beforeEach(() => {
         vi.clearAllMocks();
-
-        mockContainer = document.createElement("div");
-        mockContainer.classList.add("canvas-container");
-        mockContainer.style.setProperty = vi.fn();
-
-        mockNode = document.createElement("div");
-        mockNode.appendChild(mockContainer);
 
         mockCharacter = {
             colorTransform: [1, 1, 1, 1, 0, 0, 0, 0]
@@ -47,8 +35,6 @@ describe("ColorSettingGreenMultiplierUpdateElementUseCase", () => {
             getLayer: vi.fn().mockReturnValue(mockLayer),
             isSingleSelectedOfDisplayObject: vi.fn().mockReturnValue(true)
         } as unknown as MovieClip;
-
-        mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(mockNode);
     });
 
     describe("基本動作", () => {
@@ -82,40 +68,14 @@ describe("ColorSettingGreenMultiplierUpdateElementUseCase", () => {
 
             execute(mockMovieClip, 50);
 
-            expect(mockScreenAreaGetElementFromLayerIdAndDepthService).not.toHaveBeenCalled();
-        });
-
-        it("nodeがnullの場合は何もしない", () => {
-            mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(null);
-
-            execute(mockMovieClip, 50);
-
-            expect(mockContainer.style.setProperty).not.toHaveBeenCalled();
-        });
-
-        it("containerがnullの場合は何もしない", () => {
-            const nodeWithoutContainer = document.createElement("div");
-            mockScreenAreaGetElementFromLayerIdAndDepthService.mockReturnValue(nodeWithoutContainer);
-
-            execute(mockMovieClip, 50);
-
-            // エラーが発生しないことを確認
-            expect(mockMovieClip.getLayer).toHaveBeenCalled();
+            expect(mockViewColorSettingChangeSvgFromGreenMultiplierUseCase).not.toHaveBeenCalled();
         });
 
         it("greenが正しく更新される", () => {
             execute(mockMovieClip, 50);
 
             expect(mockCharacter.colorTransform[1]).toBe(0.5);
-        });
-
-        it("画面に反映される", () => {
-            execute(mockMovieClip, 50);
-
-            expect(mockContainer.style.setProperty).toHaveBeenCalledWith(
-                "--color-transform",
-                expect.any(String)
-            );
+            expect(mockViewColorSettingChangeSvgFromGreenMultiplierUseCase).toHaveBeenCalledWith(mockCharacter, mockLayer);
         });
     });
 });
