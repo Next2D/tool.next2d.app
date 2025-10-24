@@ -122,7 +122,7 @@ export const execute = async (scale_x: number): Promise<void> =>
             const rawBounds = character.getRawBounds();
             if (rawBounds) {
                 const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
-                const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY));
+                const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));
                 nodeStyle.setProperty("--width",  `${width}px`);
                 nodeStyle.setProperty("--height", `${height}px`);
 
