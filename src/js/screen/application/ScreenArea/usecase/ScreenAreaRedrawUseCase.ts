@@ -55,16 +55,18 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
             const parentObject = parentObjects[idx];
 
             if (!parentObject.selectCharacter) {
+                timelineSceneList.parents.push(parentObject);
                 continue;
             }
 
             const movieClip = workSpace.getLibrary(parentObject.parentLibraryId) as MovieClip;
             if (!movieClip) {
+                timelineSceneList.parents.push(parentObject);
                 continue;
             }
 
             // シーンを切り替え
-            workSpace.scene = movieClip;
+            // workSpace.scene = movieClip;
             await screenAreaParentRedrawUseCase(
                 movieClip, parentObject.selectCharacter
             );
