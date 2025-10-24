@@ -13,20 +13,14 @@ describe("MovieClipDisplayObjectComponent Test", () =>
         const workSpace: WorkSpace = $getCurrentWorkSpace() || $createWorkSpace();
         const movieClip = new MovieClip({
             "id": 1,
-            "type": "movie-clip",
-            "name": "MovieClip_1",
-            "bounds": {
-                "xMin": 0,
-                "yMin": 0,
-                "xMax": 100,
-                "yMax": 120
-            }
+            "type": "container",
+            "name": "MovieClip_1"
         });
         workSpace.libraries.set(movieClip.id, movieClip);
 
         const character = new Character();
         character.libraryId = movieClip.id;
         expect(execute(character, 1))
-            .toBe(`<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px;"><div class="canvas-container container-layer-id-1" style="width: 0px; height: 0px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>`);
+            .toBe(`<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px; --transform: matrix(1, 0, 0, 1, 0, 0); --width: 0px; --height: 0px;"><div class="canvas-container container-layer-id-1"></div></div>`);
     });
 });

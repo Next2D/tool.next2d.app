@@ -108,23 +108,29 @@ export const execute = async (scale_x: number): Promise<void> =>
                 Matrix.multiply(character.matrix, parentMatrix)
             );
 
+            const nodeStyle = node.style;
+            nodeStyle.setProperty("--transform", $createTransformElementStyle(character));
+
             const bounds = character.getBounds(frame, true);
             if (bounds) {
-                node.style.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin))}px`;
-                node.style.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin))}px`;
-                node.style.left   = `${$getScreenOffsetLeft() + bounds.xMin}px`;
-                node.style.top    = `${$getScreenOffsetTop()  + bounds.yMin}px`;
+                nodeStyle.width  = `${Math.ceil(Math.abs(bounds.xMax - bounds.xMin))}px`;
+                nodeStyle.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin))}px`;
+                nodeStyle.left   = `${$getScreenOffsetLeft() + bounds.xMin}px`;
+                nodeStyle.top    = `${$getScreenOffsetTop()  + bounds.yMin}px`;
             }
 
-            const container = node.querySelector(".canvas-container") as HTMLDivElement;
-            if (container) {
+            const rawBounds = character.getRawBounds();
+            if (rawBounds) {
+                const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
+                const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY));
+                nodeStyle.setProperty("--width",  `${width}px`);
+                nodeStyle.setProperty("--height", `${height}px`);
+
                 const canvas = node.querySelector("canvas");
-                const rawBounds = character.getRawBounds();
-                if (canvas && rawBounds) {
-                    container.style.width  = canvas.style.width  = `${Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX))}px`;
-                    container.style.height = canvas.style.height = `${Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY))}px`;
+                if (canvas) {
+                    canvas.style.width  = `${width}px`;
+                    canvas.style.height = `${height}px`;
                 }
-                container.style.transform = $createTransformElementStyle(character);
             }
 
             await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);

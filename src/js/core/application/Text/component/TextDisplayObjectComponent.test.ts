@@ -21,6 +21,6 @@ describe("TextDisplayObjectComponent Test", () =>
         character.libraryId = text.id;
 
         expect(execute(character, 1))
-            .toBe(`<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px;"><div class="canvas-container container-layer-id-1" style="width: 0px; height: 0px; transform: matrix(1, 0, 0, 1, 0, 0);"></div></div>`);
+            .toBe(`<div class="display-object layer-id-1" data-depth="0" data-layer-id="1" style="left: 0px; top: 0px; width: 0px; height: 0px; --transform: matrix(1, 0, 0, 1, 0, 0); --width: 0px; --height: 0px;"><div class="canvas-container container-layer-id-1"></div></div>`);
     });
 });

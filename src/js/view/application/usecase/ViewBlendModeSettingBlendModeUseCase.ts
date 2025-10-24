@@ -40,8 +40,13 @@ export const execute = (
         return ;
     }
 
+    const container = element.querySelector(".canvas-container") as HTMLDivElement;
+    if (!container) {
+        return ;
+    }
+
     // Elementの更新
-    instanceUpdateBlendModeService(element, blend_mode);
+    instanceUpdateBlendModeService(container, blend_mode);
 
     // 選択中のElementがない場合は何もしない
     if (!movie_clip.selectedDepths.size

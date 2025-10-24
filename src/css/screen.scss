@@ -46,6 +46,9 @@
         {
             display        : flex;
             pointer-events : auto;
+            transform      : var(--transform, none);
+            width          : var(--width, none);
+            height         : var(--height, none);
 
             canvas
             {
@@ -66,10 +69,22 @@
                 cursor : move;
             }
         }
-
-        .active
+    
+        &::after
         {
-            border: 1px solid #29628e;
+            content        : "";
+            position       : absolute;
+            border         : 1px solid #29628e;
+            pointer-events : none;
+            opacity        : 0;
+            transform      : var(--transform, none);
+            width          : var(--width, none);
+            height         : var(--height, none);
+        }
+
+        &:has(> .canvas-container.active)::after
+        {
+            opacity: 1;
         }
     }
 

@@ -64,12 +64,14 @@ export const execute = async (
 
     const div = element.lastElementChild as HTMLDivElement;
 
-    // ブレンドモードを設定
-    instanceUpdateBlendModeService(div, character.blendMode);
-
     const container = div.querySelector(".canvas-container") as HTMLDivElement;
     if (!container) {
         throw new Error("Canvas container not found in the display object element.");
+    }
+
+    // ブレンドモードを設定
+    if (character.blendMode !== "normal") {
+        instanceUpdateBlendModeService(container, character.blendMode);
     }
 
     const colorTransform = character.colorTransform;
@@ -89,9 +91,6 @@ export const execute = async (
     // alpha値を反映
     canvas.style.opacity = `${character.alpha}`;
 
-    // canvasを追加
-    container.appendChild(canvas);
-
     const bounds = character.getRawBounds();
     if (bounds) {
         const concatMatrix = $getConcatenatedMatrix();
@@ -103,6 +102,9 @@ export const execute = async (
         canvas.style.width  = `${Math.ceil(Math.abs(width  * character.scaleX * scaleX))}px`;
         canvas.style.height = `${Math.ceil(Math.abs(height * character.scaleY * scaleY))}px`;
     }
+
+    // canvasを追加
+    container.appendChild(canvas);
 
     // マスクのスタイルを更新
     if (layer.mode === $MASK_IN_MODE) {
