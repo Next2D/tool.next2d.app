@@ -59,7 +59,7 @@ export const execute = async (
 
     // ステージに追加
     element.insertAdjacentHTML("beforeend",
-        videoDisplayObjectComponent(character, layer.id)
+        videoDisplayObjectComponent(character, $getDeactivated() ? 0 : layer.id)
     );
 
     const div = element.lastElementChild as HTMLDivElement;
@@ -120,7 +120,7 @@ export const execute = async (
     if (!$getDeactivated()) {
         videoRegisterEventUseCase(container);
     } else {
-        screenAreaReadOnlyElementService(div);
+        screenAreaReadOnlyElementService(container);
     }
 
     return div;

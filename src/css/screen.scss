@@ -86,21 +86,21 @@
         {
             opacity: 1;
         }
+
+        .disabled
+        {
+            pointer-events : none;
+        }
+
+        .translucent
+        {
+            opacity : 0.25;
+        }
     }
 
     .text-field
     {
         border : 1px dotted #363636;
-    }
-
-    .disabled
-    {
-        pointer-events : none;
-    }
-
-    .translucent
-    {
-        opacity : 0.6;
     }
 
     .transform

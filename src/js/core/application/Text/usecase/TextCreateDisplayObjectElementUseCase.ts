@@ -78,7 +78,7 @@ export const execute = async (
         || colorTransform[6] !== 0
     ) {
         container.insertAdjacentHTML("beforeend",
-            svgColorTransformComponent(character, layer.id)
+            svgColorTransformComponent(character, $getDeactivated() ? 0 : layer.id)
         );
         canvas.style.filter = `url(#color-transform-${layer.id}-${character.id})`;
     }
@@ -115,7 +115,7 @@ export const execute = async (
     if (!$getDeactivated()) {
         textRegisterEventUseCase(container);
     } else {
-        screenAreaReadOnlyElementService(div);
+        screenAreaReadOnlyElementService(container);
     }
 
     return div;

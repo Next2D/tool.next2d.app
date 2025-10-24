@@ -1,18 +1,21 @@
-import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as screenAreaAppendCharacterService } from "../service/ScreenAreaAppendCharacterService";
+import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { $MASK_MODE } from "@/config/LayerModeConfig";
 import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { EventType } from "@/tool/domain/event/EventType";
-import { $setReDrawState } from "../ScreenAreaUtil";
+import { $setDeactivated, $setReDrawState } from "../ScreenAreaUtil";
 import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
+import { execute as screenAreaAppendCharacterService } from "../service/ScreenAreaAppendCharacterService";
+import { execute as screenAreaParentRedrawUseCase } from "./ScreenAreaParentRedrawUseCase";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description スクリーンエリアを再描画
  *              Redraw screen area
  *
- * @return {Promise}
+ * @param  {MovieClip} movie_clip
+ * @return {Promise<void>}
  * @method
  * @public
  */
@@ -30,13 +33,52 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
         elements[idx].remove();
     }
 
-    // 先祖のMovieClipがある場合は半透明にして配置
-    if (timelineSceneList.parents.length) {
-        // todo: 先祖のMovieClipを半透明で描画
-    }
-
     // 再描画状態を設定
     $setReDrawState(true);
+
+    // 先祖のMovieClipがある場合は半透明にして配置
+    if (timelineSceneList.parents.length) {
+
+        const parentObjects = timelineSceneList.parents.slice();
+        timelineSceneList.parents.length = 0;
+
+        // イベント無効化・半透明指定
+        $setDeactivated(true);
+
+        // 先祖のMovieClipを半透明で描画
+        const workSpace = $getCurrentWorkSpace();
+
+        // 現在のシーンを保存
+        const scene = workSpace.scene;
+
+        for (let idx = 0; idx < parentObjects.length; ++idx) {
+            const parentObject = parentObjects[idx];
+
+            if (!parentObject.selectCharacter) {
+                continue;
+            }
+
+            const movieClip = workSpace.getLibrary(parentObject.parentLibraryId) as MovieClip;
+            if (!movieClip) {
+                continue;
+            }
+
+            // シーンを切り替え
+            workSpace.scene = movieClip;
+            await screenAreaParentRedrawUseCase(
+                movieClip, parentObject.selectCharacter
+            );
+
+            // 階層を再保存
+            timelineSceneList.parents.push(parentObject);
+        }
+
+        // 元のシーンに戻す
+        workSpace.scene = scene;
+
+        // イベント無効化・半透明指定解除
+        $setDeactivated(false);
+    }
 
     const frame  = movie_clip.currentFrame;
     const layers = movie_clip.layers;

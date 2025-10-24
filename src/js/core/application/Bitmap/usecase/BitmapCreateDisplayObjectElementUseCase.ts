@@ -53,7 +53,7 @@ export const execute = async (
 
     // ステージに追加
     element.insertAdjacentHTML("beforeend",
-        bitmapDisplayObjectComponent(character, layer.id)
+        bitmapDisplayObjectComponent(character, $getDeactivated() ? 0 : layer.id)
     );
 
     const div = element.lastElementChild as HTMLDivElement;
@@ -114,7 +114,7 @@ export const execute = async (
     if (!$getDeactivated()) {
         bitmapRegisterEventUseCase(container);
     } else {
-        screenAreaReadOnlyElementService(div);
+        screenAreaReadOnlyElementService(container);
     }
 
     return div;
