@@ -66,7 +66,7 @@ describe("ReferenceSettingYPointerUpEventUseCase", () => {
             setY: vi.fn().mockResolvedValue(undefined)
         };
 
-        (ExternalReference as any).mockImplementation(() => mockExternalReference);
+        (ExternalReference as any).mockImplementation(function() { return mockExternalReference; });
 
         // HTMLInputElementのモック
         mockElement = {

@@ -24,9 +24,9 @@ vi.mock("@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerId
 }));
 
 vi.mock("@/external/core/domain/model/ExternalCharacter", () => ({
-    ExternalCharacter: vi.fn().mockImplementation(() => ({
+    ExternalCharacter: vi.fn().mockImplementation(function() { return {
         setAlphaOffset: mockExternalCharacterSetAlphaOffset
-    }))
+    }; })
 }));
 
 // 動的インポート

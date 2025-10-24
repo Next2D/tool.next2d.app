@@ -79,3 +79,42 @@ if (typeof globalThis.ace === "undefined") {
 (globalThis as any).cancelAnimationFrame = (id: number) => {
     clearTimeout(id);
 };
+
+// Mock Worker
+if (typeof globalThis.Worker === "undefined") {
+    class MockWorker {
+        onmessage: ((event: MessageEvent) => void) | null = null;
+        onerror: ((error: ErrorEvent) => void) | null = null;
+        
+        constructor(scriptURL: string | URL, options?: WorkerOptions) {
+            // Mock worker - do nothing
+        }
+        
+        postMessage(message: any, transfer?: Transferable[]): void {
+            // Mock postMessage - simulate immediate response
+            setTimeout(() => {
+                if (this.onmessage) {
+                    this.onmessage(new MessageEvent("message", { data: message }));
+                }
+            }, 0);
+        }
+        
+        terminate(): void {
+            // Mock terminate
+        }
+        
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject): void {
+            // Mock addEventListener
+        }
+        
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject): void {
+            // Mock removeEventListener
+        }
+        
+        dispatchEvent(event: Event): boolean {
+            return true;
+        }
+    }
+    
+    (globalThis as any).Worker = MockWorker;
+}

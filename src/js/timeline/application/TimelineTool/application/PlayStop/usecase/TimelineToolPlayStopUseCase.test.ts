@@ -22,7 +22,7 @@ const {
         mockTimelineScrollUpdateScrollXUseCase: vi.fn(),
         mockSoundAreaRebuildSettingAreaUseCase: vi.fn(),
         mockTimelineLabelNameUpdateService: vi.fn(),
-        mockExternalTimeline: vi.fn(),
+        mockExternalTimeline: vi.fn(function() { return {}; }),
         mockTimelineHeader: {
             stopFlag: false,
             loopFlag: false,
@@ -107,7 +107,7 @@ describe("TimelineToolPlayStopUseCase", () => {
         // 関数モック設定
         mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
         mockGetRightFrame.mockReturnValue(8);
-        mockExternalTimeline.mockReturnValue(mockExternalTimelineInstance);
+        mockExternalTimeline.mockImplementation(function() { return mockExternalTimelineInstance; });
         mockSoundAreaRebuildSettingAreaUseCase.mockResolvedValue(undefined);
 
         // timelineHeader のリセット
@@ -137,7 +137,7 @@ describe("TimelineToolPlayStopUseCase", () => {
     });
 
     afterEach(() => {
-        vi.resetAllMocks();
+        vi.clearAllMocks();
         
         // 元の関数を復元
         document.getElementById = originalGetElementById;

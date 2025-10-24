@@ -10,7 +10,12 @@ const {
     mockMatrix,
     mockGetConcatenatedMatrix
 } = vi.hoisted(() => {
-    const Matrix = vi.fn();
+    const Matrix = vi.fn(function() { 
+        return {
+            a: 1, b: 0, c: 0, d: 1, tx: 0, ty: 0,
+            invert: vi.fn()
+        }; 
+    });
     Matrix.multiply = vi.fn(() => [1, 0, 0, 1, 0, 0]);
     
     return {
@@ -85,7 +90,7 @@ describe("ScreenReferencePointPointerMoveEventUseCase", () => {
             a: 1, b: 0, c: 0, d: 1, tx: 0, ty: 0,
             invert: vi.fn().mockReturnThis()
         };
-        mockMatrix.mockReturnValue(mockMatrixInstance);
+        mockMatrix.mockImplementation(function() { return mockMatrixInstance; });
 
         // Character モック
         mockCharacter = {

@@ -22,7 +22,7 @@ const {
             movementX: 0
         },
         mockGetCurrentWorkSpace: vi.fn(),
-        mockExternalReferenceConstructor: vi.fn(() => mockExternalReference),
+        mockExternalReferenceConstructor: vi.fn(function() { return mockExternalReference; }),
         mockScreenReferencePointDeployElementUseCase: vi.fn(),
         mockExternalReference
     };

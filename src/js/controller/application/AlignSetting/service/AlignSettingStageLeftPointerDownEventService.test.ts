@@ -49,7 +49,7 @@ describe("AlignSettingStageLeftPointerDownEventService", () => {
             stageLeft: vi.fn().mockResolvedValue(undefined)
         };
 
-        mockExternalAlign.mockImplementation(() => mockExternalAlignInstance);
+        mockExternalAlign.mockImplementation(function() { return mockExternalAlignInstance; });
 
         mockMovieClip = {
             selectedDepths: new Map([[0, [1]]])

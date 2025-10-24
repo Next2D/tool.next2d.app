@@ -11,7 +11,7 @@ const {
         mockGetCurrentWorkSpace: vi.fn(),
         mockGetLayerFromElement: vi.fn(),
         mockGetLockState: vi.fn(),
-        mockExternalLayer: vi.fn()
+        mockExternalLayer: vi.fn(function() { return {}; })
     };
 });
 
@@ -72,11 +72,11 @@ describe("TimelineLayerControllerLockIconPointerOverService", () => {
         mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
         mockGetLayerFromElement.mockReturnValue(mockLayer);
         mockGetLockState.mockReturnValue(true);
-        mockExternalLayer.mockReturnValue(mockExternalLayerInstance);
+        mockExternalLayer.mockImplementation(function() { return mockExternalLayerInstance; });
     });
 
     afterEach(() => {
-        vi.resetAllMocks();
+        vi.clearAllMocks();
     });
 
     const createMockEvent = (overrides: Partial<PointerEvent> = {}): PointerEvent => ({
@@ -320,7 +320,7 @@ describe("TimelineLayerControllerLockIconPointerOverService", () => {
                 return mockWorkSpace;
             });
 
-            mockExternalLayer.mockImplementation(() => {
+            mockExternalLayer.mockImplementation(function() {
                 executionOrder.push("ExternalLayer");
                 return mockExternalLayerInstance;
             });

@@ -18,7 +18,7 @@ describe("ExternalAlignStageLeftUseCase", () => {
     beforeEach(() => {
         vi.clearAllMocks();
         mockExternalCharacterInstance = { setX: vi.fn().mockResolvedValue(undefined) };
-        mockExternalCharacter.mockImplementation(() => mockExternalCharacterInstance);
+        mockExternalCharacter.mockImplementation(function() { return mockExternalCharacterInstance; });
         mockCharacter = { x: 100, getBounds: vi.fn().mockReturnValue({ xMin: 80, xMax: 120, yMin: 0, yMax: 100 }) };
         mockLayer = { getCharacter: vi.fn().mockReturnValue(mockCharacter) };
         mockMovieClip = { selectedDepths: new Map([[0, [1]]]), currentFrame: 1, getLayer: vi.fn().mockReturnValue(mockLayer) };

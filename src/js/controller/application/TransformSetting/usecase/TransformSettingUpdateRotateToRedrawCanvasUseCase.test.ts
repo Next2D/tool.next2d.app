@@ -42,7 +42,7 @@ describe("TransformSettingUpdateRotateToRedrawCanvasUseCase", () => {
             setY: vi.fn().mockResolvedValue(undefined)
         };
 
-        mockExternalCharacter.mockImplementation(() => mockExternalCharacterInstance);
+        mockExternalCharacter.mockImplementation(function() { return mockExternalCharacterInstance; });
 
         mockCharacter = {
             rotation: 45,

@@ -7,7 +7,7 @@ const {
 } = vi.hoisted(() => {
     return {
         mockGetCurrentWorkSpace: vi.fn(),
-        mockExternalLayer: vi.fn()
+        mockExternalLayer: vi.fn(function() { return {}; })
     };
 });
 
@@ -63,11 +63,11 @@ describe("ScreenAreaUpdateMovedLayerService", () => {
 
         // モック関数の設定
         mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
-        mockExternalLayer.mockReturnValue(mockExternalLayerInstance);
+        mockExternalLayer.mockImplementation(function() { return mockExternalLayerInstance; });
     });
 
     afterEach(() => {
-        vi.resetAllMocks();
+        vi.clearAllMocks();
         // DOM のクリーンアップ
         document.body.innerHTML = "";
     });

@@ -91,7 +91,7 @@ describe("ColorSettingAlphaOffsetPointerDownUseCase", () =>
 
     afterEach(() =>
     {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     describe("基本動作", () =>

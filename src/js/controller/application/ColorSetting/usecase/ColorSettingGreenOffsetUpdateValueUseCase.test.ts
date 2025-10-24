@@ -14,7 +14,7 @@ vi.mock("@/core/application/CoreUtil", () => ({
 }));
 
 vi.mock("@/external/core/domain/model/ExternalCharacter", () => ({
-    ExternalCharacter: vi.fn().mockImplementation(() => mockExternalCharacter)
+    ExternalCharacter: vi.fn().mockImplementation(function() { return mockExternalCharacter; })
 }));
 
 const { execute } = await import("./ColorSettingGreenOffsetUpdateValueUseCase");

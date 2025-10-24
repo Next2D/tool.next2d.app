@@ -13,7 +13,7 @@ const {
     return {
         mockGetCurrentWorkSpace: vi.fn(),
         mockActiveTouchPointers: new Set(),
-        mockExternalReferenceConstructor: vi.fn(() => mockExternalReferenceInstance),
+        mockExternalReferenceConstructor: vi.fn(function() { return mockExternalReferenceInstance; }),
         mockExternalReferenceInstance
     };
 });

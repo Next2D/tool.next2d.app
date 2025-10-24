@@ -41,7 +41,7 @@ describe("ExternalAlignStageBottomUseCase", () => {
             setY: vi.fn().mockResolvedValue(undefined)
         };
 
-        mockExternalCharacter.mockImplementation(() => mockExternalCharacterInstance);
+        mockExternalCharacter.mockImplementation(function() { return mockExternalCharacterInstance; });
 
         mockCharacter = {
             y: 100,

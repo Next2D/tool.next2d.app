@@ -26,6 +26,8 @@ describe("ReferenceSettingGetMultiRawPositionUseCase", () => {
     let mockReferenceSetting: any;
 
     beforeEach(async () => {
+        vi.clearAllMocks();
+        
         // モックされた関数を取得
         const { $getPivotPosition } = await import("../ReferenceSettingUtil");
         const { execute: screenAreaService } = await import("../../../../screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService");
@@ -42,7 +44,7 @@ describe("ReferenceSettingGetMultiRawPositionUseCase", () => {
     });
 
     afterEach(() => {
-        vi.restoreAllMocks();
+        vi.clearAllMocks();
     });
 
     describe("正常系", () => {

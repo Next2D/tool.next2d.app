@@ -20,7 +20,7 @@ const {
         mockGetCurrentWorkSpace: vi.fn(),
         mockReferenceSettingXPointerMoveEventUseCase: vi.fn(),
         mockExternalReference,
-        mockExternalReferenceConstructor: vi.fn(() => mockExternalReference),
+        mockExternalReferenceConstructor: vi.fn(function() { return mockExternalReference; }),
         mockReferenceSetting: {
             beforeX: 0,
             pivotX: 0,

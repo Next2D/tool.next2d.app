@@ -14,9 +14,11 @@ const {
         mockColorSetting: {
             beforeValue: 50
         },
-        mockExternalCharacterConstructor: vi.fn().mockImplementation(() => ({
-            setAlphaMultiplier: mockExternalCharacterSetAlphaMultiplier
-        }))
+        mockExternalCharacterConstructor: vi.fn().mockImplementation(function() {
+            return {
+                setAlphaMultiplier: mockExternalCharacterSetAlphaMultiplier
+            };
+        })
     };
 });
 

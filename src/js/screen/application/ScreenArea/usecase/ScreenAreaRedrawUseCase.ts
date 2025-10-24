@@ -6,6 +6,7 @@ import { $getActiveTool } from "@/tool/application/ToolUtil";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 import { EventType } from "@/tool/domain/event/EventType";
 import { $setReDrawState } from "../ScreenAreaUtil";
+import { timelineSceneList } from "@/timeline/domain/model/TimelineSceneList";
 
 /**
  * @description スクリーンエリアを再描画
@@ -27,6 +28,11 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     const elements = element.querySelectorAll(".display-object");
     for (let idx = 0; idx < elements.length; idx++) {
         elements[idx].remove();
+    }
+
+    // 先祖のMovieClipがある場合は半透明にして配置
+    if (timelineSceneList.parents.length) {
+        // todo: 先祖のMovieClipを半透明で描画
     }
 
     // 再描画状態を設定

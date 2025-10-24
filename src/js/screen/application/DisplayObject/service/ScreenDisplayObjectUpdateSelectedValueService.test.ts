@@ -17,12 +17,12 @@ vi.mock("@/core/application/CoreUtil", () => ({
 }));
 
 vi.mock("@/external/core/domain/model/ExternalCharacter", () => ({
-    ExternalCharacter: vi.fn().mockImplementation(() => ({
+    ExternalCharacter: vi.fn().mockImplementation(function() { return {
         setX: mockExternalCharacterSetX,
         setY: mockExternalCharacterSetY,
         getX: mockExternalCharacterGetX,
         getY: mockExternalCharacterGetY
-    }))
+    }; })
 }));
 
 // 実際のインポート（vi.mockの後）

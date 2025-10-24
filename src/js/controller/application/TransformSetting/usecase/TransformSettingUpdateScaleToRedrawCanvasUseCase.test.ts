@@ -43,7 +43,7 @@ describe("TransformSettingUpdateScaleToRedrawCanvasUseCase", () => {
             setY: vi.fn().mockResolvedValue(undefined)
         };
 
-        mockExternalCharacter.mockImplementation(() => mockExternalCharacterInstance);
+        mockExternalCharacter.mockImplementation(function() { return mockExternalCharacterInstance; });
 
         mockCharacter = {
             scaleX: 1.5,

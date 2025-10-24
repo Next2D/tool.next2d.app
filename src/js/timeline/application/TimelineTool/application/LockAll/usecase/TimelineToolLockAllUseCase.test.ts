@@ -12,7 +12,7 @@ const {
         mockGetCurrentWorkSpace: vi.fn(),
         mockSetAllLockMode: vi.fn(),
         mockTimelineToolLockAllGetCurrentModeService: vi.fn(),
-        mockExternalLayer: vi.fn(),
+        mockExternalLayer: vi.fn(function() { return {}; }),
         mockActiveTouchPointers: new Map()
     };
 });
@@ -83,11 +83,11 @@ describe("TimelineToolLockAllUseCase", () => {
         // 関数モック設定
         mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
         mockTimelineToolLockAllGetCurrentModeService.mockReturnValue(true);
-        mockExternalLayer.mockReturnValue(mockExternalLayerInstance);
+        mockExternalLayer.mockImplementation(function() { return mockExternalLayerInstance; });
     });
 
     afterEach(() => {
-        vi.resetAllMocks();
+        vi.clearAllMocks();
         mockActiveTouchPointers.clear();
     });
 
@@ -396,7 +396,7 @@ describe("TimelineToolLockAllUseCase", () => {
                 return mockWorkSpace;
             });
 
-            mockExternalLayer.mockImplementation(() => {
+            mockExternalLayer.mockImplementation(function() {
                 executionOrder.push("ExternalLayer");
                 return mockExternalLayerInstance;
             });
@@ -507,7 +507,7 @@ describe("TimelineToolLockAllUseCase", () => {
             // モックをリセット
             vi.clearAllMocks();
             mockGetCurrentWorkSpace.mockReturnValue(mockWorkSpace);
-            mockExternalLayer.mockReturnValue(mockExternalLayerInstance);
+            mockExternalLayer.mockImplementation(function() { return mockExternalLayerInstance; });
 
             // 2回目：全レイヤーをロック解除
             mockTimelineToolLockAllGetCurrentModeService.mockReturnValueOnce(false);
