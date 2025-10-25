@@ -198,6 +198,12 @@ export class Character
             return cacheKey;
         }
 
+        // if (instance.type === $MOVIE_CLIP_TYPE) {
+        //     const workSpace = $getCurrentWorkSpace();
+        //     const movieClip = workSpace.scene;
+        //     cacheKey += `${movieClip.currentFrame}`;
+        // }
+
         // BitmapとVideo以外はスケールの値をキャッシュキーに追加
         switch (instance.type) {
 

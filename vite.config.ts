@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
 
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import path from "path";
 
 export default defineConfig({
@@ -46,6 +46,7 @@ export default defineConfig({
         "environment": "jsdom",
         "setupFiles": [
             "test.setup.ts",
+            "@vitest/web-worker",
             "vitest-webgl-canvas-mock"
         ],
         "include": ["src/**/*.test.ts"],

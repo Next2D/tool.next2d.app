@@ -3,7 +3,6 @@ import { $createTransformElementStyle } from "@/controller/application/Transform
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
-import { $getCurrentWorkSpace } from "../../CoreUtil";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
@@ -15,24 +14,23 @@ import {
  *
  * @params {Character} character
  * @params {number} layer_id
+ * @params {number} current_frame
  * @return {string}
  * @method
  * @public
  */
 export const execute = (
     character: Character,
-    layer_id: number
+    layer_id: number,
+    current_frame: number
 ): string => {
 
-    const rawBounds = character.getRawBounds();
+    const rawBounds = character.getRawBounds(current_frame);
     if (!rawBounds) {
         return "";
     }
 
-    const workSpace = $getCurrentWorkSpace();
-    const movieClip = workSpace.scene;
-
-    const bounds = character.getBounds(movieClip.currentFrame, true);
+    const bounds = character.getBounds(current_frame, true);
     if (!bounds) {
         return "";
     }

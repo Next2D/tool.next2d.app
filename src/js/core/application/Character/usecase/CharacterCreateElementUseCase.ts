@@ -59,7 +59,7 @@ export const execute = async (
 
         case $MOVIE_CLIP_TYPE:
             div = await movieClipCreateDisplayObjectElementUseCase(
-                workSpace.id, instance as MovieClip, element, layer, character
+                workSpace, instance as MovieClip, element, layer, character
             );
             break;
 

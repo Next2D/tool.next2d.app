@@ -1,6 +1,7 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as movieClipRegisterEventUseCase } from "./MovieClipRegisterEventUseCase";
 import { execute as movieClipDisplayObjectComponent } from "../component/MovieClipDisplayObjectComponent";
 import { execute as svgColorTransformComponent } from "@/core/application/Svg/component/SvgColorTransformComponent";
@@ -23,7 +24,7 @@ import {
  * @description MovieClipをcanvasに描画して返却する
  *              Draw MovieClip to canvas and return
  *
- * @param  {number} work_space_id
+ * @param  {WorkSpace} work_space
  * @param  {MovieClip} instance
  * @param  {HTMLElement} element
  * @param  {Layer} layer
@@ -33,27 +34,30 @@ import {
  * @public
  */
 export const execute = async (
-    work_space_id: number,
+    work_space: WorkSpace,
     instance: MovieClip,
     element: HTMLElement,
     layer: Layer,
     character: Character
 ): Promise<HTMLDivElement> => {
 
-    const cacheKey = character.cacheKey;
+    const frame = work_space.scene.currentFrame;
+    const cacheKey = character.cacheKey + `_f${frame}`;
 
-    let canvas = $getCacheCanvas(work_space_id, instance.id, cacheKey);
+    let canvas = $getCacheCanvas(work_space.id, instance.id, cacheKey);
     if (!canvas) {
         // TODO filters check
-        canvas = await instance.getHTMLElement(character);
+        canvas = await instance.getHTMLElement(
+            character, work_space.scene.currentFrame
+        );
 
         // キャッシュに保存
-        $setCacheCanvas(work_space_id, instance.id, cacheKey, canvas);
+        $setCacheCanvas(work_space.id, instance.id, cacheKey, canvas);
     }
 
     // ステージに追加
     element.insertAdjacentHTML("beforeend",
-        movieClipDisplayObjectComponent(character, $getDeactivated() ? 0 : layer.id)
+        movieClipDisplayObjectComponent(character, $getDeactivated() ? 0 : layer.id, work_space.scene.currentFrame)
     );
 
     const div = element.lastElementChild as HTMLDivElement;
@@ -86,7 +90,7 @@ export const execute = async (
     // alpha値を反映
     canvas.style.opacity = `${character.alpha}`;
 
-    const bounds = character.getRawBounds();
+    const bounds = character.getRawBounds(frame);
     if (bounds) {
         const concatMatrix = $getConcatenatedMatrix();
         const width  = Math.abs(bounds.xMax - bounds.xMin);
