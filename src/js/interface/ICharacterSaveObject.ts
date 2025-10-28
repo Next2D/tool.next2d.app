@@ -11,4 +11,6 @@ export interface ICharacterSaveObject {
     endFrame: number;
     name: string;
     referencePosition: IReferencePositionSaveObject
+    parentCharacterId: number;
+    parentMovieClipId: number;
 }

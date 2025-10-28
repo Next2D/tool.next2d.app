@@ -11,19 +11,17 @@ import { execute as characterCalcSetScaleYService } from "@/core/application/Cha
 import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { execute as characterCalcSetRotationService } from "@/core/application/Character/service/CharacterCalcSetRotationService";
 import { execute as characterCalcGetRotationService } from "@/core/application/Character/service/CharacterCalcGetRotationService";
+import { execute as characterGetRawBoundsService } from "@/core/application/Character/service/CharacterGetRawBoundsService";
+import { execute as characterGetBoundsService } from "@/core/application/Character/service/CharacterGetBoundsService";
+import { execute as characterLoadService } from "@/core/application/Character/service/CharacterLoadService";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $clamp } from "@/global/GlobalUtil";
 import { ReferencePosition } from "./ReferencePosition";
-import { Matrix } from "@next2d/geom";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $BITMAP_TYPE,
-    $MOVIE_CLIP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-import {
-    $getCurrentWorkSpace,
-    $getMatrixBounds
-} from "@/core/application/CoreUtil";
 
 /**
  * @description DisplayObjectのユニークID
@@ -146,6 +144,24 @@ export class Character
     public name: string;
 
     /**
+     * @description 親MovieClipのID
+     *              Parent MovieClip ID
+     *
+     * @member {number}
+     * @public
+     */
+    public parentMovieClipId: number;
+
+    /**
+     * @description 親CharacterのID
+     *              Parent Character ID
+     *
+     * @member {number}
+     * @public
+     */
+    public parentCharacterId: number;
+
+    /**
      * @constructor
      * @public
      */
@@ -160,6 +176,10 @@ export class Character
         this.blendMode      = "normal";
         this.startFrame     = 0;
         this.endFrame       = 0;
+
+        // 継承用ID
+        this.parentMovieClipId = -1;
+        this.parentCharacterId = -1;
 
         this.filters = [];
         this.referencePosition = new ReferencePosition(this);
@@ -197,12 +217,6 @@ export class Character
         if (!instance) {
             return cacheKey;
         }
-
-        // if (instance.type === $MOVIE_CLIP_TYPE) {
-        //     const workSpace = $getCurrentWorkSpace();
-        //     const movieClip = workSpace.scene;
-        //     cacheKey += `${movieClip.currentFrame}`;
-        // }
 
         // BitmapとVideo以外はスケールの値をキャッシュキーに追加
         switch (instance.type) {
@@ -320,6 +334,7 @@ export class Character
      *
      * @member {number}
      * @public
+     * @readonly
      */
     get width (): number
     {
@@ -328,11 +343,6 @@ export class Character
             ? Math.round(Math.abs(bounds.xMax - bounds.xMin) * 100) / 100
             : 0;
     }
-    set width (width: number)
-    {
-        // TODO
-        console.log(width);
-    }
 
     /**
      * @description 高さを返却
@@ -340,6 +350,7 @@ export class Character
      *
      * @member {number}
      * @public
+     * @readonly
      */
     get height (): number
     {
@@ -347,11 +358,6 @@ export class Character
         return bounds
             ? Math.round(Math.abs(bounds.yMax - bounds.yMin) * 100) / 100
             : 0;
-    }
-    set height (height: number)
-    {
-        // TODO
-        console.log(height);
     }
 
     /**
@@ -427,35 +433,7 @@ export class Character
      */
     load (save_object: ICharacterSaveObject): void
     {
-        this.libraryId  = save_object.libraryId;
-        this.depth      = save_object.depth;
-        this.blendMode  = save_object.blendMode;
-        this.startFrame = save_object.startFrame;
-        this.endFrame   = save_object.endFrame;
-        this.name       = save_object.name;
-
-        // 配列を上書き
-        if (save_object.matrix) {
-            this.matrix.set(save_object.matrix);
-        }
-        if (save_object.colorTransform) {
-            this.colorTransform.set(save_object.colorTransform);
-        }
-
-        // 中心点を上書き
-        if (save_object.referencePosition) { // 旧バージョンではreferencePositionが存在しないのでチェック
-            // pivotが存在する場合はpivotを優先
-            if (save_object.referencePosition.pivot
-                && save_object.referencePosition.pivot !== "none"
-            ) {
-                this.referencePosition.pivot = save_object.referencePosition.pivot;
-            } else {
-                // pivotが存在しない場合はx,yをセット
-                this.referencePosition.pivot = "none";
-                this.referencePosition.x = save_object.referencePosition.x;
-                this.referencePosition.y = save_object.referencePosition.y;
-            }
-        }
+        characterLoadService(this, save_object);
     }
 
     /**
@@ -499,14 +477,7 @@ export class Character
      */
     getBounds (frame: number = 1, use_parent_matrix: boolean = false): IBounds | null
     {
-        const bounds = this.getRawBounds(frame);
-        return bounds ? $getMatrixBounds(
-            bounds.xMin,
-            bounds.yMin,
-            bounds.xMax,
-            bounds.yMax,
-            use_parent_matrix ? Matrix.multiply($getConcatenatedMatrix(), this.matrix) : this.matrix
-        ) : null;
+        return characterGetBoundsService(this, frame, use_parent_matrix);
     }
 
     /**
@@ -520,29 +491,7 @@ export class Character
      */
     getRawBounds (frame: number = 1): IBounds | null
     {
-        const workSpace = $getCurrentWorkSpace();
-        const instance  = workSpace.getLibrary(this.libraryId);
-        if (!instance) {
-            return null;
-        }
-
-        if (instance.type !== $MOVIE_CLIP_TYPE) {
-            return instance.getRawBounds();
-        }
-
-        // MovieClipの場合は子孫のフレーム位置に合わせる
-        const totalFrame = (instance as MovieClip).maxFrame - 1;
-        const maxFrame = frame - this.startFrame + 1;
-
-        let currentFrame = 0;
-        for (let idx = 0; idx < maxFrame; ++idx) {
-            ++currentFrame;
-            if (totalFrame < currentFrame) {
-                currentFrame = 1;
-            }
-        }
-
-        return (instance as MovieClip).getRawBounds(currentFrame);
+        return characterGetRawBoundsService($getCurrentWorkSpace(), this, frame);
     }
 
     /**
@@ -564,6 +513,8 @@ export class Character
             "startFrame": this.startFrame,
             "endFrame": this.endFrame,
             "name": this.name,
+            "parentCharacterId": this.parentCharacterId,
+            "parentMovieClipId": this.parentMovieClipId,
             "referencePosition": this.referencePosition.toObject()
         };
     }
