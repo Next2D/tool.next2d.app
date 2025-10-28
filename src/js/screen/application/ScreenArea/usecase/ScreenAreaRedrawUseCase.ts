@@ -28,6 +28,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
         return ;
     }
 
+    // 既存のElementを削除
     const elements = element.querySelectorAll(".display-object");
     for (let idx = 0; idx < elements.length; idx++) {
         elements[idx].remove();
@@ -66,7 +67,7 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
             }
 
             // シーンを切り替え
-            // workSpace.scene = movieClip;
+            workSpace.scene = movieClip;
             await screenAreaParentRedrawUseCase(
                 movieClip, parentObject.selectCharacter
             );

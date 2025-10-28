@@ -1,6 +1,8 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as viewTransformSettingUpdateMatrixUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateMatrixUseCase";
+import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { $removeLibraryCache } from "@/cache/CacheUtil";
 
 /**
  * @description DisplayObjectの行列を変更前に戻す
@@ -47,6 +49,12 @@ export const execute = async (
 
     // データを更新
     character.matrix.set(before_matrix);
+
+    // 先祖のキャッシュを削除する
+    timelineSceneListCacheRemoveService(workSpace);
+
+    // 自分のキャッシュを削除する
+    $removeLibraryCache(workSpace.id, movieClip.id);
 
     // アクティブなら表示を更新
     await viewTransformSettingUpdateMatrixUseCase(

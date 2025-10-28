@@ -46,10 +46,10 @@ export const execute = async (
     }
 
     // データを更新
-    character.colorTransform[1] = Math.floor(after_blue) / 100;
+    character.colorTransform[2] = Math.floor(after_blue) / 100;
 
     // アクティブなら表示を更新
-    viewColorSettingBlueMultiplierUseCase(
+    await viewColorSettingBlueMultiplierUseCase(
         workSpace,
         movieClip,
         layer,

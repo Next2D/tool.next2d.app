@@ -1,6 +1,8 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as viewTransformSettingUpdateXUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateXUseCase";
+import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { $removeLibraryCache } from "@/cache/CacheUtil";
 
 /**
  * @description DisplayObjectのx座標を変更後に戻す
@@ -47,6 +49,12 @@ export const execute = async (
 
     // データを更新
     character.x = after_x;
+
+    // 先祖のキャッシュを削除する
+    timelineSceneListCacheRemoveService(workSpace);
+
+    // 自分のキャッシュを削除する
+    $removeLibraryCache(workSpace.id, movieClip.id);
 
     // viewエリアの表示を更新
     await viewTransformSettingUpdateXUseCase(

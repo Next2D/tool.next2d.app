@@ -50,7 +50,7 @@ export const execute = async (
     character.colorTransform[6] = blue;
 
     // Elementの更新
-    viewColorSettingBlueOffsetUseCase(
+    await viewColorSettingBlueOffsetUseCase(
         work_space,
         movie_clip,
         layer,

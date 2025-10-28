@@ -6,6 +6,8 @@ import { execute as colorSettingUpdateAlphaMultiplierElementValueService } from 
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { $removeLibraryCache } from "@/cache/CacheUtil";
 
 /**
  * @description 選択中のElementのアルファ値を更新する
@@ -16,44 +18,51 @@ import { execute as screenAreaIsCharacterSelectedService } from "@/screen/applic
  * @param  {Layer} layer
  * @param  {Character} character
  * @param  {number} alpha
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
     alpha: number
-): void => {
+): Promise<void> => {
 
     // 先祖のキャッシュを削除する
     timelineSceneListCacheRemoveService(work_space);
 
-    // アクティブでない場合は何もしない
-    if (!work_space.active || !movie_clip.active) {
-        return ;
-    }
+    // 自分のキャッシュを削除する
+    $removeLibraryCache(work_space.id, movie_clip.id);
 
-    // Elementの更新
-    const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-    if (element) {
-        // alphaを更新
-        const canvas = element.querySelector("canvas");
-        if (canvas) {
-            canvas.style.opacity = `${character.alpha}`;
+    // アクティブでない場合は何もしない
+    if (work_space.active && movie_clip.active) {
+
+        // Elementの更新
+        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+        if (element) {
+            // alphaを更新
+            const canvas = element.querySelector("canvas");
+            if (canvas) {
+                canvas.style.opacity = `${character.alpha}`;
+            }
+        }
+
+        // 選択中のElementがない場合は何もしない
+        if (!movie_clip.selectedDepths.size
+            || !movie_clip.isSingleSelectedOfDisplayObject()
+            || !screenAreaIsCharacterSelectedService(movie_clip, layer, character)
+        ) {
+            return ;
+        }
+
+        // カラーエリアの値を更新
+        colorSettingUpdateAlphaMultiplierElementValueService(alpha);
+    } else {
+        // プロジェクトがアクティブならViewエリアを再描画
+        if (work_space.active) {
+            await screenAreaRedrawUseCase(work_space.scene);
         }
     }
-
-    // 選択中のElementがない場合は何もしない
-    if (!movie_clip.selectedDepths.size
-        || !movie_clip.isSingleSelectedOfDisplayObject()
-        || !screenAreaIsCharacterSelectedService(movie_clip, layer, character)
-    ) {
-        return ;
-    }
-
-    // カラーエリアの値を更新
-    colorSettingUpdateAlphaMultiplierElementValueService(alpha);
 };

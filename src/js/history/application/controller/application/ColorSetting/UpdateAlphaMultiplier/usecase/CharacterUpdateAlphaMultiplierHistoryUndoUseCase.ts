@@ -49,7 +49,7 @@ export const execute = async (
     character.colorTransform[3] = Math.floor(before_alpha) / 100;
 
     // アクティブなら表示を更新
-    viewColorSettingAlphaMultiplierUseCase(
+    await viewColorSettingAlphaMultiplierUseCase(
         workSpace,
         movieClip,
         layer,

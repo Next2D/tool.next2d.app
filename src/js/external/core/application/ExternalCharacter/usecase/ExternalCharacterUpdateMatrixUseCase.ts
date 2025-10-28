@@ -4,6 +4,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateMatrixHistoryUseCase } from "@/history/application/controller/application/TransformSetting/UpdateMatrix/usecase/CharacterUpdateMatrixHistoryUseCase";
 import { execute as viewTransformSettingUpdateMatrixUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateMatrixUseCase";
+import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { $removeLibraryCache } from "@/cache/CacheUtil";
 
 /**
  * @description DisplayObjectの変形行列を更新する
@@ -29,7 +31,20 @@ export const execute = async (
 ): Promise<void> => {
 
     // 変更前の行列を取得
-    const beforeMatrix = character.matrix;
+    const beforeMatrix = character.matrix.slice();
+
+    let changed = false;
+    for (let idx = 0; idx < matrix.length; idx++) {
+        if (beforeMatrix[idx] === matrix[idx]) {
+            continue;
+        }
+        changed = true;
+    }
+
+    // 変更がなければ終了
+    if (!changed) {
+        return;
+    }
 
     character.matrix.set(matrix);
 
@@ -42,6 +57,12 @@ export const execute = async (
         Array.from(beforeMatrix),
         receiver
     );
+
+    // 先祖のキャッシュを削除する
+    timelineSceneListCacheRemoveService(work_space);
+
+    // 自分のキャッシュを削除する
+    $removeLibraryCache(work_space.id, movie_clip.id);
 
     // 表示を更新
     viewTransformSettingUpdateMatrixUseCase(

@@ -1,6 +1,8 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as viewTransformSettingUpdateRotateUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateRotateUseCase";
+import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { $removeLibraryCache } from "@/cache/CacheUtil";
 
 /**
  * @description DisplayObjectの回転値を変更後に戻す
@@ -47,6 +49,12 @@ export const execute = async (
 
     // データを更新
     character.rotation = after_rotation;
+
+    // 先祖のキャッシュを削除する
+    timelineSceneListCacheRemoveService(workSpace);
+
+    // 自分のキャッシュを削除する
+    $removeLibraryCache(workSpace.id, movieClip.id);
 
     // アクティブなら表示を更新
     await viewTransformSettingUpdateRotateUseCase(

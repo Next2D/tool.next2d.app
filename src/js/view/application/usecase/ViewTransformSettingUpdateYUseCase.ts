@@ -3,7 +3,6 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $MASK_IN_MODE } from "@/config/LayerModeConfig";
-import { $SCREEN_STAGE_AREA_ID } from "@/config/ScreenConfig";
 import { execute as screenAreaMoveDisplayObjectElementUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaMoveDisplayObjectElementUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
@@ -11,9 +10,10 @@ import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as transformSettingUpdateYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateYElementService";
-import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as screenDisplayObjectActiveElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectActvieElementService";
 
 /**
  * @description y座標を更新した際のViewエリアの表示要素を更新
@@ -34,8 +34,12 @@ export const execute = async (
     character: Character
 ): Promise<void> => {
 
+    if (!work_space.active) {
+        return ;
+    }
+
     // アクティブなら表示を更新
-    if (work_space.active && movie_clip.active) {
+    if (movie_clip.active) {
 
         // 表示Elementを移動
         screenAreaMoveDisplayObjectElementUseCase(layer, character);
@@ -69,24 +73,34 @@ export const execute = async (
 
         // マスクのstyleを更新
         if (layer.mode === $MASK_IN_MODE) {
-            const element: HTMLElement | null = document
-                .getElementById($SCREEN_STAGE_AREA_ID);
-
+            const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
             if (!element) {
-                return ;
-            }
-
-            const node = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-            if (!node) {
                 return;
             }
 
             // マスクのstyleを更新
-            await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);
+            await screenDisplayObjectUpdateMaskInCanvasStyleService(element, layer, character);
         }
 
-    }
+    } else {
+        await screenAreaRedrawUseCase(work_space.scene);
 
-    // 先祖のキャッシュを削除する
-    timelineSceneListCacheRemoveService(work_space);
+        // 変形の中心点のElementを再配置
+        screenReferencePointDeployElementUseCase();
+
+        // 選択範囲のElementを移動
+        targetRectUpdateElementUseCase();
+
+        // 再描画したので、選択中のElementをアクティブにする
+        const movieClip = work_space.scene;
+        for (const [layerIndex, depths] of movieClip.selectedDepths) {
+
+            const layer = movieClip.getLayer(layerIndex);
+            if (!layer) {
+                continue;
+            }
+
+            screenDisplayObjectActiveElementService(layer, depths);
+        }
+    }
 };

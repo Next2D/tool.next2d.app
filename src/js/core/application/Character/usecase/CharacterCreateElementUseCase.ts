@@ -80,10 +80,11 @@ export const execute = async (
 
     }
 
-    if (layer.lock && div
-        && !div.classList.contains("disabled")
-    ) {
-        div.classList.add("disabled");
+    if (layer.lock && div) {
+        const container = div.querySelector(".canvas-container") as HTMLDivElement;
+        if (container && !container.classList.contains("disabled")) {
+            container.classList.add("disabled");
+        }
     }
 
     return div;

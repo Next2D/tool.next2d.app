@@ -12,8 +12,10 @@ describe("CharacterCreateElementUseCase Test", () =>
     it("test case", async () =>
     {
         const bitmap = new Bitmap({
-            "type": "bitmap",
             "id": 1,
+            "type": "bitmap",
+            "name": "bitmap1",
+            "imageType": "png",
             "width": 200,
             "height": 120,
             "buffer": new Uint8Array([1,0,0,1])
@@ -36,7 +38,12 @@ describe("CharacterCreateElementUseCase Test", () =>
             throw new Error("div is null");
         }
 
+        const container = div.querySelector(".canvas-container") as HTMLDivElement;
+        if (!container) {
+            throw new Error("container is null");
+        }
+
         expect(parent.children.length).toBe(1);
-        expect(div.classList.contains("disabled")).toBe(true);
+        expect(container.classList.contains("disabled")).toBe(true);
     });
 });

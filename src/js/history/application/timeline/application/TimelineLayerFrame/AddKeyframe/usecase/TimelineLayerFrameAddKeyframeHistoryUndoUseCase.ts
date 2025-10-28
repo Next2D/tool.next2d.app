@@ -7,6 +7,7 @@ import { execute as screenAreaRemoveDisplayObjectElementService } from "@/screen
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -78,8 +79,12 @@ export const execute = async (
     // アクティブならタイムラインを再描画
     // fixed logic
     if (workSpace.active && movieClip.active) {
+
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
+
+        // 親の基準点の表示を更新
+        screenStandardPointDeployElementUseCase();
 
         // 選択範囲のElementの表示を更新
         targetRectUpdateElementUseCase();

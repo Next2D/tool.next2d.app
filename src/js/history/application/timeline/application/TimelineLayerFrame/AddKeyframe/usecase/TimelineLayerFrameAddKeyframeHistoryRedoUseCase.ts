@@ -6,6 +6,7 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -60,6 +61,9 @@ export const execute = async (
     if (workSpace.active && movieClip.active) {
         // タイムラインにフレームを追加
         timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
+
+        // 親の基準点の表示を更新
+        screenStandardPointDeployElementUseCase();
 
         // 選択範囲のElementの表示を更新
         targetRectUpdateElementUseCase();

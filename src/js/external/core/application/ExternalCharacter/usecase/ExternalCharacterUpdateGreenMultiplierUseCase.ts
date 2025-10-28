@@ -50,7 +50,7 @@ export const execute = async (
     character.colorTransform[1] = green / 100;
 
     // Elementの更新
-    viewColorSettingGreenMultiplierUseCase(
+    await viewColorSettingGreenMultiplierUseCase(
         work_space,
         movie_clip,
         layer,

@@ -49,7 +49,7 @@ export const execute = async (
     character.colorTransform[6] = Math.floor(before_blue);
 
     // アクティブなら表示を更新
-    viewColorSettingBlueOffsetUseCase(
+    await viewColorSettingBlueOffsetUseCase(
         workSpace,
         movieClip,
         layer,
