@@ -2,12 +2,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Character } from "@/core/domain/model/Character";
-import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
-import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
-import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
-import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as viewTimelineLayerFrameAddKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameAddKeyFrameUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -61,21 +57,11 @@ export const execute = async (
     // 全ての先祖のキャッシュを削除
     cacheRemoveService(workSpace, movieClip.id);
 
-    // アクティブならタイムラインを再描画
-    if (workSpace.active && movieClip.active) {
-        // タイムラインにフレームを追加
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-
-        // 親の基準点の表示を更新
-        screenStandardPointDeployElementUseCase();
-
-        // 選択範囲のElementの表示を更新
-        targetRectUpdateElementUseCase();
-
-        // 変形の中心点の表示を更新
-        screenReferencePointDeployElementUseCase();
-
-        // スクリーンエリアにElementを追加
-        await screenAreaAppendCharacterService(character, layer);
-    }
+    // View側の処理
+    await viewTimelineLayerFrameAddKeyFrameUseCase(
+        workSpace,
+        movieClip,
+        layer,
+        character
+    );
 };

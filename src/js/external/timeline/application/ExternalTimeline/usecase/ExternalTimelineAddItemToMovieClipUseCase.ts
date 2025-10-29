@@ -7,6 +7,7 @@ import { execute as screenAreaAppendCharacterService } from "@/screen/applicatio
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as viewTimelineLayerFrameAddKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameAddKeyFrameUseCase";
 import {
     $FOLDER_TYPE,
     $SOUND_TYPE
@@ -154,13 +155,12 @@ export const execute = async (
             emptyCharacterIndex, receiver
         );
 
-        if (work_space.active && movie_clip.active) {
-
-            // タイムラインのレイヤー表示を更新
-            timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
-
-            // スクリーンエリアにElementを追加
-            await screenAreaAppendCharacterService(character, layer);
-        }
+        // View側の処理
+        await viewTimelineLayerFrameAddKeyFrameUseCase(
+            work_space,
+            movie_clip,
+            layer,
+            character
+        );
     }
 };

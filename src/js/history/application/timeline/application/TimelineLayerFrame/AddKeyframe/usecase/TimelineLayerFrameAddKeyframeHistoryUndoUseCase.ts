@@ -9,6 +9,8 @@ import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controll
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as screenDisplayObjectInactvieElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectInactvieElementService";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -68,6 +70,14 @@ export const execute = async (
     if (workSpace.active && movieClip.active) {
         // スクリーンに追加したElementを削除
         screenAreaRemoveDisplayObjectElementService(layer.id, character.depth);
+
+        for (const [index, depths] of movieClip.selectedDepths) {
+            const layer = movieClip.getLayer(index);
+            if (!layer) {
+                continue;
+            }
+            screenDisplayObjectInactvieElementService(layer, depths);
+        }
     }
 
     // 追加したDisplahyObjectを削除
@@ -80,10 +90,13 @@ export const execute = async (
     // 全ての先祖のキャッシュを削除
     cacheRemoveService(workSpace, movieClip.id);
 
+    if (!workSpace.active) {
+        return ;
+    }
+
     // アクティブならタイムラインを再描画
     // fixed logic
-    if (workSpace.active && movieClip.active) {
-
+    if (movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
 
@@ -98,5 +111,10 @@ export const execute = async (
 
         // プロパティーエリアのデフォルト設定項目を表示
         await propertyAreaShowDefaultSettingItemUseCase(movieClip);
+    } else {
+        await screenAreaRedrawUseCase(workSpace.scene);
+
+        // 変形の中心点の表示を更新
+        screenReferencePointDeployElementUseCase();
     }
 };
