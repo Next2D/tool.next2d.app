@@ -7,6 +7,7 @@ import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/scr
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 import { execute as blendModeSettingUpdateSelectElementService } from "@/controller/application/BlendModeSetting/service/BlendModeSettingUpdateSelectElementService";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description 選択中のElementのブレンドモードを更新する
@@ -21,41 +22,45 @@ import { execute as screenAreaIsCharacterSelectedService } from "@/screen/applic
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
     blend_mode: IBlendMode
-): void => {
+): Promise<void> => {
+
+    if (!work_space.active) {
+        return ;
+    }
 
     // アクティブでない場合は何もしない
-    if (!work_space.active || !movie_clip.active) {
-        return ;
+    if (movie_clip.active) {
+        // Elementの更新
+        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+        if (!element) {
+            return ;
+        }
+
+        const container = element.querySelector(".canvas-container") as HTMLDivElement;
+        if (!container) {
+            return ;
+        }
+
+        // Elementの更新
+        instanceUpdateBlendModeService(container, blend_mode);
+
+        // 選択中のElementがない場合は何もしない
+        if (!movie_clip.selectedDepths.size
+            || !movie_clip.isSingleSelectedOfDisplayObject()
+            || !screenAreaIsCharacterSelectedService(movie_clip, layer, character)
+        ) {
+            return ;
+        }
+
+        // ブレンドモードの選択状態を更新
+        blendModeSettingUpdateSelectElementService(blend_mode);
+    } else {
+        await screenAreaRedrawUseCase(work_space.scene);
     }
-
-    // Elementの更新
-    const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-    if (!element) {
-        return ;
-    }
-
-    const container = element.querySelector(".canvas-container") as HTMLDivElement;
-    if (!container) {
-        return ;
-    }
-
-    // Elementの更新
-    instanceUpdateBlendModeService(container, blend_mode);
-
-    // 選択中のElementがない場合は何もしない
-    if (!movie_clip.selectedDepths.size
-        || !movie_clip.isSingleSelectedOfDisplayObject()
-        || !screenAreaIsCharacterSelectedService(movie_clip, layer, character)
-    ) {
-        return ;
-    }
-
-    // ブレンドモードの選択状態を更新
-    blendModeSettingUpdateSelectElementService(blend_mode);
 };

@@ -5,6 +5,7 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
 import { execute as externalTimelineLayerFrameExtendBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendBehindKeyframeService";
 import { execute as externalTimelineLayerFrameExtendForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendForwardKeyframeService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description 空のキーフレームの削除処理を元に戻す
@@ -74,6 +75,9 @@ export const execute = async (
         // キャラクターを削除
         layer.removeCharacter(character);
     }
+
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {

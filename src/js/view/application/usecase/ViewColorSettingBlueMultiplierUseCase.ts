@@ -6,7 +6,6 @@ import { execute as colorSettingUpdateBlueMultiplierElementValueService } from "
 import { execute as viewColorSettingChangeSvgFromBlueMultiplierUseCase } from "./ViewColorSettingChangeSvgFromBlueMultiplierUseCase";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description 選択中のElementの青色値を更新する
@@ -29,11 +28,12 @@ export const execute = async (
     blue: number
 ): Promise<void> => {
 
-    // 全ての先祖のキャッシュを削除
-    cacheRemoveService(work_space, movie_clip.id);
+    if (!work_space.active) {
+        return ;
+    }
 
     // アクティブでない場合は何もしない
-    if (work_space.active && movie_clip.active) {
+    if (movie_clip.active) {
 
         // Elementの更新
         viewColorSettingChangeSvgFromBlueMultiplierUseCase(character, layer);
@@ -51,8 +51,6 @@ export const execute = async (
 
     } else {
         // プロジェクトがアクティブならViewエリアを再描画
-        if (work_space.active) {
-            await screenAreaRedrawUseCase(work_space.scene);
-        }
+        await screenAreaRedrawUseCase(work_space.scene);
     }
 };

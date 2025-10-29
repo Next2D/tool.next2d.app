@@ -1,6 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as viewColorSettingGreenOffsetUseCase } from "@/view/application/usecase/ViewColorSettingGreenOffsetUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description DisplayObjectの緑色を変更後に戻す
@@ -48,8 +49,11 @@ export const execute = async (
     // データを更新
     character.colorTransform[5] = Math.floor(after_green);
 
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
+
     // アクティブなら表示を更新
-    viewColorSettingGreenOffsetUseCase(
+    await viewColorSettingGreenOffsetUseCase(
         workSpace,
         movieClip,
         layer,

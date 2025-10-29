@@ -91,6 +91,9 @@ export const execute = async (
         }
     }
 
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(work_space, movie_clip.id);
+
     const dx = parseFloat(x.toFixed(2));
     const dy = parseFloat(y.toFixed(2));
     for (let idx = 0; idx < layers.length; idx++) {
@@ -160,7 +163,4 @@ export const execute = async (
             await screenAreaAppendCharacterService(character, layer);
         }
     }
-
-    // 全ての先祖のキャッシュを削除
-    cacheRemoveService(work_space, movie_clip.id);
 };

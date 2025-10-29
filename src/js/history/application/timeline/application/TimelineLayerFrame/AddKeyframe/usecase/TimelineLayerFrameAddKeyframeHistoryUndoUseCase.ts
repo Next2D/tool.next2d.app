@@ -8,6 +8,7 @@ import { execute as targetRectUpdateElementUseCase } from "@/screen/application/
 import { execute as propertyAreaShowDefaultSettingItemUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaShowDefaultSettingItemUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -75,6 +76,9 @@ export const execute = async (
 
     // 選択状態を解除
     movieClip.clearSelectedDepths();
+
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
 
     // アクティブならタイムラインを再描画
     // fixed logic

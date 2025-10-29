@@ -5,7 +5,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateGreenOffsetElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateGreenOffsetElementValueService";
 import { execute as viewColorSettingChangeSvgFromGreenOffsetUseCase } from "./ViewColorSettingChangeSvgFromGreenOffsetUseCase";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
-import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
  * @description 選択中のElementの緑色オフセット値を更新する
@@ -16,37 +16,38 @@ import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveServic
  * @param  {Layer} layer
  * @param  {Character} character
  * @param  {number} green
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
     layer: Layer,
     character: Character,
     green: number
-): void => {
+): Promise<void> => {
 
-    // 全ての先祖のキャッシュを削除
-    cacheRemoveService(work_space, movie_clip.id);
+    if (!work_space.active) {
+        return ;
+    }
 
     // アクティブでない場合は何もしない
-    if (!work_space.active || !movie_clip.active) {
-        return ;
+    if (movie_clip.active) {
+        // Elementの更新
+        viewColorSettingChangeSvgFromGreenOffsetUseCase(character, layer);
+
+        // 選択中のElementがない場合は何もしない
+        if (!movie_clip.selectedDepths.size
+            || !movie_clip.isSingleSelectedOfDisplayObject()
+            || !screenAreaIsCharacterSelectedService(movie_clip, layer, character)
+        ) {
+            return ;
+        }
+
+        // カラーエリアの値を更新
+        colorSettingUpdateGreenOffsetElementValueService(green);
+    } else {
+        await screenAreaRedrawUseCase(work_space.scene);
     }
-
-    // Elementの更新
-    viewColorSettingChangeSvgFromGreenOffsetUseCase(character, layer);
-
-    // 選択中のElementがない場合は何もしない
-    if (!movie_clip.selectedDepths.size
-        || !movie_clip.isSingleSelectedOfDisplayObject()
-        || !screenAreaIsCharacterSelectedService(movie_clip, layer, character)
-    ) {
-        return ;
-    }
-
-    // カラーエリアの値を更新
-    colorSettingUpdateGreenOffsetElementValueService(green);
 };

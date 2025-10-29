@@ -2,6 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { IBlendMode } from "@/interface/IBlendMode";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as viewBlendModeSettingBlendModeUseCase } from "@/view/application/usecase/ViewBlendModeSettingBlendModeUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description DisplayObjectのブレンドーモードを変更後に戻す
@@ -49,8 +50,11 @@ export const execute = async (
     // データを更新
     character.blendMode = after_blend_mode;
 
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
+
     // アクティブなら表示を更新
-    viewBlendModeSettingBlendModeUseCase(
+    await viewBlendModeSettingBlendModeUseCase(
         workSpace,
         movieClip,
         layer,

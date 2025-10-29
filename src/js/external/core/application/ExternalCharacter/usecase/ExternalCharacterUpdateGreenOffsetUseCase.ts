@@ -4,6 +4,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as characterUpdateGreenOffsetHistoryUseCase } from "@/history/application/controller/application/ColorSetting/UpdateGreenOffset/usecase/CharacterUpdateGreenOffsetHistoryUseCase";
 import { execute as viewColorSettingGreenOffsetUseCase } from "@/view/application/usecase/ViewColorSettingGreenOffsetUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 import { $clamp } from "@/global/GlobalUtil";
 
 /**
@@ -49,8 +50,11 @@ export const execute = async (
     // greenを更新前の値に戻す
     character.colorTransform[5] = green;
 
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(work_space, movie_clip.id);
+
     // Elementの更新
-    viewColorSettingGreenOffsetUseCase(
+    await viewColorSettingGreenOffsetUseCase(
         work_space,
         movie_clip,
         layer,

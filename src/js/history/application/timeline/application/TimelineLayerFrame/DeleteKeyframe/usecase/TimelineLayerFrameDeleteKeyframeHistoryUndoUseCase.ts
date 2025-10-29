@@ -6,6 +6,7 @@ import { execute as externalTimelineLayerFrameExtendBehindKeyframeService } from
 import { execute as externalTimelineLayerFrameExtendForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendForwardKeyframeService";
 import { Character } from "@/core/domain/model/Character";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description キーフレームの削除処理を元に戻す
@@ -74,6 +75,9 @@ export const execute = async (
         // レイヤーに登録
         layer.addCharacter(character);
     }
+
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {

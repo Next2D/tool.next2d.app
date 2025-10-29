@@ -1,6 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as viewColorSettingAlphaOffsetUseCase } from "@/view/application/usecase/ViewColorSettingAlphaOffsetUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description DisplayObjectの透明度を変更後に戻す
@@ -47,6 +48,9 @@ export const execute = async (
 
     // データを更新
     character.colorTransform[7] = Math.floor(after_alpha);
+
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
 
     // アクティブなら表示を更新
     await viewColorSettingAlphaOffsetUseCase(

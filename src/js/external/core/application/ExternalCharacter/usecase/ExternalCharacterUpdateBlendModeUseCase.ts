@@ -5,6 +5,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IBlendMode } from "@/interface/IBlendMode";
 import { execute as characterUpdateBlendModeHistoryUseCase } from "@/history/application/controller/application/BlendModeSetting/UpdateBlendMode/usecase/CharacterUpdateBlendModeHistoryUseCase";
 import { execute as viewBlendModeSettingBlendModeUseCase } from "@/view/application/usecase/ViewBlendModeSettingBlendModeUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description キャラクターのblendModeを更新する
@@ -48,8 +49,11 @@ export const execute = async (
     // blendModeを更新
     character.blendMode = blend_mode;
 
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(work_space, movie_clip.id);
+
     // Elementの更新
-    viewBlendModeSettingBlendModeUseCase(
+    await viewBlendModeSettingBlendModeUseCase(
         work_space,
         movie_clip,
         layer,

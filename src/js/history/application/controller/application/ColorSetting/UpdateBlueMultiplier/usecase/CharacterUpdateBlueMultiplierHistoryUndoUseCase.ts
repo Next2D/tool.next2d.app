@@ -1,6 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as viewColorSettingBlueMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingBlueMultiplierUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description DisplayObjectの青色値を変更前に戻す
@@ -47,6 +48,9 @@ export const execute = async (
 
     // データを更新
     character.colorTransform[2] = Math.floor(before_blue) / 100;
+
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
 
     // アクティブなら表示を更新
     await viewColorSettingBlueMultiplierUseCase(
