@@ -3,9 +3,9 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateGreenOffsetElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateGreenOffsetElementValueService";
-import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as viewColorSettingChangeSvgFromGreenOffsetUseCase } from "./ViewColorSettingChangeSvgFromGreenOffsetUseCase";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description 選択中のElementの緑色オフセット値を更新する
@@ -28,8 +28,8 @@ export const execute = (
     green: number
 ): void => {
 
-    // 先祖のキャッシュを削除する
-    timelineSceneListCacheRemoveService(work_space);
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(work_space, movie_clip.id);
 
     // アクティブでない場合は何もしない
     if (!work_space.active || !movie_clip.active) {

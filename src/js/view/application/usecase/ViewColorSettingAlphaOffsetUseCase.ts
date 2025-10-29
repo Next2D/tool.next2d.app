@@ -4,10 +4,9 @@ import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateAlphaOffsetElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateAlphaOffsetElementValueService";
 import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
-import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { $removeLibraryCache } from "@/cache/CacheUtil";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description 選択中のElementのアルファオフセット値を更新する
@@ -30,11 +29,8 @@ export const execute = async (
     alpha: number
 ): Promise<void> => {
 
-    // 先祖のキャッシュを削除する
-    timelineSceneListCacheRemoveService(work_space);
-
-    // 自分のキャッシュを削除する
-    $removeLibraryCache(work_space.id, movie_clip.id);
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(work_space, movie_clip.id);
 
     // アクティブでない場合は何もしない
     if (work_space.active && movie_clip.active) {

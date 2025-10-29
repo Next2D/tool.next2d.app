@@ -4,8 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateScaleXHistoryUseCase } from "@/history/application/controller/application/TransformSetting/UpdateScaleX/usecase/CharacterUpdateScaleXHistoryUseCase";
 import { execute as viewTransformSettingUpdateScaleXUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateScaleXUseCase";
-import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
-import { $removeLibraryCache } from "@/cache/CacheUtil";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description DisplayObjectのxスケールを更新
@@ -51,11 +50,8 @@ export const execute = async (
         receiver
     );
 
-    // 先祖のキャッシュを削除する
-    timelineSceneListCacheRemoveService(work_space);
-
-    // 自分のキャッシュを削除する
-    $removeLibraryCache(work_space.id, movie_clip.id);
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(work_space, movie_clip.id);
 
     // 表示を更新
     await viewTransformSettingUpdateScaleXUseCase(

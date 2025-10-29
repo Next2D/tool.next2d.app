@@ -6,7 +6,7 @@ import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/histor
 import { execute as screenAreaAppendCharacterService } from "@/screen/application/ScreenArea/service/ScreenAreaAppendCharacterService";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase";
-import { execute as timelineSceneListCacheRemoveService } from "@/timeline/application/TimelineSceneList/service/TimelineSceneListCacheRemoveService";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 import {
     $FOLDER_TYPE,
     $SOUND_TYPE
@@ -106,7 +106,7 @@ export const execute = async (
 
         // 外部アイテムを読み込む
         // fixed logic
-        character.loadExternalItem(item);
+        character.loadExternalItem(item, movie_clip);
 
         // 配置位置を設定
         // fixed logic
@@ -161,6 +161,6 @@ export const execute = async (
         }
     }
 
-    // 先祖のキャッシュを削除
-    timelineSceneListCacheRemoveService(work_space);
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(work_space, movie_clip.id);
 };

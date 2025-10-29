@@ -153,15 +153,6 @@ export class Character
     public parentMovieClipId: number;
 
     /**
-     * @description 親CharacterのID
-     *              Parent Character ID
-     *
-     * @member {number}
-     * @public
-     */
-    public parentCharacterId: number;
-
-    /**
      * @constructor
      * @public
      */
@@ -179,7 +170,6 @@ export class Character
 
         // 継承用ID
         this.parentMovieClipId = -1;
-        this.parentCharacterId = -1;
 
         this.filters = [];
         this.referencePosition = new ReferencePosition(this);
@@ -441,13 +431,15 @@ export class Character
      *              Load from external item object
      *
      * @param  {ExternalItem} item
+     * @param  {MovieClip} movie_clip
      * @return {void}
      * @method
      * @public
      */
-    loadExternalItem (item: IExternalItem<any>): void
+    loadExternalItem (item: IExternalItem<any>, parent_movie_clip: MovieClip): void
     {
         this.libraryId = item.id;
+        this.parentMovieClipId = parent_movie_clip.id;
     }
 
     /**
@@ -513,7 +505,6 @@ export class Character
             "startFrame": this.startFrame,
             "endFrame": this.endFrame,
             "name": this.name,
-            "parentCharacterId": this.parentCharacterId,
             "parentMovieClipId": this.parentMovieClipId,
             "referencePosition": this.referencePosition.toObject()
         };
