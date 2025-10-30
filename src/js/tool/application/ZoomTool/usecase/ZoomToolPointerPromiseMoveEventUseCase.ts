@@ -59,10 +59,11 @@ export const execute = async (event: PointerEvent): Promise<void> =>
             $zoomTimerId = setTimeout(async (): Promise<void> =>
             {
                 const workSpace = $getCurrentWorkSpace();
-                await screenAreaRedrawUseCase(workSpace.scene);
+                const movieClip = workSpace.scene;
+                await screenAreaRedrawUseCase(movieClip);
 
                 // 選択中のDisplayObjectをアクティブ表示にする
-                screenDisplayObjectAllSelectedActiveUseCase();
+                screenDisplayObjectAllSelectedActiveUseCase(movieClip);
             }, 100);
 
             resolve();

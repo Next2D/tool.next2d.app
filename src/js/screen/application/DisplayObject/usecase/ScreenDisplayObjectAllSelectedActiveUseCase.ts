@@ -1,29 +1,28 @@
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import { execute as screenDisplayObjectActvieElementService } from "../service/ScreenDisplayObjectActvieElementService";
+import { execute as screenDisplayObjectActiveElementService } from "../service/ScreenDisplayObjectActiveElementService";
+import type { MovieClip } from "@/core/domain/model/MovieClip";
 
 /**
  * @description すべての選択されたDisplayObjectをアクティブ表示にする
  *              Make all selected DisplayObjects active
  *
+ * @param  {MovieClip} movie_clip
  * @return {void}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = (movie_clip: MovieClip): void =>
 {
-    const workSpace = $getCurrentWorkSpace();
-    const movieClip = workSpace.scene;
-    if (!movieClip.selectedDepths.size) {
+    if (!movie_clip.selectedDepths.size) {
         return ;
     }
 
-    for (const [layerIndex, depths] of movieClip.selectedDepths) {
+    for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
-        const layer = movieClip.getLayer(layerIndex);
+        const layer = movie_clip.getLayer(layerIndex);
         if (!layer) {
             continue;
         }
 
-        screenDisplayObjectActvieElementService(layer, depths);
+        screenDisplayObjectActiveElementService(layer, depths);
     }
 };

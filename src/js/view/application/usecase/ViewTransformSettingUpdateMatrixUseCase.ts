@@ -17,7 +17,7 @@ import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as screenDisplayObjectActiveElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectActvieElementService";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
  * @description 行列を更新した際のViewエリアの表示要素を更新
@@ -114,16 +114,7 @@ export const execute = async (
             targetRectUpdateElementUseCase();
 
             // 再描画したので、選択中のElementをアクティブにする
-            const movieClip = work_space.scene;
-            for (const [layerIndex, depths] of movieClip.selectedDepths) {
-
-                const layer = movieClip.getLayer(layerIndex);
-                if (!layer) {
-                    continue;
-                }
-
-                screenDisplayObjectActiveElementService(layer, depths);
-            }
+            screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
         }
     }
 };

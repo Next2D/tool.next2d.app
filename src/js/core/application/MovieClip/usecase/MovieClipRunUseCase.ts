@@ -86,5 +86,5 @@ export const execute = async (movie_clip: MovieClip): Promise<void> =>
     await screenAreaRedrawUseCase(movie_clip);
 
     // fixed logic 描画後に実行する。選択されているDisplayObjectをアクティブ表示にする
-    screenDisplayObjectAllSelectedActiveUseCase();
+    screenDisplayObjectAllSelectedActiveUseCase(movie_clip);
 };

@@ -8,7 +8,7 @@ import { execute as targetRectUpdateElementUseCase } from "@/screen/application/
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as screenDisplayObjectActiveElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectActvieElementService";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
  * @description スクリーンへのDisplayObjectの追加表示処理
@@ -57,15 +57,6 @@ export const execute = async (
 
         // 再描画したので、選択中のElementをアクティブにする
         // fixed logic
-        const movieClip = work_space.scene;
-        for (const [layerIndex, depths] of movieClip.selectedDepths) {
-
-            const layer = movieClip.getLayer(layerIndex);
-            if (!layer) {
-                continue;
-            }
-
-            screenDisplayObjectActiveElementService(layer, depths);
-        }
+        screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
     }
 };

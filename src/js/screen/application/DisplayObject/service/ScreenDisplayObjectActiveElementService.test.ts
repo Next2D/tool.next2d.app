@@ -1,4 +1,4 @@
-import { execute } from "./ScreenDisplayObjectActvieElementService";
+import { execute } from "./ScreenDisplayObjectActiveElementService";
 import { $SCREEN_STAGE_AREA_ID } from "../../../../config/ScreenConfig";
 import { Layer } from "../../../../core/domain/model/Layer";
 import { describe, expect, it } from "vitest";

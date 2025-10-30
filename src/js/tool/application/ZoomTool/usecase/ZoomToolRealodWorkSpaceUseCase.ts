@@ -79,9 +79,10 @@ export const execute = async (scale: number, redraw: boolean = true): Promise<vo
 
     // スクリーンを再描画
     if (redraw) {
-        await screenAreaRedrawUseCase(workSpace.scene);
+        const movieClip = workSpace.scene;
+        await screenAreaRedrawUseCase(movieClip);
 
         // 選択中のDisplayObjectをアクティブ表示にする
-        screenDisplayObjectAllSelectedActiveUseCase();
+        screenDisplayObjectAllSelectedActiveUseCase(movieClip);
     }
 };

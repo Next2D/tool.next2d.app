@@ -5,7 +5,7 @@ import { execute as targetRectUpdateElementUseCase } from "@/screen/application/
 import { execute as propertyAreaChangeDisplayUseCase } from "@/controller/application/PropertyArea/usecase/PropertyAreaChangeDisplayUseCase";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
-import { execute as screenDisplayObjectActvieElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectActvieElementService";
+import { execute as screenDisplayObjectActiveElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectActiveElementService";
 import { execute as timelineToolPlayStopUseCase } from "@/timeline/application/TimelineTool/application/PlayStop/usecase/TimelineToolPlayStopUseCase";
 import { timelineHeader } from "@/timeline/domain/model/TimelineHeader";
 
@@ -50,7 +50,7 @@ export const execute = (
         }
 
         // 選択状態のDisplayObjectをアクティブにする
-        screenDisplayObjectActvieElementService(layer, depths);
+        screenDisplayObjectActiveElementService(layer, depths);
 
         // 表示範囲を更新
         targetRectUpdateElementUseCase();
