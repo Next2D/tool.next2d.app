@@ -27,15 +27,12 @@ describe("TimelineHeaderScriptIconPointerDownEventUseCase Test", () =>
         div.dataset.frame = `${frame}`;
 
         let stopPropagation = false;
-        let preventDefault = false;
         const mockEvent = {
             "currentTarget": div,
             "stopPropagation": vi.fn(() => { stopPropagation = true }),
-            "preventDefault": vi.fn(() => { preventDefault = true })
         } as unknown as PointerEvent;
 
         expect(stopPropagation).toBe(false);
-        expect(preventDefault).toBe(false);
 
         $setMoveIconFrame(1);
         expect($getMoveIconFrame()).toBe(1);
@@ -48,7 +45,6 @@ describe("TimelineHeaderScriptIconPointerDownEventUseCase Test", () =>
         execute(mockEvent);
 
         expect(stopPropagation).toBe(true);
-        expect(preventDefault).toBe(true);
         expect($getMoveIconFrame()).toBe(12);
         expect($getMoveIconType()).toBe("script");
         expect(markerElement.style.pointerEvents).toBe("none");

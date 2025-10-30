@@ -3,7 +3,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameDeleteEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteEmptyKeyframeUseCase";
 import { execute as externalTimelineLayerFrameDeleteKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteKeyframeUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 import { execute as viewTimelineLayerFrameDeleteKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameDeleteKeyFrameUseCase";
 
