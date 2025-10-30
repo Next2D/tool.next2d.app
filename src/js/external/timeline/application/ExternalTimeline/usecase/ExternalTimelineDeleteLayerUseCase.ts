@@ -1,9 +1,8 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
-import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as viewTimelineLayerDeleteUseCase } from "@/view/application/usecase/ViewTimelineLayerDeleteUseCase";
 import {
     $GUIDE_MODE,
     $MASK_MODE
@@ -111,13 +110,10 @@ export const execute = async (
     // フレーム選択を初期化
     movie_clip.clearSelectedFrame();
 
-    // レイヤー更新によるタイムラインの再描画
-    if (work_space.active && movie_clip.active) {
-        // レイヤーの再描画
-        externalLayerUpdateReloadUseCase();
-
-        if (reload) {
-            await screenAreaRedrawUseCase(movie_clip);
-        }
-    }
+    // Viewの表示を更新
+    await viewTimelineLayerDeleteUseCase(
+        work_space,
+        movie_clip,
+        reload
+    );
 };

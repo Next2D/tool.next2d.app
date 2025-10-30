@@ -50,12 +50,13 @@ export const execute = async (
         // スクリーンエリアにElementを追加
         await screenAreaAppendCharacterService(character, layer);
     } else {
-        await screenAreaRedrawUseCase(work_space.scene);
-
         // 変形の中心点の表示を更新
         screenReferencePointDeployElementUseCase();
 
+        await screenAreaRedrawUseCase(work_space.scene);
+
         // 再描画したので、選択中のElementをアクティブにする
+        // fixed logic
         const movieClip = work_space.scene;
         for (const [layerIndex, depths] of movieClip.selectedDepths) {
 

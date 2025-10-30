@@ -6,6 +6,7 @@ import { execute as externalTimelineLayerFrameRemoveKeyFramesUseCase } from "./E
 import { execute as externalTimelineLayerFrameEraseEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameEraseEmptyKeyframeUseCase";
 import { execute as externalTimelineLayerFrameEraseKeyframeUseCase } from "./ExternalTimelineLayerFrameEraseKeyframeUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description 指定レイヤーの指定範囲のフレームを削除
@@ -162,8 +163,18 @@ export const execute = async (
         }
     }
 
-    // スクリーンを再描画
-    if (reload && work_space.active && movie_clip.active) {
+    // キャッシュの削除
+    cacheRemoveService(work_space, movie_clip.id);
+
+    if (!work_space.active) {
+        return ;
+    }
+
+    if (movie_clip.active) {
+        if (reload) {
+            await screenAreaRedrawUseCase(movie_clip);
+        }
+    } else {
         await screenAreaRedrawUseCase(movie_clip);
     }
 };

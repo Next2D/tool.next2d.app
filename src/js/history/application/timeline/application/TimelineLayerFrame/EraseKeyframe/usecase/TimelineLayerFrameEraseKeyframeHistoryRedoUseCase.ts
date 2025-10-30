@@ -1,9 +1,9 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as viewTimelineLayerFrameEraseKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameEraseKeyFrameUseCase";
 
 /**
  * @description キーフレームのフレーム全削除処理を元に戻す
@@ -66,12 +66,13 @@ export const execute = async (
         endFrame - startFrame
     );
 
-    // アクティブならタイムラインを再描画
-    if (workSpace.active && movieClip.active) {
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
+    // キャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
 
-        // スクリーンエリアを再描画
-        await screenAreaRedrawUseCase(movieClip);
-    }
+    // Viewを更新
+    await viewTimelineLayerFrameEraseKeyFrameUseCase(
+        workSpace,
+        movieClip,
+        layer
+    );
 };

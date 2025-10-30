@@ -46,7 +46,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを終了
     event.stopPropagation();
-    event.preventDefault();
 
     // マーカーのイベントを無効化
     const markerElement = document.getElementById($TIMELINE_MARKER_ID);

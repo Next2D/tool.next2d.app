@@ -1,12 +1,11 @@
 import type { ILayerSaveObject } from "@/interface/ILayerSaveObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { $GUIDE_IN_MODE, $GUIDE_MODE, $MASK_IN_MODE, $MASK_MODE } from "@/config/LayerModeConfig";
 import { ILayerMode } from "@/interface/ILayerMode";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
+import { execute as viewTimelineLayerDeleteUseCase } from "@/view/application/usecase/ViewTimelineLayerDeleteUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description 削除したレイヤーを元の配置に元に戻す
@@ -78,16 +77,14 @@ export const execute = async (
         childLayer.parentId = layer.id;
     }
 
-    // レイヤー更新によるタイムラインの再描画
-    if (workSpace.active && movieClip.active) {
-        externalLayerUpdateReloadUseCase();
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
 
-        // スクリーンの選択範囲elementを非表示
-        targetRectHideElementService();
-
-        const activeCharacters = layer.getActiveCharacters(movieClip.currentFrame);
-        if (activeCharacters.length) {
-            await screenAreaRedrawUseCase(movieClip);
-        }
-    }
+    // View側の表示更新
+    const activeCharacters = layer.getActiveCharacters(movieClip.currentFrame);
+    await viewTimelineLayerDeleteUseCase(
+        workSpace,
+        movieClip,
+        activeCharacters.length > 0
+    );
 };

@@ -53,7 +53,6 @@ export const execute = (event: PointerEvent): void =>
 
     // 親のイベントを終了
     event.stopPropagation();
-    event.preventDefault();
 
     // 移動するアイコンのタイプをセット
     $setMoveIconType("script");

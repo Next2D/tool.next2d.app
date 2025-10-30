@@ -42,8 +42,7 @@ export const execute = (element: HTMLElement): void =>
     // ポインターダウンイベント
     // fixed logic (イベントの順番を変えないこと)
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineHeaderPointerDownEventUseCase,
-        { "passive": false }
+        timelineHeaderPointerDownEventUseCase
     );
 
     // ラベルアイコン

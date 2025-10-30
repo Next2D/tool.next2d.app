@@ -4,6 +4,8 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
 import { execute as externalTimelineLayerFrameDeleteEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteEmptyKeyframeUseCase";
 import { execute as externalTimelineLayerFrameDeleteKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteKeyframeUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as viewTimelineLayerFrameDeleteKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameDeleteKeyFrameUseCase";
 
 /**
  * @description 指定レイヤーの指定範囲のキーフレームを削除
@@ -94,8 +96,13 @@ export const execute = async (
         }
     }
 
-    if (reload && work_space.active && movie_clip.active) {
-        // スクリーンを再描画
-        await screenAreaRedrawUseCase(movie_clip);
-    }
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(work_space, movie_clip.id);
+
+    // Viewを更新
+    viewTimelineLayerFrameDeleteKeyFrameUseCase(
+        work_space,
+        movie_clip,
+        reload
+    );
 };
