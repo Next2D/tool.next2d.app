@@ -38,13 +38,20 @@ export const execute = async (
     character: Character
 ): Promise<void> => {
 
+    if (!work_space.active) {
+        return;
+    }
+
+    // 変形の中心点のElementを再配置
+    screenReferencePointDeployElementUseCase();
+
+    // 選択範囲のElementを移動
+    targetRectUpdateElementUseCase();
+
     // アクティブなら表示を更新
-    if (work_space.active && movie_clip.active) {
+    if (movie_clip.active) {
 
         if (movie_clip.selectedDepths.size) {
-
-            // 変形の中心点のElementを再配置
-            screenReferencePointDeployElementUseCase();
 
             if (movie_clip.isSingleSelectedOfDisplayObject()) {
                 // 変更対象のDisplayObjectを選択中であれば、xスケールの値を更新
@@ -66,9 +73,6 @@ export const execute = async (
                     );
                 }
             } else {
-
-                // 選択範囲のElementを移動
-                targetRectUpdateElementUseCase();
 
                 // 変形エリアの値を更新
                 const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
@@ -102,17 +106,10 @@ export const execute = async (
         }
     } else {
         // プロジェクトがアクティブならViewエリアを再描画
-        if (work_space.active) {
-            await screenAreaRedrawUseCase(work_space.scene);
+        await screenAreaRedrawUseCase(work_space.scene);
 
-            // 変形の中心点のElementを再配置
-            screenReferencePointDeployElementUseCase();
-
-            // 選択範囲のElementを移動
-            targetRectUpdateElementUseCase();
-
-            // 再描画したので、選択中のElementをアクティブにする
-            screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
-        }
+        // 再描画したので、選択中のElementをアクティブにする
+        // fixed logic
+        screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
     }
 };

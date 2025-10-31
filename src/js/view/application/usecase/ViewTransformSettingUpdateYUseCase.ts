@@ -38,6 +38,12 @@ export const execute = async (
         return ;
     }
 
+    // 変形の中心点のElementを再配置
+    screenReferencePointDeployElementUseCase();
+
+    // 選択範囲のElementを移動
+    targetRectUpdateElementUseCase();
+
     // アクティブなら表示を更新
     if (movie_clip.active) {
 
@@ -45,9 +51,6 @@ export const execute = async (
         screenAreaMoveDisplayObjectElementUseCase(layer, character);
 
         if (movie_clip.selectedDepths.size) {
-
-            // 変形の中心点のElementを再配置
-            screenReferencePointDeployElementUseCase();
 
             if (movie_clip.isSingleSelectedOfDisplayObject()) {
                 // 変更対象のDisplayObjectを選択中であれば、x座標の値を更新
@@ -59,10 +62,6 @@ export const execute = async (
                     transformSettingUpdateYElementService(character.y);
                 }
             } else {
-
-                // 選択範囲のElementを移動
-                targetRectUpdateElementUseCase();
-
                 // 選択範囲のバウンディングボックスを取得
                 const bounds = screenAreaCalcSelectedBoundsService(movie_clip);
                 if (bounds) {
@@ -85,13 +84,8 @@ export const execute = async (
     } else {
         await screenAreaRedrawUseCase(work_space.scene);
 
-        // 変形の中心点のElementを再配置
-        screenReferencePointDeployElementUseCase();
-
-        // 選択範囲のElementを移動
-        targetRectUpdateElementUseCase();
-
         // 再描画したので、選択中のElementをアクティブにする
+        // fixed logic
         screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
     }
 };

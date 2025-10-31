@@ -3,6 +3,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description キーフレームのフレーム削除処理を元に戻す
@@ -63,6 +64,9 @@ export const execute = async (
         }
         activeCharacter.endFrame = after_end_frame;
     }
+
+    // キャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
 
     // アクティブならタイムラインを再描画
     if (workSpace.active && movieClip.active) {

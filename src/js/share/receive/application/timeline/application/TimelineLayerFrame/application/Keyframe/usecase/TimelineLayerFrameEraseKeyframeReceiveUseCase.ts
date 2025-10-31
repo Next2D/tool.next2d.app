@@ -5,6 +5,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameEraseKeyframeUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameEraseKeyframeUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as viewTimelineLayerFrameEraseKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameEraseKeyFrameUseCase";
 
 /**
  * @description キーフレームのフレーム全削除を実行
@@ -56,11 +57,10 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         true
     );
 
-    if (workSpace.active && movieClip.active) {
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-
-        // スクリーンエリアを再描画
-        await screenAreaRedrawUseCase(movieClip);
-    }
+    // Viewの更新
+    await viewTimelineLayerFrameEraseKeyFrameUseCase(
+        workSpace,
+        movieClip,
+        layer
+    );
 };

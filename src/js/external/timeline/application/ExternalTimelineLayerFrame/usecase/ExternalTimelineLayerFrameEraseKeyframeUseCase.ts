@@ -4,6 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
 import { execute as timelineLayerFrameEraseKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/EraseKeyframe/usecase/TimelineLayerFrameEraseKeyframeHistoryUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description キーフレームのフレームを全て削除
@@ -53,4 +54,7 @@ export const execute = async (
         }
         layer.removeCharacter(character);
     }
+
+    // キャッシュの削除
+    cacheRemoveService(work_space, movie_clip.id);
 };

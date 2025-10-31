@@ -33,26 +33,24 @@ export const execute = async (
         return ;
     }
 
+    // 選択範囲のElementの表示を更新
+    targetRectUpdateElementUseCase();
+
+    // 変形の中心点の表示を更新
+    screenReferencePointDeployElementUseCase();
+
     // アクティブならタイムラインを再描画
     if (movie_clip.active) {
         // タイムラインにフレームを追加
         timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
 
-        // 親の基準点の表示を更新
+        // 基準点の表示を更新
         screenStandardPointDeployElementUseCase();
 
-        // 選択範囲のElementの表示を更新
-        targetRectUpdateElementUseCase();
-
-        // 変形の中心点の表示を更新
-        screenReferencePointDeployElementUseCase();
-
-        // スクリーンエリアにElementを追加
+        // スクリーンにCharacterを追加
         await screenAreaAppendCharacterService(character, layer);
     } else {
-        // 変形の中心点の表示を更新
-        screenReferencePointDeployElementUseCase();
-
+        // スクリーンを再描画
         await screenAreaRedrawUseCase(work_space.scene);
 
         // 再描画したので、選択中のElementをアクティブにする

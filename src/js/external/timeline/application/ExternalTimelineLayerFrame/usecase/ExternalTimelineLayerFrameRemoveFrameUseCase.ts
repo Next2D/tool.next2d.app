@@ -163,9 +163,6 @@ export const execute = async (
         }
     }
 
-    // キャッシュの削除
-    cacheRemoveService(work_space, movie_clip.id);
-
     if (!work_space.active) {
         return ;
     }

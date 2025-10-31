@@ -5,6 +5,7 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
  * @description タイムラインのキーフレーム削除後のView更新
@@ -40,8 +41,16 @@ export const execute = async (
 
         // 画面を再描画
         await screenAreaRedrawUseCase(movie_clip);
-    } else {
 
+        // 選択中のDisplayObjectをアクティブ表示に更新
+        // fixed logic
+        screenDisplayObjectAllSelectedActiveUseCase(movie_clip);
+    } else {
+        // 画面を再描画
         await screenAreaRedrawUseCase(work_space.scene);
+
+        // 選択中のDisplayObjectをアクティブ表示に更新
+        // fixed logic
+        screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
     }
 };
