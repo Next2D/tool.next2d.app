@@ -15,6 +15,9 @@ on:
 jobs:
   macos-browser-test:
     runs-on: macos-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -23,6 +26,9 @@ jobs:
 
   windows-browser-test:
     runs-on: windows-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
