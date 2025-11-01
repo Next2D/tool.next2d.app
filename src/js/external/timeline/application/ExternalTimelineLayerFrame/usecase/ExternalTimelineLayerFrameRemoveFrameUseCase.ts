@@ -6,7 +6,6 @@ import { execute as externalTimelineLayerFrameRemoveKeyFramesUseCase } from "./E
 import { execute as externalTimelineLayerFrameEraseEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameEraseEmptyKeyframeUseCase";
 import { execute as externalTimelineLayerFrameEraseKeyframeUseCase } from "./ExternalTimelineLayerFrameEraseKeyframeUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**
  * @description 指定レイヤーの指定範囲のフレームを削除
