@@ -46,11 +46,14 @@ export const execute = async (
         // fixed logic
         screenDisplayObjectAllSelectedActiveUseCase(movie_clip);
     } else {
+
+        const movieClip = work_space.scene;
+
         // 画面を再描画
-        await screenAreaRedrawUseCase(work_space.scene);
+        await screenAreaRedrawUseCase(movieClip);
 
         // 選択中のDisplayObjectをアクティブ表示に更新
         // fixed logic
-        screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
+        screenDisplayObjectAllSelectedActiveUseCase(movieClip);
     }
 };

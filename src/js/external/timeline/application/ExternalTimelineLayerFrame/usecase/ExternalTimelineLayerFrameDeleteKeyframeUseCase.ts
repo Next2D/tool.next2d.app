@@ -2,7 +2,6 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameExtendBehindKeyframeService } from "../service/ExternalTimelineLayerFrameExtendBehindKeyframeService";
 import { execute as externalTimelineLayerFrameExtendForwardKeyframeService } from "../service/ExternalTimelineLayerFrameExtendForwardKeyframeService";
 import { execute as timelineLayerFrameDeleteKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/DeleteKeyframe/usecase/TimelineLayerFrameDeleteKeyframeHistoryUseCase";
@@ -62,10 +61,5 @@ export const execute = async (
             continue;
         }
         layer.removeCharacter(character);
-    }
-
-    // タイムラインのレイヤー表示を更新
-    if (work_space.active && movie_clip.active) {
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
     }
 };

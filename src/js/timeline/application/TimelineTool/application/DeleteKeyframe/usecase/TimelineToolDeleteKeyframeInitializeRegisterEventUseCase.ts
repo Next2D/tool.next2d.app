@@ -1,6 +1,6 @@
 import { $TIMELINE_DELETE_KEYFRAME_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolDeleteKeyframeMouseDownEventUseCase } from "./TimelineToolDeleteKeyframeMouseDownEventUseCase";
+import { execute as timelineToolDeleteKeyframePointerDownEventUseCase } from "./TimelineToolDeleteKeyframePointerDownEventUseCase";
 
 /**
  * @description フレーム削除ボタンのイベント登録
@@ -21,6 +21,6 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineToolDeleteKeyframeMouseDownEventUseCase
+        timelineToolDeleteKeyframePointerDownEventUseCase
     );
 };
