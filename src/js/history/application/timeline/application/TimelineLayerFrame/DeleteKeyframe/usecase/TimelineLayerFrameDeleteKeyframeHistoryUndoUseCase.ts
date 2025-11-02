@@ -79,8 +79,13 @@ export const execute = async (
     // 全ての先祖のキャッシュを削除
     cacheRemoveService(workSpace, movieClip.id);
 
+    // プロジェクトがアクティブでなければ終了
+    if (!workSpace.active) {
+        return ;
+    }
+
     // アクティブならタイムラインを再描画
-    if (workSpace.active && movieClip.active) {
+    if (movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
     }
