@@ -45,7 +45,6 @@ describe("CharacterLoadService Test", () =>
             startFrame: 0,
             endFrame: 0,
             name: "",
-            parentCharacterId: "",
             parentMovieClipId: "",
             matrix: { set: () => {} },
             colorTransform: { set: () => {} },
@@ -59,13 +58,11 @@ describe("CharacterLoadService Test", () =>
             startFrame: 1,
             endFrame: 10,
             name: "testCharacter",
-            parentCharacterId: "parent-char-id",
             parentMovieClipId: "parent-mc-id"
         };
 
         execute(character as any, saveObject as any);
 
-        expect(character.parentCharacterId).toBe("parent-char-id");
         expect(character.parentMovieClipId).toBe("parent-mc-id");
     });
 

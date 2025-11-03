@@ -50,21 +50,23 @@ export const execute = async (
     // キャッシュを削除
     cacheRemoveService(workSpace, movieClip.id);
 
+    const activeEmptyCharacter = layer.getActiveEmptyCharacter(keyframe);
+    if (activeEmptyCharacter) {
+        // 空のキーフレームを削除
+        layer.removeEmptyCharacter(activeEmptyCharacter);
+
+        // タイムラインを更新
+        if (workSpace.active && movieClip.active) {
+            timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
+        }
+    }
+
     if (!workSpace.active) {
         return ;
     }
 
     // アクティブであれば、スクリーンにelementを追加して、タイムラインの表示を更新
     if (movieClip.active) {
-        const activeEmptyCharacter = layer.getActiveEmptyCharacter(keyframe);
-        if (activeEmptyCharacter) {
-            // 空のキーフレームを削除
-            layer.removeEmptyCharacter(activeEmptyCharacter);
-
-            // タイムラインを更新
-            timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-        }
-
         // スクリーンを再描画
         await screenAreaRedrawUseCase(movieClip);
     }

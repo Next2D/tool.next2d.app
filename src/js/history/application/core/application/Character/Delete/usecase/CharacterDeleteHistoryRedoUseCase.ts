@@ -1,9 +1,8 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
+import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 import { execute as viewCharacterDeleteUseCase } from "@/view/core/Character/usecase/ViewCharacterDeleteUseCase";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
-import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
@@ -54,6 +53,27 @@ export const execute = async (
     // キャッシュを削除
     cacheRemoveService(workSpace, movieClip.id);
 
+    // キーフレームが空で、空のキーフレームが存在しない場合は、空のキーフレームを追加
+    const activeCharacters = layer.getActiveCharacters(keyframe);
+    if (!activeCharacters.length) {
+
+        const activeEmptyCharacter = layer
+            .getActiveEmptyCharacter(keyframe);
+
+        if (!activeEmptyCharacter) {
+
+            const emptyCharacter = new EmptyCharacter();
+            emptyCharacter.startFrame = character.startFrame;
+            emptyCharacter.endFrame   = character.endFrame;
+            layer.addEmptyCharacter(emptyCharacter);
+
+            // タイムラインにフレームを追加
+            if (workSpace.active && movieClip.active) {
+                timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
+            }
+        }
+    }
+
     if (!workSpace.active) {
         return ;
     }
@@ -62,24 +82,6 @@ export const execute = async (
 
         // 選択を初期化
         movieClip.clearSelectedDepths();
-
-        // キーフレームが空で、空のキーフレームが存在しない場合は、空のキーフレームを追加
-        if (!layer.characters.length) {
-
-            const activeEmptyCharacter = layer
-                .getActiveEmptyCharacter(keyframe);
-
-            if (!activeEmptyCharacter) {
-
-                const emptyCharacter = new EmptyCharacter();
-                emptyCharacter.startFrame = character.startFrame;
-                emptyCharacter.endFrame   = character.endFrame;
-                layer.addEmptyCharacter(emptyCharacter);
-
-                // タイムラインにフレームを追加
-                timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-            }
-        }
 
         // スクリーンを再描画
         await screenAreaRedrawUseCase(movieClip);

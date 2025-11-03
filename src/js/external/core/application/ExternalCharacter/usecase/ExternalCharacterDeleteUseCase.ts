@@ -47,6 +47,27 @@ export const execute = async (
     // キャッシュを削除
     cacheRemoveService(work_space, movie_clip.id);
 
+    // キーフレームが空で、空のキーフレームが存在しない場合は、空のキーフレームを追加
+    const activeCharacters = layer.getActiveCharacters(character.startFrame);
+    if (!activeCharacters.length) {
+
+        const activeEmptyCharacter = layer
+            .getActiveEmptyCharacter(character.startFrame);
+
+        if (!activeEmptyCharacter) {
+
+            const emptyCharacter = new EmptyCharacter();
+            emptyCharacter.startFrame = character.startFrame;
+            emptyCharacter.endFrame   = character.endFrame;
+            layer.addEmptyCharacter(emptyCharacter);
+
+            // タイムラインにフレームを追加
+            if (work_space.active && movie_clip.active) {
+                timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
+            }
+        }
+    }
+
     if (!work_space.active) {
         return ;
     }
@@ -54,25 +75,6 @@ export const execute = async (
     if (movie_clip.active) {
         // 選択を初期化
         movie_clip.clearSelectedDepths();
-
-        // キーフレームが空で、空のキーフレームが存在しない場合は、空のキーフレームを追加
-        const activeCharacters = layer.getActiveCharacters(movie_clip.currentFrame);
-        if (!activeCharacters.length) {
-
-            const activeEmptyCharacter = layer
-                .getActiveEmptyCharacter(movie_clip.currentFrame);
-
-            if (!activeEmptyCharacter) {
-
-                const emptyCharacter = new EmptyCharacter();
-                emptyCharacter.startFrame = character.startFrame;
-                emptyCharacter.endFrame   = character.endFrame;
-                layer.addEmptyCharacter(emptyCharacter);
-
-                // タイムラインにフレームを追加
-                timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
-            }
-        }
 
         // スクリーンを再描画
         await screenAreaRedrawUseCase(movie_clip);
