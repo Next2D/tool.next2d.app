@@ -15,13 +15,13 @@ import { execute as timelineMarkerMovePositionService } from "@/timeline/applica
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     if (!event.movementX) {
         return ;
     }
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     requestAnimationFrame((): void =>
     {

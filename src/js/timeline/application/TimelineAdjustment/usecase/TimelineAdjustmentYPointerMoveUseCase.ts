@@ -22,13 +22,13 @@ import { execute as screenScrollResizeService } from "@/screen/application/Scree
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-    event.preventDefault();
-
     if (!event.movementY) {
         return ;
     }
+
+    // 親のイベントを中止
+    event.stopPropagation();
+    event.preventDefault();
 
     requestAnimationFrame((): void =>
     {

@@ -13,13 +13,13 @@ import { execute as userDatabaseAutoSaveReservationUseCase } from "@/user/applic
  */
 export const execute = async (event: PointerEvent): Promise<void> =>
 {
-    // 親のイベントを中止
-    event.stopPropagation();
-
     const element = event.target as HTMLElement;
     if (!element) {
         return ;
     }
+
+    // 親のイベントを中止
+    event.stopPropagation();
 
     // 移動イベントを削除
     element.releasePointerCapture(event.pointerId);
