@@ -48,7 +48,6 @@ export const execute = async (
         }
 
         const movieClip = work_space.scene;
-
         await screenAreaRedrawUseCase(movieClip);
 
         // 選択中のDisplayObjectをアクティブ表示に更新

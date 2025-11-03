@@ -4,6 +4,7 @@ import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/app
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
  * @description タイムラインのレイヤー削除後の表示処理
@@ -26,20 +27,30 @@ export const execute = async (
         return ;
     }
 
+    // スクリーンの選択範囲elementを非表示
+    targetRectHideElementService();
+
+    // 変形の中心点の表示を更新
+    screenReferencePointDeployElementUseCase();
+
     // アクティブならタイムラインを再描画
     if (movie_clip.active) {
         externalLayerUpdateReloadUseCase();
 
-        // スクリーンの選択範囲elementを非表示
-        targetRectHideElementService();
-
-        // 変形の中心点の表示を更新
-        screenReferencePointDeployElementUseCase();
-
         if (reload) {
             await screenAreaRedrawUseCase(movie_clip);
+
+            // 再描画したので、選択中のElementをアクティブにする
+            // fixed logic
+            screenDisplayObjectAllSelectedActiveUseCase(movie_clip);
         }
     } else {
-        await screenAreaRedrawUseCase(work_space.scene);
+
+        const movieClip = work_space.scene;
+        await screenAreaRedrawUseCase(movieClip);
+
+        // 再描画したので、選択中のElementをアクティブにする
+        // fixed logic
+        screenDisplayObjectAllSelectedActiveUseCase(movieClip);
     }
 };

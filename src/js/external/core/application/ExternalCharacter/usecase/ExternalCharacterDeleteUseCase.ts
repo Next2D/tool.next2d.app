@@ -4,7 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 import { execute as characterDeleteHistoryUseCase } from "@/history/application/core/application/Character/Delete/usecase/CharacterDeleteHistoryUseCase";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as viewCharacterDeleteUseCase } from "@/view/core/Character/usecase/ViewCharacterDeleteUseCase";
 
 /**
  * @description Characterをレイヤーから削除
@@ -44,17 +44,11 @@ export const execute = async (
     // キャッシュを削除
     cacheRemoveService(work_space, movie_clip.id);
 
-    if (!work_space.active) {
-        return ;
-    }
-
-    // 配置しているelementを削除
-    if (movie_clip.active) {
-        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-        if (element) {
-            element.remove();
-        }
-    }
-
     // Viewを更新
+    await viewCharacterDeleteUseCase(
+        work_space,
+        movie_clip,
+        layer,
+        character
+    );
 };

@@ -51,10 +51,11 @@ export const execute = async (
         await screenAreaAppendCharacterService(character, layer);
     } else {
         // スクリーンを再描画
-        await screenAreaRedrawUseCase(work_space.scene);
+        const movieClip = work_space.scene;
+        await screenAreaRedrawUseCase(movieClip);
 
         // 再描画したので、選択中のElementをアクティブにする
         // fixed logic
-        screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
+        screenDisplayObjectAllSelectedActiveUseCase(movieClip);
     }
 };
