@@ -4,7 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { execute as referenceSettingUpdateYHistoryUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdateY/usecase/ReferenceSettingUpdateYHistoryUseCase";
-import { execute as viewReferenceSettingUpdatePositionUseCase } from "@/view/application/usecase/ViewReferenceSettingUpdatePositionUseCase";
+import { execute as viewReferenceSettingUpdatePositionUseCase } from "@/view/controller/ReferenceSetting/usecase/ViewReferenceSettingUpdatePositionUseCase";
 
 /**
  * @description 中心点のy座標を設定するユースケース

@@ -4,7 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IBlendMode } from "@/interface/IBlendMode";
 import { execute as characterUpdateBlendModeHistoryUseCase } from "@/history/application/controller/application/BlendModeSetting/UpdateBlendMode/usecase/CharacterUpdateBlendModeHistoryUseCase";
-import { execute as viewBlendModeSettingBlendModeUseCase } from "@/view/application/usecase/ViewBlendModeSettingBlendModeUseCase";
+import { execute as viewBlendModeSettingBlendModeUseCase } from "@/view/controller/BlendSetting/usecase/ViewBlendModeSettingBlendModeUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**

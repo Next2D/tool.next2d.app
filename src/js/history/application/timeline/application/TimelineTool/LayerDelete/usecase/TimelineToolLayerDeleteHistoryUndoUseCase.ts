@@ -4,7 +4,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { $GUIDE_IN_MODE, $GUIDE_MODE, $MASK_IN_MODE, $MASK_MODE } from "@/config/LayerModeConfig";
 import { ILayerMode } from "@/interface/ILayerMode";
-import { execute as viewTimelineLayerDeleteUseCase } from "@/view/application/usecase/ViewTimelineLayerDeleteUseCase";
+import { execute as viewTimelineLayerDeleteUseCase } from "@/view/timeline/TimelineLayer/usecase/ViewTimelineLayerDeleteUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**

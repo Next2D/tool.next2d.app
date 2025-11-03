@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as viewColorSettingChangeSvgFromGreenMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingChangeSvgFromGreenMultiplierUseCase";
+import { execute as viewColorSettingChangeSvgFromGreenMultiplierUseCase } from "@/view/controller/ColorSetting/usecase/ViewColorSettingChangeSvgFromGreenMultiplierUseCase";
 
 /**
  * @description スクリーンで選択中のElementのgreenを更新する

@@ -3,7 +3,7 @@ import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Character } from "@/core/domain/model/Character";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
-import { execute as viewTimelineLayerFrameAddKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameAddKeyFrameUseCase";
+import { execute as viewTimelineLayerFrameAddKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameAddKeyFrameUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す

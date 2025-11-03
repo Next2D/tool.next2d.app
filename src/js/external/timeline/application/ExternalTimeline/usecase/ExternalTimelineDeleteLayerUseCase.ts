@@ -2,7 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as timelineToolLayerDeleteHistoryUseCase } from "@/history/application/timeline/application/TimelineTool/LayerDelete/usecase/TimelineToolLayerDeleteHistoryUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
-import { execute as viewTimelineLayerDeleteUseCase } from "@/view/application/usecase/ViewTimelineLayerDeleteUseCase";
+import { execute as viewTimelineLayerDeleteUseCase } from "@/view/timeline/TimelineLayer/usecase/ViewTimelineLayerDeleteUseCase";
 import {
     $GUIDE_MODE,
     $MASK_MODE

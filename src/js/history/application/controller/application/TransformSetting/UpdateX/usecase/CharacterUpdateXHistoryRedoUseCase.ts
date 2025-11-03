@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewTransformSettingUpdateXUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateXUseCase";
+import { execute as viewTransformSettingUpdateXUseCase } from "@/view/controller/TransformSetting/usecase/ViewTransformSettingUpdateXUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**

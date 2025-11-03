@@ -4,7 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as externalReferencePivotValidation } from "../service/ExternalReferencePivotValidation";
-import { execute as viewReferenceSettingUpdatePivotUseCase } from "@/view/application/usecase/ViewReferenceSettingUpdatePivotUseCase";
+import { execute as viewReferenceSettingUpdatePivotUseCase } from "@/view/controller/ReferenceSetting/usecase/ViewReferenceSettingUpdatePivotUseCase";
 import { execute as referenceSettingUpdatePivotHistoryUseCase } from "@/history/application/controller/application/ReferenceSetting/UpdatePivot/usecase/ReferenceSettingUpdatePivotHistoryUseCase";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 

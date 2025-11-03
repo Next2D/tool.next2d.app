@@ -3,7 +3,7 @@ import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
-import { execute as viewTimelineLayerFrameEraseKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameEraseKeyFrameUseCase";
+import { execute as viewTimelineLayerFrameEraseKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameEraseKeyFrameUseCase";
 
 /**
  * @description キーフレームのフレーム全削除処理を元に戻す

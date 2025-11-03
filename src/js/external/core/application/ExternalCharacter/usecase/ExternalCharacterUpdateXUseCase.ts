@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateXHistoryUseCase } from "@/history/application/controller/application/TransformSetting/UpdateX/usecase/CharacterUpdateXHistoryUseCase";
-import { execute as viewTransformSettingUpdateXUseCase } from "@/view/application/usecase/ViewTransformSettingUpdateXUseCase";
+import { execute as viewTransformSettingUpdateXUseCase } from "@/view/controller/TransformSetting/usecase/ViewTransformSettingUpdateXUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**

@@ -5,7 +5,7 @@ import { Character } from "@/core/domain/model/Character";
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
 import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
-import { execute as viewTimelineLayerFrameAddKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameAddKeyFrameUseCase";
+import { execute as viewTimelineLayerFrameAddKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameAddKeyFrameUseCase";
 import {
     $FOLDER_TYPE,
     $SOUND_TYPE

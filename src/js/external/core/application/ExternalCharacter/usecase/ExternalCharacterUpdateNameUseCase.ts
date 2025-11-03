@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as characterUpdateNameHistoryUseCase } from "@/history/application/core/application/Character/UpdateName/usecase/CharacterUpdateNameHistoryUseCase";
-import { execute as viewObjectSettingUpdateNameUseCase } from "@/view/application/usecase/ViewObjectSettingUpdateNameUseCase";
+import { execute as viewObjectSettingUpdateNameUseCase } from "@/view/controller/ObjectSetting/usecase/ViewObjectSettingUpdateNameUseCase";
 
 /**
  * @description DisplayObjectの名前を更新

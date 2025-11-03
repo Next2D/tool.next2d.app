@@ -4,7 +4,7 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
 import { execute as externalTimelineLayerFrameDeleteEmptyKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteEmptyKeyframeUseCase";
 import { execute as externalTimelineLayerFrameDeleteKeyframeUseCase } from "./ExternalTimelineLayerFrameDeleteKeyframeUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
-import { execute as viewTimelineLayerFrameDeleteKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameDeleteKeyFrameUseCase";
+import { execute as viewTimelineLayerFrameDeleteKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameDeleteKeyFrameUseCase";
 
 /**
  * @description 指定レイヤーの指定範囲のキーフレームを削除

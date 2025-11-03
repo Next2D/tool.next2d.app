@@ -1,6 +1,6 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewColorSettingAlphaOffsetUseCase } from "@/view/application/usecase/ViewColorSettingAlphaOffsetUseCase";
+import { execute as viewColorSettingAlphaOffsetUseCase } from "@/view/controller/ColorSetting/usecase/ViewColorSettingAlphaOffsetUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**

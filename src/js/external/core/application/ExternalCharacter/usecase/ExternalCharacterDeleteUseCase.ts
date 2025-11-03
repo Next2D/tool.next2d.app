@@ -4,6 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 import { execute as characterDeleteHistoryUseCase } from "@/history/application/core/application/Character/Delete/usecase/CharacterDeleteHistoryUseCase";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 
 /**
  * @description Characterをレイヤーから削除
@@ -26,13 +27,8 @@ export const execute = async (
     receiver: boolean = false
 ): Promise<void> => {
 
-    // レイヤーからキャラクターを削除
-    layer.removeCharacter(character);
-
-    // キャッシュを削除
-    cacheRemoveService(work_space, movie_clip.id);
-
     // 履歴を登録
+    // fixed logic
     await characterDeleteHistoryUseCase(
         work_space,
         movie_clip,
@@ -41,13 +37,23 @@ export const execute = async (
         receiver
     );
 
+    // レイヤーからキャラクターを削除
+    // fixed logic
+    layer.removeCharacter(character);
+
+    // キャッシュを削除
+    cacheRemoveService(work_space, movie_clip.id);
+
     if (!work_space.active) {
         return ;
     }
 
     // 配置しているelementを削除
     if (movie_clip.active) {
-        // todo
+        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+        if (element) {
+            element.remove();
+        }
     }
 
     // Viewを更新

@@ -1,5 +1,5 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
-import { execute as viewColorSettingChangeSvgFromRedOffsetUseCase } from "@/view/application/usecase/ViewColorSettingChangeSvgFromRedOffsetUseCase";
+import { execute as viewColorSettingChangeSvgFromRedOffsetUseCase } from "@/view/controller/ColorSetting/usecase/ViewColorSettingChangeSvgFromRedOffsetUseCase";
 
 /**
  * @description スクリーンで選択中のElementのredを更新する

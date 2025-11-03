@@ -1,7 +1,7 @@
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
-import { execute as viewTimelineLayerDeleteUseCase } from "@/view/application/usecase/ViewTimelineLayerDeleteUseCase";
+import { execute as viewTimelineLayerDeleteUseCase } from "@/view/timeline/TimelineLayer/usecase/ViewTimelineLayerDeleteUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 
 /**

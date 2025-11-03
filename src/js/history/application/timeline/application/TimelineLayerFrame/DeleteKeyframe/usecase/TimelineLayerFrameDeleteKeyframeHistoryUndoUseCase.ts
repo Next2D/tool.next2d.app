@@ -6,7 +6,7 @@ import { execute as externalTimelineLayerFrameExtendBehindKeyframeService } from
 import { execute as externalTimelineLayerFrameExtendForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendForwardKeyframeService";
 import { Character } from "@/core/domain/model/Character";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
-import { execute as viewTimelineLayerFrameDeleteKeyFrameUseCase } from "@/view/application/usecase/ViewTimelineLayerFrameDeleteKeyFrameUseCase";
+import { execute as viewTimelineLayerFrameDeleteKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameDeleteKeyFrameUseCase";
 
 /**
  * @description キーフレームの削除処理を元に戻す

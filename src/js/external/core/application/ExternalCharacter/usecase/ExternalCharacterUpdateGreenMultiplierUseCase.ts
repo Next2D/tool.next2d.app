@@ -3,7 +3,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { execute as characterUpdateGreenMultiplierHistoryUseCase } from "@/history/application/controller/application/ColorSetting/UpdateGreenMultiplier/usecase/CharacterUpdateGreenMultiplierHistoryUseCase";
-import { execute as viewColorSettingGreenMultiplierUseCase } from "@/view/application/usecase/ViewColorSettingGreenMultiplierUseCase";
+import { execute as viewColorSettingGreenMultiplierUseCase } from "@/view/controller/ColorSetting/usecase/ViewColorSettingGreenMultiplierUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 import { $clamp } from "@/global/GlobalUtil";
 

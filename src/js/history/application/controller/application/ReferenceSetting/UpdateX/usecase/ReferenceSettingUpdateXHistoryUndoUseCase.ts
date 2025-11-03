@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { IPivotType } from "@/interface/IPivotType";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as viewReferenceSettingUpdatePositionUseCase } from "@/view/application/usecase/ViewReferenceSettingUpdatePositionUseCase";
+import { execute as viewReferenceSettingUpdatePositionUseCase } from "@/view/controller/ReferenceSetting/usecase/ViewReferenceSettingUpdatePositionUseCase";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalScreen } from "@/external/screen/domain/model/ExternalScreen";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
