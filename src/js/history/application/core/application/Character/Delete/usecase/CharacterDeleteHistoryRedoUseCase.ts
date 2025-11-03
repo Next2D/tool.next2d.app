@@ -1,29 +1,32 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as objectSettingUpdateNameService } from "@/controller/application/ObjectSetting/service/ObjectSettingUpdateNameService";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as viewCharacterDeleteUseCase } from "@/view/core/Character/usecase/ViewCharacterDeleteUseCase";
+import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
+import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
- * @description DisplayObjectの名前を変更後に戻す
- *              Reset the name of the DisplayObject
+ * @description DisplayObject削除を変更後に戻す
+ *              Reset the deletion of the DisplayObject
  *
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} index
  * @param  {number} keyframe
  * @param  {number} depth
- * @param  {string} after_name
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     index: number,
     keyframe: number,
-    depth: number,
-    after_name: string
-): void => {
+    depth: number
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -45,29 +48,46 @@ export const execute = (
         return ;
     }
 
-    // データを更新
-    character.name = after_name;
+    // レイヤーからキャラクターを削除
+    layer.removeCharacter(character);
 
-    // アクティブなら表示を更新
-    if (workSpace.active
-        && movieClip.active
-        && movieClip.selectedDepths.size
-    ) {
-        const activeCharacters = layer.getActiveCharacters(movieClip.currentFrame);
-        if (!activeCharacters.length) {
-            return ;
-        }
+    // キャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
 
-        const values = movieClip.selectedDepths.values().next().value as number[];
-        const currentCharacter = activeCharacters[values[0] as number];
-        if (!currentCharacter) {
-            return ;
-        }
-
-        if (currentCharacter !== character) {
-            return ;
-        }
-
-        objectSettingUpdateNameService(character.name);
+    if (!workSpace.active) {
+        return ;
     }
+
+    if (movieClip.active) {
+
+        // 選択を初期化
+        movieClip.clearSelectedDepths();
+
+        // キーフレームが空で、空のキーフレームが存在しない場合は、空のキーフレームを追加
+        if (!layer.characters.length) {
+
+            const activeEmptyCharacter = layer
+                .getActiveEmptyCharacter(keyframe);
+
+            if (!activeEmptyCharacter) {
+
+                const emptyCharacter = new EmptyCharacter();
+                emptyCharacter.startFrame = character.startFrame;
+                emptyCharacter.endFrame   = character.endFrame;
+                layer.addEmptyCharacter(emptyCharacter);
+
+                // タイムラインにフレームを追加
+                timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
+            }
+        }
+
+        // スクリーンを再描画
+        await screenAreaRedrawUseCase(movieClip);
+    }
+
+    // Viewを更新
+    await viewCharacterDeleteUseCase(
+        workSpace,
+        movieClip
+    );
 };

@@ -80,6 +80,7 @@ import { execute as characterUpdateGreenOffsetHistoryUndoUseCase } from "@/histo
 import { execute as characterUpdateBlueMultiplierHistoryUndoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateBlueMultiplier/usecase/CharacterUpdateBlueMultiplierHistoryUndoUseCase";
 import { execute as characterUpdateBlueOffsetHistoryUndoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateBlueOffset/usecase/CharacterUpdateBlueOffsetHistoryUndoUseCase";
 import { execute as characterUpdateBlendModeHistoryUndoUseCase } from "@/history/application/controller/application/BlendModeSetting/UpdateBlendMode/usecase/CharacterUpdateBlendModeHistoryUndoUseCase";
+import { execute as characterDeleteHistoryUndoUseCase } from "@/history/application/core/application/Character/Delete/usecase/CharacterDeleteHistoryUndoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -149,7 +150,8 @@ import {
     $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND,
     $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND,
-    $CHARACTER_UPDATE_BLEND_MODE_COMMAND
+    $CHARACTER_UPDATE_BLEND_MODE_COMMAND,
+    $CHARACTER_DELETE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -869,6 +871,16 @@ export const execute = async (
                 messages[3] as number, // Keyframe
                 messages[4] as number, // Depth
                 messages[5] as IBlendMode  // Before BlendMode
+            );
+            break;
+
+        case $CHARACTER_DELETE_COMMAND:
+            await characterDeleteHistoryUndoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[5] as ICharacterSaveObject // Character Save Object
             );
             break;
 

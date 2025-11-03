@@ -23,11 +23,7 @@ export const execute = (
     character.endFrame   = save_object.endFrame;
     character.name       = save_object.name;
 
-    if (save_object.parentCharacterId) {
-        character.parentCharacterId = save_object.parentCharacterId;
-    }
-
-    if (save_object.parentMovieClipId) {
+    if (save_object.parentMovieClipId) { // 旧バージョンではreferencePositionが存在しないのでチェック
         character.parentMovieClipId = save_object.parentMovieClipId;
     }
 

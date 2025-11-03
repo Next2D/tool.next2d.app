@@ -5,7 +5,7 @@ import type { Character } from "@/core/domain/model/Character";
 
 const mockViewColorSettingChangeSvgFromRedMultiplierUseCase = vi.fn();
 
-vi.mock("@/view/application/usecase/ViewColorSettingChangeSvgFromRedMultiplierUseCase", () => ({
+vi.mock("@/view/controller/ColorSetting/usecase/ViewColorSettingChangeSvgFromRedMultiplierUseCase", () => ({
     execute: (character: Character, layer: Layer) => mockViewColorSettingChangeSvgFromRedMultiplierUseCase(character, layer)
 }));
 
