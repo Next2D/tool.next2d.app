@@ -357,6 +357,10 @@ export class Layer
         const activeCharacters = this.getActiveCharacters(character.startFrame);
         for (let idx = 0; idx < activeCharacters.length; ++idx) {
             const activeCharacter = activeCharacters[idx];
+            if (!activeCharacter) {
+                continue;
+            }
+
             if (character.depth > activeCharacter.depth) {
                 continue;
             }
@@ -383,6 +387,10 @@ export class Layer
         // DisplayObjectの深度を調整
         for (let idx = 0; idx < activeCharacters.length; ++idx) {
             const activeCharacter = activeCharacters[idx];
+            if (!activeCharacter) {
+                continue;
+            }
+
             if (character.depth > activeCharacter.depth) {
                 continue;
             }

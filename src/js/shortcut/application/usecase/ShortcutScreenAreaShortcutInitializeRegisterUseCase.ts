@@ -15,6 +15,7 @@ import { execute as alignSettingStageRightPointerDownEventService } from "@/cont
 import { execute as alignSettingStageTopPointerDownEventService } from "@/controller/application/AlignSetting/service/AlignSettingStageTopPointerDownEventService";
 import { execute as alignSettingStageMiddlePointerDownEventService } from "@/controller/application/AlignSetting/service/AlignSettingStageMiddlePointerDownEventService";
 import { execute as alignSettingStageBottomPointerDownEventService } from "@/controller/application/AlignSetting/service/AlignSettingStageBottomPointerDownEventService";
+import { execute as screenAreaDeleteKeyEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaDeleteKeyEventUseCase";
 
 /**
  * @description スクリーンエリアのショートカットイベントを登録
@@ -116,5 +117,15 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("6", { "ctrl": true }),
         alignSettingStageBottomPointerDownEventService
+    );
+
+    // DisplayObject削除
+    $setShortcut(
+        $generateShortcutKey("Delete"),
+        screenAreaDeleteKeyEventUseCase
+    );
+    $setShortcut(
+        $generateShortcutKey("Backspace"),
+        screenAreaDeleteKeyEventUseCase
     );
 };

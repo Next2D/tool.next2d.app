@@ -23,6 +23,7 @@ import { execute as externalCharacterUpdateGreenOffsetUseCase } from "@/external
 import { execute as externalCharacterUpdateBlueMultiplierUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlueMultiplierUseCase";
 import { execute as externalCharacterUpdateBlueOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlueOffsetUseCase";
 import { execute as externalCharacterUpdateBlendModeUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlendModeUseCase";
+import { execute as externalCharacterDeleteUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterDeleteUseCase";
 
 /**
  * @description DisplayObjectの管理クラス
@@ -666,6 +667,24 @@ export class ExternalCharacter
             this._$layer,
             this._$character,
             blend_mode
+        );
+    }
+
+    /**
+     * @description DisplayObjectをLayerから削除
+     *              Delete the DisplayObject from the Layer
+     *
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async delete (): Promise<void>
+    {
+        await externalCharacterDeleteUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character
         );
     }
 }

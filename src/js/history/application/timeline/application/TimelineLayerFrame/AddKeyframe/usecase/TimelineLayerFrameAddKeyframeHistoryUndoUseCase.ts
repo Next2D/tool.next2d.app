@@ -11,6 +11,7 @@ import { execute as screenStandardPointDeployElementUseCase } from "@/screen/app
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as screenDisplayObjectInactvieElementService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectInactvieElementService";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
  * @description キーフレーム追加処理を元に戻す
@@ -94,6 +95,12 @@ export const execute = async (
         return ;
     }
 
+    // 変形の中心点の表示を更新
+    screenReferencePointDeployElementUseCase();
+
+    // 選択範囲のElementの表示を更新
+    targetRectUpdateElementUseCase();
+
     // アクティブならタイムラインを再描画
     // fixed logic
     if (movieClip.active) {
@@ -103,18 +110,15 @@ export const execute = async (
         // 親の基準点の表示を更新
         screenStandardPointDeployElementUseCase();
 
-        // 選択範囲のElementの表示を更新
-        targetRectUpdateElementUseCase();
-
-        // 変形の中心点の表示を更新
-        screenReferencePointDeployElementUseCase();
-
         // プロパティーエリアのデフォルト設定項目を表示
         await propertyAreaShowDefaultSettingItemUseCase(movieClip);
     } else {
-        await screenAreaRedrawUseCase(workSpace.scene);
 
-        // 変形の中心点の表示を更新
-        screenReferencePointDeployElementUseCase();
+        const movieClip = workSpace.scene;
+        await screenAreaRedrawUseCase(movieClip);
+
+        // 再描画したので、選択中のElementをアクティブにする
+        // fixed logic
+        screenDisplayObjectAllSelectedActiveUseCase(movieClip);
     }
 };

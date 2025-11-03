@@ -726,3 +726,12 @@ export const $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND: number = 74;
  * @constant
  */
 export const $CHARACTER_UPDATE_BLEND_MODE_COMMAND: number = 75;
+
+/**
+ * @description キャラクター削除の識別コマンド名
+ *              Identification command name for deleting the character
+ *
+ * @type {number}
+ * @constant
+ */
+export const $CHARACTER_DELETE_COMMAND: number = 76;

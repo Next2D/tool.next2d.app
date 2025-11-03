@@ -68,7 +68,8 @@ import {
     $CHARACTER_UPDATE_GREEN_OFFSET_COMMAND,
     $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND,
-    $CHARACTER_UPDATE_BLEND_MODE_COMMAND
+    $CHARACTER_UPDATE_BLEND_MODE_COMMAND,
+    $CHARACTER_DELETE_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -288,6 +289,9 @@ export const execute = (command: number): string =>
 
         case $CHARACTER_UPDATE_BLEND_MODE_COMMAND:
             return "[%s1]のレイヤー[%s2]の%s3フレーム・深度%s4のブレンドモードを[%s5]から[%s6]に変更";
+
+        case $CHARACTER_DELETE_COMMAND:
+            return "[%s1]のレイヤー[%s2]の%s3フレーム・深度%s4の[%s5]を削除";
 
         default:
             break;
