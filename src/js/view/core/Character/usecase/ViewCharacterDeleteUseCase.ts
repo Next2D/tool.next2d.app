@@ -1,11 +1,8 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { Character } from "@/core/domain/model/Character";
-import type { Layer } from "@/core/domain/model/Layer";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as targetRectHideElementService } from "@/screen/application/TargetRect/service/TargetRectHideElementService";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
 import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
@@ -14,17 +11,13 @@ import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {Layer} layer
- * @param  {Character} character
  * @return {Promise<void>}
  * @method
  * @public
  */
 export const execute = async (
     work_space: WorkSpace,
-    movie_clip: MovieClip,
-    layer: Layer,
-    character: Character
+    movie_clip: MovieClip
 ): Promise<void> => {
 
     if (!work_space.active) {
@@ -37,12 +30,9 @@ export const execute = async (
     // 変形の中心点の表示を更新
     screenReferencePointDeployElementUseCase();
 
-    if (movie_clip.active) {
-        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-        if (element) {
-            element.remove();
-        }
-    } else {
+    // アクティブでなければ、スクリーンを再描画
+    if (!movie_clip.active) {
+        // スクリーンを再描画
         await screenAreaRedrawUseCase(work_space.scene);
 
         // 再描画したので、選択中のElementをアクティブにする

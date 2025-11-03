@@ -4,7 +4,8 @@ import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameDeleteKeyframeUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameDeleteKeyframeUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as viewTimelineLayerFrameDeleteKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameDeleteKeyFrameUseCase";
 
 /**
  * @description キーフレームの削除を実行
@@ -56,11 +57,22 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         true
     );
 
-    if (workSpace.active && movieClip.active) {
+    // 全ての先祖のキャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
+
+    if (!workSpace.active) {
+        return ;
+    }
+
+    // アクティブであればタイムラインの表示を更新
+    if (movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-
-        // スクリーンエリアを再描画
-        await screenAreaRedrawUseCase(movieClip);
     }
+
+    // Viewを更新
+    viewTimelineLayerFrameDeleteKeyFrameUseCase(
+        workSpace,
+        movieClip
+    );
 };
