@@ -1,6 +1,6 @@
 import { $TIMELINE_EMPTY_KEY_ADD_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolAddEmptyKeyFrameMouseDownEventUseCase } from "./TimelineToolAddEmptyKeyFrameMouseDownEventUseCase";
+import { execute as timelineToolAddEmptyKeyFramePointerDownEventUseCase } from "./TimelineToolAddEmptyKeyFramePointerDownEventUseCase";
 
 /**
  * @description 空のキーフレーム追加ボタンのイベント登録
@@ -21,6 +21,6 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineToolAddEmptyKeyFrameMouseDownEventUseCase
+        timelineToolAddEmptyKeyFramePointerDownEventUseCase
     );
 };

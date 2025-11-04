@@ -2,7 +2,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { EmptyCharacter } from "@/core/domain/model/EmptyCharacter";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as viewTimelineLayerFrameSplitEmptyKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameSplitEmptyKeyFrameUseCase";
 
 /**
  * @description キーフレームの分割処理を元に戻す
@@ -61,11 +61,18 @@ export const execute = async (
     }
 
     // アクティブならタイムラインを再描画
-    if (workSpace.active && movieClip.active) {
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-
-        // スクリーンを再描画
-        await screenAreaRedrawUseCase(movieClip);
+    if (!workSpace.active) {
+        return ;
     }
+
+    // タイムラインのレイヤー表示を更新
+    if (movieClip.active) {
+        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
+    }
+
+    // Viewエリアの表示を更新
+    await viewTimelineLayerFrameSplitEmptyKeyFrameUseCase(
+        workSpace,
+        movieClip
+    );
 };

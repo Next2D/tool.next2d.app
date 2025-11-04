@@ -4,7 +4,7 @@ import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
 import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./ExternalTimelineLayerFramePrevAdjustmentUseCase";
 import { execute as externalTimelineLayerFrameSplitToEmptyUseCase } from "./ExternalTimelineLayerFrameSplitToEmptyUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as viewTimelineLayerFrameSplitEmptyKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameSplitEmptyKeyFrameUseCase";
 
 /**
  * @description 選択中のレイヤーに空のキーフレームを追加
@@ -37,6 +37,7 @@ export const execute = async (
 
     // 昇順に並び替えたレイヤー配列を取得
     const selectedLayers = movie_clip.getCloneAndSortSelectedLayers();
+    const isActive = work_space.active && movie_clip.active;
     for (let idx = 0; idx < selectedLayers.length; ++idx) {
 
         const layer = selectedLayers[idx];
@@ -69,14 +70,23 @@ export const execute = async (
         }
 
         // レイヤーを再描画
-        if (work_space.active && movie_clip.active) {
-            // タイムラインのレイヤー表示を更新
-            timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
+        if (!isActive) {
+            continue;
         }
+
+        // タイムラインのレイヤー表示を更新
+        timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
+
+        // 選択中のLayerを解除
+        movie_clip.selectedDepths.delete(
+            movie_clip.layers.indexOf(layer)
+        );
     }
 
-    // スクリーンを再描画
-    if (reload && work_space.active && movie_clip.active) {
-        await screenAreaRedrawUseCase(movie_clip);
-    }
+    // Viewエリアの表示を更新
+    await viewTimelineLayerFrameSplitEmptyKeyFrameUseCase(
+        work_space,
+        movie_clip,
+        reload
+    );
 };

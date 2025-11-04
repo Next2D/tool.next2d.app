@@ -28,12 +28,12 @@ export const execute = async (
     receiver: boolean = false
 ): Promise<void> => {
 
+    const character = characters[0];
+
     // 既に空のキーフレームがある場合は何もしない
-    if (characters[0].startFrame === keyframe) {
+    if (!character || character.startFrame === keyframe) {
         return ;
     }
-
-    const character = characters[0];
 
     // 空いた部分に新しいキーフレームを追加
     const newEmptyCharacter = new EmptyCharacter();
@@ -43,6 +43,11 @@ export const execute = async (
 
     // 既存のキーフレームを分割
     for (let idx = 0; idx < characters.length; ++idx) {
+        const character = characters[idx];
+        if (!character) {
+            continue;
+        }
+
         character.endFrame = keyframe;
     }
 

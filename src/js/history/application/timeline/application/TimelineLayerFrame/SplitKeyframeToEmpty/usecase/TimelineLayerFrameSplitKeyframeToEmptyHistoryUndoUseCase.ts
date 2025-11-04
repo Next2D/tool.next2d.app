@@ -1,7 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as viewTimelineLayerFrameSplitEmptyKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameSplitEmptyKeyFrameUseCase";
 
 /**
  * @description キーフレームの分割処理を元に戻す
@@ -10,8 +10,7 @@ import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenA
  * @param  {number} work_space_id
  * @param  {number} library_id
  * @param  {number} layer_index
- * @param  {number}     empty_character_keyframe: number,
-
+ * @param  {number} empty_character_keyframe: number,
  * @param  {number} character_keyframe
  * @return {Promise}
  * @method
@@ -64,11 +63,23 @@ export const execute = async (
     layer.removeEmptyCharacter(emptyCharacter);
 
     // アクティブならタイムラインを再描画
-    if (workSpace.active && movieClip.active) {
+    if (!workSpace.active) {
+        return ;
+    }
+
+    if (movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
 
-        // スクリーンエリアの再描画
-        await screenAreaRedrawUseCase(movieClip);
+        // 選択中のLayerを解除
+        movieClip.selectedDepths.delete(
+            movieClip.layers.indexOf(layer)
+        );
     }
+
+    // Viewエリアの表示を更新
+    await viewTimelineLayerFrameSplitEmptyKeyFrameUseCase(
+        workSpace,
+        movieClip
+    );
 };

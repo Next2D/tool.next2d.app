@@ -1,6 +1,6 @@
 import { $TIMELINE_INSERT_FRAME_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolInsertFramesMouseDownEventUseCase } from "./TimelineToolInsertFramesMouseDownEventUseCase";
+import { execute as timelineToolInsertFramesPointerDownEventUseCase } from "./TimelineToolInsertFramesPointerDownEventUseCase";
 
 /**
  * @description フレーム追加ボタンのイベント登録
@@ -21,6 +21,6 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineToolInsertFramesMouseDownEventUseCase
+        timelineToolInsertFramesPointerDownEventUseCase
     );
 };
