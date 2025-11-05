@@ -1,10 +1,14 @@
-import { $SCREEN_ID } from "@/config/ScreenConfig";
 import { execute as screenMenuShowUseCase } from "./ScreenMenuShowUseCase";
 import { execute as screenMenuInitializeRegisterPointerOverUseCase } from "./ScreenMenuInitializeRegisterPointerOverUseCase";
 import { execute as screenMenuTouchPointerDownUseCase } from "./ScreenMenuTouchPointerDownUseCase";
 import { execute as screenMenuTouchPointerUpService } from "../service/ScreenMenuTouchPointerUpService";
-import { execute as screenAlignMenuMenuInitializeRegisterEventUseCase } from "@/menu/application/ScreenAlignMenu/usecase/ScreenAlignMenuMenuInitializeRegisterEventUseCase";
+import { execute as screenAlignMenuInitializeRegisterEventUseCase } from "@/menu/application/ScreenAlignMenu/usecase/ScreenAlignMenuInitializeRegisterEventUseCase";
+import { execute as screenMenuEditMovieClipPointerDownEventUseCase } from "./ScreenMenuEditMovieClipPointerDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
+import {
+    $SCREEN_ID,
+    $SCREEN_CHANGE_SCENE_ID
+} from "@/config/ScreenConfig";
 
 /**
  * @description スクリーンメニューの初期起動時のイベント登録
@@ -16,36 +20,46 @@ import { EventType } from "@/tool/domain/event/EventType";
  */
 export const execute = (): void =>
 {
-    const element: HTMLElement | null = document
+    const screenElement: HTMLElement | null = document
         .getElementById($SCREEN_ID);
 
-    if (!element) {
-        return ;
+    if (screenElement) {
+        screenElement.addEventListener("contextmenu", screenMenuShowUseCase);
+
+        // タッチデバイスのタッチイベント
+        screenElement.addEventListener(
+            EventType.POINTER_DOWN,
+            screenMenuTouchPointerDownUseCase
+        );
+        screenElement.addEventListener(
+            EventType.POINTER_UP,
+            screenMenuTouchPointerUpService
+        );
+        screenElement.addEventListener(
+            EventType.POINTER_CANCEL,
+            screenMenuTouchPointerUpService
+        );
+        screenElement.addEventListener(
+            EventType.POINTER_LEAVE,
+            screenMenuTouchPointerUpService
+        );
     }
-
-    element.addEventListener("contextmenu", screenMenuShowUseCase);
-
-    // タッチデバイスのタッチイベント
-    element.addEventListener(
-        EventType.POINTER_DOWN,
-        screenMenuTouchPointerDownUseCase
-    );
-    element.addEventListener(
-        EventType.POINTER_UP,
-        screenMenuTouchPointerUpService
-    );
-    element.addEventListener(
-        EventType.POINTER_CANCEL,
-        screenMenuTouchPointerUpService
-    );
-    element.addEventListener(
-        EventType.POINTER_LEAVE,
-        screenMenuTouchPointerUpService
-    );
 
     // マウスオーバーイベントを登録
     screenMenuInitializeRegisterPointerOverUseCase();
 
     // スクリーンメニューの整列エリアのイベント登録
-    screenAlignMenuMenuInitializeRegisterEventUseCase();
+    screenAlignMenuInitializeRegisterEventUseCase();
+
+    // MovieClip編集ボタンのイベントを登録
+    const editMovieClipElement: HTMLElement | null = document
+        .getElementById($SCREEN_CHANGE_SCENE_ID);
+
+    if (editMovieClipElement) {
+        // タッチデバイスのタッチイベント
+        editMovieClipElement.addEventListener(
+            EventType.POINTER_DOWN,
+            screenMenuEditMovieClipPointerDownEventUseCase
+        );
+    }
 };

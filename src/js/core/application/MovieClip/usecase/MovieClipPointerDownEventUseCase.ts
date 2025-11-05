@@ -63,15 +63,14 @@ export const execute = async (event: PointerEvent): Promise<void> =>
         return ;
     }
 
-    // 親のイベントをキャンセル
-    event.stopPropagation();
-    event.preventDefault();
-
     // 移動用のwindowイベントを登録
     const tool = $getActiveTool();
     if (!tool) {
         return ;
     }
+
+    // 親のイベントをキャンセル
+    event.stopPropagation();
 
     const layerId = parseInt(parentElement.dataset.layerId as string);
     const depth   = parseInt(parentElement.dataset.depth as string);

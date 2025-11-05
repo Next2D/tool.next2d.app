@@ -1,5 +1,6 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
+import { $useKeyboard } from "@/shortcut/ShortcutUtil";
 
 /**
  * @description 選択中のDisplayObjectを削除
@@ -11,6 +12,10 @@ import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacte
  */
 export const execute = async (): Promise<void> =>
 {
+    if ($useKeyboard()) {
+        return ;
+    }
+
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 

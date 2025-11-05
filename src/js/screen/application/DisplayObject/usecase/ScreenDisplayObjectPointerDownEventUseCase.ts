@@ -8,7 +8,10 @@ import { execute as referenceSettingHideElementService } from "@/controller/appl
 import { execute as screenAreaCalcSelectedCharacterPositionService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedCharacterPositionService";
 import { execute as transformSettingCacheBeforeMatrixService } from "@/controller/application/TransformSetting/service/TransformSettingCacheBeforeMatrixService";
 import { $setPointerId } from "../DisplayObjectUtil";
-import { $activeTouchPointers, $setEditingElement } from "@/global/GlobalUtil";
+import {
+    $activeTouchPointers,
+    $setEditingElement
+} from "@/global/GlobalUtil";
 
 /**
  * @description スクリーンに設置したDisplayObject選択時のイベント処理関数

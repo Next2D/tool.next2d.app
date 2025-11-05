@@ -16,6 +16,7 @@ import { execute as alignSettingStageTopPointerDownEventService } from "@/contro
 import { execute as alignSettingStageMiddlePointerDownEventService } from "@/controller/application/AlignSetting/service/AlignSettingStageMiddlePointerDownEventService";
 import { execute as alignSettingStageBottomPointerDownEventService } from "@/controller/application/AlignSetting/service/AlignSettingStageBottomPointerDownEventService";
 import { execute as screenAreaDeleteKeyEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaDeleteKeyEventUseCase";
+import { execute as screenAreaEditMovieClipPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuEditMovieClipPointerDownEventUseCase";
 
 /**
  * @description スクリーンエリアのショートカットイベントを登録
@@ -127,5 +128,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("Backspace"),
         screenAreaDeleteKeyEventUseCase
+    );
+
+    // 指定中のMovieClipを編集モードに切り替え
+    $setShortcut(
+        $generateShortcutKey("e"),
+        screenAreaEditMovieClipPointerDownEventUseCase
     );
 };

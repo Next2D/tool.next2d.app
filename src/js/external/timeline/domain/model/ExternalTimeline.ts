@@ -19,6 +19,7 @@ import { execute as externalScreenSelectedFromSelectedLayersUseCase } from "@/ex
 import { execute as externalScreenClaerSelectedDisplayObjectUseCase } from "@/external/screen/application/ExternalScreen/usecase/ExternalScreenClaerSelectedDisplayObjectUseCase";
 import { execute as externalTimelineLayerFrameShiftFrameUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameShiftFrameUseCase";
 import { execute as externalTimelineEditMovieClipUseCase } from "@/external/timeline/application/ExternalTimeline/service/ExternalTimelineEditMovieClipUseCase";
+import { execute as timelineSceneListClearAddRootUseCase } from "@/timeline/application/TimelineSceneList/usecase/TimelineSceneListClearAddRootUseCase";
 import { ExternalMovieClip } from "@/external/core/domain/model/ExternalMovieClip";
 
 /**
@@ -240,6 +241,9 @@ export class ExternalTimeline
         );
 
         if (editMovieClip) {
+            // タイムラインのシーン名を初期化してrootを追加
+            timelineSceneListClearAddRootUseCase();
+
             this._$movieClip = editMovieClip;
         }
     }

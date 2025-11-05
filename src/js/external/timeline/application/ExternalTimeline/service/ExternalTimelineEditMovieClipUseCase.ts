@@ -18,8 +18,12 @@ export const execute = async (
     movie_clip: MovieClip
 ): Promise<MovieClip | void> => {
 
+    if (!work_space.active) {
+        return ;
+    }
+
     const scene = work_space.scene;
-    if (!scene || scene.active && scene === movie_clip) {
+    if (!scene || scene.id === movie_clip.id) {
         return ;
     }
 

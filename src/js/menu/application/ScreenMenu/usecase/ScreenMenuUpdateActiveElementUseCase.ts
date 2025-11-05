@@ -1,8 +1,7 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
-import {
-    $SCREEN_ALIGN_ID,
-    $SCREEN_ORDER_ID
-} from "@/config/ScreenConfig";
+import { execute as screenMenuAllInactiveService } from "../service/ScreenMenuAllInactiveService";
+import { execute as screenMenuUpdateStyleSubMenuService } from "../service/ScreenMenuUpdateStyleSubMenuService";
+import { execute as screenMenuUpdateStyleEditMovieClipService } from "../service/ScreenMenuUpdateStyleEditMovieClipService";
 
 /**
  * @description スクリーンのメニューを選択中のElementに合わせてアクティブ・非アクティブに更新する
@@ -18,41 +17,13 @@ export const execute = (): void =>
     const movieClip = workSpace.scene;
 
     if (!movieClip.selectedDepths.size) {
-        // 定規以外のメニューを非アクティブに更新
-        const ids = [
-            $SCREEN_ALIGN_ID,
-            $SCREEN_ORDER_ID
-        ];
-
-        for (let idx = 0; idx < ids.length; ++idx) {
-
-            const element: HTMLElement | null = document
-                .getElementById(ids[idx]) as HTMLElement;
-
-            if (!element) {
-                continue ;
-            }
-
-            element.style.opacity = "0.5";
-            element.style.pointerEvents = "none";
-        }
+        // 指定のIDを非アクティブに更新
+        screenMenuAllInactiveService();
     } else {
-        // 定規以外のメニューを非アクティブに更新
-        const ids = [
-            $SCREEN_ALIGN_ID,
-            $SCREEN_ORDER_ID
-        ];
+        // サブメニューのスタイルを更新
+        screenMenuUpdateStyleSubMenuService(movieClip);
 
-        for (let idx = 0; idx < ids.length; ++idx) {
-
-            const element: HTMLElement | null = document
-                .getElementById(ids[idx]) as HTMLElement;
-
-            if (!element) {
-                continue ;
-            }
-
-            element.setAttribute("style", "");
-        }
+        // MovieClipの編集ボタンのスタイルを更新
+        screenMenuUpdateStyleEditMovieClipService(movieClip);
     }
 };

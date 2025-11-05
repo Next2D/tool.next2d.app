@@ -57,7 +57,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         message.data[4] as NonNullable<number>,
         true
     );
-    
+
     // 全ての先祖のキャッシュを削除
     cacheRemoveService(workSpace, movieClip.id);
 

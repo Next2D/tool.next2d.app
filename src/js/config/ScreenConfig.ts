@@ -141,3 +141,102 @@ export const $SCREEN_ORDER_ID: string = "screen-order";
  * @constant
  */
 export const $SCREEN_ALIGN_ID: string = "screen-align";
+
+/**
+ * @description スクリーンのMovieClipへの移動用ElementのID
+ *              ID of the Element for moving to MovieClip of the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_CHANGE_SCENE_ID: string = "screen-change-scene";
+
+/**
+ * @description スクリーンの親MovieClipへの移動用ElementのID
+ *              ID of the Element for moving to the parent MovieClip of the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_MOVE_SCENE_ID: string = "screen-move-scene";
+
+/**
+ * @description スクリーンのレイヤーに分配用ElementのID
+ *              ID of the Element for distributing to layers in the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_DISTRIBUTE_TO_LAYERS_ID: string = "screen-distribute-to-layers";
+
+/**
+ * @description スクリーンのキーフレームに分配用ElementのID
+ *              ID of the Element for distributing to keyframes in the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_DISTRIBUTE_TO_KEYFRAMES_ID: string = "screen-distribute-to-keyframes";
+
+/**
+ * @description スクリーンの選択範囲の座標を前のキーフレームに合わせるElementのID
+ *              ID of the Element to align the coordinates of the selection range in the screen to the previous keyframe
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID: string = "screen-align-coordinates-prev-keyframe";
+
+/**
+ * @description スクリーンの選択範囲の座標を前のキーフレームに合わせるElementのID
+ *              ID of the Element to align the matrix of the selection range in the screen to the previous keyframe
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_ALIGN_MATRIX_PREV_KEYFRAME_ID: string = "screen-align-matrix-prev-keyframe";
+
+/**
+ * @description スクリーンのパスを統合するElementのID
+ *              ID of the Element to integrate paths in the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_INTEGRATING_PATHS_ID: string = "screen-integrating-paths";
+
+/**
+ * @description スクリーンのイージングカーブ追加用ElementのID
+ *              ID of the Element for adding easing curves in the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_ADD_TWEEN_CURVE_POINTER_ID: string = "screen-add-tween-curve-pointer";
+
+/**
+ * @description スクリーンのイージングカーブ削除用ElementのID
+ *              ID of the Element for deleting easing curves in the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_DELETE_TWEEN_CURVE_POINTER_ID: string = "screen-delete-tween-curve-pointer";
+
+/**
+ * @description スクリーンのMovieCliip変更用ElementのID
+ *              ID of the Element for changing MovieClip of the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_CHANGE_MOVIE_CLIP_ID: string = "screen-change-movie-clip";
+
+/**
+ * @description スクリーンのプレビュー用ElementのID
+ *              ID of the Element for previewing the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_PREVIEW_ID: string = "screen-preview";

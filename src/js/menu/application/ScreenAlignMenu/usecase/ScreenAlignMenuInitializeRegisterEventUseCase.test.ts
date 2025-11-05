@@ -93,7 +93,7 @@ vi.mock("@/controller/application/AlignSetting/service/AlignSettingStageBottomPo
     execute: mockAlignSettingStageBottomPointerDownEventService
 }));
 
-import { execute } from "./ScreenAlignMenuMenuInitializeRegisterEventUseCase";
+import { execute } from "./ScreenAlignMenuInitializeRegisterEventUseCase";
 
 describe("ScreenAlignMenuMenuInitializeRegisterEventUseCase", () => {
     let elements: Map<string, HTMLElement>;
