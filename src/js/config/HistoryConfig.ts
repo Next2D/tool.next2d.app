@@ -735,3 +735,12 @@ export const $CHARACTER_UPDATE_BLEND_MODE_COMMAND: number = 75;
  * @constant
  */
 export const $CHARACTER_DELETE_COMMAND: number = 76;
+
+/**
+ * @description キャラクターを最前面に移動の識別コマンド名
+ *              Identification command name for moving the character to the frontmost position
+ *
+ * @type {number}
+ * @constant
+ */
+export const $SCREEN_FRONT_COMMAND: number = 77;

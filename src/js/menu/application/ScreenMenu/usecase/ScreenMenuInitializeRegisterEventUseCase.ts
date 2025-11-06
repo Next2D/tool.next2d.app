@@ -3,6 +3,7 @@ import { execute as screenMenuInitializeRegisterPointerOverUseCase } from "./Scr
 import { execute as screenMenuTouchPointerDownUseCase } from "./ScreenMenuTouchPointerDownUseCase";
 import { execute as screenMenuTouchPointerUpService } from "../service/ScreenMenuTouchPointerUpService";
 import { execute as screenAlignMenuInitializeRegisterEventUseCase } from "@/menu/application/ScreenAlignMenu/usecase/ScreenAlignMenuInitializeRegisterEventUseCase";
+import { execute as screenOrderMenuInitializeRegisterEventUseCase } from "@/menu/application/ScreenOrderMenu/usecase/ScreenOrderMenuInitializeRegisterEventUseCase";
 import { execute as screenMenuEditMovieClipPointerDownEventUseCase } from "./ScreenMenuEditMovieClipPointerDownEventUseCase";
 import { execute as screenMenuMoveParentMovieClipPointerDownEventUseCase } from "./ScreenMenuMoveParentMovieClipPointerDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
@@ -52,6 +53,9 @@ export const execute = (): void =>
 
     // スクリーンメニューの整列エリアのイベント登録
     screenAlignMenuInitializeRegisterEventUseCase();
+
+    // スクリーンメニューの重ね順エリアのイベント登録
+    screenOrderMenuInitializeRegisterEventUseCase();
 
     // MovieClip編集ボタンのイベントを登録
     const editMovieClipElement: HTMLElement | null = document

@@ -9,12 +9,16 @@ import { execute as externalTimelineEditMovieClipUseCase } from "@/external/time
  * @description スクリーンの選択中のMovieClipのPointerDownEvent処理関数
  *              PointerDownEvent processing function of the selected MovieClip on the screen
  *
+ * @param  {PointerEvent | KeyboardEvent} eventt
  * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = async (): Promise<void> =>
+export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void> =>
 {
+    // イベントの伝播を止める
+    event.stopPropagation();
+
     // メニューを全て閉じる
     $allHideMenu();
 

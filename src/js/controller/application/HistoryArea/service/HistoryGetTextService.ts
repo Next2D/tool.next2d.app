@@ -69,7 +69,8 @@ import {
     $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND,
     $CHARACTER_UPDATE_BLEND_MODE_COMMAND,
-    $CHARACTER_DELETE_COMMAND
+    $CHARACTER_DELETE_COMMAND,
+    $SCREEN_FRONT_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -292,6 +293,9 @@ export const execute = (command: number): string =>
 
         case $CHARACTER_DELETE_COMMAND:
             return "[%s1]のレイヤー[%s2]の%s3フレーム・深度%s4の[%s5]を削除";
+
+        case $SCREEN_FRONT_COMMAND:
+            return "[%s1]のレイヤー[%s2]の%s3フレーム・深度%s4を深度%s5に移動";
 
         default:
             break;

@@ -18,6 +18,7 @@ import { execute as alignSettingStageBottomPointerDownEventService } from "@/con
 import { execute as screenAreaDeleteKeyEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaDeleteKeyEventUseCase";
 import { execute as screenAreaEditMovieClipPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuEditMovieClipPointerDownEventUseCase";
 import { execute as screenMenuMoveParentMovieClipPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuMoveParentMovieClipPointerDownEventUseCase";
+import { execute as screenOrderMenuFrontPointerDownEventService } from "@/menu/application/ScreenOrderMenu/service/ScreenOrderMenuFrontPointerDownEventService";
 
 /**
  * @description スクリーンエリアのショートカットイベントを登録
@@ -141,5 +142,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("e", { "shift": true }),
         screenMenuMoveParentMovieClipPointerDownEventUseCase
+    );
+
+    // レイヤー内の最前面に移動
+    $setShortcut(
+        $generateShortcutKey("ArrowUp", { "ctrl": true, "shift": true }),
+        screenOrderMenuFrontPointerDownEventService
     );
 };

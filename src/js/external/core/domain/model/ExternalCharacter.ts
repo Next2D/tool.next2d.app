@@ -24,6 +24,7 @@ import { execute as externalCharacterUpdateBlueMultiplierUseCase } from "@/exter
 import { execute as externalCharacterUpdateBlueOffsetUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlueOffsetUseCase";
 import { execute as externalCharacterUpdateBlendModeUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateBlendModeUseCase";
 import { execute as externalCharacterDeleteUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterDeleteUseCase";
+import { execute as externalCharacterChangeDepthUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterChangeDepthUseCase";
 
 /**
  * @description DisplayObjectの管理クラス
@@ -685,6 +686,26 @@ export class ExternalCharacter
             this._$movieClip,
             this._$layer,
             this._$character
+        );
+    }
+
+    /**
+     * @description DisplayObjectの画面重ね順を変更
+     *              Change the layer order of DisplayObject
+     *
+     * @param  {number} depth
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async changeDepth (depth: number): Promise<void>
+    {
+        await externalCharacterChangeDepthUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            this._$character,
+            depth
         );
     }
 }
