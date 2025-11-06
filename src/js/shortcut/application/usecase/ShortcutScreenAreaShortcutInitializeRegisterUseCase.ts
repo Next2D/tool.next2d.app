@@ -17,6 +17,7 @@ import { execute as alignSettingStageMiddlePointerDownEventService } from "@/con
 import { execute as alignSettingStageBottomPointerDownEventService } from "@/controller/application/AlignSetting/service/AlignSettingStageBottomPointerDownEventService";
 import { execute as screenAreaDeleteKeyEventUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaDeleteKeyEventUseCase";
 import { execute as screenAreaEditMovieClipPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuEditMovieClipPointerDownEventUseCase";
+import { execute as screenMenuMoveParentMovieClipPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuMoveParentMovieClipPointerDownEventUseCase";
 
 /**
  * @description スクリーンエリアのショートカットイベントを登録
@@ -134,5 +135,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("e"),
         screenAreaEditMovieClipPointerDownEventUseCase
+    );
+
+    // 親のMovieClipに移動
+    $setShortcut(
+        $generateShortcutKey("e", { "shift": true }),
+        screenMenuMoveParentMovieClipPointerDownEventUseCase
     );
 };

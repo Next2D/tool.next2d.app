@@ -4,10 +4,12 @@ import { execute as screenMenuTouchPointerDownUseCase } from "./ScreenMenuTouchP
 import { execute as screenMenuTouchPointerUpService } from "../service/ScreenMenuTouchPointerUpService";
 import { execute as screenAlignMenuInitializeRegisterEventUseCase } from "@/menu/application/ScreenAlignMenu/usecase/ScreenAlignMenuInitializeRegisterEventUseCase";
 import { execute as screenMenuEditMovieClipPointerDownEventUseCase } from "./ScreenMenuEditMovieClipPointerDownEventUseCase";
+import { execute as screenMenuMoveParentMovieClipPointerDownEventUseCase } from "./ScreenMenuMoveParentMovieClipPointerDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import {
     $SCREEN_ID,
-    $SCREEN_CHANGE_SCENE_ID
+    $SCREEN_CHANGE_SCENE_ID,
+    $SCREEN_MOVE_SCENE_ID
 } from "@/config/ScreenConfig";
 
 /**
@@ -60,6 +62,18 @@ export const execute = (): void =>
         editMovieClipElement.addEventListener(
             EventType.POINTER_DOWN,
             screenMenuEditMovieClipPointerDownEventUseCase
+        );
+    }
+
+    // 親のシーン移動ボタンのイベントを登録
+    const moveParentSceneElement: HTMLElement | null = document
+        .getElementById($SCREEN_MOVE_SCENE_ID);
+
+    if (moveParentSceneElement) {
+        // タッチデバイスのタッチイベント
+        moveParentSceneElement.addEventListener(
+            EventType.POINTER_DOWN,
+            screenMenuMoveParentMovieClipPointerDownEventUseCase
         );
     }
 };

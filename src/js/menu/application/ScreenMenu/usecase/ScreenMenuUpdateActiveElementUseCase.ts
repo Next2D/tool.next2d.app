@@ -2,6 +2,7 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as screenMenuAllInactiveService } from "../service/ScreenMenuAllInactiveService";
 import { execute as screenMenuUpdateStyleSubMenuService } from "../service/ScreenMenuUpdateStyleSubMenuService";
 import { execute as screenMenuUpdateStyleEditMovieClipService } from "../service/ScreenMenuUpdateStyleEditMovieClipService";
+import { execute as screenMenuUpdateStyleMoveParentMovieClipService } from "../service/ScreenMenuUpdateStyleMoveParentMovieClipService";
 
 /**
  * @description スクリーンのメニューを選択中のElementに合わせてアクティブ・非アクティブに更新する
@@ -26,4 +27,7 @@ export const execute = (): void =>
         // MovieClipの編集ボタンのスタイルを更新
         screenMenuUpdateStyleEditMovieClipService(movieClip);
     }
+
+    // 親のMovieClipへの移動ボタンのスタイルを更新
+    screenMenuUpdateStyleMoveParentMovieClipService();
 };
