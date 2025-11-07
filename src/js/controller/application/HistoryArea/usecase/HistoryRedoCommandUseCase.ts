@@ -80,6 +80,7 @@ import { execute as characterUpdateBlueMultiplierHistoryRedoUseCase } from "@/hi
 import { execute as characterUpdateBlueOffsetHistoryRedoUseCase } from "@/history/application/controller/application/ColorSetting/UpdateBlueOffset/usecase/CharacterUpdateBlueOffsetHistoryRedoUseCase";
 import { execute as characterUpdateBlendModeHistoryRedoUseCase } from "@/history/application/controller/application/BlendModeSetting/UpdateBlendMode/usecase/CharacterUpdateBlendModeHistoryRedoUseCase";
 import { execute as characterDeleteHistoryRedoUseCase } from "@/history/application/core/application/Character/Delete/usecase/CharacterDeleteHistoryRedoUseCase";
+import { execute as characterChangeDepthHistoryRedoUseCase } from "@/history/application/core/application/Character/ChangeDepth/usecase/CharacterChangeDepthHistoryRedoUseCase";
 import {
     $SCREEN_TAB_NAME_UPDATE_COMMAND,
     $TIMELINE_TOOL_LAYER_ADD_COMMAND,
@@ -150,7 +151,8 @@ import {
     $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND,
     $CHARACTER_UPDATE_BLEND_MODE_COMMAND,
-    $CHARACTER_DELETE_COMMAND
+    $CHARACTER_DELETE_COMMAND,
+    $CHARACTER_CHANGE_DEPTH_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -884,6 +886,17 @@ export const execute = async (
                 messages[2] as number, // Layer Index
                 messages[3] as number, // Keyframe
                 messages[4] as number  // Depth
+            );
+            break;
+
+        case $CHARACTER_CHANGE_DEPTH_COMMAND:
+            await characterChangeDepthHistoryRedoUseCase(
+                messages[0] as number, // WorkSpace ID
+                messages[1] as number, // MovieClip ID
+                messages[2] as number, // Layer Index
+                messages[3] as number, // Keyframe
+                messages[4] as number, // Before Depth
+                messages[5] as number  // After Depth
             );
             break;
 

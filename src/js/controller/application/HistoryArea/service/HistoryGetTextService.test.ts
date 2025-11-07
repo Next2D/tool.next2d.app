@@ -69,7 +69,7 @@ import {
     $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND,
     $CHARACTER_DELETE_COMMAND,
-    $SCREEN_FRONT_COMMAND
+    $CHARACTER_CHANGE_DEPTH_COMMAND
 } from "../../../../config/HistoryConfig";
 
 describe("HistoryGetTextServiceTest", () =>
@@ -144,6 +144,6 @@ describe("HistoryGetTextServiceTest", () =>
         expect(execute($CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND)).toBe("[%s1]のレイヤー[%s2]の%s3フレーム・深度%s4の青色成分を%s5%から%s6%に変更");
         expect(execute($CHARACTER_UPDATE_BLUE_OFFSET_COMMAND)).toBe("[%s1]のレイヤー[%s2]の%s3フレーム・深度%s4の青色成分オフセットを%s5から%s6に変更");
         expect(execute($CHARACTER_DELETE_COMMAND)).toBe("[%s1]のレイヤー[%s2]の%s3フレーム・深度%s4の[%s5]を削除");
-        expect(execute($SCREEN_FRONT_COMMAND)).toBe("[%s1]のレイヤー[%s2]の%s3フレーム・深度%s4を深度%s5に移動");
+        expect(execute($CHARACTER_CHANGE_DEPTH_COMMAND)).toBe("[%s1]のレイヤー[%s2]の%s3フレーム・深度%s4を深度%s5に移動");
     });
 });

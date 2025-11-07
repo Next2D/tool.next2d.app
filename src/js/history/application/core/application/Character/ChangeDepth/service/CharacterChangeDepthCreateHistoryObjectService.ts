@@ -2,7 +2,7 @@ import type { IHistoryObject } from "@/interface/IHistoryObject";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { Character } from "@/core/domain/model/Character";
-import { $SCREEN_FRONT_COMMAND } from "@/config/HistoryConfig";
+import { $CHARACTER_CHANGE_DEPTH_COMMAND } from "@/config/HistoryConfig";
 
 /**
  * @description キャラクターを最前面に移動の履歴オブジェクトを作成
@@ -26,7 +26,7 @@ export const execute = (
 ): IHistoryObject => {
 
     return {
-        "command": $SCREEN_FRONT_COMMAND,
+        "command": $CHARACTER_CHANGE_DEPTH_COMMAND,
         "messages": [
             work_space_id,
             movie_clip.id,
@@ -40,7 +40,6 @@ export const execute = (
             layer.name,
             character.startFrame,
             character.depth,
-            character.name,
             after_depth
         ]
     };

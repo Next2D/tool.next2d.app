@@ -4,7 +4,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { $clamp } from "@/global/GlobalUtil";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
-import { execute as viewCharacterChageDepthUseCase } from "@/view/core/Character/usecase/ViewCharacterChageDepthUseCase";
+import { execute as viewCharacterChangeDepthUseCase } from "@/view/core/Character/usecase/ViewCharacterChangeDepthUseCase";
 import { execute as characterChangeDepthHistoryUseCase } from "@/history/application/core/application/Character/ChangeDepth/usecase/CharacterChangeDepthHistoryUseCase";
 
 /**
@@ -65,7 +65,7 @@ export const execute = async (
     cacheRemoveService(work_space, movie_clip.id);
 
     // Viewを更新
-    await viewCharacterChageDepthUseCase(
+    await viewCharacterChangeDepthUseCase(
         work_space,
         movie_clip
     );

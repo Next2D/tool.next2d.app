@@ -1,5 +1,5 @@
 import { execute } from "./CharacterChangeDepthCreateHistoryObjectService";
-import { $SCREEN_FRONT_COMMAND } from "../../../../../../../config/HistoryConfig";
+import { $CHARACTER_CHANGE_DEPTH_COMMAND } from "../../../../../../../config/HistoryConfig";
 import { MovieClip } from "../../../../../../../core/domain/model/MovieClip";
 import { Character } from "../../../../../../../core/domain/model/Character";
 import { describe, expect, it } from "vitest";
@@ -20,7 +20,7 @@ describe("CharacterChangeDepthCreateHistoryObjectService Test", () =>
         layer.name = "test_layer";
 
         const object = execute(1, movieClip, layer, character, 2);
-        expect(object.command).toBe($SCREEN_FRONT_COMMAND);
+        expect(object.command).toBe($CHARACTER_CHANGE_DEPTH_COMMAND);
 
         // 配列の順番が崩れてもいいようにテストケースを残す
         expect(object.messages.length).toBe(6);
@@ -32,12 +32,11 @@ describe("CharacterChangeDepthCreateHistoryObjectService Test", () =>
         expect(object.messages[5]).toBe(2);
 
         // 表示様の配列のチェック
-        expect(object.args.length).toBe(6);
+        expect(object.args.length).toBe(5);
         expect(object.args[0]).toBe(movieClip.name);
         expect(object.args[1]).toBe(layer.name);
         expect(object.args[2]).toBe(character.startFrame);
         expect(object.args[3]).toBe(character.depth);
-        expect(object.args[4]).toBe(character.name);
-        expect(object.args[5]).toBe(2);
+        expect(object.args[4]).toBe(2);
     });
 });
