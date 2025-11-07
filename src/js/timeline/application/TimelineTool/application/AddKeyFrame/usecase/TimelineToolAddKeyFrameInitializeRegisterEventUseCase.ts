@@ -1,6 +1,6 @@
 import { $TIMELINE_KEY_ADD_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolAddKeyFrameMouseDownEventUseCase } from "./TimelineToolAddKeyFrameMouseDownEventUseCase";
+import { execute as timelineToolAddKeyFramePointerDownEventUseCase } from "./TimelineToolAddKeyFramePointerDownEventUseCase";
 
 /**
  * @description キーフレーム追加ボタンのイベント登録
@@ -19,8 +19,8 @@ export const execute = (): void =>
         return ;
     }
 
-    // マウスダウンイベントを登録
+    // ポインターダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineToolAddKeyFrameMouseDownEventUseCase
+        timelineToolAddKeyFramePointerDownEventUseCase
     );
 };

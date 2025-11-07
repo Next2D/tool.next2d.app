@@ -4,6 +4,8 @@ import { $convertFrameObject } from "@/timeline/application/TimelineUtil";
 import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./ExternalTimelineLayerFramePrevAdjustmentUseCase";
 import { execute as externalTimelineLayerFrameSplitToKeyframeUseCase } from "./ExternalTimelineLayerFrameSplitToKeyframeUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
  * @description 選択中のレイヤーにキーフレームを追加、キーフレームがなければ空のキーフレームを追加
@@ -65,5 +67,13 @@ export const execute = async (
             // タイムラインのレイヤー表示を更新
             timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
         }
+    }
+
+    if (work_space.active && movie_clip.active) {
+        await screenAreaRedrawUseCase(movie_clip);
+
+        // 再描画したので、選択中のElementをアクティブにする
+        // fixed logic
+        screenDisplayObjectAllSelectedActiveUseCase(movie_clip);
     }
 };

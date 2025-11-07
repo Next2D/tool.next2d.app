@@ -25,7 +25,11 @@ describe("ScreenAreaIsCharacterSelectedService Test", () =>
         const layer = movieClip.layers[0];
         movieClip.selectedDepths.set(0, [0]);
         const character = new Character();
+        character.startFrame = 1;
+        character.endFrame = 2;
         character.depth = 0;
+        layer.characters.length = 0;
+        layer.addCharacter(character);
 
         expect(execute(movieClip, layer, character)).toBe(true);
     });

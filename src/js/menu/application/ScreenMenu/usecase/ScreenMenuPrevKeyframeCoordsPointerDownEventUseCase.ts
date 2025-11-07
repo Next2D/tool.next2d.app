@@ -30,6 +30,7 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
         const layer = movieClip.getLayer(layerIndex);
+        console.log(layer);
         if (!layer) {
             continue;
         }
@@ -51,6 +52,8 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
             .sort((a, b) => a.depth < b.depth ? -1 : 1);
 
         const prevCharacter = characters[0];
+        const x = prevCharacter.x;
+        const y = prevCharacter.y;
         for (let idx = 0; idx < depths.length; idx++) {
 
             const character = layer.getCharacter(frame, depths[idx]);
@@ -66,8 +69,8 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
                 character
             );
 
-            await externalCharacter.setX(prevCharacter.x);
-            await externalCharacter.setY(prevCharacter.y);
+            await externalCharacter.setX(x);
+            await externalCharacter.setY(y);
         }
     }
 };
