@@ -17,20 +17,14 @@ import { execute as characterLoadService } from "@/core/application/Character/se
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $clamp } from "@/global/GlobalUtil";
 import { ReferencePosition } from "./ReferencePosition";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
+import {
+    $getCurrentWorkSpace,
+    $getUUID
+} from "@/core/application/CoreUtil";
 import {
     $BITMAP_TYPE,
     $VIDEO_TYPE
 } from "@/config/InstanceConfig";
-
-/**
- * @description DisplayObjectのユニークID
- *              Unique ID of DisplayObject
- *
- * @type {number}
- * @private
- */
-let $characterId: number = 1;
 
 /**
  * @description キーフレームの管理クラス
@@ -42,13 +36,13 @@ export class Character
 {
     /**
      * @description CharacterのユニークID
-     *             Unique ID of Character
+     *              Unique ID of Character
      *
-     * @member {number}
+     * @member {string}
      * @public
      * @readonly
      */
-    public readonly id: number;
+    public readonly id: string;
 
     /**
      * @description 開始フレーム番号
@@ -158,7 +152,7 @@ export class Character
      */
     constructor ()
     {
-        this.id             = $characterId++;
+        this.id             = $getUUID();
         this.libraryId      = -1;
         this.depth          = 0;
         this.name           = "";
@@ -173,22 +167,6 @@ export class Character
 
         this.filters = [];
         this.referencePosition = new ReferencePosition(this);
-    }
-
-    /**
-     * @description Characterのキャッシュ用の管理ID
-     *              Management ID for Character cache
-     *
-     * @member {number}
-     * @static
-     */
-    static get characterId (): number
-    {
-        return $characterId;
-    }
-    static set characterId (character_id: number)
-    {
-        $characterId = $clamp(character_id, 1, Number.MAX_VALUE);
     }
 
     /**

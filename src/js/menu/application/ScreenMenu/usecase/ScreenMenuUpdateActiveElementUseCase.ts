@@ -3,6 +3,7 @@ import { execute as screenMenuAllInactiveService } from "../service/ScreenMenuAl
 import { execute as screenMenuUpdateStyleSubMenuService } from "../service/ScreenMenuUpdateStyleSubMenuService";
 import { execute as screenMenuUpdateStyleEditMovieClipService } from "../service/ScreenMenuUpdateStyleEditMovieClipService";
 import { execute as screenMenuUpdateStyleMoveParentMovieClipService } from "../service/ScreenMenuUpdateStyleMoveParentMovieClipService";
+import { execute as screenMenuUpdateStylePrevKeyframeCoordsService } from "../service/ScreenMenuUpdateStylePrevKeyframeCoordsService";
 
 /**
  * @description スクリーンのメニューを選択中のElementに合わせてアクティブ・非アクティブに更新する
@@ -26,6 +27,9 @@ export const execute = (): void =>
 
         // MovieClipの編集ボタンのスタイルを更新
         screenMenuUpdateStyleEditMovieClipService(movieClip);
+
+        // 前のキーフレームの座標に合わせるボタンのスタイルを更新
+        screenMenuUpdateStylePrevKeyframeCoordsService(movieClip);
     }
 
     // 親のMovieClipへの移動ボタンのスタイルを更新

@@ -16,9 +16,6 @@ import { execute as externalTimelineEditMovieClipUseCase } from "@/external/time
  */
 export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void> =>
 {
-    // イベントの伝播を止める
-    event.stopPropagation();
-
     // メニューを全て閉じる
     $allHideMenu();
 
@@ -50,6 +47,9 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
     if (instance.type !== $MOVIE_CLIP_TYPE) {
         return ;
     }
+
+    // イベントの伝播を止める
+    event.stopPropagation();
 
     // タイムラインのシーン一覧に追加
     timelineSceneListAddMovieClipUseCase(movieClip.id, character);

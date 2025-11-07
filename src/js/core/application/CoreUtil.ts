@@ -310,3 +310,23 @@ export const $calcBoundingBox = (bounding_boxs: IBounds[]): IBounds =>
         "yMax": yMax
     };
 };
+
+/**
+ * @description HTTPS環境外でもUUIDを取得
+ *              Get UUID even outside HTTPS environment
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $getUUID = (): string =>
+{
+    return typeof crypto?.randomUUID === "function"
+        ? crypto.randomUUID()
+        : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) =>
+        {
+            const r = Math.random() * 16 | 0;
+            const v = c === "x" ? r : r & 0x3 | 0x8;
+            return v.toString(16);
+        });
+};

@@ -6,11 +6,13 @@ import { execute as screenAlignMenuInitializeRegisterEventUseCase } from "@/menu
 import { execute as screenOrderMenuInitializeRegisterEventUseCase } from "@/menu/application/ScreenOrderMenu/usecase/ScreenOrderMenuInitializeRegisterEventUseCase";
 import { execute as screenMenuEditMovieClipPointerDownEventUseCase } from "./ScreenMenuEditMovieClipPointerDownEventUseCase";
 import { execute as screenMenuMoveParentMovieClipPointerDownEventUseCase } from "./ScreenMenuMoveParentMovieClipPointerDownEventUseCase";
+import { execute as screenMenuPrevKeyframeCoordsPointerDownEventUseCase } from "./ScreenMenuPrevKeyframeCoordsPointerDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import {
     $SCREEN_ID,
     $SCREEN_CHANGE_SCENE_ID,
-    $SCREEN_MOVE_SCENE_ID
+    $SCREEN_MOVE_SCENE_ID,
+    $SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID
 } from "@/config/ScreenConfig";
 
 /**
@@ -62,7 +64,6 @@ export const execute = (): void =>
         .getElementById($SCREEN_CHANGE_SCENE_ID);
 
     if (editMovieClipElement) {
-        // タッチデバイスのタッチイベント
         editMovieClipElement.addEventListener(
             EventType.POINTER_DOWN,
             screenMenuEditMovieClipPointerDownEventUseCase
@@ -74,10 +75,20 @@ export const execute = (): void =>
         .getElementById($SCREEN_MOVE_SCENE_ID);
 
     if (moveParentSceneElement) {
-        // タッチデバイスのタッチイベント
         moveParentSceneElement.addEventListener(
             EventType.POINTER_DOWN,
             screenMenuMoveParentMovieClipPointerDownEventUseCase
+        );
+    }
+
+    // 前のキーフレームの座標に合わせるボタンのイベントを登録
+    const prevKeyframeCoordsElement: HTMLElement | null = document
+        .getElementById($SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID);
+
+    if (prevKeyframeCoordsElement) {
+        prevKeyframeCoordsElement.addEventListener(
+            EventType.POINTER_DOWN,
+            screenMenuPrevKeyframeCoordsPointerDownEventUseCase
         );
     }
 };
