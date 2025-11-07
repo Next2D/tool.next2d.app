@@ -1,25 +1,23 @@
 import type { Character } from "@/core/domain/model/Character";
-import type { Layer } from "@/core/domain/model/Layer";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaGetElementFromCharacterIdService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromCharacterIdService";
+import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
-import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 
 /**
  * @description 指定レイヤーの指定DisplayObjectのElementの座標を内部データに合わせる
  *              Adjust the coordinates of the Element of the specified DisplayObject in the specified layer to match the internal data
  *
- * @param  {Layer} layer
  * @param  {Character} character
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer: Layer, character: Character): void =>
+export const execute = (character: Character): void =>
 {
-    const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+    const element = screenAreaGetElementFromCharacterIdService(character.id);
     if (!element) {
         return ;
     }

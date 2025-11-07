@@ -7,7 +7,7 @@ import { execute as targetRectUpdateElementUseCase } from "@/screen/application/
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaGetElementFromCharacterIdService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromCharacterIdService";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
@@ -70,21 +70,16 @@ export const execute = async (
             }
         }
 
-        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+        const element = screenAreaGetElementFromCharacterIdService(character.id);
         if (element) {
             await screenAreaReplaceCanvasUseCase(character, element, layer);
-        }
-
-        // マスクのstyleを更新
-        if (layer.mode === $MASK_IN_MODE) {
-            const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
-            if (!element) {
-                return;
-            }
 
             // マスクのstyleを更新
-            await screenDisplayObjectUpdateMaskInCanvasStyleService(element, layer, character);
+            if (layer.mode === $MASK_IN_MODE) {
+                await screenDisplayObjectUpdateMaskInCanvasStyleService(element, layer, character);
+            }
         }
+
     } else {
         // プロジェクトがアクティブならViewエリアを再描画
         await screenAreaRedrawUseCase(work_space.scene);

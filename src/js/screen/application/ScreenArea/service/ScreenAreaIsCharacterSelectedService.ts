@@ -18,6 +18,8 @@ export const execute = (
     layer: Layer,
     character: Character
 ): boolean => {
+
+    const frame = movie_clip.currentFrame;
     for (const [layerIndex, depths] of movie_clip.selectedDepths) {
 
         const selectedLayer = movie_clip.getLayer(layerIndex);
@@ -27,7 +29,8 @@ export const execute = (
 
         for (let idx = 0; idx < depths.length; idx++) {
             const depth = depths[idx];
-            if (depth !== character.depth) {
+            const activeCharacter = selectedLayer.getCharacter(frame, depth);
+            if (!activeCharacter || activeCharacter.id !== character.id) {
                 continue;
             }
 

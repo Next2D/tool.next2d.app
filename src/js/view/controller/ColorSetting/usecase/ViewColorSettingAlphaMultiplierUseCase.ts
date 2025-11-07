@@ -3,7 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import { execute as colorSettingUpdateAlphaMultiplierElementValueService } from "@/controller/application/ColorSetting/service/ColorSettingUpdateAlphaMultiplierElementValueService";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaGetElementFromCharacterIdService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromCharacterIdService";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
@@ -36,7 +36,7 @@ export const execute = async (
     if (movie_clip.active) {
 
         // Elementの更新
-        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+        const element = screenAreaGetElementFromCharacterIdService(character.id);
         if (element) {
             // alphaを更新
             const canvas = element.querySelector("canvas");

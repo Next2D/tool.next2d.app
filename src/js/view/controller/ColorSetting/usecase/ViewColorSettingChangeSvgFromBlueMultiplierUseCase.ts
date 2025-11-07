@@ -1,6 +1,6 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaGetElementFromCharacterIdService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromCharacterIdService";
 import { execute as svgColorTransformComponent } from "@/core/application/Svg/component/SvgColorTransformComponent";
 
 /**
@@ -18,7 +18,7 @@ export const execute = (
     layer: Layer
 ): void => {
 
-    const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+    const element = screenAreaGetElementFromCharacterIdService(character.id);
     if (!element) {
         return ;
     }

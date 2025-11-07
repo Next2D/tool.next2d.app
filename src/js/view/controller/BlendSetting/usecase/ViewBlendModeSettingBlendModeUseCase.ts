@@ -3,7 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { Character } from "@/core/domain/model/Character";
 import type { Layer } from "@/core/domain/model/Layer";
 import type { IBlendMode } from "@/interface/IBlendMode";
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaGetElementFromCharacterIdService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromCharacterIdService";
 import { execute as instanceUpdateBlendModeService } from "@/core/application/Instance/service/InstanceUpdateBlendModeService";
 import { execute as blendModeSettingUpdateSelectElementService } from "@/controller/application/BlendModeSetting/service/BlendModeSettingUpdateSelectElementService";
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
@@ -37,7 +37,7 @@ export const execute = async (
     // アクティブでない場合は何もしない
     if (movie_clip.active) {
         // Elementの更新
-        const element = screenAreaGetElementFromLayerIdAndDepthService(layer.id, character.depth);
+        const element = screenAreaGetElementFromCharacterIdService(character.id);
         if (!element) {
             return ;
         }
