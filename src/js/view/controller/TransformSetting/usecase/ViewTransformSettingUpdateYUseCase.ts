@@ -14,6 +14,7 @@ import { execute as screenReferencePointDeployElementUseCase } from "@/screen/ap
 import { execute as screenAreaIsCharacterSelectedService } from "@/screen/application/ScreenArea/service/ScreenAreaIsCharacterSelectedService";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
+import { execute as screenParentStandardPointDeployElementUseCass } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
 
 /**
  * @description y座標を更新した際のViewエリアの表示要素を更新
@@ -87,5 +88,8 @@ export const execute = async (
         // 再描画したので、選択中のElementをアクティブにする
         // fixed logic
         screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
+
+        // 親MovieClipの基準点Elementを再配置
+        screenParentStandardPointDeployElementUseCass();
     }
 };

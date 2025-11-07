@@ -13,6 +13,7 @@ import { execute as transformSettingUpdateScaleXElementService } from "@/control
 import { execute as screenAreaReplaceCanvasUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaReplaceCanvasUseCase";
 import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
+import { execute as screenParentStandardPointDeployElementUseCass } from "@/screen/application/StandardPoint/usecase/ScreenParentStandardPointDeployElementUseCase";
 
 /**
  * @description xスケールを更新した際のViewエリアの表示要素を更新
@@ -91,5 +92,8 @@ export const execute = async (
         // 再描画したので、選択中のElementをアクティブにする
         // fixed logic
         screenDisplayObjectAllSelectedActiveUseCase(work_space.scene);
+
+        // 親MovieClipの基準点Elementを再配置
+        screenParentStandardPointDeployElementUseCass();
     }
 };

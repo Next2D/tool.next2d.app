@@ -75,6 +75,7 @@ import { execute as characterUpdateBlueMultiplierReceiveUseCase } from "@/share/
 import { execute as characterUpdateBlueOffsetReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateBlueOffsetReceiveUseCase";
 import { execute as characterUpdateBlendModeReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterUpdateBlendModeReceiveUseCase";
 import { execute as characterDeleteReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterDeleteReceiveUseCase";
+import { execute as characterChangeDepthReceiveUseCase } from "@/share/receive/application/core/application/Character/usecase/CharacterChangeDepthReceiveUseCase";
 import {
     $HISTORY_REDO_COMMAND,
     $HISTORY_UNDO_COMMAND,
@@ -151,7 +152,8 @@ import {
     $CHARACTER_UPDATE_BLUE_MULTIPLIER_COMMAND,
     $CHARACTER_UPDATE_BLUE_OFFSET_COMMAND,
     $CHARACTER_UPDATE_BLEND_MODE_COMMAND,
-    $CHARACTER_DELETE_COMMAND
+    $CHARACTER_DELETE_COMMAND,
+    $CHARACTER_CHANGE_DEPTH_COMMAND
 } from "@/config/HistoryConfig";
 
 /**
@@ -553,6 +555,11 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         // キャラクターを削除
         case $CHARACTER_DELETE_COMMAND:
             await characterDeleteReceiveUseCase(message);
+            break;
+
+        // キャラクターの深度を変更
+        case $CHARACTER_CHANGE_DEPTH_COMMAND:
+            await characterChangeDepthReceiveUseCase(message);
             break;
 
         default:
