@@ -19,6 +19,9 @@ import { execute as screenAreaDeleteKeyEventUseCase } from "@/screen/application
 import { execute as screenAreaEditMovieClipPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuEditMovieClipPointerDownEventUseCase";
 import { execute as screenMenuMoveParentMovieClipPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuMoveParentMovieClipPointerDownEventUseCase";
 import { execute as screenOrderMenuFrontPointerDownEventService } from "@/menu/application/ScreenOrderMenu/service/ScreenOrderMenuFrontPointerDownEventService";
+import { execute as screenOrderMenuFrontOnePointerDownEventService } from "@/menu/application/ScreenOrderMenu/service/ScreenOrderMenuFrontOnePointerDownEventService";
+import { execute as screenOrderMenuBackOnePointerDownEventService } from "@/menu/application/ScreenOrderMenu/service/ScreenOrderMenuBackOnePointerDownEventService";
+import { execute as screenOrderMenuBackPointerDownEventService } from "@/menu/application/ScreenOrderMenu/service/ScreenOrderMenuBackPointerDownEventService";
 
 /**
  * @description スクリーンエリアのショートカットイベントを登録
@@ -148,5 +151,23 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("ArrowUp", { "ctrl": true, "shift": true }),
         screenOrderMenuFrontPointerDownEventService
+    );
+
+    // レイヤー内の一つ前面に移動
+    $setShortcut(
+        $generateShortcutKey("ArrowUp", { "ctrl": true }),
+        screenOrderMenuFrontOnePointerDownEventService
+    );
+
+    // レイヤー内の一つ背面に移動
+    $setShortcut(
+        $generateShortcutKey("ArrowDown", { "ctrl": true }),
+        screenOrderMenuBackOnePointerDownEventService
+    );
+
+    // レイヤー内の最背面に移動
+    $setShortcut(
+        $generateShortcutKey("ArrowDown", { "ctrl": true, "shift": true }),
+        screenOrderMenuBackPointerDownEventService
     );
 };
