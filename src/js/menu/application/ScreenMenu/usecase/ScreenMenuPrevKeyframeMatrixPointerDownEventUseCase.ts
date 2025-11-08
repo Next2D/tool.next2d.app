@@ -3,8 +3,8 @@ import { $allHideMenu } from "../../MenuUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 
 /**
- * @description 前のキーフレームの座標に合わせるイベントを実行
- *              Execute the event to match the coordinates of the previous keyframe
+ * @description 前のキーフレームの変形に合わせるイベントを実行
+ *              Execute the event to match the transformation of the previous keyframe
  *
  * @param  {PointerEvent | KeyboardEvent} event
  * @return {Promise<void>}
@@ -51,8 +51,11 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
             .sort((a, b) => a.depth < b.depth ? -1 : 1);
 
         const prevCharacter = characters[0];
-        const x = prevCharacter.x;
-        const y = prevCharacter.y;
+        const matrix = prevCharacter.matrix;
+        const a = matrix[0];
+        const b = matrix[1];
+        const c = matrix[2];
+        const d = matrix[3];
         for (let idx = 0; idx < depths.length; idx++) {
 
             const character = layer.getCharacter(frame, depths[idx]);
@@ -68,8 +71,9 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
                 character
             );
 
-            await externalCharacter.setX(x);
-            await externalCharacter.setY(y);
+            await externalCharacter.setMatrix(a, b, c, d,
+                externalCharacter.getX(), externalCharacter.getY()
+            );
         }
     }
 };

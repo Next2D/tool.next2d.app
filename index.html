@@ -1218,8 +1218,10 @@
             <span class="screen-menu-title language" data-text="{{タイムライン}}">タイムライン</span>
             <div id="screen-distribute-to-layers" class="screen-menu-bottom"><span class="language" data-text="{{レイヤーに配分}}" data-shortcut-key="dCtrl" data-shortcut-text="Ctrl + D">レイヤーに配分</span></div>
             <div id="screen-distribute-to-keyframes" class="screen-menu-bottom"><span class="language" data-text="{{キーフレームに配分}}" data-shortcut-key="kShiftCtrl" data-shortcut-text="Ctrl + Shift + K">キーフレームに配分</span></div>
-            <div id="screen-align-coordinates-prev-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{前のキーフレームと座標を合わせる}}" data-shortcut-key="cShiftCtrl" data-shortcut-text="Ctrl + Shift + C">前のキーフレームと座標を合わせる</span></div>
-            <div id="screen-align-matrix-prev-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{前のキーフレームと変形を合わせる}}" data-shortcut-key="tShiftCtrl" data-shortcut-text="Ctrl + Shift + T">前のキーフレームと変形を合わせる</span></div>
+            <div id="screen-align-coordinates-prev-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{前のキーフレームと座標を合わせる}}" data-shortcut-key="oShiftCtrl" data-shortcut-text="Ctrl + Shift + O">前のキーフレームと座標を合わせる</span></div>
+            <div id="screen-align-coordinates-next-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{次のキーフレームと座標を合わせる}}" data-shortcut-key="pShiftCtrl" data-shortcut-text="Ctrl + Shift + P">次のキーフレームと座標を合わせる</span></div>
+            <div id="screen-align-matrix-prev-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{前のキーフレームと変形を合わせる}}" data-shortcut-key="uShiftCtrl" data-shortcut-text="Ctrl + Shift + U">前のキーフレームと変形を合わせる</span></div>
+            <div id="screen-align-matrix-next-keyframe" class="screen-menu-bottom"><span class="language" data-text="{{次のキーフレームと変形を合わせる}}" data-shortcut-key="iShiftCtrl" data-shortcut-text="Ctrl + Shift + I">次のキーフレームと変形を合わせる</span></div>
             <p></p>
             <span class="screen-menu-title language" data-text="{{シェイプ}}">シェイプ</span>
             <div id="screen-integrating-paths" class="screen-menu-bottom"><i></i><span class="language" data-text="{{パスの結合}}" data-shortcut-key="iCtrl" data-shortcut-text="Ctrl + I">パスの結合</span></div>
@@ -1241,10 +1243,10 @@
       <!-- screen-order-menu -->
       <div id="screen-order-menu" class="none">
         <div class="screen-menu-list">
-            <div id="screen-front" class="screen-menu-bottom"><i></i><span class="language" data-text="{{最前面}}" data-shortcut-key="ArrowUpShiftCtrl" data-shortcut-text="Ctrl + Shift + ▲">最前面</span></div>
-            <div id="screen-front-one" class="screen-menu-bottom"><i></i><span class="language" data-text="{{ひとつ前面へ}}" data-shortcut-key="ArrowUpCtrl" data-shortcut-text="Ctrl + ▲">ひとつ前面へ</span></div>
-            <div id="screen-back-one" class="screen-menu-bottom"><i></i><span class="language" data-text="{{ひとつ背面へ}}" data-shortcut-key="ArrowDownCtrl" data-shortcut-text="Ctrl + ▼">ひとつ背面へ</span></div>
-            <div id="screen-back" class="screen-menu-bottom"><i></i><span class="language" data-text="{{最背面}}" data-shortcut-key="ArrowDownShiftCtrl" data-shortcut-text="Ctrl + Shift + ▼">最背面</span></div>
+            <div id="screen-front" class="screen-menu-bottom"><i></i><span class="language" data-text="{{最前面}}" data-shortcut-key="ArrowUpShiftAlt" data-shortcut-text="Alt + Shift + ▲">最前面</span></div>
+            <div id="screen-front-one" class="screen-menu-bottom"><i></i><span class="language" data-text="{{ひとつ前面へ}}" data-shortcut-key="ArrowUpAlt" data-shortcut-text="Alt + ▲">ひとつ前面へ</span></div>
+            <div id="screen-back-one" class="screen-menu-bottom"><i></i><span class="language" data-text="{{ひとつ背面へ}}" data-shortcut-key="ArrowDownAlt" data-shortcut-text="Alt + ▼">ひとつ背面へ</span></div>
+            <div id="screen-back" class="screen-menu-bottom"><i></i><span class="language" data-text="{{最背面}}" data-shortcut-key="ArrowDownShiftAlt" data-shortcut-text="Alt + Shift + ▼">最背面</span></div>
         </div>
       </div>
 
@@ -1791,28 +1793,28 @@
                     <div class="description">
                         <span class="language" data-text="{{最前面}}">最前面</span>
                     </div>
-                    <div id="shortcut-ArrowUpShiftCtrl" class="command" data-default-key="ArrowUpShiftCtrl" data-default-text="Ctrl + Shift + ArrowUp">Ctrl + Shift + ArrowUp</div>
+                    <div id="shortcut-ArrowUpShiftAlt" class="command" data-default-key="ArrowUpShiftAlt" data-default-text="Alt + Shift + ArrowUp">Alt + Shift + ArrowUp</div>
                 </div>
                 <div class="shortcut-item">
                     <i class="screen-front-one"></i>
                     <div class="description">
                         <span class="language" data-text="{{ひとつ前面へ}}">ひとつ前面へ</span>
                     </div>
-                    <div id="shortcut-ArrowUpCtrl" class="command" data-default-key="ArrowUpCtrl" data-default-text="Ctrl + ArrowUp">Ctrl + ArrowUp</div>
+                    <div id="shortcut-ArrowUpAlt" class="command" data-default-key="ArrowUpAlt" data-default-text="Alt + ArrowUp">Alt + ArrowUp</div>
                 </div>
                 <div class="shortcut-item">
                     <i class="screen-back-one"></i>
                     <div class="description">
                         <span class="language" data-text="{{ひとつ背面へ}}">ひとつ背面へ</span>
                     </div>
-                    <div id="shortcut-ArrowDownCtrl" class="command" data-default-key="ArrowDownCtrl" data-default-text="Ctrl + ArrowDown">Ctrl + ArrowDown</div>
+                    <div id="shortcut-ArrowDownAlt" class="command" data-default-key="ArrowDownAlt" data-default-text="Alt + ArrowDown">Alt + ArrowDown</div>
                 </div>
                 <div class="shortcut-item">
                     <i class="screen-back"></i>
                     <div class="description">
                         <span class="language" data-text="{{最背面}}">最背面</span>
                     </div>
-                    <div id="shortcut-ArrowDownShiftCtrl" class="command" data-default-key="ArrowDownShiftCtrl" data-default-text="Ctrl + Shift + ArrowDown">Ctrl + Shift + ArrowDown</div>
+                    <div id="shortcut-ArrowDownShiftAlt" class="command" data-default-key="ArrowDownShiftAlt" data-default-text="Alt + Shift + ArrowDown">Alt + Shift + ArrowDown</div>
                 </div>
                 <div class="shortcut-item">
                     <i class="screen-position-left"></i>
@@ -2130,14 +2132,28 @@
                     <div class="description">
                         <span class="language" data-text="{{前のキーフレームと座標を合わせる}}">前のキーフレームと座標を合わせる</span>
                     </div>
-                    <div id="shortcut-cShiftCtrl" class="command" data-default-key="cShiftCtrl" data-default-text="Ctrl + Shift + C">Ctrl + Shift + C</div>
+                    <div id="shortcut-oShiftCtrl" class="command" data-default-key="oShiftCtrl" data-default-text="Ctrl + Shift + O">Ctrl + Shift + O</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-align-coordinates-next-keyframe"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{次のキーフレームと座標を合わせる}}">次のキーフレームと座標を合わせる</span>
+                    </div>
+                    <div id="shortcut-pShiftCtrl" class="command" data-default-key="pShiftCtrl" data-default-text="Ctrl + Shift + P">Ctrl + Shift + P</div>
                 </div>
                 <div class="shortcut-item">
                     <i class="screen-align-matrix-prev-keyframe"></i>
                     <div class="description">
                         <span class="language" data-text="{{前のキーフレームと変形を合わせる}}">前のキーフレームと変形を合わせる</span>
                     </div>
-                    <div id="shortcut-tShiftCtrl" class="command" data-default-key="tShiftCtrl" data-default-text="Ctrl + Shift + T">Ctrl + Shift + T</div>
+                    <div id="shortcut-uShiftCtrl" class="command" data-default-key="uShiftCtrl" data-default-text="Ctrl + Shift + U">Ctrl + Shift + U</div>
+                </div>
+                <div class="shortcut-item">
+                    <i class="screen-align-matrix-next-keyframe"></i>
+                    <div class="description">
+                        <span class="language" data-text="{{次のキーフレームと変形を合わせる}}">次のキーフレームと変形を合わせる</span>
+                    </div>
+                    <div id="shortcut-iShiftCtrl" class="command" data-default-key="iShiftCtrl" data-default-text="Ctrl + Shift + I">Ctrl + Shift + I</div>
                 </div>
             </div>
 

@@ -3,8 +3,8 @@ import { $allHideMenu } from "../../MenuUtil";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
 
 /**
- * @description 前のキーフレームの座標に合わせるイベントを実行
- *              Execute the event to match the coordinates of the previous keyframe
+ * @description 次のキーフレームの座標に合わせるイベントを実行
+ *              Execute the event to match the coordinates of the next keyframe
  *
  * @param  {PointerEvent | KeyboardEvent} event
  * @return {Promise<void>}
@@ -41,18 +41,18 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
         }
         const activeCharacter = activeCharacters[0];
 
-        // 前のキーフレームのDisplayObjectを取得
-        const prevActiveCharacters = layer.getActiveCharacters(activeCharacter.startFrame - 1);
-        if (!prevActiveCharacters.length) {
+        // 次のキーフレームのDisplayObjectを取得
+        const nextActiveCharacters = layer.getActiveCharacters(activeCharacter.endFrame);
+        if (!nextActiveCharacters.length) {
             continue;
         }
 
-        const characters = prevActiveCharacters
+        const characters = nextActiveCharacters
             .sort((a, b) => a.depth < b.depth ? -1 : 1);
 
-        const prevCharacter = characters[0];
-        const x = prevCharacter.x;
-        const y = prevCharacter.y;
+        const nextCharacter = characters[0];
+        const x = nextCharacter.x;
+        const y = nextCharacter.y;
         for (let idx = 0; idx < depths.length; idx++) {
 
             const character = layer.getCharacter(frame, depths[idx]);

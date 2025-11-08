@@ -188,6 +188,15 @@ export const $SCREEN_DISTRIBUTE_TO_KEYFRAMES_ID: string = "screen-distribute-to-
 export const $SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID: string = "screen-align-coordinates-prev-keyframe";
 
 /**
+ * @description スクリーンの選択範囲の座標を次のキーフレームに合わせるElementのID
+ *              ID of the Element to align the coordinates of the selection range in the screen to the next keyframe
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_ALIGN_COORDINATES_NEXT_KEYFRAME_ID: string = "screen-align-coordinates-next-keyframe";
+
+/**
  * @description スクリーンの選択範囲の座標を前のキーフレームに合わせるElementのID
  *              ID of the Element to align the matrix of the selection range in the screen to the previous keyframe
  *
@@ -195,6 +204,15 @@ export const $SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID: string = "screen-align-
  * @constant
  */
 export const $SCREEN_ALIGN_MATRIX_PREV_KEYFRAME_ID: string = "screen-align-matrix-prev-keyframe";
+
+/**
+ * @description スクリーンの選択範囲の座標を次のキーフレームに合わせるElementのID
+ *              ID of the Element to align the matrix of the selection range in the screen to the next keyframe
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_ALIGN_MATRIX_NEXT_KEYFRAME_ID: string = "screen-align-matrix-next-keyframe";
 
 /**
  * @description スクリーンのパスを統合するElementのID

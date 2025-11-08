@@ -22,6 +22,10 @@ import { execute as screenOrderMenuFrontPointerDownEventService } from "@/menu/a
 import { execute as screenOrderMenuFrontOnePointerDownEventService } from "@/menu/application/ScreenOrderMenu/service/ScreenOrderMenuFrontOnePointerDownEventService";
 import { execute as screenOrderMenuBackOnePointerDownEventService } from "@/menu/application/ScreenOrderMenu/service/ScreenOrderMenuBackOnePointerDownEventService";
 import { execute as screenOrderMenuBackPointerDownEventService } from "@/menu/application/ScreenOrderMenu/service/ScreenOrderMenuBackPointerDownEventService";
+import { execute as screenMenuPrevKeyframeCoordsPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuPrevKeyframeCoordsPointerDownEventUseCase";
+import { execute as screenMenuNextKeyframeCoordsPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuNextKeyframeCoordsPointerDownEventUseCase";
+import { execute as screenMenuPrevKeyframeMatrixPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuPrevKeyframeMatrixPointerDownEventUseCase";
+import { execute as screenMenuNextKeyframeMatrixPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuNextKeyframeMatrixPointerDownEventUseCase";
 
 /**
  * @description スクリーンエリアのショートカットイベントを登録
@@ -149,25 +153,49 @@ export const execute = (): void =>
 
     // レイヤー内の最前面に移動
     $setShortcut(
-        $generateShortcutKey("ArrowUp", { "ctrl": true, "shift": true }),
+        $generateShortcutKey("ArrowUp", { "shift": true, "alt": true }),
         screenOrderMenuFrontPointerDownEventService
     );
 
     // レイヤー内の一つ前面に移動
     $setShortcut(
-        $generateShortcutKey("ArrowUp", { "ctrl": true }),
+        $generateShortcutKey("ArrowUp", { "alt": true }),
         screenOrderMenuFrontOnePointerDownEventService
     );
 
     // レイヤー内の一つ背面に移動
     $setShortcut(
-        $generateShortcutKey("ArrowDown", { "ctrl": true }),
+        $generateShortcutKey("ArrowDown", { "alt": true }),
         screenOrderMenuBackOnePointerDownEventService
     );
 
     // レイヤー内の最背面に移動
     $setShortcut(
-        $generateShortcutKey("ArrowDown", { "ctrl": true, "shift": true }),
+        $generateShortcutKey("ArrowDown", { "shift": true, "alt": true }),
         screenOrderMenuBackPointerDownEventService
+    );
+
+    // 前のキーフレームに移動
+    $setShortcut(
+        $generateShortcutKey("o", { "ctrl": true, "shift": true }),
+        screenMenuPrevKeyframeCoordsPointerDownEventUseCase
+    );
+
+    // 次のキーフレームに移動
+    $setShortcut(
+        $generateShortcutKey("p", { "ctrl": true, "shift": true }),
+        screenMenuNextKeyframeCoordsPointerDownEventUseCase
+    );
+
+    // 前のキーフレームの変形に合わせる
+    $setShortcut(
+        $generateShortcutKey("u", { "ctrl": true, "shift": true }),
+        screenMenuPrevKeyframeMatrixPointerDownEventUseCase
+    );
+
+    // 次のキーフレームの変形に合わせる
+    $setShortcut(
+        $generateShortcutKey("i", { "ctrl": true, "shift": true }),
+        screenMenuNextKeyframeMatrixPointerDownEventUseCase
     );
 };

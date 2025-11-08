@@ -7,12 +7,18 @@ import { execute as screenOrderMenuInitializeRegisterEventUseCase } from "@/menu
 import { execute as screenMenuEditMovieClipPointerDownEventUseCase } from "./ScreenMenuEditMovieClipPointerDownEventUseCase";
 import { execute as screenMenuMoveParentMovieClipPointerDownEventUseCase } from "./ScreenMenuMoveParentMovieClipPointerDownEventUseCase";
 import { execute as screenMenuPrevKeyframeCoordsPointerDownEventUseCase } from "./ScreenMenuPrevKeyframeCoordsPointerDownEventUseCase";
+import { execute as screenMenuNextKeyframeCoordsPointerDownEventUseCase } from "./ScreenMenuNextKeyframeCoordsPointerDownEventUseCase";
+import { execute as screenMenuPrevKeyframeMatrixPointerDownEventUseCase } from "./ScreenMenuPrevKeyframeMatrixPointerDownEventUseCase";
+import { execute as screenMenuNextKeyframeMatrixPointerDownEventUseCase } from "./ScreenMenuNextKeyframeMatrixPointerDownEventUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import {
     $SCREEN_ID,
     $SCREEN_CHANGE_SCENE_ID,
     $SCREEN_MOVE_SCENE_ID,
-    $SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID
+    $SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID,
+    $SCREEN_ALIGN_COORDINATES_NEXT_KEYFRAME_ID,
+    $SCREEN_ALIGN_MATRIX_PREV_KEYFRAME_ID,
+    $SCREEN_ALIGN_MATRIX_NEXT_KEYFRAME_ID
 } from "@/config/ScreenConfig";
 
 /**
@@ -89,6 +95,39 @@ export const execute = (): void =>
         prevKeyframeCoordsElement.addEventListener(
             EventType.POINTER_DOWN,
             screenMenuPrevKeyframeCoordsPointerDownEventUseCase
+        );
+    }
+
+    // 次のキーフレームの座標に合わせるボタンのイベントを登録
+    const nextKeyframeCoordsElement: HTMLElement | null = document
+        .getElementById($SCREEN_ALIGN_COORDINATES_NEXT_KEYFRAME_ID);
+
+    if (nextKeyframeCoordsElement) {
+        nextKeyframeCoordsElement.addEventListener(
+            EventType.POINTER_DOWN,
+            screenMenuNextKeyframeCoordsPointerDownEventUseCase
+        );
+    }
+
+    // 前のキーフレームの変形に合わせるボタンのイベントを登録
+    const prevKeyframeMatrixElement: HTMLElement | null = document
+        .getElementById($SCREEN_ALIGN_MATRIX_PREV_KEYFRAME_ID);
+
+    if (prevKeyframeMatrixElement) {
+        prevKeyframeMatrixElement.addEventListener(
+            EventType.POINTER_DOWN,
+            screenMenuPrevKeyframeMatrixPointerDownEventUseCase
+        );
+    }
+
+    // 次のキーフレームの変形に合わせるボタンのイベントを登録
+    const nextKeyframeMatrixElement: HTMLElement | null = document
+        .getElementById($SCREEN_ALIGN_MATRIX_NEXT_KEYFRAME_ID);
+
+    if (nextKeyframeMatrixElement) {
+        nextKeyframeMatrixElement.addEventListener(
+            EventType.POINTER_DOWN,
+            screenMenuNextKeyframeMatrixPointerDownEventUseCase
         );
     }
 };
