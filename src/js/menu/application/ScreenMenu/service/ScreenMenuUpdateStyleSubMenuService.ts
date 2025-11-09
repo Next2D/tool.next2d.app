@@ -14,26 +14,27 @@ import {
  */
 export const execute = (movie_clip: MovieClip): void =>
 {
-    const ids = [
-        $SCREEN_ALIGN_ID,
-        $SCREEN_ORDER_ID
-    ];
-
-    const isSingleSelectedOfDisplayObject = movie_clip.isSingleSelectedOfDisplayObject();
-    for (let idx = 0; idx < ids.length; ++idx) {
-
-        const element: HTMLElement | null = document
-            .getElementById(ids[idx]) as HTMLElement;
-
-        if (!element) {
-            continue ;
-        }
-
-        if (isSingleSelectedOfDisplayObject) {
-            element.setAttribute("style", "");
+    // 順序ボタンのスタイルを更新
+    const screenOrderElement = document.getElementById($SCREEN_ORDER_ID);
+    if (screenOrderElement) {
+        // 選択中のElementが1つの場合はアクティブにする
+        if (movie_clip.isSingleSelectedOfDisplayObject()) {
+            screenOrderElement.setAttribute("style", "");
         } else {
-            element.style.opacity = "0.5";
-            element.style.pointerEvents = "none";
+            screenOrderElement.style.opacity = "0.5";
+            screenOrderElement.style.pointerEvents = "none";
+        }
+    }
+
+    // 整列ボタンのスタイルを更新
+    const screenAlignElement = document.getElementById($SCREEN_ALIGN_ID);
+    if (screenAlignElement) {
+        // 選択中のElementが無い場合は非アクティブにする
+        if (!movie_clip.selectedDepths.size) {
+            screenAlignElement.style.opacity = "0.5";
+            screenAlignElement.style.pointerEvents = "none";
+        } else {
+            screenAlignElement.setAttribute("style", "");
         }
     }
 };

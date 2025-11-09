@@ -4,6 +4,7 @@ import { execute as screenMenuUpdateStyleSubMenuService } from "../service/Scree
 import { execute as screenMenuUpdateStyleEditMovieClipService } from "../service/ScreenMenuUpdateStyleEditMovieClipService";
 import { execute as screenMenuUpdateStyleMoveParentMovieClipService } from "../service/ScreenMenuUpdateStyleMoveParentMovieClipService";
 import { execute as screenMenuUpdateStylePrevNextKeyframeService } from "../service/ScreenMenuUpdateStylePrevNextKeyframeService";
+import { execute as screenMenuUpdateStyleDistributeToLayersService } from "../service/ScreenMenuUpdateStyleDistributeToLayersService";
 
 /**
  * @description スクリーンのメニューを選択中のElementに合わせてアクティブ・非アクティブに更新する
@@ -30,6 +31,9 @@ export const execute = (): void =>
 
         // 前のキーフレームの座標に合わせるボタンのスタイルを更新
         screenMenuUpdateStylePrevNextKeyframeService(movieClip);
+
+        // レイヤーに分散ボタンのスタイルを更新
+        screenMenuUpdateStyleDistributeToLayersService(movieClip);
     }
 
     // 親のMovieClipへの移動ボタンのスタイルを更新
