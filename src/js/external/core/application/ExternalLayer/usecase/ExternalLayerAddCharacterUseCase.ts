@@ -6,16 +6,16 @@ import type { ExternalCharacter } from "@/external/core/domain/model/ExternalCha
 import { execute as timelineLayerFrameAddKeyframeHistoryUseCase } from "@/history/application/timeline/application/TimelineLayerFrame/AddKeyframe/usecase/TimelineLayerFrameAddKeyframeHistoryUseCase";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
 import { execute as viewTimelineLayerFrameAddKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameAddKeyFrameUseCase";
+import { execute as externalTimelineLayerFrameSplitToEmptyUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSplitToEmptyUseCase";
 
 /**
  * @description ExternalLayerにキャラクターを追加する
  *              Add a character to ExternalLayer
- *
- * @param {WorkSpace} work_space
- * @param {MovieClip} movie_clip
- * @param {Layer} layer
- * @param {ExternalCharacter} external_character
- * @param {boolean} [receiver=false]
+ * @param  {WorkSpace} work_space
+ * @param  {MovieClip} movie_clip
+ * @param  {Layer} layer
+ * @param  {ExternalCharacter} external_character
+ * @param  {boolean} [receiver=false]
  * @return {Promise<void>}
  * @method
  * @public
@@ -33,23 +33,32 @@ export const execute = async (
     character.load(external_character.toObject());
     character.depth = depth;
 
+    // 前後のキーフレームを調整
+    if (character.startFrame > 1) {
+        await externalTimelineLayerFrameSplitToEmptyUseCase(
+            work_space,
+            movie_clip,
+            layer,
+            character.startFrame
+        );
+    }
+    if (layer.maxFrame > character.endFrame) {
+        await externalTimelineLayerFrameSplitToEmptyUseCase(
+            work_space,
+            movie_clip,
+            layer,
+            character.endFrame
+        );
+    }
+
     // 空のキーフレームがあれば記録に残す
     let emptyCharacterIndex = -1;
 
-    const frame = movie_clip.currentFrame;
-
     // 空のキーフレームがある場合は情報を引き継いで、空のキーフレームを削除
-    const activeEmptyCharacter = layer.getActiveEmptyCharacter(frame);
+    const activeEmptyCharacter = layer.getActiveEmptyCharacter(character.startFrame);
     if (activeEmptyCharacter) {
-        character.startFrame = activeEmptyCharacter.startFrame;
-        character.endFrame   = activeEmptyCharacter.endFrame;
-        emptyCharacterIndex  = layer.emptyCharacters.indexOf(activeEmptyCharacter);
+        emptyCharacterIndex = layer.emptyCharacters.indexOf(activeEmptyCharacter);
         layer.removeEmptyCharacter(activeEmptyCharacter);
-    } else {
-        // 新規のキーフレームレイヤーの最大フレーム以降に登録
-        const maxFrame = layer.maxFrame;
-        character.startFrame = maxFrame ? maxFrame : 1;
-        character.endFrame   = frame + 1;
     }
 
     // レイヤーに追加
