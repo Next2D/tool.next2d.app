@@ -432,7 +432,7 @@ export const execute = async (
 
         // キーフレームへフレームを挿入
         case $TIMELINE_INSERT_KEY_FRAME_COMMAND:
-            timelineLayerFrameInsertKeyFramesHistoryRedoUseCase(
+            await timelineLayerFrameInsertKeyFramesHistoryRedoUseCase(
                 messages[0] as number, // work_space_id
                 messages[1] as number, // library_id
                 messages[2] as number, // layer_index

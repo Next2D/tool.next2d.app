@@ -1,18 +1,17 @@
-import { execute as screenAreaGetElementFromLayerIdAndDepthService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromLayerIdAndDepthService";
+import { execute as screenAreaGetElementFromCharacterIdService } from "@/screen/application/ScreenArea/service/ScreenAreaGetElementFromCharacterIdService";
 
 /**
  * @description 指定したDisplayObjectのElementをStageAreaから削除
  *              Remove the Element of the specified DisplayObject from the StageArea
  *
- * @param  {number} layer_id
- * @param  {number} depth
+ * @param  {string} character_id
  * @return {void}
  * @method
  * @public
  */
-export const execute = (layer_id: number, depth: number): void =>
+export const execute = (character_id: string): void =>
 {
-    const element = screenAreaGetElementFromLayerIdAndDepthService(layer_id, depth);
+    const element = screenAreaGetElementFromCharacterIdService(character_id);
     if (!element) {
         return ;
     }

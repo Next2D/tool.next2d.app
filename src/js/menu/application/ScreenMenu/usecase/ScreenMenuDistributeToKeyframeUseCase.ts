@@ -2,11 +2,13 @@ import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "../../MenuUtil";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
-import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
+import { ExternalLayer } from "@/external/core/domain/model/ExternalLayer";
+import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 
 /**
- * @description スクリーンの選択中のDisplayObjectをレイヤーに配分する
- *              Distribute the selected DisplayObject on the screen to layers
+ * @description スクリーンの選択中のDisplayObjectをキーフレームに配分する
+ *              Distribute the selected DisplayObject on the screen to keyframes
  *
  * @param  {PointerEvent | KeyboardEvent} event
  * @return {Promise<void>}
@@ -51,6 +53,11 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
         // 昇順にソートして先頭以外を新規レイヤーに移動
         depths.sort((a, b) => a - b);
 
+        const character = layer.getCharacter(frame, depths[0]);
+        if (!character) {
+            continue;
+        }
+
         // 移動するキャラクターを取得
         const characters = [];
         for (let idx = 1; idx < depths.length; idx++) {
@@ -63,18 +70,38 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
             characters.push(character);
         }
 
-        // キャラクターを新規レイヤーに移動
-        const index = movieClip.layers.indexOf(layer);
+        // レイヤーAPIを取得
+        const externalLayer = new ExternalLayer(workSpace, movieClip, layer);
+        await externalTimeline
+            .selectedLayers([externalLayer.index]);
+
+        // 必要なフレーム数を追加
+        if (character.startFrame + characters.length > character.endFrame - 1) {
+            await externalTimeline
+                .insertFrames(character.startFrame + characters.length - (character.endFrame - 1));
+        } else {
+            // フレーム数が多い場合は削除
+            await externalTimeline
+                .eraseFrames(
+                    character.startFrame + characters.length,
+                    character.endFrame - 1
+                );
+        }
+
+        // 開始となるキーフレームをセット
+        const keyframe = character.startFrame + 1;
+
+        // 空のキーフレームを追加
+        for (let idx = 0; idx < characters.length; idx++) {
+            await externalTimeline
+                .convertToEmptyKeyframes(keyframe + idx);
+        }
+
+        // キャラクターを移動
         for (let idx = 0; idx < characters.length; idx++) {
 
             const character = characters[idx];
             if (!character) {
-                continue;
-            }
-
-            // 新規レイヤーを追加
-            const externalLayer = await externalTimeline.addNewLayer(index);
-            if (!externalLayer) {
                 continue;
             }
 
@@ -87,11 +114,18 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
             );
             await externalCharacter.remove();
 
-            // 新規レイヤーにDisplayObjectを追加
+            // 新しいキーフレームにDisplayObjectを追加
+            const frame = keyframe + idx;
+            externalCharacter.startFrame = frame;
+            externalCharacter.endFrame   = frame + 1;
+
             await externalLayer.addCharacter(externalCharacter);
         }
     }
 
-    // タイムラインを再描画
-    externalLayerUpdateReloadUseCase();
+    // キャッシュを削除
+    cacheRemoveService(workSpace, movieClip.id);
+
+    // 画面を再描画
+    await screenAreaRedrawUseCase(movieClip);
 };

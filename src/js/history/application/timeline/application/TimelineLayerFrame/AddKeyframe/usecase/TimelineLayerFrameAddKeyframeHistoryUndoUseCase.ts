@@ -70,7 +70,7 @@ export const execute = async (
     // fixed logic
     if (workSpace.active && movieClip.active) {
         // スクリーンに追加したElementを削除
-        screenAreaRemoveDisplayObjectElementService(layer.id, character.depth);
+        screenAreaRemoveDisplayObjectElementService(character.id);
 
         for (const [index, depths] of movieClip.selectedDepths) {
             const layer = movieClip.getLayer(index);

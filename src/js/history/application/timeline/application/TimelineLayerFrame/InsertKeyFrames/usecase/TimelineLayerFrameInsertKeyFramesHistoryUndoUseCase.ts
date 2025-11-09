@@ -2,6 +2,8 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
  * @description キーフレームへのフレーム追加処理を元に戻す
@@ -12,17 +14,17 @@ import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timel
  * @param  {number} layer_index
  * @param  {number} start_frame
  * @param  {number} num_frame
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (
+export const execute = async (
     work_space_id: number,
     library_id: number,
     layer_index: number,
     start_frame: number,
     num_frame: number
-): void => {
+): Promise<void> => {
 
     const workSpace = $getWorkSpace(work_space_id);
     if (!workSpace) {
@@ -60,8 +62,23 @@ export const execute = (
     }
 
     // アクティブならタイムラインを再描画
-    if (workSpace.active && movieClip.active) {
+    if (!workSpace.active) {
+        return ;
+    }
+
+    if (movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
+
+        // スクリーンエリアを再描画
+        await screenAreaRedrawUseCase(movieClip);
+    } else {
+        const movieClip = workSpace.scene;
+        // スクリーンエリアを再描画
+        await screenAreaRedrawUseCase(movieClip);
+
+        // 選択中のDisplayObjectをアクティブにする
+        // fixed logic
+        screenDisplayObjectAllSelectedActiveUseCase(movieClip);
     }
 };

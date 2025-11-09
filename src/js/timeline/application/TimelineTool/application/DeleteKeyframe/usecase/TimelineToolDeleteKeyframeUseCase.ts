@@ -5,11 +5,11 @@ import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimel
  * @description 選択中のレイヤーのキーフレームを削除
  *              Delete the keyframes of the selected layer
  *
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (): void =>
+export const execute = async (): Promise<void> =>
 {
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
@@ -23,7 +23,7 @@ export const execute = (): void =>
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
 
     // キーフレームを追加
-    externalTimeline
+    await externalTimeline
         .deleteKeyframes(
             movieClip.selectedStartFrame,
             movieClip.selectedEndFrame

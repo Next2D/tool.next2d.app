@@ -27,6 +27,7 @@ import { execute as screenMenuNextKeyframeCoordsPointerDownEventUseCase } from "
 import { execute as screenMenuPrevKeyframeMatrixPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuPrevKeyframeMatrixPointerDownEventUseCase";
 import { execute as screenMenuNextKeyframeMatrixPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuNextKeyframeMatrixPointerDownEventUseCase";
 import { execute as screenMenuDistributeToLayersUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuDistributeToLayersUseCase";
+import { execute as screenMenuDistributeToKeyframeUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuDistributeToKeyframeUseCase";
 
 /**
  * @description スクリーンエリアのショートカットイベントを登録
@@ -204,5 +205,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("d", { "ctrl": true, "shift": true }),
         screenMenuDistributeToLayersUseCase
+    );
+
+    // キーフレームに分散配置
+    $setShortcut(
+        $generateShortcutKey("k", { "ctrl": true, "shift": true }),
+        screenMenuDistributeToKeyframeUseCase
     );
 };

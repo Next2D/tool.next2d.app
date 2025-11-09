@@ -94,6 +94,36 @@ export class ExternalCharacter
     }
 
     /**
+     * @description DisplayObjectの開始フレームを返却
+     *              Returns the start frame of DisplayObject
+     *
+     * @member {number}
+     */
+    get startFrame (): number
+    {
+        return this._$character.startFrame;
+    }
+    set startFrame (frame: number)
+    {
+        this._$character.startFrame = frame;
+    }
+
+    /**
+     * @description DisplayObjectの終了フレームを返却
+     *              Returns the end frame of DisplayObject
+     *
+     * @member {number}
+     */
+    get endFrame (): number
+    {
+        return this._$character.endFrame;
+    }
+    set endFrame (frame: number)
+    {
+        this._$character.endFrame = frame;
+    }
+
+    /**
      * @description DisplayObjectのx座標を返却
      *              Returns the x-coordinate of DisplayObject
      *
@@ -693,7 +723,7 @@ export class ExternalCharacter
      * @method
      * @public
      */
-    async delete (): Promise<void>
+    async remove (): Promise<void>
     {
         await externalCharacterDeleteUseCase(
             this._$workSpace,

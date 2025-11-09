@@ -48,7 +48,12 @@ export const execute = async (
         screenStandardPointDeployElementUseCase();
 
         // スクリーンにCharacterを追加
-        await screenAreaAppendCharacterService(character, layer);
+        const frame = movie_clip.currentFrame;
+        if (character.startFrame === frame
+            || character.startFrame < frame && character.endFrame > frame
+        ) {
+            await screenAreaAppendCharacterService(character, layer);
+        }
     } else {
         // スクリーンを再描画
         const movieClip = work_space.scene;

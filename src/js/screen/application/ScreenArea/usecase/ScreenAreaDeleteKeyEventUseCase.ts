@@ -45,7 +45,7 @@ export const execute = async (): Promise<void> =>
                 character
             );
 
-            await externalCharacter.delete();
+            await externalCharacter.remove();
         }
     }
 };

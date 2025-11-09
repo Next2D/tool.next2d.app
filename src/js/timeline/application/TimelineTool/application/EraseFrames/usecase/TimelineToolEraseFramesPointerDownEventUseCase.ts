@@ -5,11 +5,11 @@ import { execute as timelineToolEraseFramesUseCase } from "./TimelineToolEraseFr
  *              Event processing function for add keyframe button
  *
  * @param  {PointerEvent} event
- * @return {void}
+ * @return {Promise<void>}
  * @method
  * @public
  */
-export const execute = (event: PointerEvent): void =>
+export const execute = async (event: PointerEvent): Promise<void> =>
 {
     if (event.button !== 0) {
         return;
@@ -19,5 +19,5 @@ export const execute = (event: PointerEvent): void =>
     event.stopPropagation();
 
     // フレーム削除のユースケースを実行
-    timelineToolEraseFramesUseCase();
+    await timelineToolEraseFramesUseCase();
 };
