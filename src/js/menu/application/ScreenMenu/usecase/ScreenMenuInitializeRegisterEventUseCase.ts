@@ -10,6 +10,7 @@ import { execute as screenMenuPrevKeyframeCoordsPointerDownEventUseCase } from "
 import { execute as screenMenuNextKeyframeCoordsPointerDownEventUseCase } from "./ScreenMenuNextKeyframeCoordsPointerDownEventUseCase";
 import { execute as screenMenuPrevKeyframeMatrixPointerDownEventUseCase } from "./ScreenMenuPrevKeyframeMatrixPointerDownEventUseCase";
 import { execute as screenMenuNextKeyframeMatrixPointerDownEventUseCase } from "./ScreenMenuNextKeyframeMatrixPointerDownEventUseCase";
+import { execute as screenMenuDistributeToLayersUseCase } from "./ScreenMenuDistributeToLayersUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import {
     $SCREEN_ID,
@@ -18,7 +19,8 @@ import {
     $SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID,
     $SCREEN_ALIGN_COORDINATES_NEXT_KEYFRAME_ID,
     $SCREEN_ALIGN_MATRIX_PREV_KEYFRAME_ID,
-    $SCREEN_ALIGN_MATRIX_NEXT_KEYFRAME_ID
+    $SCREEN_ALIGN_MATRIX_NEXT_KEYFRAME_ID,
+    $SCREEN_DISTRIBUTE_TO_LAYERS_ID
 } from "@/config/ScreenConfig";
 
 /**
@@ -128,6 +130,17 @@ export const execute = (): void =>
         nextKeyframeMatrixElement.addEventListener(
             EventType.POINTER_DOWN,
             screenMenuNextKeyframeMatrixPointerDownEventUseCase
+        );
+    }
+
+    // レイヤーに分散ボタンのイベントを登録
+    const distributeToLayersElement: HTMLElement | null = document
+        .getElementById($SCREEN_DISTRIBUTE_TO_LAYERS_ID);
+
+    if (distributeToLayersElement) {
+        distributeToLayersElement.addEventListener(
+            EventType.POINTER_DOWN,
+            screenMenuDistributeToLayersUseCase
         );
     }
 };
