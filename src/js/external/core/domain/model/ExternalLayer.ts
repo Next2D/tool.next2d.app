@@ -2,6 +2,7 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { ILayerType } from "@/interface/ILayerType";
+import type { ExternalCharacter } from "./ExternalCharacter";
 import { execute as externalLayerUpdateNameUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateNameUseCase";
 import { execute as externalLayerUpdateLockUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLockUseCase";
 import { execute as externalLayerUpdateDisableUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateDisableUseCase";
@@ -9,6 +10,7 @@ import { execute as externalLayerUpdateLightUseCase } from "@/external/core/appl
 import { execute as externalLayerUpdateLightColorUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateLightColorUseCase";
 import { execute as externalLayerUpdateTypeUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateTypeUseCase";
 import { execute as externalLayerGetLayerTypeService } from "@/external/core/application/ExternalLayer/service/ExternalLayerGetLayerTypeService";
+import { execute as externalLayerAddCharacterUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerAddCharacterUseCase";
 import {
     $GUIDE_TYPE,
     $MASK_TYPE,
@@ -257,5 +259,29 @@ export class ExternalLayer
             default:
                 break;
         }
+    }
+
+    /**
+     * @description レイヤーの指定フレームにDisplayObjectを追加
+     *              Add DisplayObject to the specified frame of the layer
+     *
+     * @param  {ExternalCharacter} external_character
+     * @param  {number} [depth=0]
+     * @return {Promise<void>}
+     * @method
+     * @public
+     */
+    async addCharacter (
+        external_character: ExternalCharacter,
+        depth: number = 0
+    ): Promise<void>
+    {
+        await externalLayerAddCharacterUseCase(
+            this._$workSpace,
+            this._$movieClip,
+            this._$layer,
+            external_character,
+            depth
+        );
     }
 }

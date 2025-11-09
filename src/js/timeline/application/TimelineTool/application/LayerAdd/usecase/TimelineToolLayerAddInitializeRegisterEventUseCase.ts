@@ -1,6 +1,6 @@
 import { $TIMELINE_LAYER_ADD_ID } from "@/config/TimelineConfig";
 import { EventType } from "@/tool/domain/event/EventType";
-import { execute as timelineToolLayerAddMouseDownEventUseCase } from "./TimelineToolLayerAddMouseDownEventUseCase";
+import { execute as timelineToolLayerAddPointerDownEventUseCase } from "./TimelineToolLayerAddPointerDownEventUseCase";
 
 /**
  * @description レイヤー追加のイベント登録
@@ -21,6 +21,6 @@ export const execute = (): void =>
 
     // マウスダウンイベントを登録
     element.addEventListener(EventType.POINTER_DOWN,
-        timelineToolLayerAddMouseDownEventUseCase
+        timelineToolLayerAddPointerDownEventUseCase
     );
 };

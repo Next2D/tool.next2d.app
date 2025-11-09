@@ -147,12 +147,13 @@ export class Character
     public parentMovieClipId: number;
 
     /**
+     * @param  {string} [uuid=""]
      * @constructor
      * @public
      */
-    constructor ()
+    constructor (uuid: string = "")
     {
-        this.id             = $getUUID();
+        this.id             = uuid || $getUUID();
         this.libraryId      = -1;
         this.depth          = 0;
         this.name           = "";
@@ -409,7 +410,7 @@ export class Character
      *              Load from external item object
      *
      * @param  {ExternalItem} item
-     * @param  {MovieClip} movie_clip
+     * @param  {MovieClip} parent_movie_clip
      * @return {void}
      * @method
      * @public

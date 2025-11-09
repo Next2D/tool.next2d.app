@@ -3,8 +3,9 @@ import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IPivotType } from "@/interface/IPivotType";
+import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
+import type { IBlendMode } from "@/interface/IBlendMode";
 import { ExternalReference } from "@/external/controller/domain/model/ExternalReference";
-import { IBlendMode } from "@/interface/IBlendMode";
 import { execute as externalCharacterUpdateXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateXUseCase";
 import { execute as externalCharacterUpdateYUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateYUseCase";
 import { execute as externalCharacterUpdateScaleXUseCase } from "@/external/core/application/ExternalCharacter/usecase/ExternalCharacterUpdateScaleXUseCase";
@@ -77,6 +78,19 @@ export class ExternalCharacter
          * @private
          */
         this._$character = character;
+    }
+
+    /**
+     * @description DisplayObjectのIDを返却
+     *              Returns the ID of DisplayObject
+     *
+     * @return {string}
+     * @method
+     * @public
+     */
+    get id (): string
+    {
+        return this._$character.id;
     }
 
     /**
@@ -707,5 +721,18 @@ export class ExternalCharacter
             this._$character,
             depth
         );
+    }
+
+    /**
+     * @description ExternalCharacterを保存用オブジェクトに変換して返却
+     *              Convert ExternalCharacter to a save object and return it
+     *
+     * @return {ICharacterSaveObject}
+     * @method
+     * @public
+     */
+    toObject (): ICharacterSaveObject
+    {
+        return this._$character.toObject();
     }
 }

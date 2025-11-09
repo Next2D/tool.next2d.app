@@ -1,6 +1,8 @@
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $allHideMenu } from "../../MenuUtil";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
+import { execute as externalLayerUpdateReloadUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerUpdateReloadUseCase";
 
 /**
  * @description スクリーンの選択中のDisplayObjectをレイヤーに配分する
@@ -27,28 +29,69 @@ export const execute = async (event: PointerEvent | KeyboardEvent): Promise<void
     // イベントの伝播を止める
     event.stopPropagation();
 
-    // レイヤーに配分
+    // 現在のフレームを取得
     const frame = movieClip.currentFrame;
+
+    // ExternalTimelineを取得
+    const externalTimeline = new ExternalTimeline(workSpace, movieClip);
+
+    // レイヤーに配分
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
+
+        // 選択中のDisoplayObjectが1つだけの場合はスキップ
+        if (depths.length === 1) {
+            continue;
+        }
 
         const layer = movieClip.getLayer(layerIndex);
         if (!layer) {
             continue;
         }
 
-        for (let idx = 0; idx < depths.length; idx++) {
+        // 昇順にソートして先頭以外を新規レイヤーに移動
+        depths.sort((a, b) => a - b);
+
+        // 移動するキャラクターを取得
+        const characters = [];
+        for (let idx = 1; idx < depths.length; idx++) {
 
             const character = layer.getCharacter(frame, depths[idx]);
             if (!character) {
                 continue;
             }
 
+            characters.push(character);
         }
 
-        // タイムラインのレイヤーを再描画
+        // キャラクターを新規レイヤーに移動
+        const index = movieClip.layers.indexOf(layer);
+        for (let idx = 0; idx < characters.length; idx++) {
 
+            const character = characters[idx];
+            if (!character) {
+                continue;
+            }
+
+            // 新規レイヤーを追加
+            const externalLayer = await externalTimeline.addNewLayer(index);
+            if (!externalLayer) {
+                continue;
+            }
+
+            // 現在のレイヤーからDisplayObjectを削除
+            const externalCharacter = new ExternalCharacter(
+                workSpace,
+                movieClip,
+                layer,
+                character
+            );
+            await externalCharacter.delete();
+
+            // 新規レイヤーにDisplayObjectを追加
+            await externalLayer.addCharacter(externalCharacter);
+        }
     }
 
-    // スクリーンを再描画
-    await screenAreaRedrawUseCase(movieClip);
+    // タイムラインを再描画
+    externalLayerUpdateReloadUseCase();
 };

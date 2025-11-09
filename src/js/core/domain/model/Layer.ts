@@ -8,6 +8,7 @@ import { execute as timelineLayerControllerGetHighlightColorService } from "@/ti
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { $getTopIndex } from "@/timeline/application/TimelineUtil";
 import { $NORMAL_MODE } from "@/config/LayerModeConfig";
+import { $clamp } from "@/global/GlobalUtil";
 
 /**
  * @description タイムラインのレイヤー状態管理クラス
@@ -355,6 +356,8 @@ export class Layer
     addCharacter (character: Character): void
     {
         const activeCharacters = this.getActiveCharacters(character.startFrame);
+        character.depth = $clamp(character.depth, 0, activeCharacters.length);
+
         for (let idx = 0; idx < activeCharacters.length; ++idx) {
             const activeCharacter = activeCharacters[idx];
             if (!activeCharacter) {
