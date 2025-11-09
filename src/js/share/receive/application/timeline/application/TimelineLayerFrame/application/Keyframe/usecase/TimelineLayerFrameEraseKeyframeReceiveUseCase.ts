@@ -3,7 +3,7 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalTimelineLayerFrameEraseKeyframeUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameEraseKeyframeUseCase";
-import { execute as viewTimelineLayerFrameEraseKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameEraseKeyFrameUseCase";
+import { execute as viewTimelineLayerFrameUpdateFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameUpdateFrameUseCase";
 
 /**
  * @description キーフレームのフレーム全削除を実行
@@ -56,7 +56,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     );
 
     // Viewの更新
-    await viewTimelineLayerFrameEraseKeyFrameUseCase(
+    await viewTimelineLayerFrameUpdateFrameUseCase(
         workSpace,
         movieClip,
         layer

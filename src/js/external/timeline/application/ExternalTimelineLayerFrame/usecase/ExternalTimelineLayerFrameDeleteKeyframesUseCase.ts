@@ -90,16 +90,19 @@ export const execute = async (
         }
 
         // タイムラインのレイヤー表示を更新
-        if (work_space.active && movie_clip.active) {
-            timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
+        if (!work_space.active || !movie_clip.active) {
+            continue;
         }
+
+        // レイヤースタイルを更新
+        timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
     }
 
     // 全ての先祖のキャッシュを削除
     cacheRemoveService(work_space, movie_clip.id);
 
     // Viewを更新
-    viewTimelineLayerFrameDeleteKeyFrameUseCase(
+    await viewTimelineLayerFrameDeleteKeyFrameUseCase(
         work_space,
         movie_clip,
         reload

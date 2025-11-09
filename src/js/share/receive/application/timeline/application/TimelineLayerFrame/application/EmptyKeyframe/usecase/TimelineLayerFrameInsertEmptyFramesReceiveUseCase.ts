@@ -2,7 +2,7 @@ import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalTimelineLayerFrameInsertEmptyFramesUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameInsertEmptyFramesUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as viewTimelineLayerFrameInsertFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameUpdateFrameUseCase";
 
 /**
  * @description 空のキーフレームにフレームを追加を実行
@@ -50,8 +50,10 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         true
     );
 
-    if (workSpace.active && movieClip.active) {
-        // スクリーンエリアを再描画
-        await screenAreaRedrawUseCase(movieClip);
-    }
+    // Viewの更新
+    await viewTimelineLayerFrameInsertFrameUseCase(
+        workSpace,
+        movieClip,
+        layer
+    );
 };

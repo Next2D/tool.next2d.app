@@ -3,7 +3,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as externalTimelineLayerFrameExtendBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendBehindKeyframeService";
 import { execute as externalTimelineLayerFrameExtendForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameExtendForwardKeyframeService";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as viewTimelineLayerFrameDeleteKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameDeleteKeyFrameUseCase";
 
 /**
  * @description 空のキーフレームの削除処理を元に戻す
@@ -67,8 +67,11 @@ export const execute = async (
     if (workSpace.active && movieClip.active) {
         // タイムラインのレイヤー表示を更新
         timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-
-        // スクリーンを再描画
-        await screenAreaRedrawUseCase(movieClip);
     }
+
+    // Viewの更新
+    await viewTimelineLayerFrameDeleteKeyFrameUseCase(
+        workSpace,
+        movieClip
+    );
 };

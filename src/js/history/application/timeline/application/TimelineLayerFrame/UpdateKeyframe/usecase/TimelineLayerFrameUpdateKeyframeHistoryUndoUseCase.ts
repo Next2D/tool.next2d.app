@@ -1,8 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
-import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { ExternalTimeline } from "@/external/timeline/domain/model/ExternalTimeline";
+import { execute as viewTimelineLayerFrameUpdateFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameUpdateFrameUseCase";
 
 /**
  * @description キーフレーム変更処理を元に戻す
@@ -60,12 +59,10 @@ export const execute = async (
     const externalTimeline = new ExternalTimeline(workSpace, movieClip);
     await externalTimeline.deactivatedAllLayers();
 
-    // アクティブならタイムラインを再描画
-    if (workSpace.active && movieClip.active) {
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-
-        // スクリーンを再描画
-        await screenAreaRedrawUseCase(movieClip);
-    }
+    // Viewの更新
+    await viewTimelineLayerFrameUpdateFrameUseCase(
+        workSpace,
+        movieClip,
+        layer
+    );
 };

@@ -1,8 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalTimelineLayerFrameBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameBehindKeyframeService";
-import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as viewTimelineLayerFrameInsertFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameUpdateFrameUseCase";
 
 /**
  * @description 空のキーフレームへのフレーム追加処理を元に戻す
@@ -54,12 +53,9 @@ export const execute = async (
     // 空のキーフレームの終了フレームを更新
     emptyCharacter.endFrame += num_frame;
 
-    // アクティブならタイムラインを再描画
-    if (workSpace.active && movieClip.active) {
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-
-        // スクリーンエリアの再描画
-        await screenAreaRedrawUseCase(movieClip);
-    }
+    await viewTimelineLayerFrameInsertFrameUseCase(
+        workSpace,
+        movieClip,
+        layer
+    );
 };

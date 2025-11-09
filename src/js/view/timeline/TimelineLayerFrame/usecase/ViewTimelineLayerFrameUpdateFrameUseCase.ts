@@ -1,19 +1,19 @@
+import type { Layer } from "@/core/domain/model/Layer";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
-import type { Layer } from "@/core/domain/model/Layer";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
 import { execute as targetRectUpdateElementUseCase } from "@/screen/application/TargetRect/usecase/TargetRectUpdateElementUseCase";
+import { execute as screenReferencePointDeployElementUseCase } from "@/screen/application/ReferencePoint/usecase/ScreenReferencePointDeployElementUseCase";
+import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
 import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
 
 /**
- * @description タイムラインのキーフレーム削除後のView更新
- *              View Update After Timeline Keyframe Deletion
+ * @description スクリーンへのDisplayObjectの追加表示処理
+ *              Process of adding a DisplayObject to the screen
  *
  * @param  {WorkSpace} work_space
  * @param  {MovieClip} movie_clip
- * @param  {boolean} [reload=true]
+ * @param  {Layer | null} [layer=null]
  * @return {Promise<void>}
  * @method
  * @public
@@ -21,38 +21,38 @@ import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen
 export const execute = async (
     work_space: WorkSpace,
     movie_clip: MovieClip,
-    layer: Layer
+    layer: Layer | null = null
 ): Promise<void> => {
 
     if (!work_space.active) {
         return ;
     }
 
+    // 選択範囲のElementの表示を更新
+    targetRectUpdateElementUseCase();
+
     // 変形の中心点の表示を更新
     screenReferencePointDeployElementUseCase();
 
-    // 選択範囲のElementを移動
-    targetRectUpdateElementUseCase();
-
+    // アクティブならタイムラインを再描画
     if (movie_clip.active) {
+        // タイムラインにフレームを追加
+        if (layer) {
+            timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
+        }
 
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movie_clip, layer);
-
-        // 画面を再描画
+        // スクリーンにCharacterを追加
         await screenAreaRedrawUseCase(movie_clip);
 
-        // 選択中のDisplayObjectをアクティブ表示に更新
+        // 再描画したので、選択中のElementをアクティブにする
         // fixed logic
         screenDisplayObjectAllSelectedActiveUseCase(movie_clip);
     } else {
-
+        // スクリーンを再描画
         const movieClip = work_space.scene;
-
-        // 画面を再描画
         await screenAreaRedrawUseCase(movieClip);
 
-        // 選択中のDisplayObjectをアクティブ表示に更新
+        // 再描画したので、選択中のElementをアクティブにする
         // fixed logic
         screenDisplayObjectAllSelectedActiveUseCase(movieClip);
     }

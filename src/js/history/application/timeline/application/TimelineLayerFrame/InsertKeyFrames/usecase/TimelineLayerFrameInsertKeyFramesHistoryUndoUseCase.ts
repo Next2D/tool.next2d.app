@@ -1,9 +1,7 @@
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalTimelineLayerFrameForwardKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameForwardKeyframeService";
-import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
-import { execute as screenDisplayObjectAllSelectedActiveUseCase } from "@/screen/application/DisplayObject/usecase/ScreenDisplayObjectAllSelectedActiveUseCase";
+import { execute as viewTimelineLayerFrameInsertFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameUpdateFrameUseCase";
 
 /**
  * @description キーフレームへのフレーム追加処理を元に戻す
@@ -61,24 +59,10 @@ export const execute = async (
         character.endFrame -= num_frame;
     }
 
-    // アクティブならタイムラインを再描画
-    if (!workSpace.active) {
-        return ;
-    }
-
-    if (movieClip.active) {
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-
-        // スクリーンエリアを再描画
-        await screenAreaRedrawUseCase(movieClip);
-    } else {
-        const movieClip = workSpace.scene;
-        // スクリーンエリアを再描画
-        await screenAreaRedrawUseCase(movieClip);
-
-        // 選択中のDisplayObjectをアクティブにする
-        // fixed logic
-        screenDisplayObjectAllSelectedActiveUseCase(movieClip);
-    }
+    // Viewの更新
+    await viewTimelineLayerFrameInsertFrameUseCase(
+        workSpace,
+        movieClip,
+        layer
+    );
 };

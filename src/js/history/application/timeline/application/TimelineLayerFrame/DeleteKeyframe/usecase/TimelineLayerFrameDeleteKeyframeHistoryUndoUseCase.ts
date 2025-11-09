@@ -91,7 +91,7 @@ export const execute = async (
     }
 
     // Viewを更新
-    viewTimelineLayerFrameDeleteKeyFrameUseCase(
+    await viewTimelineLayerFrameDeleteKeyFrameUseCase(
         workSpace,
         movieClip
     );

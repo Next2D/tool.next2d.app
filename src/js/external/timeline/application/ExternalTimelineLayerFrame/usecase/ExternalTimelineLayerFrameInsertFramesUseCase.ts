@@ -4,7 +4,7 @@ import { execute as externalTimelineLayerFrameInsertEmptyFramesUseCase } from ".
 import { execute as externalTimelineLayerFrameInsertKeyFramesUseCase } from "./ExternalTimelineLayerFrameInsertKeyFramesUseCase";
 import { execute as externalTimelineLayerFramePrevAdjustmentUseCase } from "./ExternalTimelineLayerFramePrevAdjustmentUseCase";
 import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as viewTimelineLayerFrameInsertFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameUpdateFrameUseCase";
 
 /**
  * @description 現在のフレームで、選択中のレイヤーに指定数のフレームを挿入
@@ -79,7 +79,7 @@ export const execute = async (
     }
 
     // スクリーンを再描画
-    if (reload && work_space.active && movie_clip.active) {
-        await screenAreaRedrawUseCase(movie_clip);
+    if (reload) {
+        await viewTimelineLayerFrameInsertFrameUseCase(work_space, movie_clip);
     }
 };

@@ -71,7 +71,7 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
     }
 
     // Viewを更新
-    viewTimelineLayerFrameDeleteKeyFrameUseCase(
+    await viewTimelineLayerFrameDeleteKeyFrameUseCase(
         workSpace,
         movieClip
     );

@@ -2,8 +2,7 @@ import type { IShareReceiveMessage } from "@/interface/IShareReceiveMessage";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
 import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { execute as externalTimelineLayerFrameSplitKeyframeToEmptyUseCase } from "@/external/timeline/application/ExternalTimelineLayerFrame/usecase/ExternalTimelineLayerFrameSplitKeyframeToEmptyUseCase";
-import { execute as timelineLayerAddFrameUpdateLayerStyleUseCase } from "@/timeline/application/TimelineLayer/usecase/TimelineLayerAddFrameUpdateLayerStyleUseCase";
-import { execute as screenAreaRedrawUseCase } from "@/screen/application/ScreenArea/usecase/ScreenAreaRedrawUseCase";
+import { execute as viewTimelineLayerFrameUpdateFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameUpdateFrameUseCase";
 
 /**
  * @description キーフレーム分割して空のキーフレームを挿入
@@ -51,12 +50,10 @@ export const execute = async (message: IShareReceiveMessage): Promise<void> =>
         true
     );
 
-    // アクティブなら表示を更新
-    if (workSpace.active && movieClip.active) {
-        // タイムラインのレイヤー表示を更新
-        timelineLayerAddFrameUpdateLayerStyleUseCase(movieClip, layer);
-
-        // スクリーンエリアの再描画
-        await screenAreaRedrawUseCase(movieClip);
-    }
+    // Viewの更新
+    await viewTimelineLayerFrameUpdateFrameUseCase(
+        workSpace,
+        movieClip,
+        layer
+    );
 };

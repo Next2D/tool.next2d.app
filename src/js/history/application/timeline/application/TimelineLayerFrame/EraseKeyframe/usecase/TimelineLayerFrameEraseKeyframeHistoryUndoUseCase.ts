@@ -4,7 +4,7 @@ import { $getWorkSpace } from "@/core/application/CoreUtil";
 import { Character } from "@/core/domain/model/Character";
 import { execute as externalTimelineLayerFrameBehindKeyframeService } from "@/external/timeline/application/ExternalTimelineLayerFrame/service/ExternalTimelineLayerFrameBehindKeyframeService";
 import { execute as cacheRemoveService } from "@/cache/service/CacheRemoveService";
-import { execute as viewTimelineLayerFrameEraseKeyFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameEraseKeyFrameUseCase";
+import { execute as viewTimelineLayerFrameUpdateFrameUseCase } from "@/view/timeline/TimelineLayerFrame/usecase/ViewTimelineLayerFrameUpdateFrameUseCase";
 
 /**
  * @description キーフレームのフレーム全削除処理を元に戻す
@@ -70,7 +70,7 @@ export const execute = async (
     cacheRemoveService(workSpace, movieClip.id);
 
     // Viewを更新
-    await viewTimelineLayerFrameEraseKeyFrameUseCase(
+    await viewTimelineLayerFrameUpdateFrameUseCase(
         workSpace,
         movieClip,
         layer
