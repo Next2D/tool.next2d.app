@@ -1,4 +1,4 @@
-import { $CONVERT_MOVIE_CLIP_BUTTON_ID } from "@/config/ConvertMovieClipConfig";
+import { $CONVERT_MOVIE_CLIP_INPUT_ID } from "@/config/ConvertMovieClipConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as convertMovieClipModalHideUseCase } from "./ConvertMovieClipModalHideUseCase";
 
@@ -21,7 +21,7 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     }
 
     const inputElement = document
-        .getElementById($CONVERT_MOVIE_CLIP_BUTTON_ID) as HTMLInputElement;
+        .getElementById($CONVERT_MOVIE_CLIP_INPUT_ID) as HTMLInputElement;
     if (!inputElement || !inputElement.value) {
         return;
     }
@@ -31,12 +31,10 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 指定の名前でMovieClipを作成
     const name = inputElement.value;
+    console.log(name);
 
     // todo
 
     // モーダルを非表示にする
     convertMovieClipModalHideUseCase();
-
-    // inputを初期化
-    inputElement.value = "";
 };

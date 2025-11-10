@@ -255,9 +255,10 @@ let $editingElement: HTMLElement | null = null;
  */
 export const $setEditingElement = (element: HTMLElement | null): void =>
 {
-    if ($editingElement) {
+    if ($editingElement && $editingElement !== element) {
         $editingElement.blur();
     }
+
     $editingElement = element;
 };
 
