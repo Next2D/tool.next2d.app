@@ -1,6 +1,7 @@
 import { $CONVERT_MOVIE_CLIP_INPUT_ID } from "@/config/ConvertMovieClipConfig";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
 import { execute as convertMovieClipModalHideUseCase } from "./ConvertMovieClipModalHideUseCase";
+import { execute as externalLibraryAddNewMovieClipUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewMovieClipUseCase";
 
 /**
  * @description 指定の名前のMovieClipを作成して、選択中のDisplayObjectを配置
@@ -16,7 +17,9 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     const movieClip = workspace.scene;
 
     // 選択中のDisplayObjectがない場合は処理を終了する
-    if (!movieClip.selectedDepths.size) {
+    if (!movieClip.selectedDepths.size
+        || movieClip.selectedDepths.size > 1
+    ) {
         return;
     }
 
@@ -31,9 +34,18 @@ export const execute = async (event: PointerEvent): Promise<void> =>
 
     // 指定の名前でMovieClipを作成
     const name = inputElement.value;
-    console.log(name);
 
-    // todo
+    // ライブラリにMovieClipを追加
+    const newMovieClip = await externalLibraryAddNewMovieClipUseCase(
+        workspace,
+        movieClip,
+        name
+    );
+
+    // MovieClipに選択中のDisplayObjectを配置
+
+    // MovieClipをレイヤーに配置
+    console.log(newMovieClip);
 
     // モーダルを非表示にする
     convertMovieClipModalHideUseCase();

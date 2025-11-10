@@ -1,26 +1,38 @@
 import { execute } from "./ScreenMenuInitializeRegisterPointerOverUseCase";
 import { describe, expect, it, vi } from "vitest";
 import { EventType } from "../../../../tool/domain/event/EventType";
+import {
+    $SCREEN_DISTRIBUTE_TO_LAYERS_ID,
+    $SCREEN_DISTRIBUTE_TO_KEYFRAMES_ID,
+    $SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID,
+    $SCREEN_ALIGN_MATRIX_PREV_KEYFRAME_ID,
+    $SCREEN_INTEGRATING_PATHS_ID,
+    $SCREEN_ADD_TWEEN_CURVE_POINTER_ID,
+    $SCREEN_DELETE_TWEEN_CURVE_POINTER_ID,
+    $SCREEN_CONVERT_MOVIE_CLIP_ID,
+    $SCREEN_PREVIEW_ID,
+    $SCREEN_CHANGE_SCENE_ID,
+    $SCREEN_MOVE_SCENE_ID,
+    $SCREEN_RULER_ID
+} from "@/config/ScreenConfig";
 
 describe("ScreenMenuInitializeRegisterPointerOverUseCase Test", () =>
 {
     it("execute test", () =>
     {
         const hideElementIds = [
-            "screen-distribute-to-layers",
-            "screen-distribute-to-keyframes",
-            "screen-align-coordinates-prev-keyframe",
-            "screen-align-matrix-prev-keyframe",
-            "screen-integrating-paths",
-            "screen-add-tween-curve-pointer",
-            "screen-delete-tween-curve-pointer",
-            "screen-change-movie-clip",
-            "screen-preview",
-            "screen-ruler",
-            "screen-change-scene",
-            "screen-move-scene",
-            "screen-order",
-            "screen-align"
+            $SCREEN_DISTRIBUTE_TO_LAYERS_ID,
+            $SCREEN_DISTRIBUTE_TO_KEYFRAMES_ID,
+            $SCREEN_ALIGN_COORDINATES_PREV_KEYFRAME_ID,
+            $SCREEN_ALIGN_MATRIX_PREV_KEYFRAME_ID,
+            $SCREEN_INTEGRATING_PATHS_ID,
+            $SCREEN_ADD_TWEEN_CURVE_POINTER_ID,
+            $SCREEN_DELETE_TWEEN_CURVE_POINTER_ID,
+            $SCREEN_CONVERT_MOVIE_CLIP_ID,
+            $SCREEN_PREVIEW_ID,
+            $SCREEN_RULER_ID,
+            $SCREEN_CHANGE_SCENE_ID,
+            $SCREEN_MOVE_SCENE_ID
         ];
 
         for (let idx = 0; idx < hideElementIds.length; ++idx) {

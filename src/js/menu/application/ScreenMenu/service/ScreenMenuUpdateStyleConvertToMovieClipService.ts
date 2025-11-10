@@ -19,7 +19,8 @@ export const execute = (movie_clip: MovieClip): void =>
         return ;
     }
 
-    if (movie_clip.selectedDepths.size) {
+    // 選択可能なのは1レイヤー内のDisplayObjectが対象
+    if (movie_clip.selectedDepths.size === 1) {
         element.setAttribute("style", "");
     } else {
         element.style.opacity = "0.5";
