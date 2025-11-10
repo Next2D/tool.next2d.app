@@ -1,13 +1,15 @@
 import { EventType } from "@/tool/domain/event/EventType";
 import { $CONVERT_MOVIE_CLIP_MODAL_NAME } from "@/config/MenuConfig";
-import { execute as convertMovieClipModalHideUseCase } from "./ConvertMovieClipModalHideUseCase";
+import { execute as convertMovieClipModalCancelPointerDownEventUseCase } from "./ConvertMovieClipModalCancelPointerDownEventUseCase";
 import { execute as convertMovieClipModalChildPointerDownEventUseCase } from "./ConvertMovieClipModalChildPointerDownEventUseCase";
 import { execute as convertMovieClipModalInputFocusInEventService } from "../service/ConvertMovieClipModalInputFocusInEventService";
 import { execute as convertMovieClipModalInputFocusOutEventUseCase } from "../service/ConvertMovieClipModalInputFocusOutEventUseCase";
 import { execute as convertMovieClipModalInputKeyPressEventService } from "../service/ConvertMovieClipModalInputKeyPressEventService";
+import { execute as convertMovieClipModalButtonPointerDownEventUseCase } from "./ConvertMovieClipModalButtonPointerDownEventUseCase";
 import {
     $CONVERT_CANCEL_BUTTON_ID,
-    $CONVERT_MOVIE_CLIP_INPUT_ID
+    $CONVERT_MOVIE_CLIP_INPUT_ID,
+    $CONVERT_MOVIE_CLIP_BUTTON_ID
 } from "@/config/ConvertMovieClipConfig";
 
 /**
@@ -42,7 +44,7 @@ export const execute = (): void =>
         .getElementById($CONVERT_CANCEL_BUTTON_ID);
     if (cancelButton) {
         cancelButton.addEventListener(EventType.POINTER_DOWN,
-            convertMovieClipModalHideUseCase
+            convertMovieClipModalCancelPointerDownEventUseCase
         );
     }
 
@@ -58,6 +60,15 @@ export const execute = (): void =>
         );
         inputField.addEventListener("keypress",
             convertMovieClipModalInputKeyPressEventService
+        );
+    }
+
+    // 変換ボタンのイベントを登録する
+    const convertButton: HTMLElement | null = document
+        .getElementById($CONVERT_MOVIE_CLIP_BUTTON_ID);
+    if (convertButton) {
+        convertButton.addEventListener(EventType.POINTER_DOWN,
+            convertMovieClipModalButtonPointerDownEventUseCase
         );
     }
 };
