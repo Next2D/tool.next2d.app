@@ -1107,44 +1107,47 @@
 
       <!-- menus -->
 
-      <!-- change-movie-clip -->
-      <div id="change-movie-clip" class="none">
-        <div class="change-movie-clip-title">
+      <!-- convert-movie-clip -->
+      <div id="convert-movie-clip" class="none">
+        <div class="convert-movie-clip-title">
             <span class="language" data-text="{{MovieClipに変換}}">MovieClipに変換</span>
         </div>
-        <div class="change-movie-clip-container">
-            <div class="change-movie-clip-name">
+        <div class="convert-movie-clip-container">
+            <div class="convert-movie-clip-name">
                 <span class="language" data-text="{{名前}}">名前</span>
             </div>
-            <div class="change-movie-clip-body">
-                <input type="text" id="change-movie-clip-input" value="" autocomplete="off" tabindex="-1">
+            <div class="convert-movie-clip-body">
+                <input type="text" id="convert-movie-clip-input" value="" autocomplete="off" tabindex="-1">
             </div>
         </div>
-        <div class="change-movie-clip-container">
-            <div class="change-movie-clip-name">
+        <div class="convert-movie-clip-container">
+            <div class="convert-movie-clip-name">
                 <span class="language" data-text="{{基準点}}">基準点</span>
             </div>
-            <div class="change-movie-clip-body">
-                <div class="change-movie-clip-reference-point">
-                    <div class="change-movie-clip-box-child" data-position="top-left" data-detail="{{左上}}"></div>
-                    <div class="change-movie-clip-box-child" data-position="top-center" data-detail="{{中央上}}"></div>
-                    <div class="change-movie-clip-box-child" data-position="top-right" data-detail="{{右上}}"></div>
+            <div class="convert-movie-clip-body">
+                <div class="convert-movie-clip-reference-point">
+                    <div class="convert-movie-clip-box-child" data-position="top-left" data-detail="{{左上}}"></div>
+                    <div class="convert-movie-clip-box-child" data-position="top-center" data-detail="{{中央上}}"></div>
+                    <div class="convert-movie-clip-box-child" data-position="top-right" data-detail="{{右上}}"></div>
                 </div>
-                <div class="change-movie-clip-reference-point">
-                    <div class="change-movie-clip-box-child" data-position="middle-left" data-detail="{{中央左}}"></div>
-                    <div class="change-movie-clip-box-child" data-position="middle-center" data-detail="{{中央}}"></div>
-                    <div class="change-movie-clip-box-child" data-position="middle-right" data-detail="{{中央右}}"></div>
+                <div class="convert-movie-clip-reference-point">
+                    <div class="convert-movie-clip-box-child" data-position="middle-left" data-detail="{{中央左}}"></div>
+                    <div class="convert-movie-clip-box-child" data-position="middle-center" data-detail="{{中央}}"></div>
+                    <div class="convert-movie-clip-box-child" data-position="middle-right" data-detail="{{中央右}}"></div>
                 </div>
-                <div class="change-movie-clip-reference-point">
-                    <div class="change-movie-clip-box-child" data-position="bottom-left" data-detail="{{左下}}"></div>
-                    <div class="change-movie-clip-box-child" data-position="bottom-center" data-detail="{{中央下}}"></div>
-                    <div class="change-movie-clip-box-child" data-position="bottom-right" data-detail="{{右下}}"></div>
+                <div class="convert-movie-clip-reference-point">
+                    <div class="convert-movie-clip-box-child" data-position="bottom-left" data-detail="{{左下}}"></div>
+                    <div class="convert-movie-clip-box-child" data-position="bottom-center" data-detail="{{中央下}}"></div>
+                    <div class="convert-movie-clip-box-child" data-position="bottom-right" data-detail="{{右下}}"></div>
                 </div>
             </div>
         </div>
-        <div class="change-movie-clip-container change-movie-clip-box">
-            <div class="button" id="change-movie-clip-button">
+        <div class="convert-movie-clip-container convert-movie-clip-box">
+            <div class="button" id="convert-movie-clip-button">
                 <span class="language" data-text="{{変換}}">変換</span>
+            </div>            
+            <div class="button" id="convert-cancel-button">
+                <span class="language" data-text="{{キャンセル}}">キャンセル</span>
             </div>
         </div>
       </div>
@@ -1231,7 +1234,7 @@
             <div id="screen-delete-tween-curve-pointer" class="screen-menu-bottom"><span class="language" data-text="{{カーブポインターの削除}}" data-shortcut-key="pShiftCtrl" data-shortcut-text="Ctrl + Shift + P">カーブポインターの削除</span></div>
             <p></p>
             <span class="screen-menu-title language" data-text="{{変換}}">変換</span>
-            <div id="screen-change-movie-clip" class="screen-menu-bottom"><i></i><span class="language" data-text="{{MovieClipに変換}}" data-shortcut-key="mShift" data-shortcut-text="Shift + M">MovieClipに変換</span></div>
+            <div id="screen-convert-movie-clip" class="screen-menu-bottom"><i></i><span class="language" data-text="{{MovieClipに変換}}" data-shortcut-key="mShift" data-shortcut-text="Shift + M">MovieClipに変換</span></div>
             <p></p>
             <div id="screen-preview" class="screen-menu-bottom"><i></i><span class="language" data-text="{{プレビュー}}" data-shortcut-key="EnterCtrl" data-shortcut-text="Ctrl + Enter">Preview</span></div>
             <p></p>
@@ -1936,7 +1939,7 @@
                     <div id="shortcut-pShiftCtrl" class="command" data-default-key="pShiftCtrl" data-default-text="Ctrl + Shift + P">Ctrl + Shift + P</div>
                 </div>
                 <div class="shortcut-item">
-                    <i class="screen-change-movie-clip"></i>
+                    <i class="screen-convert-movie-clip"></i>
                     <div class="description">
                         <span class="language" data-text="{{MovieClipに変換}}">MovieClipに変換</span>
                     </div>

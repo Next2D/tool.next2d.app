@@ -1,4 +1,4 @@
-#change-movie-clip
+#convert-movie-clip
 {
     display          : flex;
     flex-direction   : column;
@@ -16,7 +16,7 @@
     border-radius    : 4px;
     box-shadow       : 0 0 5px rgba(245, 245, 245, 0.25);
 
-    .change-movie-clip-title
+    .convert-movie-clip-title
     {
         height          : 30px;
         display         : flex;
@@ -26,7 +26,7 @@
         margin-bottom   : 12px;
     }
 
-    .change-movie-clip-container
+    .convert-movie-clip-container
     {
         display       : flex;
         align-items   : center;
@@ -43,7 +43,7 @@
         }
     }
 
-    .change-movie-clip-name
+    .convert-movie-clip-name
     {
         width           : 120px;
         display         : flex;
@@ -51,12 +51,12 @@
         align-items     : center;
     }
 
-    .change-movie-clip-body
+    .convert-movie-clip-body
     {
         margin : 3px;
     }
 
-    .change-movie-clip-reference-point
+    .convert-movie-clip-reference-point
     {
         height          : 14px;
         display         : flex;
@@ -69,7 +69,7 @@
         }
     }
 
-    .change-movie-clip-box-child
+    .convert-movie-clip-box-child
     {
         width            : 10px;
         height           : 10px;
@@ -83,7 +83,7 @@
         }
     }
 
-    .change-movie-clip-box
+    .convert-movie-clip-box
     {
         justify-content : center;
     }

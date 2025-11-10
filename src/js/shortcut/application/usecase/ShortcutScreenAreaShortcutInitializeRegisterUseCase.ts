@@ -28,6 +28,7 @@ import { execute as screenMenuPrevKeyframeMatrixPointerDownEventUseCase } from "
 import { execute as screenMenuNextKeyframeMatrixPointerDownEventUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuNextKeyframeMatrixPointerDownEventUseCase";
 import { execute as screenMenuDistributeToLayersUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuDistributeToLayersUseCase";
 import { execute as screenMenuDistributeToKeyframeUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuDistributeToKeyframeUseCase";
+import { execute as screenMenuConvertToMovieClipUseCase } from "@/menu/application/ScreenMenu/usecase/ScreenMenuConvertToMovieClipUseCase";
 
 /**
  * @description スクリーンエリアのショートカットイベントを登録
@@ -211,5 +212,11 @@ export const execute = (): void =>
     $setShortcut(
         $generateShortcutKey("k", { "ctrl": true, "shift": true }),
         screenMenuDistributeToKeyframeUseCase
+    );
+
+    // MovieClipに変換
+    $setShortcut(
+        $generateShortcutKey("m", { "shift": true }),
+        screenMenuConvertToMovieClipUseCase
     );
 };

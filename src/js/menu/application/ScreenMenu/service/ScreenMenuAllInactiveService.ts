@@ -11,7 +11,7 @@ import {
     $SCREEN_INTEGRATING_PATHS_ID,
     $SCREEN_ADD_TWEEN_CURVE_POINTER_ID,
     $SCREEN_DELETE_TWEEN_CURVE_POINTER_ID,
-    $SCREEN_CHANGE_MOVIE_CLIP_ID
+    $SCREEN_CONVERT_MOVIE_CLIP_ID
 } from "@/config/ScreenConfig";
 
 /**
@@ -37,7 +37,7 @@ export const execute = (): void =>
         $SCREEN_INTEGRATING_PATHS_ID,
         $SCREEN_ADD_TWEEN_CURVE_POINTER_ID,
         $SCREEN_DELETE_TWEEN_CURVE_POINTER_ID,
-        $SCREEN_CHANGE_MOVIE_CLIP_ID
+        $SCREEN_CONVERT_MOVIE_CLIP_ID
     ];
 
     for (let idx = 0; idx < ids.length; ++idx) {

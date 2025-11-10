@@ -6,6 +6,7 @@ import { execute as screenMenuUpdateStyleMoveParentMovieClipService } from "../s
 import { execute as screenMenuUpdateStylePrevNextKeyframeService } from "../service/ScreenMenuUpdateStylePrevNextKeyframeService";
 import { execute as screenMenuUpdateStyleDistributeToLayersService } from "../service/ScreenMenuUpdateStyleDistributeToLayersService";
 import { execute as screenMenuUpdateStyleDistributeToKeyframeService } from "../service/ScreenMenuUpdateStyleDistributeToKeyframeService";
+import { execute as screenMenuUpdateStyleConvertToMovieClipService } from "../service/ScreenMenuUpdateStyleConvertToMovieClipService";
 
 /**
  * @description スクリーンのメニューを選択中のElementに合わせてアクティブ・非アクティブに更新する
@@ -38,6 +39,9 @@ export const execute = (): void =>
 
         // キーフレームに配分ボタンのスタイルを更新
         screenMenuUpdateStyleDistributeToKeyframeService(movieClip);
+
+        // MovieClipに変換ボタンのスタイルを更新
+        screenMenuUpdateStyleConvertToMovieClipService(movieClip);
     }
 
     // 親のMovieClipへの移動ボタンのスタイルを更新

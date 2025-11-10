@@ -12,6 +12,7 @@ import { execute as screenMenuPrevKeyframeMatrixPointerDownEventUseCase } from "
 import { execute as screenMenuNextKeyframeMatrixPointerDownEventUseCase } from "./ScreenMenuNextKeyframeMatrixPointerDownEventUseCase";
 import { execute as screenMenuDistributeToLayersUseCase } from "./ScreenMenuDistributeToLayersUseCase";
 import { execute as screenMenuDistributeToKeyframeUseCase } from "./ScreenMenuDistributeToKeyframeUseCase";
+import { execute as screenMenuConvertToMovieClipUseCase } from "./ScreenMenuConvertToMovieClipUseCase";
 import { EventType } from "@/tool/domain/event/EventType";
 import {
     $SCREEN_ID,
@@ -22,7 +23,8 @@ import {
     $SCREEN_ALIGN_MATRIX_PREV_KEYFRAME_ID,
     $SCREEN_ALIGN_MATRIX_NEXT_KEYFRAME_ID,
     $SCREEN_DISTRIBUTE_TO_LAYERS_ID,
-    $SCREEN_DISTRIBUTE_TO_KEYFRAMES_ID
+    $SCREEN_DISTRIBUTE_TO_KEYFRAMES_ID,
+    $SCREEN_CONVERT_MOVIE_CLIP_ID
 } from "@/config/ScreenConfig";
 
 /**
@@ -154,6 +156,17 @@ export const execute = (): void =>
         distributeToKeyframeElement.addEventListener(
             EventType.POINTER_DOWN,
             screenMenuDistributeToKeyframeUseCase
+        );
+    }
+
+    // MovieClipに変換ボタンのイベントを登録
+    const convertMovieClipElement: HTMLElement | null = document
+        .getElementById($SCREEN_CONVERT_MOVIE_CLIP_ID);
+
+    if (convertMovieClipElement) {
+        convertMovieClipElement.addEventListener(
+            EventType.POINTER_DOWN,
+            screenMenuConvertToMovieClipUseCase
         );
     }
 };

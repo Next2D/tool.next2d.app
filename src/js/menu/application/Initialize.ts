@@ -15,6 +15,7 @@ import { ScriptEditorModal } from "../domain/model/ScriptEditorModal";
 import { BillingModal } from "../domain/model/BillingModal";
 import { ConfirmModal } from "../domain/model/ConfirmModal";
 import { SceneListMenu } from "../domain/model/SceneListMenu";
+import { ConvertMovieClipModal } from "../domain/model/ConvertMovieClipModal";
 
 /**
  * @description 起動対象のToolクラスの配列
@@ -38,7 +39,8 @@ const menus: Array<new () => BaseMenu> = [
     ScriptEditorModal,
     BillingModal,
     ConfirmModal,
-    SceneListMenu
+    SceneListMenu,
+    ConvertMovieClipModal
 ];
 
 /**

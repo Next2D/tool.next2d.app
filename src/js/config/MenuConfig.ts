@@ -141,3 +141,12 @@ export const $CONFIRM_MODAL_NAME: string = "confirm-modal";
  * @constant
  */
 export const $SCENE_LIST_MENU_NAME: string = "scene-name-menu";
+
+/**
+ * @description MovieClip変換モーダルの名前
+ *              Convert MovieClip Modal Name
+ *
+ * @type {string}
+ * @constant
+ */
+export const $CONVERT_MOVIE_CLIP_MODAL_NAME: string = "convert-movie-clip";

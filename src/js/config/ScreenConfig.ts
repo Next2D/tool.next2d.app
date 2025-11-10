@@ -248,7 +248,7 @@ export const $SCREEN_DELETE_TWEEN_CURVE_POINTER_ID: string = "screen-delete-twee
  * @type {string}
  * @constant
  */
-export const $SCREEN_CHANGE_MOVIE_CLIP_ID: string = "screen-change-movie-clip";
+export const $SCREEN_CONVERT_MOVIE_CLIP_ID: string = "screen-convert-movie-clip";
 
 /**
  * @description スクリーンのプレビュー用ElementのID
@@ -258,3 +258,12 @@ export const $SCREEN_CHANGE_MOVIE_CLIP_ID: string = "screen-change-movie-clip";
  * @constant
  */
 export const $SCREEN_PREVIEW_ID: string = "screen-preview";
+
+/**
+ * @description スクリーンの定規用ElementのID
+ *              ID of the Element for ruler of the screen
+ *
+ * @type {string}
+ * @constant
+ */
+export const $SCREEN_RULER_ID: string = "screen-ruler";
