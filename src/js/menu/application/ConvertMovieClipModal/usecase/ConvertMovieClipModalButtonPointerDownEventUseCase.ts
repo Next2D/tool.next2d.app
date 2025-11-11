@@ -8,6 +8,10 @@ import { execute as convertMovieClipModalHideUseCase } from "./ConvertMovieClipM
 import { execute as externalLibraryAddNewMovieClipUseCase } from "@/external/controller/application/ExternalLibrary/usecase/ExternalLibraryAddNewMovieClipUseCase";
 import { execute as convertMovieClipModalCalcPositionService } from "../service/ConvertMovieClipModalCalcPositionService";
 import { execute as screenAreaCalcSelectedBoundsService } from "@/screen/application/ScreenArea/service/ScreenAreaCalcSelectedBoundsService";
+import {
+    $anchorFrac,
+    $getSelectedElementId
+} from "../ConvertMovieClipModalUtil";
 
 /**
  * @description 指定の名前のMovieClipを作成して、選択中のDisplayObjectを配置
@@ -128,20 +132,28 @@ export const execute = async (event: PointerEvent): Promise<void> =>
     newCharacter.startFrame = startFrame;
     newCharacter.endFrame   = endFrame;
 
-    // todo: xy position
-
     const currentExternalLayer = new ExternalLayer(
         workspace,
         movieClip,
         layer
     );
 
-    await currentExternalLayer.addCharacter(new ExternalCharacter(
-        workspace,
-        movieClip,
-        layer,
-        newCharacter
-    ));
+    const newExternalCharacter = await currentExternalLayer
+        .addCharacter(new ExternalCharacter(
+            workspace,
+            movieClip,
+            layer,
+            newCharacter
+        ));
+
+    // 中心点に合わせて座標を移動
+    const [ax, ay] = $anchorFrac[$getSelectedElementId() as keyof typeof $anchorFrac];
+    await newExternalCharacter.setX(
+        bounds.xMin + Math.abs(bounds.xMax - bounds.xMin) * ax
+    );
+    await newExternalCharacter.setY(
+        bounds.yMin + Math.abs(bounds.yMax - bounds.yMin) * ay
+    );
 
     // モーダルを非表示にする
     convertMovieClipModalHideUseCase();

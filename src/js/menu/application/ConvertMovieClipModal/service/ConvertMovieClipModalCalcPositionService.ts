@@ -1,26 +1,10 @@
 import type { Character } from "@/core/domain/model/Character";
 import type { IPosition } from "@/interface/IPosition";
 import type { IBounds } from "@/interface/IBounds";
-import { $getSelectedElementId } from "../ConvertMovieClipModalUtil";
-
-/**
- * @description アンカー位置の割合
- *              Anchor position ratio
- *
- * @type {Record<string, [number, number]>}
- * @private
- */
-const $anchorFrac: Record<string, [number, number]> = {
-    "top-left":      [0,   0],
-    "middle-left":   [0.5, 0],
-    "bottom-left":   [1,   0],
-    "top-center":    [0,   0.5],
-    "middle-center": [0.5, 0.5],
-    "bottom-center": [1,   0.5],
-    "top-right":     [0,   1],
-    "middle-right":  [0.5, 1],
-    "bottom-right":  [1,   1]
-};
+import {
+    $anchorFrac,
+    $getSelectedElementId
+} from "../ConvertMovieClipModalUtil";
 
 /**
  * @description ConvertMovieClipModalの選択した中心点に合わせてDisplayObjectの位置を計算

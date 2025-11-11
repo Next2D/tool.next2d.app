@@ -18,6 +18,25 @@ let $selectedElementId: string = "";
 let $validValue: boolean = false;
 
 /**
+ * @description アンカー位置の割合
+ *              Anchor position ratio
+ *
+ * @type {Record<string, [number, number]>}
+ * @private
+ */
+export const $anchorFrac: Record<string, [number, number]> = {
+    "top-left":      [0,   0],
+    "middle-left":   [0.5, 0],
+    "bottom-left":   [1,   0],
+    "top-center":    [0,   0.5],
+    "middle-center": [0.5, 0.5],
+    "bottom-center": [1,   0.5],
+    "top-right":     [0,   1],
+    "middle-right":  [0.5, 1],
+    "bottom-right":  [1,   1]
+};
+
+/**
  * @description ConvertMovieClipModalの選択した中心点のElement IDを取得
  *              Get the selected center point Element ID of ConvertMovieClipModal
  *
