@@ -19,7 +19,8 @@ export const execute = (event: PointerEvent | KeyboardEvent): void =>
     const workSpace = $getCurrentWorkSpace();
     const movieClip = workSpace.scene;
 
-    if (!movieClip.selectedDepths.size) {
+    // レイヤー選択は1つのみ許可
+    if (movieClip.selectedDepths.size !== 1) {
         return;
     }
 

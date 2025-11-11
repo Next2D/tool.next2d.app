@@ -274,8 +274,8 @@ export class ExternalLayer
     async addCharacter (
         external_character: ExternalCharacter,
         depth: number = 0
-    ): Promise<void> {
-        await externalLayerAddCharacterUseCase(
+    ): Promise<ExternalCharacter> {
+        return await externalLayerAddCharacterUseCase(
             this._$workSpace,
             this._$movieClip,
             this._$layer,

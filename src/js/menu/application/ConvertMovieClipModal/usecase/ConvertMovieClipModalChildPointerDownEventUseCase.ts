@@ -13,13 +13,13 @@ import { execute as convertMovieClipModalUpdateButtonService } from "../service/
  */
 export const execute = (event: PointerEvent): void =>
 {
-    // 親のイベントを抑制する
-    event.stopPropagation();
-
     const element = event.currentTarget as HTMLElement;
     if (!element) {
         return;
     }
+
+    // 親のイベントを抑制する
+    event.stopPropagation();
 
     // 全ての子要素のactiveクラスを削除する
     convertMovieClipModalChildInactiveService();
@@ -28,7 +28,7 @@ export const execute = (event: PointerEvent): void =>
     element.classList.add("active");
 
     // 参照選択状態をセットする
-    $selectReference();
+    $selectReference(element.dataset.position as string);
 
     // 変換ボタンの状態を更新
     convertMovieClipModalUpdateButtonService();

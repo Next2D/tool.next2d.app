@@ -1,12 +1,12 @@
 
 /**
- * @description ConvertMovieClipModalの中心点の入力チェック状態
- *             Input check state of ConvertMovieClipModal center point
+ * @description ConvertMovieClipModalの選択した中心点のElement ID
+ *              Selected center point Element ID of ConvertMovieClipModal
  *
- * @type {boolean}
+ * @type {string}
  * @private
  */
-let $selected: boolean = false;
+let $selectedElementId: string = "";
 
 /**
  * @description ConvertMovieClipModalの入力チェック状態
@@ -16,6 +16,19 @@ let $selected: boolean = false;
  * @private
  */
 let $validValue: boolean = false;
+
+/**
+ * @description ConvertMovieClipModalの選択した中心点のElement IDを取得
+ *              Get the selected center point Element ID of ConvertMovieClipModal
+ *
+ * @return {string}
+ * @method
+ * @public
+ */
+export const $getSelectedElementId = (): string =>
+{
+    return $selectedElementId;
+};
 
 /**
  * @description ConvertMovieClipModalの入力チェック状態を初期化
@@ -28,20 +41,21 @@ let $validValue: boolean = false;
 export const $resetState = (): void =>
 {
     $validValue = false;
-    $selected   = false;
+    $selectedElementId = "";
 };
 
 /**
  * @description ConvertMovieClipModalの入力チェック状態を取得
  *              Get the input check state of ConvertMovieClipModal
  *
+ * @param  {string} selected_element_id
  * @return {void}
  * @method
  * @public
  */
-export const $selectReference = (): void =>
+export const $selectReference = (selected_element_id: string): void =>
 {
-    $selected = true;
+    $selectedElementId = selected_element_id;
 };
 
 /**
@@ -68,5 +82,5 @@ export const $verifyValue = (valid: boolean): void =>
  */
 export const $canProceed = (): boolean =>
 {
-    return $selected && $validValue;
+    return $selectedElementId !== "" && $validValue;
 };
