@@ -43,6 +43,7 @@ export const execute = async (
     // レイヤーからキャラクターを削除
     // fixed logic
     layer.removeCharacter(character);
+    character.parentMovieClipId = -1;
 
     // キャッシュを削除
     cacheRemoveService(work_space, movie_clip.id);

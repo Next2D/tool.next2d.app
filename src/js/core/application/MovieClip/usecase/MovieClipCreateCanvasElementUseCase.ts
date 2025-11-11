@@ -36,7 +36,7 @@ export const execute = async (
     const object = await publishToolCreateToObjectUseCase(movie_clip);
 
     const loader = new Loader();
-    loader.loadJSON(object as any);
+    await loader.loadJSON(object as any);
 
     const movieClip = loader.content as DisplayMovieClip;
     movieClip.gotoAndStop(frame);
@@ -92,9 +92,6 @@ export const execute = async (
     const scaleX = Math.hypot(tMatrix[0], tMatrix[1]);
     const scaleY = Math.hypot(tMatrix[2], tMatrix[3]);
 
-    // const workSpace = $getCurrentWorkSpace();
-    // const stage = workSpace.stage;
-
     const rectangle = movieClip.getBounds();
     const canvas = await next2d.captureToCanvas(container, {
         "matrix": new Matrix(
@@ -112,8 +109,8 @@ export const execute = async (
 
     // 実際のサイズを設定
     container.matrix = matrix;
-    canvas.style.width  = `${container.width}px`;
-    canvas.style.height = `${container.height}px`;
+    canvas.style.width  = `${Math.ceil(canvas.width / scale)}px`;
+    canvas.style.height = `${Math.ceil(canvas.height / scale)}px`;
 
     return canvas;
 };

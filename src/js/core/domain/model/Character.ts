@@ -406,22 +406,6 @@ export class Character
     }
 
     /**
-     * @description 外部アイテムオブジェクトからロード
-     *              Load from external item object
-     *
-     * @param  {ExternalItem} item
-     * @param  {MovieClip} parent_movie_clip
-     * @return {void}
-     * @method
-     * @public
-     */
-    loadExternalItem (item: IExternalItem<any>, parent_movie_clip: MovieClip): void
-    {
-        this.libraryId = item.id;
-        this.parentMovieClipId = parent_movie_clip.id;
-    }
-
-    /**
      * @description 描画処理
      *              Drawing process
      *

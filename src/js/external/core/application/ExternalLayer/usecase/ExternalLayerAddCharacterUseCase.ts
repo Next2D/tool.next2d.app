@@ -32,6 +32,7 @@ export const execute = async (
     const character = new Character(external_character.id);
     character.load(external_character.toObject());
     character.depth = depth;
+    character.parentMovieClipId = movie_clip.id;
 
     // 前後のキーフレームを調整
     if (character.startFrame > 1) {
@@ -55,10 +56,27 @@ export const execute = async (
     let emptyCharacterIndex = -1;
 
     // 空のキーフレームがある場合は情報を引き継いで、空のキーフレームを削除
-    const activeEmptyCharacter = layer.getActiveEmptyCharacter(character.startFrame);
-    if (activeEmptyCharacter) {
-        emptyCharacterIndex = layer.emptyCharacters.indexOf(activeEmptyCharacter);
-        layer.removeEmptyCharacter(activeEmptyCharacter);
+    const keyframe = movie_clip.currentFrame;
+    const activeCharacters = layer.getActiveCharacters(keyframe);
+    if (activeCharacters.length) {
+        // 既にアクティブなキャラクターがある場合は、そのキーフレームに含める
+        character.startFrame = activeCharacters[0].startFrame;
+        character.endFrame   = activeCharacters[0].endFrame;
+        character.depth      = activeCharacters.length;
+    } else {
+        // 空のキーフレームがある場合は情報を引き継いで、空のキーフレームを削除
+        const activeEmptyCharacter = layer.getActiveEmptyCharacter(keyframe);
+        if (activeEmptyCharacter) {
+            character.startFrame = activeEmptyCharacter.startFrame;
+            character.endFrame   = activeEmptyCharacter.endFrame;
+            emptyCharacterIndex  = layer.emptyCharacters.indexOf(activeEmptyCharacter);
+            layer.removeEmptyCharacter(activeEmptyCharacter);
+        } else {
+            // 新規のキーフレームレイヤーの最大フレーム以降に登録
+            const maxFrame = layer.maxFrame;
+            character.startFrame = maxFrame ? maxFrame : 1;
+            character.endFrame   = keyframe + 1;
+        }
     }
 
     // レイヤーに追加

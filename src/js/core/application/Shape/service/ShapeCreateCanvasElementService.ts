@@ -103,8 +103,10 @@ export const execute = async (
 
     // 実際のサイズを設定
     container.matrix = matrix;
-    transferredCanvas.style.width  = `${container.width}px`;
-    transferredCanvas.style.height = `${container.height}px`;
+    transferredCanvas.style.width  = `${Math.ceil(canvas.width / scale)}px`;
+    transferredCanvas.style.height = `${Math.ceil(canvas.height / scale)}px`;
+    // transferredCanvas.style.width  = `${container.width}px`;
+    // transferredCanvas.style.height = `${container.height}px`;
 
     return transferredCanvas;
 };
