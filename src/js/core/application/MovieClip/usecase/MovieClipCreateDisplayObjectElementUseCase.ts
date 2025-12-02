@@ -98,6 +98,7 @@ export const execute = async (
         const scaleX = Math.hypot(concatMatrix[0], concatMatrix[1]);
         const scaleY = Math.hypot(concatMatrix[2], concatMatrix[3]);
 
+        console.log(width, scaleX, character.scaleX);
         // canvas.style.width  = `${Math.ceil(Math.abs(width  * character.scaleX * scaleX))}px`;
         // canvas.style.height = `${Math.ceil(Math.abs(height * character.scaleY * scaleY))}px`;
     }

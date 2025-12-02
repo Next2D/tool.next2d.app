@@ -1,5 +1,4 @@
 import type { ICharacterSaveObject } from "@/interface/ICharacterSaveObject";
-import type { IExternalItem } from "@/interface/IExternalItem";
 import type { IBlendMode } from "@/interface/IBlendMode";
 import type { Layer } from "./Layer";
 import type { IBounds } from "@/interface/IBounds";

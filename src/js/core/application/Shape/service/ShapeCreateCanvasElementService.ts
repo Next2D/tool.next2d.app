@@ -53,6 +53,9 @@ export const execute = async (
     container.addChild(displayShape);
 
     const concatMatrix = $getConcatenatedMatrix();
+    console.log("concatMatrix:", concatMatrix,
+        characterCalcGetScaleXService(concatMatrix)
+    );
 
     const scale = window.devicePixelRatio;
     const parentMatrix = Matrix.multiply(

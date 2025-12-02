@@ -3,7 +3,7 @@ import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import { ExternalLibrary } from "@/external/controller/domain/model/ExternalLibrary";
 import { Character } from "@/core/domain/model/Character";
 import { ExternalCharacter } from "@/external/core/domain/model/ExternalCharacter";
-import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase"
+import { execute as externalSoundAreaAddSoundUseCase } from "@/external/controller/application/ExternalSoundArea/usecase/ExternalSoundAreaAddSoundUseCase";
 import { execute as externalLayerAddCharacterUseCase } from "@/external/core/application/ExternalLayer/usecase/ExternalLayerAddCharacterUseCase";
 import {
     $FOLDER_TYPE,
