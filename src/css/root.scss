@@ -58,12 +58,15 @@ body
     -webkit-user-select : none; /* Safari */
     touch-action        : none;
     cursor              : var(--tool-cursor);
+    line-break          : strict;
+    word-break          : normal;
+    overflow-wrap       : anywhere;
     font-family         :
         "Helvetica Neue",
         Arial,
         "Hiragino Kaku Gothic ProN",
         "Hiragino Sans",
-        Meiryo,
+        "Noto Sans JP",
         sans-serif;
 }
 
