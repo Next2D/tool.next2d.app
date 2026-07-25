@@ -16,30 +16,30 @@
     "lint": "eslint src/js/**/*.ts"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/eslintrc": "^3.3.6",
     "@eslint/js": "^10.0.1",
     "@types/ace": "^0.0.52",
-    "@types/node": "^25.9.1",
+    "@types/node": "^26.1.1",
     "@types/qrcode": "^1.5.6",
-    "@typescript-eslint/eslint-plugin": "^8.59.4",
-    "@typescript-eslint/parser": "^8.59.4",
-    "@vitest/coverage-v8": "^4.1.7",
-    "@vitest/web-worker": "^4.1.7",
-    "eslint": "^10.4.0",
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
+    "@typescript-eslint/parser": "^8.65.0",
+    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/web-worker": "^4.1.10",
+    "eslint": "^10.8.0",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "globals": "^17.6.0",
+    "globals": "^17.7.0",
     "jsdom": "^29.1.1",
-    "sass": "^1.99.0",
+    "sass": "^1.102.0",
     "typescript": "^6.0.3",
-    "vite": "^8.0.13",
-    "vitest": "^4.1.7",
+    "vite": "^8.1.5",
+    "vitest": "^4.1.10",
     "vitest-webgl-canvas-mock": "^1.1.0"
   },
   "dependencies": {
     "fflate": "^0.8.3",
     "jszip": "^3.10.1",
     "qrcode": "^1.5.4",
-    "terser": "^5.47.1"
+    "terser": "^5.49.0"
   },
   "peerDependencies": {
     "@next2d/cache": "file:../player/packages/cache",
