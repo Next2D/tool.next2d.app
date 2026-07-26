@@ -58,8 +58,6 @@ export const execute = async (rotation: number): Promise<void> =>
 
     // 選択中のElementを移動
     const concatenatedMatrix = $getConcatenatedMatrix();
-    const scaleX = Math.hypot(concatenatedMatrix[0], concatenatedMatrix[1]);
-    const scaleY = Math.hypot(concatenatedMatrix[2], concatenatedMatrix[3]);
     const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
@@ -120,6 +118,8 @@ export const execute = async (rotation: number): Promise<void> =>
             character.y = prevY - nextY;
 
             const nodeStyle = node.style;
+
+            // 先祖を含む、回転情報を更新
             nodeStyle.setProperty("--transform", $createTransformElementStyle(character));
 
             const bounds = character.getBounds(frame, true);
@@ -128,21 +128,6 @@ export const execute = async (rotation: number): Promise<void> =>
                 nodeStyle.height = `${Math.ceil(Math.abs(bounds.yMax - bounds.yMin))}px`;
                 nodeStyle.left   = `${$getScreenOffsetLeft() + bounds.xMin}px`;
                 nodeStyle.top    = `${$getScreenOffsetTop()  + bounds.yMin}px`;
-            }
-
-            const rawBounds = character.getRawBounds();
-            if (rawBounds) {
-                const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
-                const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));
-
-                const canvas = node.querySelector("canvas");
-                if (canvas) {
-                    canvas.style.width  = `${width}px`;
-                    canvas.style.height = `${height}px`;
-                }
-
-                nodeStyle.setProperty("--width", `${width}px`);
-                nodeStyle.setProperty("--height", `${height}px`);
             }
 
             // マスクを更新
