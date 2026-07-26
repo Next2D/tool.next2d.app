@@ -1,7 +1,7 @@
 import { $updateKeyLock } from "@/shortcut/ShortcutUtil";
 import { $clamp } from "@/global/GlobalUtil";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
-import { execute as transformSettingUpdateScaleXToElementValuesUseCase } from "./TransformSettingUpdateScaleXToElementValuesUseCase";
+import { execute as transformSettingUpdateWidthToElementValuesUseCase } from "./TransformSettingUpdateWidthToElementValuesUseCase";
 import { execute as transformSettingUpdateHeightToElementValuesUseCase } from "./TransformSettingUpdateHeightToElementValuesUseCase";
 import { execute as transformSettingUpdateSizeToRedrawCanvasUseCase } from "./TransformSettingUpdateSizeToRedrawCanvasUseCase";
 
@@ -45,7 +45,7 @@ export const execute = async (event: FocusEvent): Promise<void> =>
         && transformSetting.beforeWidth
     ) {
         // 変形に合わせて表示を更新
-        await transformSettingUpdateScaleXToElementValuesUseCase(scale);
+        await transformSettingUpdateWidthToElementValuesUseCase(scale);
     }
 
     // 変更後のmatrixで表示を更新

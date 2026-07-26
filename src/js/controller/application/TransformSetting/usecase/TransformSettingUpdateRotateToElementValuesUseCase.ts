@@ -9,6 +9,7 @@ import { execute as transformSettingUpdateScaleXElementService } from "@/control
 import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
+import { execute as transformSettingUpdateElementSizeService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateElementSizeService";
 import { Matrix } from "@next2d/geom";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -129,6 +130,9 @@ export const execute = async (rotation: number): Promise<void> =>
                 nodeStyle.left   = `${$getScreenOffsetLeft() + bounds.xMin}px`;
                 nodeStyle.top    = `${$getScreenOffsetTop()  + bounds.yMin}px`;
             }
+
+            // 変形後のmatrixに合わせて表示サイズを更新
+            transformSettingUpdateElementSizeService(node, character, frame);
 
             // マスクを更新
             await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);

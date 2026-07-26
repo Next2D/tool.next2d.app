@@ -10,6 +10,7 @@ import { execute as transformSettingUpdateScaleXElementService } from "@/control
 import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
+import { execute as transformSettingUpdateElementSizeService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateElementSizeService";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { $getCurrentWorkSpace } from "@/core/application/CoreUtil";
@@ -22,7 +23,6 @@ import {
     $createTransformElementStyle,
     $getConcatenatedMatrix
 } from "@/controller/application/TransformSetting/TransformSettingUtil";
-import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -56,8 +56,6 @@ export const execute = async (scale_y: number): Promise<void> =>
 
     // 選択中のElementを移動
     const concatenatedMatrix = $getConcatenatedMatrix();
-    const scaleX = Math.hypot(concatenatedMatrix[0], concatenatedMatrix[1]);
-    const scaleY = Math.hypot(concatenatedMatrix[2], concatenatedMatrix[3]);
     const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
@@ -121,24 +119,8 @@ export const execute = async (scale_y: number): Promise<void> =>
                 nodeStyle.top    = `${$getScreenOffsetTop()  + bounds.yMin}px`;
             }
 
-            const rawBounds = character.getRawBounds();
-            const canvas = node.querySelector("canvas");
-            if (canvas && rawBounds) {
-                if (instance.type === $MOVIE_CLIP_TYPE) {
-                    // rawBoundsにmatrixを適用(回転含む)して、widthとheightを計算する
-                    canvas.style.width  = `${Math.abs(rawBounds.xMax - rawBounds.xMin) * character.scaleX}px`;
-                    canvas.style.height = `${Math.abs(rawBounds.yMax - rawBounds.yMin) * character.scaleY}px`;
-                } else {
-                    const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
-                    const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));
-
-                    nodeStyle.setProperty("--width",  `${width}px`);
-                    nodeStyle.setProperty("--height", `${height}px`);
-
-                    canvas.style.width  = `${width}px`;
-                    canvas.style.height = `${height}px`;
-                }
-            }
+            // 変形後のmatrixに合わせて表示サイズを更新
+            transformSettingUpdateElementSizeService(node, character, frame);
 
             await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);
 

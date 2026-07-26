@@ -5,9 +5,11 @@ import { execute as transformSettingUpdateYElementService } from "@/controller/a
 import { execute as transformSettingUpdateXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateXElementService";
 import { execute as transformSettingUpdateWidthElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateWidthElementService";
 import { execute as transformSettingUpdateScaleXElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleXElementService";
+import { execute as transformSettingUpdateScaleYElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateScaleYElementService";
 import { execute as transformSettingUpdateRotationElementService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateRotationElementService";
 import { execute as screenStandardPointDeployElementUseCase } from "@/screen/application/StandardPoint/usecase/ScreenStandardPointDeployElementUseCase";
 import { execute as screenDisplayObjectUpdateMaskInCanvasStyleService } from "@/screen/application/DisplayObject/service/ScreenDisplayObjectUpdateMaskInCanvasStyleService";
+import { execute as transformSettingUpdateElementSizeService } from "@/controller/application/TransformSetting/service/TransformSettingUpdateElementSizeService";
 import { transformSetting } from "@/controller/domain/model/TransformSetting";
 import { referenceSetting } from "@/controller/domain/model/ReferenceSetting";
 import { Matrix } from "@next2d/geom";
@@ -53,8 +55,6 @@ export const execute = async (scale_x: number): Promise<void> =>
 
     // 選択中のElementを移動
     const concatenatedMatrix = $getConcatenatedMatrix();
-    const scaleX = Math.hypot(concatenatedMatrix[0], concatenatedMatrix[1]);
-    const scaleY = Math.hypot(concatenatedMatrix[2], concatenatedMatrix[3]);
     const frame = movieClip.currentFrame;
     for (const [layerIndex, depths] of movieClip.selectedDepths) {
 
@@ -94,18 +94,33 @@ export const execute = async (scale_x: number): Promise<void> =>
             const localX = referenceSetting.x * matrix.a + referenceSetting.y * matrix.c + matrix.tx;
             const localY = referenceSetting.x * matrix.b + referenceSetting.y * matrix.d + matrix.ty;
 
-            const rad = character.rotation * Math.PI / 180;
+            // 幅は親空間でのAABBの幅なので、親空間のX軸方向に伸縮させる。
+            // characterのmatrixで挟み込むことで、回転やシアーがあっても
+            // 全ての点のx座標がscale_x倍になり、AABBの幅もscale_x倍になる。
+            const linearMatrix = new Float32Array([
+                character.matrix[0], character.matrix[1],
+                character.matrix[2], character.matrix[3],
+                0, 0
+            ]);
+
+            const invertMatrix = new Matrix(...linearMatrix);
+            invertMatrix.invert();
+
             const parentMatrix = Matrix.multiply(
                 new Float32Array([1, 0, 0, 1, localX, localY]),
                 Matrix.multiply(
-                    new Float32Array([Math.cos(-rad), Math.sin(-rad), -Math.sin(-rad), Math.cos(-rad), 0, 0]),
                     Matrix.multiply(
-                        new Float32Array([scale_x, 0, 0, 1, 0, 0]),
+                        new Float32Array([
+                            invertMatrix.a, invertMatrix.b,
+                            invertMatrix.c, invertMatrix.d,
+                            0, 0
+                        ]),
                         Matrix.multiply(
-                            new Float32Array([Math.cos(rad), Math.sin(rad), -Math.sin(rad), Math.cos(rad), 0, 0]),
-                            new Float32Array([1, 0, 0, 1, -localX, -localY])
+                            new Float32Array([scale_x, 0, 0, 1, 0, 0]),
+                            linearMatrix
                         )
-                    )
+                    ),
+                    new Float32Array([1, 0, 0, 1, -localX, -localY])
                 )
             );
 
@@ -125,19 +140,8 @@ export const execute = async (scale_x: number): Promise<void> =>
                 nodeStyle.top    = `${$getScreenOffsetTop()  + bounds.yMin}px`;
             }
 
-            const rawBounds = character.getRawBounds();
-            if (rawBounds) {
-                const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
-                const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));
-                nodeStyle.setProperty("--width",  `${width}px`);
-                nodeStyle.setProperty("--height", `${height}px`);
-
-                const canvas = node.querySelector("canvas");
-                if (canvas) {
-                    canvas.style.width  = `${width}px`;
-                    canvas.style.height = `${height}px`;
-                }
-            }
+            // 変形後のmatrixに合わせて表示サイズを更新
+            transformSettingUpdateElementSizeService(node, character, frame);
 
             await screenDisplayObjectUpdateMaskInCanvasStyleService(node, layer, character);
 
@@ -147,8 +151,15 @@ export const execute = async (scale_x: number): Promise<void> =>
                 transformSetting.w = character.width;
                 transformSettingUpdateWidthElementService(character.width);
                 transformSettingUpdateRotationElementService(character.rotation);
+
+                // 親空間のX軸方向の伸縮なので、回転している場合はscaleYも変化する
+                transformSetting.scaleX = character.scaleX;
+                transformSetting.scaleY = character.scaleY;
                 transformSettingUpdateScaleXElementService(
-                    Math.round(transformSetting.scaleX * 10000) / 100
+                    Math.round(character.scaleX * 10000) / 100
+                );
+                transformSettingUpdateScaleYElementService(
+                    Math.round(character.scaleY * 10000) / 100
                 );
 
                 // MovieClipの基準点を再配置
@@ -160,21 +171,17 @@ export const execute = async (scale_x: number): Promise<void> =>
     // 変形エリアのy座標を更新
     if (!movieClip.isSingleSelectedOfDisplayObject()) {
         const bounds = screenAreaCalcSelectedBoundsService(movieClip);
-        if (!bounds) {
-            return ;
-        }
-
         if (bounds) {
             transformSettingUpdateXElementService(bounds.xMin);
             transformSettingUpdateYElementService(bounds.yMin);
             transformSetting.w = Math.round(Math.abs(bounds.xMax - bounds.xMin) * 100) / 100;
             transformSettingUpdateWidthElementService(transformSetting.w);
         }
-    }
 
-    // 変形エリアのyスケールを更新
-    transformSetting.scaleX *= scale_x;
-    transformSettingUpdateScaleXElementService(
-        Math.round(transformSetting.scaleX * 10000) / 100
-    );
+        // 複数選択時は個々のscaleXを表示できないので、累積値を表示する
+        transformSetting.scaleX *= scale_x;
+        transformSettingUpdateScaleXElementService(
+            Math.round(transformSetting.scaleX * 10000) / 100
+        );
+    }
 };

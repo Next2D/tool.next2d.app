@@ -2,7 +2,11 @@ import { execute as characterCalcGetScaleXService } from "../service/CharacterCa
 
 /**
  * @description DisplayObjectのスケールXを計算
- *              Calculate the scale X of DisplayObject
+ *              x基底ベクトルの向きは維持したまま、長さだけを更新する。
+ *              負の値が指定された場合はx基底を180度回して表現する。
+ *              Calculate the scale X of DisplayObject.
+ *              Updates only the length while keeping the direction of the x basis vector.
+ *              If a negative value is specified, it is expressed by rotating the x basis by 180 degrees.
  *
  * @param  {number} scale_x
  * @param  {Float32Array} matrix
@@ -27,22 +31,12 @@ export const execute = (
 
     } else {
 
-        const EPS = 1e-12;
-        const theta = Math.atan2(matrix[1], matrix[0]);
-
-        // 現在の「符号付き scaleX」を推定（a が 0 近傍なら b で判定）
-        const sxAbs = Math.hypot(matrix[0], matrix[1]);
-        const signX = (Math.abs(matrix[0]) >= EPS ? Math.sign(matrix[0]) : Math.sign(matrix[1])) || 1;
-        const sxSigned = sxAbs * signX;
-
-        // 角度正規化：scaleX を「非負」で表せる角度に直す（符号は角度から外す）
-        const thetaPos = sxSigned >= 0 ? theta : theta - Math.PI;
-
-        // ターゲットの符号を角度に載せる
-        const thetaUse = thetaPos + (scale_x < 0 ? Math.PI : 0);
+        // 現在のx基底の角度に、負の値であれば180度を載せる
+        const theta = Math.atan2(matrix[1], matrix[0])
+            + (scale_x < 0 ? Math.PI : 0);
 
         const use = Math.abs(scale_x);
-        matrix[0] = use * Math.cos(thetaUse);
-        matrix[1] = use * Math.sin(thetaUse);
+        matrix[0] = use * Math.cos(theta);
+        matrix[1] = use * Math.sin(theta);
     }
 };

@@ -1,8 +1,12 @@
 import { execute as characterCalcGetScaleYService } from "../service/CharacterCalcGetScaleYService";
 
 /**
- * @description DisplayObjectのスケールXを計算
- *              Calculate the scale Y of DisplayObject
+ * @description DisplayObjectのスケールYを計算
+ *              y基底ベクトルの向きは維持したまま、長さだけを更新する。
+ *              負の値が指定された場合はy基底を180度回して表現する(=反転)。
+ *              Calculate the scale Y of DisplayObject.
+ *              Updates only the length while keeping the direction of the y basis vector.
+ *              If a negative value is specified, it is expressed by rotating the y basis by 180 degrees (flip).
  *
  * @param  {number} scale_y
  * @param  {array} matrix
@@ -23,27 +27,21 @@ export const execute = (
 
     if (matrix[2] === 0 || isNaN(matrix[2])) {
 
-        matrix[3] = scale_y;
+        // y基底がx軸成分を持たない場合は、行列式の符号を合わせてdを直接更新する
+        matrix[3] = matrix[0] < 0 ? -scale_y : scale_y;
 
     } else {
 
-        const targetAbs = Math.max(0, Math.abs(scale_y));
+        // 反転の有無は行列式で判定し、符号が変わる場合のみy基底を180度回す
+        const det = matrix[0] * matrix[3] - matrix[1] * matrix[2];
+        const currentSign = det < 0 ? -1 : 1;
+        const targetSign  = scale_y < 0 ? -1 : 1;
 
-        const EPS = 1e-12;
-        let theta = Math.atan2(matrix[1], matrix[0]);
-        if (matrix[0] < 0 || Math.abs(matrix[0]) < EPS && matrix[1] < 0) {
-            theta -= Math.PI;
-        }
-        if (theta <= -Math.PI) {
-            theta += 2 * Math.PI;
-        }
-        if (theta > Math.PI) {
-            theta -= 2 * Math.PI;
-        }
+        const theta = Math.atan2(-matrix[2], matrix[3])
+            + (currentSign === targetSign ? 0 : Math.PI);
 
-        const thetaUse = theta + (scale_y < 0 ? Math.PI : 0);
-
-        matrix[2] = -targetAbs * Math.sin(thetaUse);
-        matrix[3] =  targetAbs * Math.cos(thetaUse);
+        const use = Math.abs(scale_y);
+        matrix[2] = -use * Math.sin(theta);
+        matrix[3] =  use * Math.cos(theta);
     }
 };
