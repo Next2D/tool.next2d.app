@@ -22,6 +22,7 @@ import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
 } from "@/global/GlobalUtil";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -120,16 +121,19 @@ export const execute = async (scale_x: number): Promise<void> =>
             }
 
             const rawBounds = character.getRawBounds();
-            if (rawBounds) {
+            if (rawBounds && instance) {
                 const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
                 const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));
-                nodeStyle.setProperty("--width",  `${width}px`);
-                nodeStyle.setProperty("--height", `${height}px`);
 
-                const canvas = node.querySelector("canvas");
-                if (canvas) {
-                    canvas.style.width  = `${width}px`;
-                    canvas.style.height = `${height}px`;
+                if (instance.type !== $MOVIE_CLIP_TYPE) {
+                    nodeStyle.setProperty("--width",  `${width}px`);
+                    nodeStyle.setProperty("--height", `${height}px`);
+
+                    const canvas = node.querySelector("canvas");
+                    if (canvas) {
+                        canvas.style.width  = `${width}px`;
+                        canvas.style.height = `${height}px`;
+                    }
                 }
             }
 

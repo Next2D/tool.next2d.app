@@ -1,6 +1,4 @@
 import type { Character } from "@/core/domain/model/Character";
-import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
-import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import {
     $getScreenOffsetLeft,
     $getScreenOffsetTop
@@ -40,8 +38,8 @@ export const execute = (
     const x = $getScreenOffsetLeft() + Math.ceil(bounds.xMin);
     const y = $getScreenOffsetTop()  + Math.ceil(bounds.yMin);
 
-    const scaleX = characterCalcGetScaleXService(concatMatrix);
-    const scaleY = characterCalcGetScaleYService(concatMatrix);
+    const scaleX = Math.hypot(concatMatrix[0], concatMatrix[1]); // fixed logic
+    const scaleY = Math.hypot(concatMatrix[2], concatMatrix[3]); // fixed logic
 
     const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
     const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));

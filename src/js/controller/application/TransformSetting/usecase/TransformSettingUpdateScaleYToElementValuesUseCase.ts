@@ -22,6 +22,7 @@ import {
     $createTransformElementStyle,
     $getConcatenatedMatrix
 } from "@/controller/application/TransformSetting/TransformSettingUtil";
+import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
  * @description スクリーンで選択中のElementをmatrixに合わせて変形させる
@@ -121,14 +122,19 @@ export const execute = async (scale_y: number): Promise<void> =>
             }
 
             const rawBounds = character.getRawBounds();
-            if (rawBounds) {
-                const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
-                const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));
-                nodeStyle.setProperty("--width",  `${width}px`);
-                nodeStyle.setProperty("--height", `${height}px`);
+            const canvas = node.querySelector("canvas");
+            if (canvas && rawBounds) {
+                if (instance.type === $MOVIE_CLIP_TYPE) {
+                    // rawBoundsにmatrixを適用(回転含む)して、widthとheightを計算する
+                    canvas.style.width  = `${Math.abs(rawBounds.xMax - rawBounds.xMin) * character.scaleX}px`;
+                    canvas.style.height = `${Math.abs(rawBounds.yMax - rawBounds.yMin) * character.scaleY}px`;
+                } else {
+                    const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
+                    const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));
 
-                const canvas = node.querySelector("canvas");
-                if (canvas) {
+                    nodeStyle.setProperty("--width",  `${width}px`);
+                    nodeStyle.setProperty("--height", `${height}px`);
+
                     canvas.style.width  = `${width}px`;
                     canvas.style.height = `${height}px`;
                 }
