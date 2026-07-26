@@ -1,4 +1,5 @@
 import type { Character } from "@/core/domain/model/Character";
+import { Matrix } from "@next2d/geom";
 import { $createTransformElementStyle } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import {
@@ -36,12 +37,14 @@ export const execute = (
     const x = $getScreenOffsetLeft() + Math.ceil(bounds.xMin);
     const y = $getScreenOffsetTop()  + Math.ceil(bounds.yMin);
 
-    const concatMatrix = $getConcatenatedMatrix();
-    const scaleX = Math.hypot(concatMatrix[0], concatMatrix[1]); // fixed logic
-    const scaleY = Math.hypot(concatMatrix[2], concatMatrix[3]); // fixed logic
+    // 親との合成行列から、各基底ベクトルの長さを倍率として求める
+    // 親と自身のスケールの掛け算では、親が非等方かつ自身に回転がある場合に一致しない
+    const matrix = Matrix.multiply($getConcatenatedMatrix(), character.matrix);
+    const scaleX = Math.hypot(matrix[0], matrix[1]);
+    const scaleY = Math.hypot(matrix[2], matrix[3]);
 
-    const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * character.scaleX * scaleX));
-    const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * character.scaleY * scaleY));
+    const width  = Math.ceil(Math.abs((rawBounds.xMax - rawBounds.xMin) * scaleX));
+    const height = Math.ceil(Math.abs((rawBounds.yMax - rawBounds.yMin) * scaleY));
 
     return `<div class="display-object layer-id-${layer_id} character-id-${character.id}" data-depth="${character.depth}" data-layer-id="${layer_id}" style="left: ${x}px; top: ${y}px; width: ${Math.ceil(Math.abs(bounds.xMax - bounds.xMin))}px; height: ${Math.ceil(Math.abs(bounds.yMax - bounds.yMin))}px; --transform: ${$createTransformElementStyle(character)}; --width: ${width}px; --height: ${height}px;"><div class="canvas-container container-layer-id-${layer_id}"></div></div>`;
 };

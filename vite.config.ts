@@ -6,7 +6,14 @@ import path from "path";
 
 export default defineConfig({
     "server": {
-        "open": "index.html"
+        "open": "index.html",
+        "fs": {
+            // @next2d/* はfile:参照でリポジトリ外を指すため、読み込みを許可する
+            "allow": [
+                path.resolve(process.cwd()),
+                path.resolve(process.cwd(), "../player")
+            ]
+        }
     },
     "build": {
         "outDir": "docs",

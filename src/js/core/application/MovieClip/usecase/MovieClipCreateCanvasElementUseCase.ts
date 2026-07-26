@@ -2,8 +2,6 @@ import type { MovieClip } from "@/core/domain/model/MovieClip";
 import type { MovieClip as DisplayMovieClip } from "@next2d/display";
 import type { Character } from "@/core/domain/model/Character";
 import { execute as publishToolCreateToObjectUseCase } from "@/tool/application/PublishTool/usecase/PublishToolCreateToObjectUseCase";
-import { execute as characterCalcGetScaleXService } from "@/core/application/Character/service/CharacterCalcGetScaleXService";
-import { execute as characterCalcGetScaleYService } from "@/core/application/Character/service/CharacterCalcGetScaleYService";
 import { $getConcatenatedMatrix } from "@/controller/application/TransformSetting/TransformSettingUtil";
 import { $getCanvas } from "@/global/GlobalUtil";
 import { $clearUseLibraryIds } from "@/tool/application/PublishTool/PublishToolUtil";
@@ -47,25 +45,14 @@ export const execute = async (
     const concatMatrix = $getConcatenatedMatrix();
 
     const scale = window.devicePixelRatio;
-    const parentMatrix = Matrix.multiply(
-        new Float32Array([scale, 0, 0, scale, 0, 0]),
-        new Float32Array([
-            characterCalcGetScaleXService(concatMatrix), 0,
-            0, characterCalcGetScaleYService(concatMatrix),
-            concatMatrix[4], concatMatrix[5]
-        ])
-    );
 
+    // MovieClipは軸平行でラスタライズし、回転・シアーはCSS(--transform)側で当てる。
+    // 倍率は「親との合成行列の各基底ベクトルの長さ」で求める必要がある。
+    // 親と自身のスケールの掛け算では、親が非等方かつ自身に回転がある場合に一致しない。
     const matrix = new Matrix();
-    const tMatrix = new Float32Array([1, 0, 0, 1, 0, 0]);
+    let scaleX = scale;
+    let scaleY = scale;
     if (character) {
-        const multiMatrix = Matrix.multiply(
-            parentMatrix,
-            new Float32Array([
-                character.scaleX, 0, 0, character.scaleY, character.x, character.y
-            ])
-        );
-
         const rawMatrix = Matrix.multiply(
             concatMatrix, character.matrix
         );
@@ -75,22 +62,16 @@ export const execute = async (
         matrix.c = rawMatrix[2];
         matrix.d = rawMatrix[3];
 
-        tMatrix.set([
-            multiMatrix[0], multiMatrix[1],
-            multiMatrix[2], multiMatrix[3]
-        ], 0);
+        scaleX = scale * Math.hypot(rawMatrix[0], rawMatrix[1]);
+        scaleY = scale * Math.hypot(rawMatrix[2], rawMatrix[3]);
 
     } else {
-        tMatrix.set([scale, 0, 0, scale], 0);
 
         matrix.a = scale;
         matrix.b = 0;
         matrix.c = 0;
         matrix.d = scale;
     }
-
-    const scaleX = Math.hypot(tMatrix[0], tMatrix[1]);
-    const scaleY = Math.hypot(tMatrix[2], tMatrix[3]);
 
     const rectangle = movieClip.getBounds();
     const canvas = await next2d.captureToCanvas(container, {

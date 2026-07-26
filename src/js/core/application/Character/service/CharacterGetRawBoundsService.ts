@@ -2,6 +2,7 @@ import type { Character } from "@/core/domain/model/Character";
 import type { WorkSpace } from "@/core/domain/model/WorkSpace";
 import type { IBounds } from "@/interface/IBounds";
 import type { MovieClip } from "@/core/domain/model/MovieClip";
+import { execute as characterCalcChildFrameService } from "./CharacterCalcChildFrameService";
 import { $MOVIE_CLIP_TYPE } from "@/config/InstanceConfig";
 
 /**
@@ -32,16 +33,7 @@ export const execute = (
     }
 
     // MovieClipの場合は子孫のフレーム位置に合わせる
-    const totalFrame = (instance as MovieClip).maxFrame - 1;
-    const maxFrame   = parent_frame - character.startFrame + 1;
-
-    let frame = 0;
-    for (let idx = 0; idx < maxFrame; ++idx) {
-        ++frame;
-        if (totalFrame < frame) {
-            frame = 1;
-        }
-    }
-
-    return (instance as MovieClip).getRawBounds(frame);
+    return (instance as MovieClip).getRawBounds(
+        characterCalcChildFrameService(instance as MovieClip, character, parent_frame)
+    );
 };
